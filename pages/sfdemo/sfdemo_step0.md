@@ -13,7 +13,7 @@ summary: In this step, you will establish your Salesforce.com developer account 
 
 ## 0.1 Create Developer Account
 
-##### Setting up an account
+### Setting up an account
 
 1. Go to [developer.salesforce.com](http://developer.salesforce.com) and click **Sign up**. ![Sign up](/images/sfdemo_step0_signup.png)
 
@@ -36,7 +36,7 @@ summary: In this step, you will establish your Salesforce.com developer account 
 
 4. Click the gear icon in the top-right corner of the screen, and select **Setup**.
 
-#### Add the `Request Shipment Upgrade` field to the Account Object
+### Add the `Request Shipment Upgrade` field to the Account Object
 
 5. On the left navigation, under **Objects and Fields**, select **Object Manager**.
 
@@ -54,7 +54,7 @@ summary: In this step, you will establish your Salesforce.com developer account 
 
 12. Click **Next** for Steps 2 and 3, and click **Save** on Step 4.
 
-#### Create the `Shipment` Object
+### Create the `Shipment` Object
 
 1. On the left navigation, under **Objects and Fields**, select **Object Manager**.
 
@@ -77,7 +77,7 @@ summary: In this step, you will establish your Salesforce.com developer account 
 | Picklist | _n/a_ | `Priority` | _n/a_ | `Standard, Expedited` | `Priority` | Yes |
 | Picklist | _n/a_ | `Status` | _n/a_ | `Started, Shipped, Delivered, Delayed` | `Status` | Yes |
 
-#### Create the PushTopic
+### Create the PushTopic
 
 1. Click the gear icon in the top-right corner of the screen, and select **Developer Console**.
 
