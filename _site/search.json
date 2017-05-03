@@ -1,0 +1,106 @@
+[
+
+
+
+
+
+
+{
+"title": "Cloud Integration",
+"tags": "",
+"keywords": "",
+"url": "index.html",
+"summary": "Welcome to the Github-hosted repository of technical sales accelerators for Cloud Integration."
+}
+,
+
+
+
+{
+"title": "Scroll layout",
+"tags": "special_layouts",
+"keywords": "json, scrolling, scrollto, jquery plugin",
+"url": "jsmydoc_scroll.html",
+"summary": "This page demonstrates how you the integration of a script called ScrollTo, which is used here to link definitions of a JSON code sample to a list of definitions for that particular term. The scenario here is that the JSON blocks are really long, with extensive nesting and subnesting, which makes it difficult for tables below the JSON to adequately explain the term in a usable way."
+}
+,
+
+
+
+
+
+{
+"title": "Getting Started",
+"tags": "",
+"keywords": "",
+"url": "sfdemo_start.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Step 0 - Setup Salesforce.com",
+"tags": "",
+"keywords": "",
+"url": "sfdemo_step0.html",
+"summary": "In this step, you will establish your Salesforce.com developer account and create the custom fields and objects required by the demo."
+}
+,
+
+
+
+{
+"title": "Step 1 - Starting the environment",
+"tags": "",
+"keywords": "",
+"url": "sfdemo_step1.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Step 2 - Running the demo",
+"tags": "",
+"keywords": "",
+"url": "sfdemo_step2.html",
+"summary": ""
+}
+,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]

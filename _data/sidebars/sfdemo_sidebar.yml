@@ -1,0 +1,32 @@
+# This is your sidebar TOC. The sidebar code loops through sections here and provides the appropriate formatting.
+
+entries:
+- title: sidebar
+  levels: one
+  folders:
+
+  - title: Salesforce Demo
+    output: web
+    folderitems:
+    - title: Getting Started
+      url: /sfdemo_start.html
+      output: web
+    - title: Step 0 - Setup Salesforce.com
+      url: /sfdemo_step0.html
+      output: web
+      folderitems:
+        - title: Create Developer Account
+          url: /sfdemo_step0.html#01-create-developer-account
+          output: web
+        - title: Customize Salesforce Objects
+          url: /sfdemo_step0.html#02-customize-salesforce-objects
+          output: web
+        - title: Reset Security Token
+          url: /sfdemo_step0.html#03-reset-security-token
+          output: web
+    - title: Step 1 - Starting the environment
+      url: /sfdemo_step1.html
+      output: web
+    - title: Step 2 - Running the demo
+      url: /sfdemo_step2.html
+      output: web

@@ -1,0 +1,13 @@
+# This is your sidebar TOC. The sidebar code loops through sections here and provides the appropriate formatting.
+
+entries:
+- title: sidebar
+  folders:
+
+  - title: Topics
+    url: /index.html
+    output: web
+    folderitems:
+    - title: Salesforce Demo
+      url: /sfdemo_start.html
+      output: web
