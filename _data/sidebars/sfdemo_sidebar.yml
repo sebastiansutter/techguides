@@ -8,10 +8,10 @@ entries:
   - title: Salesforce Demo
     output: web
     folderitems:
-    - title: Getting Started
+    - title: Introduction
       url: /sfdemo_start.html
       output: web
-    - title: Step 0 - Setup Salesforce.com
+    - title: 0. Setup Salesforce.com
       url: /sfdemo_step0.html
       output: web
       folderitems:
@@ -24,9 +24,9 @@ entries:
         - title: Reset Security Token
           url: /sfdemo_step0.html#03-reset-security-token
           output: web
-    - title: Step 1 - Starting the environment
+    - title: 1. Starting the environment
       url: /sfdemo_step1.html
       output: web
-    - title: Step 2 - Running the demo
+    - title: 2. Running the demo
       url: /sfdemo_step2.html
       output: web

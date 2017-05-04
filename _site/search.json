@@ -30,18 +30,18 @@
 
 
 {
-"title": "Getting Started",
+"title": "Introduction",
 "tags": "",
 "keywords": "",
 "url": "sfdemo_start.html",
-"summary": ""
+"summary": "This guide will help you prepare and run the Cloud Integration for Salesforce Demo."
 }
 ,
 
 
 
 {
-"title": "Step 0 - Setup Salesforce.com",
+"title": "0. Setup Salesforce.com",
 "tags": "",
 "keywords": "",
 "url": "sfdemo_step0.html",
@@ -52,7 +52,7 @@
 
 
 {
-"title": "Step 1 - Starting the environment",
+"title": "1. Starting the environment",
 "tags": "",
 "keywords": "",
 "url": "sfdemo_step1.html",
@@ -63,7 +63,7 @@
 
 
 {
-"title": "Step 2 - Running the demo",
+"title": "2. Running the demo",
 "tags": "",
 "keywords": "",
 "url": "sfdemo_step2.html",

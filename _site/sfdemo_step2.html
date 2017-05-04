@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="">
 <meta name="keywords" content=" ">
-<title>Step 2 - Running the demo | Cloud Integration</title>
+<title>2. Running the demo | Cloud Integration</title>
 <link rel="stylesheet" href="css/syntax.css">
 
 
@@ -115,7 +115,7 @@
                 
                 
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Topics<b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tech Guides<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         
                         
@@ -131,7 +131,7 @@
 
 
 
-  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:andygro@us.ibm.com?subject=Cloud Integration feedback&body=I have some feedback about the Step 2 - Running the demo page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
+  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:andygro@us.ibm.com?subject=Cloud Integration feedback&body=I have some feedback about the 2. Running the demo page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
 
 </li>
 
@@ -149,7 +149,7 @@
                                 searchInput: document.getElementById('search-input'),
                                 resultsContainer: document.getElementById('results-container'),
                                 dataSource: 'search.json',
-                                searchResultTemplate: '<li><a href="{url}" title="Step 2 - Running the demo">{title}</a></li>',
+                                searchResultTemplate: '<li><a href="{url}" title="2. Running the demo">{title}</a></li>',
                     noResultsText: 'No results found.',
                             limit: 10,
                             fuzzy: true,
@@ -192,28 +192,28 @@
             
             
             
-            <li><a href="sfdemo_start.html">Getting Started</a></li>
+            <li><a href="sfdemo_start.html">Introduction</a></li>
             
             
             
             
             
             
-            <li><a href="sfdemo_step0.html">Step 0 - Setup Salesforce.com</a></li>
+            <li><a href="sfdemo_step0.html">0. Setup Salesforce.com</a></li>
             
             
             
             
             
             
-            <li><a href="sfdemo_step1.html">Step 1 - Starting the environment</a></li>
+            <li><a href="sfdemo_step1.html">1. Starting the environment</a></li>
             
             
             
             
             
             
-            <li class="active"><a href="sfdemo_step2.html">Step 2 - Running the demo</a></li>
+            <li class="active"><a href="sfdemo_step2.html">2. Running the demo</a></li>
             
             
             
@@ -240,7 +240,7 @@
         <!-- Content Column -->
         <div class="col-md-9" id="tg-sb-content">
             <div class="post-header">
-   <h1 class="post-title-main">Step 2 - Running the demo</h1>
+   <h1 class="post-title-main">2. Running the demo</h1>
 </div>
 
 
@@ -277,7 +277,60 @@ $('#toc').on('click', 'a', function() {
 
     
 
-  <h2 id="title">Title</h2>
+  <h2 id="objectives">Objectives</h2>
+<ol>
+  <li>Understand the story &amp; background for the demo.</li>
+  <li>Understand the basic steps to trigger the integration flow.</li>
+  <li>Understand what to show.</li>
+</ol>
+
+<h2 id="21-background">2.1 Background</h2>
+<p>The main idea of this demonstration is to show how an end user could trigger backend processes through their use of Salesforce.com.</p>
+
+<p>In preparation to visit a client, a seller will check an account status and discover a delayed shipment.</p>
+
+<p>The seller will request a shipment upgrade, which the system processes automatically.</p>
+
+<h2 id="21-trigger-the-flow">2.1 Trigger the flow</h2>
+<ol>
+  <li>
+    <p>Before running the demo, you must choose which account you’ll work with.  Choose any account, it doesn’t really matter.</p>
+  </li>
+  <li>
+    <p>After choosing an account, you should manually create a Shipment record with a status set to <code class="highlighter-rouge">Delayed</code>.  You can then show this during the demo as the reason the seller wants to request an upgrade.</p>
+  </li>
+  <li>
+    <p>Once that’s set up, to trigger the flow, merely edit the account and check the Request Shipment Upgrade checkbox.</p>
+  </li>
+  <li>
+    <p>If everything processes correctly, within about 5 seconds (the current polling interval), the checkbox should be unchecked and a new shipment record should be inserted. You will need to refresh the browser to see these changes.</p>
+  </li>
+</ol>
+
+<h2 id="22-show-the-flow">2.2 Show the flow</h2>
+<ol>
+  <li>
+    <p>Typically, you would walk through the previous section as the end user to explain the experience.</p>
+  </li>
+  <li>
+    <p>Next, you will show some plumbing. To explain the PushTopic, have the Developer Console -&gt; Execute Anonymous Window open, and you can show the code inserted to create that trigger via the Streaming API.</p>
+  </li>
+  <li>
+    <p>Next, you can switch to MQ Explorer and show the Subscriptions (one is an MQ subscription that moves the message to an unused IIB.QUEUE, the other is the JMS app that moves the message to the ACP.QUEUE).</p>
+  </li>
+  <li>
+    <p>Staying in MQ Explorer, you can show the Queues, and since the IIB.QUEUE is not used, you can Browse data and show Properties to show the message that came out.</p>
+  </li>
+  <li>
+    <p>Next, move to App Connect Studio and show the MQ orchestration used to pick up the message, parse the JSON, call the Salesforce update and insert, parse and return the results.</p>
+  </li>
+  <li>
+    <p>I recommend taking a few minutes to recreate the orchestration from scratch to show how quickly and easily it can be built.</p>
+  </li>
+  <li>
+    <p>Finally, launch the App Connect WMC in Chrome and navigate to the completed orchestration.  Full logging is enabled, so you can show how every step in the orchestration provides a good amount of detail on inputs and outputs.</p>
+  </li>
+</ol>
 
 
     <div class="tags">

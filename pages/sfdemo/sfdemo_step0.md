@@ -1,5 +1,5 @@
 ---
-title: Step 0 - Setup Salesforce.com
+title: 0. Setup Salesforce.com
 toc: true
 sidebar: sfdemo
 permalink: /sfdemo_step0.html
@@ -70,10 +70,10 @@ summary: In this step, you will establish your Salesforce.com developer account 
 
 7. Similar to steps 3 - 8 above, create the following fields:
 
-| Data Type | Related To | Field Label | Length | Values | Field Name | Required |
+   | Data Type | Related To | Field Label | Length | Values | Field Name | Required |
 | --- | --- | --- | --- | --- | --- | --- |
 | Lookup Relationship | `Account` | `Account` | _n/a_ | _n/a_ | `Account` | Yes |
-| Text | _n/a_ | `Description` | 200 | n/a | `Description` | Yes |
+| Text | _n/a_ | `Description` | 200 | n/a | `Description` | No |
 | Picklist | _n/a_ | `Priority` | _n/a_ | `Standard, Expedited` | `Priority` | Yes |
 | Picklist | _n/a_ | `Status` | _n/a_ | `Started, Shipped, Delivered, Delayed` | `Status` | Yes |
 
@@ -85,7 +85,7 @@ summary: In this step, you will establish your Salesforce.com developer account 
 
 3. Paste the following code and click **Execute**.
 
-```
+   ```
 PushTopic pushTopic = new PushTopic();
 pushTopic.Name = 'ShipmentUpgradeRequests';
 pushTopic.Query = 'SELECT Id, AccountNumber, Name FROM Account WHERE RequestShipmentUpgrade__c = true';

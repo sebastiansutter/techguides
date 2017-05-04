@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="">
 <meta name="keywords" content=" ">
-<title>Step 1 - Starting the environment | Cloud Integration</title>
+<title>1. Starting the environment | Cloud Integration</title>
 <link rel="stylesheet" href="css/syntax.css">
 
 
@@ -115,7 +115,7 @@
                 
                 
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Topics<b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tech Guides<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         
                         
@@ -131,7 +131,7 @@
 
 
 
-  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:andygro@us.ibm.com?subject=Cloud Integration feedback&body=I have some feedback about the Step 1 - Starting the environment page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
+  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:andygro@us.ibm.com?subject=Cloud Integration feedback&body=I have some feedback about the 1. Starting the environment page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
 
 </li>
 
@@ -149,7 +149,7 @@
                                 searchInput: document.getElementById('search-input'),
                                 resultsContainer: document.getElementById('results-container'),
                                 dataSource: 'search.json',
-                                searchResultTemplate: '<li><a href="{url}" title="Step 1 - Starting the environment">{title}</a></li>',
+                                searchResultTemplate: '<li><a href="{url}" title="1. Starting the environment">{title}</a></li>',
                     noResultsText: 'No results found.',
                             limit: 10,
                             fuzzy: true,
@@ -192,28 +192,28 @@
             
             
             
-            <li><a href="sfdemo_start.html">Getting Started</a></li>
+            <li><a href="sfdemo_start.html">Introduction</a></li>
             
             
             
             
             
             
-            <li><a href="sfdemo_step0.html">Step 0 - Setup Salesforce.com</a></li>
+            <li><a href="sfdemo_step0.html">0. Setup Salesforce.com</a></li>
             
             
             
             
             
             
-            <li class="active"><a href="sfdemo_step1.html">Step 1 - Starting the environment</a></li>
+            <li class="active"><a href="sfdemo_step1.html">1. Starting the environment</a></li>
             
             
             
             
             
             
-            <li><a href="sfdemo_step2.html">Step 2 - Running the demo</a></li>
+            <li><a href="sfdemo_step2.html">2. Running the demo</a></li>
             
             
             
@@ -240,7 +240,7 @@
         <!-- Content Column -->
         <div class="col-md-9" id="tg-sb-content">
             <div class="post-header">
-   <h1 class="post-title-main">Step 1 - Starting the environment</h1>
+   <h1 class="post-title-main">1. Starting the environment</h1>
 </div>
 
 
@@ -277,7 +277,181 @@ $('#toc').on('click', 'a', function() {
 
     
 
-  <h2 id="title">Title</h2>
+  <h2 id="objectives">Objectives</h2>
+<ol>
+  <li>Deploy the SkyTap-based environment.</li>
+  <li>Configure MQSFB and start all required services.</li>
+  <li>Configure the App Connect Pro orchestration and redeploy it.</li>
+</ol>
+
+<h2 id="11-deploy-skytap-environment">1.1 Deploy SkyTap environment</h2>
+<ol>
+  <li>
+    <p>Log in to <a href="http://cloud.skytap.com">cloud.skytap.com</a>.</p>
+  </li>
+  <li>
+    <p>Under <strong>Environments</strong> -&gt; <strong>Templates</strong> -&gt; <strong>Company</strong>, search for <code class="highlighter-rouge">Cloud Integration for Salesforce Demo v1.0</code> or click <a href="https://cloud.skytap.com/templates/1043585">here</a>.</p>
+  </li>
+  <li>
+    <p>Click <strong>New Environment</strong> to deploy and <strong>Run VMs</strong> <img src="images/sfdemo_step1_runVMs.png" alt="Run VMs" /> to start.</p>
+  </li>
+</ol>
+
+<h2 id="12-configure-the-runtimes-vm">1.2 Configure the Runtimes VM</h2>
+
+<ol>
+  <li>
+    <p>Launch the <strong>Runtimes</strong> desktop by clicking on the VM.</p>
+  </li>
+  <li>
+    <p>If necessary, log in with userid <code class="highlighter-rouge">student</code> and password <code class="highlighter-rouge">Passw0rd!</code>.</p>
+
+    <p><strong>Note</strong>: This is the sudo password for any steps required below.</p>
+  </li>
+  <li>
+    <p>Right-click the Desktop and run <strong>Open Terminal Here</strong>.</p>
+  </li>
+  <li>
+    <p>Update the MQSFB configuration to use your Salesforce.com account, in accordance with <a href="https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.con.doc/q129310_.htm">Knowldge Center</a>.</p>
+  </li>
+</ol>
+
+<p><strong>Note</strong>: You may find these instructions easier to follow if you convert your Salesforce.com UI from the Salesforce Lightning Experience to the Salesforce Classic Experience.  To do so, click on your avatar icon in the top-right corner and select <strong>Switch to Salesforce Classic</strong>.</p>
+
+<p>a. Run Step 3 from the <a href="https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.con.doc/q129310_.htm">Knowldge Center</a>: <em>Create a self-signed security certificate in Salesforce.</em></p>
+
+<p><strong>Note</strong>: Run this from inside the Runtimes VM to avoid having to transfer the JKS file.</p>
+
+<p>b. Run Step 4 from the <a href="https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.con.doc/q129310_.htm">Knowldge Center</a>: <em>Use the IBM Key Management GUI to open the keystore you exported from Salesforce and populate the signer certificates.</em></p>
+
+<p>c. Run Step 7 from the <a href="https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.con.doc/q129310_.htm">Knowldge Center</a>: <em>Create a configuration file with connection and security paramters for IBM MQ, Salesforce, and the IBM MQ Bridge to Salesforce behavior.</em></p>
+
+<p>Use the following commands:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  sudo cp /opt/mqm/mqsf/samp/new_config.cfg /opt/mqm/mqsf/samp/new_config.cfg.bak
+  sudo /opt/mqm/bin/runmqsfb -o /opt/mqm/mqsf/samp/new_config.cfg
+  sudo chmod 640 /opt/mqm/mqsf/samp/new_config.cfg
+</code></pre>
+</div>
+<p>Use the following values:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Connection to Queue Manager
+---------------------------
+Queue Manager or JNDI CF   : []QM1
+MQ Base Topic              : []/sf
+MQ Channel                 : []SYSTEM.DEF.SVRCONN
+MQ Conname                 : []
+MQ CCDT URL                : []
+JNDI implementation class  : [com.sun.jndi.fscontext.RefFSContextFactory]
+JNDI provider URL          : []
+MQ Userid                  : []
+MQ Password                : []
+</code></pre>
+</div>
+<div class="highlighter-rouge"><pre class="highlight"><code>Connection to Salesforce
+------------------------
+Salesforce Userid (reqd)   : [] **
+Salesforce Password (reqd) : [] **
+Security Token (reqd)      : [] **
+Login Endpoint             : [https://login.salesforce.com]
+Consumer Key               : []
+Consumer Secret            : []
+</code></pre>
+</div>
+<div class="highlighter-rouge"><pre class="highlight"><code>Certificate stores for TLS connections
+--------------------------------------
+Personal keystore for TLS certificates : [] **
+Keystore password          : []
+Trusted store for signer certificates : []
+Trusted store password     : []
+Use TLS for MQ connection  : [N]
+</code></pre>
+</div>
+<div class="highlighter-rouge"><pre class="highlight"><code>Behaviour of bridge program
+---------------------------
+PushTopic Names            : []ShipmentUpgradeRequests
+Platform Event Names       : []
+MQ Monitoring Frequency    : [30]
+At-least-once delivery? (Y/N) : [Y]
+Publish control data with the payload? (Y/N) : [N]
+Delay before starting to process events : [0]
+Runtime logfile for copy of stdout/stderr : []/var/mqm/qmgrs/QM1/errors/mqsfb.out
+Done.
+</code></pre>
+</div>
+
+<ol>
+  <li>
+    <p>If MQ is already running, you will need to restart the mqsfb service.  It is configured to start automatically with the queue manager QM1, so it’s easiest to simply stop the queue manager.  Unfortunately, mqsfb does not shut down automatically, so we need to invoke the following:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>/opt/mqm/bin/endmqm QM1
+ps -ef | grep mqsfb | grep -v grep | awk '{print $2}' | xargs sudo kill -9
+</code></pre>
+    </div>
+
+    <p>If MQ was not running (or now that we stopped it), invoke:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>/opt/mqm/bin/strmqm QM1
+/opt/mqm/bin/strmqweb
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>If App Connect Pro is not running, invoke:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>docker start appconnect
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>If MQSubAndPutApp is not running, invoke:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>/opt/mqm/java/jre64/jre/bin/java -Djava.library.path=/opt/mqm/java/lib64 -cp /opt/mqm/java/lib/jms.jar:/opt/mqm/java/lib/com.ibm.mqjms.jar:/home/student/Downloads/JMSRouter.jar com.ibm.mq.test.MQSubAndPutApp QM1 /sf/topic/ShipmentUpgradeRequests SF.SHIPMENTUPGRADEREQUESTS.ACP.QUEUE
+</code></pre>
+    </div>
+  </li>
+</ol>
+
+<h2 id="13-configure-the-studio-vm">1.3 Configure the Studio VM</h2>
+
+<ol>
+  <li>
+    <p>Return to the SkyTap Environment console, and launch the <strong>Studio</strong> desktop by clicking on the VM.</p>
+  </li>
+  <li>
+    <p>If necessary, log in with userid <code class="highlighter-rouge">Adminstrator</code> and password <code class="highlighter-rouge">passw0rd</code>.</p>
+  </li>
+  <li>
+    <p>Launch <strong>Chrome</strong>, and click the <strong>App Connect WMC</strong> bookmark.</p>
+  </li>
+  <li>
+    <p>Login with userid <code class="highlighter-rouge">admin</code> and password <code class="highlighter-rouge">!n0r1t5@C</code></p>
+  </li>
+  <li>
+    <p>From the <strong>Dashboard</strong>, if <code class="highlighter-rouge">CIforSFDemo</code> is <em>Running</em>, click <strong>Stop</strong> (<strong>Cancel Jobs</strong>), and <strong>Undeploy</strong>.</p>
+  </li>
+  <li>
+    <p>Launch <strong>App Connect Studio</strong>, and open the Project file <code class="highlighter-rouge">C:\Student\Projects\CIforSFDemo\CIforSFDemo.sp3</code></p>
+  </li>
+  <li>
+    <p>In the right-hand navigation, under <strong>Endpoints</strong>, open <strong>Salesforce</strong>.</p>
+  </li>
+  <li>
+    <p>Update the userid and password to match your credentials.</p>
+  </li>
+</ol>
+
+<p><strong>Note</strong>: Password is the concatenation of your password and your security token.  For example, if your password is <code class="highlighter-rouge">passw0rd</code> and your security token is <code class="highlighter-rouge">cGFzc3cwcmQ=</code> then you would enter <code class="highlighter-rouge">passw0rdcGFzc3cwcmQ=</code>.</p>
+
+<ol>
+  <li>
+    <p><strong>Save</strong> and <strong>publish</strong> the project using userid <code class="highlighter-rouge">admin</code> and password <code class="highlighter-rouge">!n0r1t5@C</code>.</p>
+  </li>
+  <li>
+    <p>Return to the <strong>App Connect WMC</strong> in <strong>Chrome</strong>, and from the <strong>Dashboard</strong>, start the <code class="highlighter-rouge">CIforSFDemo</code> project.</p>
+  </li>
+</ol>
+
 
 
     <div class="tags">

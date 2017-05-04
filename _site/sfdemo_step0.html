@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="In this step, you will establish your Salesforce.com developer account and create the custom fields and objects required by the demo.">
 <meta name="keywords" content=" ">
-<title>Step 0 - Setup Salesforce.com | Cloud Integration</title>
+<title>0. Setup Salesforce.com | Cloud Integration</title>
 <link rel="stylesheet" href="css/syntax.css">
 
 
@@ -115,7 +115,7 @@
                 
                 
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Topics<b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tech Guides<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         
                         
@@ -131,7 +131,7 @@
 
 
 
-  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:andygro@us.ibm.com?subject=Cloud Integration feedback&body=I have some feedback about the Step 0 - Setup Salesforce.com page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
+  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:andygro@us.ibm.com?subject=Cloud Integration feedback&body=I have some feedback about the 0. Setup Salesforce.com page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
 
 </li>
 
@@ -149,7 +149,7 @@
                                 searchInput: document.getElementById('search-input'),
                                 resultsContainer: document.getElementById('results-container'),
                                 dataSource: 'search.json',
-                                searchResultTemplate: '<li><a href="{url}" title="Step 0 - Setup Salesforce.com">{title}</a></li>',
+                                searchResultTemplate: '<li><a href="{url}" title="0. Setup Salesforce.com">{title}</a></li>',
                     noResultsText: 'No results found.',
                             limit: 10,
                             fuzzy: true,
@@ -192,28 +192,28 @@
             
             
             
-            <li><a href="sfdemo_start.html">Getting Started</a></li>
+            <li><a href="sfdemo_start.html">Introduction</a></li>
             
             
             
             
             
             
-            <li class="active"><a href="sfdemo_step0.html">Step 0 - Setup Salesforce.com</a></li>
+            <li class="active"><a href="sfdemo_step0.html">0. Setup Salesforce.com</a></li>
             
             
             
             
             
             
-            <li><a href="sfdemo_step1.html">Step 1 - Starting the environment</a></li>
+            <li><a href="sfdemo_step1.html">1. Starting the environment</a></li>
             
             
             
             
             
             
-            <li><a href="sfdemo_step2.html">Step 2 - Running the demo</a></li>
+            <li><a href="sfdemo_step2.html">2. Running the demo</a></li>
             
             
             
@@ -240,7 +240,7 @@
         <!-- Content Column -->
         <div class="col-md-9" id="tg-sb-content">
             <div class="post-header">
-   <h1 class="post-title-main">Step 0 - Setup Salesforce.com</h1>
+   <h1 class="post-title-main">0. Setup Salesforce.com</h1>
 </div>
 
 
@@ -288,7 +288,7 @@ $('#toc').on('click', 'a', function() {
 
 <h2 id="01-create-developer-account">0.1 Create Developer Account</h2>
 
-<h5 id="setting-up-an-account">Setting up an account</h5>
+<h3 id="setting-up-an-account">Setting up an account</h3>
 
 <ol>
   <li>
@@ -326,7 +326,7 @@ $('#toc').on('click', 'a', function() {
   </li>
 </ol>
 
-<h4 id="add-the-request-shipment-upgrade-field-to-the-account-object">Add the <code class="highlighter-rouge">Request Shipment Upgrade</code> field to the Account Object</h4>
+<h3 id="add-the-request-shipment-upgrade-field-to-the-account-object">Add the <code class="highlighter-rouge">Request Shipment Upgrade</code> field to the Account Object</h3>
 
 <ol>
   <li>
@@ -355,7 +355,7 @@ $('#toc').on('click', 'a', function() {
   </li>
 </ol>
 
-<h4 id="create-the-shipment-object">Create the <code class="highlighter-rouge">Shipment</code> Object</h4>
+<h3 id="create-the-shipment-object">Create the <code class="highlighter-rouge">Shipment</code> Object</h3>
 
 <ol>
   <li>
@@ -378,62 +378,62 @@ $('#toc').on('click', 'a', function() {
   </li>
   <li>
     <p>Similar to steps 3 - 8 above, create the following fields:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Data Type</th>
+          <th>Related To</th>
+          <th>Field Label</th>
+          <th>Length</th>
+          <th>Values</th>
+          <th>Field Name</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Lookup Relationship</td>
+          <td><code class="highlighter-rouge">Account</code></td>
+          <td><code class="highlighter-rouge">Account</code></td>
+          <td><em>n/a</em></td>
+          <td><em>n/a</em></td>
+          <td><code class="highlighter-rouge">Account</code></td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Text</td>
+          <td><em>n/a</em></td>
+          <td><code class="highlighter-rouge">Description</code></td>
+          <td>200</td>
+          <td>n/a</td>
+          <td><code class="highlighter-rouge">Description</code></td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>Picklist</td>
+          <td><em>n/a</em></td>
+          <td><code class="highlighter-rouge">Priority</code></td>
+          <td><em>n/a</em></td>
+          <td><code class="highlighter-rouge">Standard, Expedited</code></td>
+          <td><code class="highlighter-rouge">Priority</code></td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Picklist</td>
+          <td><em>n/a</em></td>
+          <td><code class="highlighter-rouge">Status</code></td>
+          <td><em>n/a</em></td>
+          <td><code class="highlighter-rouge">Started, Shipped, Delivered, Delayed</code></td>
+          <td><code class="highlighter-rouge">Status</code></td>
+          <td>Yes</td>
+        </tr>
+      </tbody>
+    </table>
   </li>
 </ol>
 
-<table>
-  <thead>
-    <tr>
-      <th>Data Type</th>
-      <th>Related To</th>
-      <th>Field Label</th>
-      <th>Length</th>
-      <th>Values</th>
-      <th>Field Name</th>
-      <th>Required</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Lookup Relationship</td>
-      <td><code class="highlighter-rouge">Account</code></td>
-      <td><code class="highlighter-rouge">Account</code></td>
-      <td><em>n/a</em></td>
-      <td><em>n/a</em></td>
-      <td><code class="highlighter-rouge">Account</code></td>
-      <td>Yes</td>
-    </tr>
-    <tr>
-      <td>Text</td>
-      <td><em>n/a</em></td>
-      <td><code class="highlighter-rouge">Description</code></td>
-      <td>200</td>
-      <td>n/a</td>
-      <td><code class="highlighter-rouge">Description</code></td>
-      <td>Yes</td>
-    </tr>
-    <tr>
-      <td>Picklist</td>
-      <td><em>n/a</em></td>
-      <td><code class="highlighter-rouge">Priority</code></td>
-      <td><em>n/a</em></td>
-      <td><code class="highlighter-rouge">Standard, Expedited</code></td>
-      <td><code class="highlighter-rouge">Priority</code></td>
-      <td>Yes</td>
-    </tr>
-    <tr>
-      <td>Picklist</td>
-      <td><em>n/a</em></td>
-      <td><code class="highlighter-rouge">Status</code></td>
-      <td><em>n/a</em></td>
-      <td><code class="highlighter-rouge">Started, Shipped, Delivered, Delayed</code></td>
-      <td><code class="highlighter-rouge">Status</code></td>
-      <td>Yes</td>
-    </tr>
-  </tbody>
-</table>
-
-<h4 id="create-the-pushtopic">Create the PushTopic</h4>
+<h3 id="create-the-pushtopic">Create the PushTopic</h3>
 
 <ol>
   <li>
@@ -444,10 +444,8 @@ $('#toc').on('click', 'a', function() {
   </li>
   <li>
     <p>Paste the following code and click <strong>Execute</strong>.</p>
-  </li>
-</ol>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>PushTopic pushTopic = new PushTopic();
+    <div class="highlighter-rouge"><pre class="highlight"><code>PushTopic pushTopic = new PushTopic();
 pushTopic.Name = 'ShipmentUpgradeRequests';
 pushTopic.Query = 'SELECT Id, AccountNumber, Name FROM Account WHERE RequestShipmentUpgrade__c = true';
 pushTopic.ApiVersion = 39.0;
@@ -456,7 +454,9 @@ pushTopic.NotifyForOperationUpdate = true;
 pushTopic.NotifyForFields = 'Where';
 insert pushTopic;
 </code></pre>
-</div>
+    </div>
+  </li>
+</ol>
 
 <h2 id="03-reset-security-token">0.3 Reset Security Token</h2>
 

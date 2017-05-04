@@ -4,7 +4,7 @@ entries:
 - title: sidebar
   folders:
 
-  - title: Topics
+  - title: Tech Guides
     url: /index.html
     output: web
     folderitems:
