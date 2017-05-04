@@ -304,18 +304,21 @@ $('#toc').on('click', 'a', function() {
     <p>Launch the <strong>Runtimes</strong> desktop by clicking on the VM.</p>
   </li>
   <li>
-    <p>If necessary, log in with userid <code class="highlighter-rouge">student</code> and password <code class="highlighter-rouge">Passw0rd!</code>.<br />
-<strong>Note</strong>: This is the sudo password for any steps required below.</p>
+    <p>If necessary, log in with userid <code class="highlighter-rouge">student</code> and password <code class="highlighter-rouge">Passw0rd!</code>.</p>
+
+    <p><strong>Note</strong>: This is the sudo password for any steps required below.</p>
   </li>
   <li>
     <p>Right-click the Desktop and run <strong>Open Terminal Here</strong>.</p>
   </li>
   <li>
-    <p>Update the MQSFB configuration to use your Salesforce.com account, in accordance with <a href="https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.con.doc/q129310_.htm">Knowldge Center</a>.<br />
-<strong>Note</strong>: You may find these instructions easier to follow if you convert your Salesforce.com UI from the Salesforce Lightning Experience to the Salesforce Classic Experience.  To do so, click on your avatar icon in the top-right corner and select <strong>Switch to Salesforce Classic</strong>.</p>
+    <p>Update the MQSFB configuration to use your Salesforce.com account, in accordance with <a href="https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.con.doc/q129310_.htm">Knowldge Center</a>.</p>
 
-    <p>a. Run Step 3 from the <a href="https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.con.doc/q129310_.htm">Knowldge Center</a>: <em>Create a self-signed security certificate in Salesforce.</em><br />
-<strong>Note</strong>: Run this from inside the Runtimes VM to avoid having to transfer the JKS file.</p>
+    <p><strong>Note</strong>: You may find these instructions easier to follow if you convert your Salesforce.com UI from the Salesforce Lightning Experience to the Salesforce Classic Experience.  To do so, click on your avatar icon in the top-right corner and select <strong>Switch to Salesforce Classic</strong>.</p>
+
+    <p>a. Run Step 3 from the <a href="https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.con.doc/q129310_.htm">Knowldge Center</a>: <em>Create a self-signed security certificate in Salesforce.</em></p>
+
+    <p><strong>Note</strong>: Run this from inside the Runtimes VM to avoid having to transfer the JKS file.</p>
 
     <p>b. Run Step 4 from the <a href="https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.con.doc/q129310_.htm">Knowldge Center</a>: <em>Use the IBM Key Management GUI to open the keystore you exported from Salesforce and populate the signer certificates.</em></p>
 
@@ -432,8 +435,9 @@ ps -ef | grep mqsfb | grep -v grep | awk '{print $2}' | xargs sudo kill -9
     <p>In the right-hand navigation, under <strong>Endpoints</strong>, open <strong>Salesforce</strong>.</p>
   </li>
   <li>
-    <p>Update the userid and password to match your credentials.
-<strong>Note</strong>: Password is the concatenation of your password and your security token.  For example, if your password is <code class="highlighter-rouge">passw0rd</code> and your security token is <code class="highlighter-rouge">cGFzc3cwcmQ=</code> then you would enter <code class="highlighter-rouge">passw0rdcGFzc3cwcmQ=</code>.</p>
+    <p>Update the userid and password to match your credentials.</p>
+
+    <p><strong>Note</strong>: Password is the concatenation of your password and your security token.  For example, if your password is <code class="highlighter-rouge">passw0rd</code> and your security token is <code class="highlighter-rouge">cGFzc3cwcmQ=</code> then you would enter <code class="highlighter-rouge">passw0rdcGFzc3cwcmQ=</code>.</p>
   </li>
   <li>
     <p><strong>Save</strong> and <strong>publish</strong> the project using userid <code class="highlighter-rouge">admin</code> and password <code class="highlighter-rouge">!n0r1t5@C</code>.</p>

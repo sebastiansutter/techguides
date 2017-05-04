@@ -23,14 +23,17 @@ summary:
 1. Launch the **Runtimes** desktop by clicking on the VM.
 
 2. If necessary, log in with userid `student` and password `Passw0rd!`.  
+
    **Note**: This is the sudo password for any steps required below.
 
 3. Right-click the Desktop and run **Open Terminal Here**.
 
 4. Update the MQSFB configuration to use your Salesforce.com account, in accordance with [Knowldge Center](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.con.doc/q129310_.htm).  
+
    **Note**: You may find these instructions easier to follow if you convert your Salesforce.com UI from the Salesforce Lightning Experience to the Salesforce Classic Experience.  To do so, click on your avatar icon in the top-right corner and select **Switch to Salesforce Classic**.
 
    a. Run Step 3 from the [Knowldge Center](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.con.doc/q129310_.htm): _Create a self-signed security certificate in Salesforce._  
+
    **Note**: Run this from inside the Runtimes VM to avoid having to transfer the JKS file.
   
    b. Run Step 4 from the [Knowldge Center](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.con.doc/q129310_.htm): _Use the IBM Key Management GUI to open the keystore you exported from Salesforce and populate the signer certificates._
@@ -135,6 +138,7 @@ Done.
 7. In the right-hand navigation, under **Endpoints**, open **Salesforce**.
 
 8. Update the userid and password to match your credentials.
+
    **Note**: Password is the concatenation of your password and your security token.  For example, if your password is `passw0rd` and your security token is `cGFzc3cwcmQ=` then you would enter `passw0rdcGFzc3cwcmQ=`.
   
 9. **Save** and **publish** the project using userid `admin` and password `!n0r1t5@C`.
