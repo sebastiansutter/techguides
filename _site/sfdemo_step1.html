@@ -328,54 +328,54 @@ $('#toc').on('click', 'a', function() {
 
 <p>Use the following commands:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>  sudo cp /opt/mqm/mqsf/samp/new_config.cfg /opt/mqm/mqsf/samp/new_config.cfg.bak
-  sudo /opt/mqm/bin/runmqsfb -o /opt/mqm/mqsf/samp/new_config.cfg
+<div class="highlighter-rouge"><pre class="highlight"><code>  sudo cp /opt/mqm/mqsf/samp/new_config.cfg /opt/mqm/mqsf/samp/new_config.cfg.bak  
+  sudo /opt/mqm/bin/runmqsfb -o /opt/mqm/mqsf/samp/new_config.cfg  
   sudo chmod 640 /opt/mqm/mqsf/samp/new_config.cfg
 </code></pre>
 </div>
 <p>Use the following values:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Connection to Queue Manager
----------------------------
-Queue Manager or JNDI CF   : []QM1
-MQ Base Topic              : []/sf
-MQ Channel                 : []SYSTEM.DEF.SVRCONN
-MQ Conname                 : []
-MQ CCDT URL                : []
-JNDI implementation class  : [com.sun.jndi.fscontext.RefFSContextFactory]
-JNDI provider URL          : []
-MQ Userid                  : []
-MQ Password                : []
+<div class="highlighter-rouge"><pre class="highlight"><code>Connection to Queue Manager  
+---------------------------  
+Queue Manager or JNDI CF   : []QM1  
+MQ Base Topic              : []/sf  
+MQ Channel                 : []SYSTEM.DEF.SVRCONN  
+MQ Conname                 : []  
+MQ CCDT URL                : []  
+JNDI implementation class  : [com.sun.jndi.fscontext.RefFSContextFactory]  
+JNDI provider URL          : []  
+MQ Userid                  : []  
+MQ Password                : []  
 </code></pre>
 </div>
-<div class="highlighter-rouge"><pre class="highlight"><code>Connection to Salesforce
-------------------------
-Salesforce Userid (reqd)   : [] **
-Salesforce Password (reqd) : [] **
-Security Token (reqd)      : [] **
-Login Endpoint             : [https://login.salesforce.com]
-Consumer Key               : []
-Consumer Secret            : []
+<div class="highlighter-rouge"><pre class="highlight"><code>Connection to Salesforce  
+------------------------  
+Salesforce Userid (reqd)   : [] **  
+Salesforce Password (reqd) : [] **  
+Security Token (reqd)      : [] **  
+Login Endpoint             : [https://login.salesforce.com]  
+Consumer Key               : []  
+Consumer Secret            : []  
 </code></pre>
 </div>
-<div class="highlighter-rouge"><pre class="highlight"><code>Certificate stores for TLS connections
---------------------------------------
-Personal keystore for TLS certificates : [] **
-Keystore password          : []
-Trusted store for signer certificates : []
-Trusted store password     : []
-Use TLS for MQ connection  : [N]
+<div class="highlighter-rouge"><pre class="highlight"><code>Certificate stores for TLS connections  
+--------------------------------------  
+Personal keystore for TLS certificates : [] **  
+Keystore password          : []  
+Trusted store for signer certificates : []  
+Trusted store password     : []  
+Use TLS for MQ connection  : [N]  
 </code></pre>
 </div>
-<div class="highlighter-rouge"><pre class="highlight"><code>Behaviour of bridge program
----------------------------
-PushTopic Names            : []ShipmentUpgradeRequests
-Platform Event Names       : []
-MQ Monitoring Frequency    : [30]
-At-least-once delivery? (Y/N) : [Y]
-Publish control data with the payload? (Y/N) : [N]
-Delay before starting to process events : [0]
-Runtime logfile for copy of stdout/stderr : []/var/mqm/qmgrs/QM1/errors/mqsfb.out
+<div class="highlighter-rouge"><pre class="highlight"><code>Behaviour of bridge program  
+---------------------------  
+PushTopic Names            : []ShipmentUpgradeRequests  
+Platform Event Names       : []  
+MQ Monitoring Frequency    : [30]  
+At-least-once delivery? (Y/N) : [Y]  
+Publish control data with the payload? (Y/N) : [N]  
+Delay before starting to process events : [0]  
+Runtime logfile for copy of stdout/stderr : []/var/mqm/qmgrs/QM1/errors/mqsfb.out  
 Done.
 </code></pre>
 </div>

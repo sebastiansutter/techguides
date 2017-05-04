@@ -43,54 +43,54 @@ summary:
   Use the following commands:
   
   ```
-  sudo cp /opt/mqm/mqsf/samp/new_config.cfg /opt/mqm/mqsf/samp/new_config.cfg.bak
-  sudo /opt/mqm/bin/runmqsfb -o /opt/mqm/mqsf/samp/new_config.cfg
+  sudo cp /opt/mqm/mqsf/samp/new_config.cfg /opt/mqm/mqsf/samp/new_config.cfg.bak  
+  sudo /opt/mqm/bin/runmqsfb -o /opt/mqm/mqsf/samp/new_config.cfg  
   sudo chmod 640 /opt/mqm/mqsf/samp/new_config.cfg
   ```
   Use the following values:
   
   ```
-Connection to Queue Manager
----------------------------
-Queue Manager or JNDI CF   : []QM1
-MQ Base Topic              : []/sf
-MQ Channel                 : []SYSTEM.DEF.SVRCONN
-MQ Conname                 : []
-MQ CCDT URL                : []
-JNDI implementation class  : [com.sun.jndi.fscontext.RefFSContextFactory]
-JNDI provider URL          : []
-MQ Userid                  : []
-MQ Password                : []
+Connection to Queue Manager  
+---------------------------  
+Queue Manager or JNDI CF   : []QM1  
+MQ Base Topic              : []/sf  
+MQ Channel                 : []SYSTEM.DEF.SVRCONN  
+MQ Conname                 : []  
+MQ CCDT URL                : []  
+JNDI implementation class  : [com.sun.jndi.fscontext.RefFSContextFactory]  
+JNDI provider URL          : []  
+MQ Userid                  : []  
+MQ Password                : []  
 ```
   ```
-Connection to Salesforce
-------------------------
-Salesforce Userid (reqd)   : [] **
-Salesforce Password (reqd) : [] **
-Security Token (reqd)      : [] **
-Login Endpoint             : [https://login.salesforce.com]
-Consumer Key               : []
-Consumer Secret            : []
+Connection to Salesforce  
+------------------------  
+Salesforce Userid (reqd)   : [] **  
+Salesforce Password (reqd) : [] **  
+Security Token (reqd)      : [] **  
+Login Endpoint             : [https://login.salesforce.com]  
+Consumer Key               : []  
+Consumer Secret            : []  
 ```
   ```
-Certificate stores for TLS connections
---------------------------------------
-Personal keystore for TLS certificates : [] **
-Keystore password          : []
-Trusted store for signer certificates : []
-Trusted store password     : []
-Use TLS for MQ connection  : [N]
+Certificate stores for TLS connections  
+--------------------------------------  
+Personal keystore for TLS certificates : [] **  
+Keystore password          : []  
+Trusted store for signer certificates : []  
+Trusted store password     : []  
+Use TLS for MQ connection  : [N]  
 ```
   ```
-Behaviour of bridge program
----------------------------
-PushTopic Names            : []ShipmentUpgradeRequests
-Platform Event Names       : []
-MQ Monitoring Frequency    : [30]
-At-least-once delivery? (Y/N) : [Y]
-Publish control data with the payload? (Y/N) : [N]
-Delay before starting to process events : [0]
-Runtime logfile for copy of stdout/stderr : []/var/mqm/qmgrs/QM1/errors/mqsfb.out
+Behaviour of bridge program  
+---------------------------  
+PushTopic Names            : []ShipmentUpgradeRequests  
+Platform Event Names       : []  
+MQ Monitoring Frequency    : [30]  
+At-least-once delivery? (Y/N) : [Y]  
+Publish control data with the payload? (Y/N) : [N]  
+Delay before starting to process events : [0]  
+Runtime logfile for copy of stdout/stderr : []/var/mqm/qmgrs/QM1/errors/mqsfb.out  
 Done.
 ```
   
