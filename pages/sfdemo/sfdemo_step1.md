@@ -3,7 +3,7 @@ title: 1. Starting the environment
 toc: true
 sidebar: sfdemo
 permalink: /sfdemo_step1.html
-summary: 
+summary: In this step, you will deploy the environment and configure it to use your own Salesforce.com credentials.
 ---
 
 ## Objectives

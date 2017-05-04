@@ -14,16 +14,6 @@ entries:
     - title: 0. Setup Salesforce.com
       url: /sfdemo_step0.html
       output: web
-      folderitems:
-        - title: Create Developer Account
-          url: /sfdemo_step0.html#01-create-developer-account
-          output: web
-        - title: Customize Salesforce Objects
-          url: /sfdemo_step0.html#02-customize-salesforce-objects
-          output: web
-        - title: Reset Security Token
-          url: /sfdemo_step0.html#03-reset-security-token
-          output: web
     - title: 1. Starting the environment
       url: /sfdemo_step1.html
       output: web

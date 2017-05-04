@@ -56,7 +56,7 @@
 "tags": "",
 "keywords": "",
 "url": "sfdemo_step1.html",
-"summary": ""
+"summary": "In this step, you will deploy the environment and configure it to use your own Salesforce.com credentials."
 }
 ,
 
@@ -67,7 +67,7 @@
 "tags": "",
 "keywords": "",
 "url": "sfdemo_step2.html",
-"summary": ""
+"summary": "In this step, you will run the demo!"
 }
 ,
 

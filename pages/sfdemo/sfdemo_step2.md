@@ -3,7 +3,7 @@ title: 2. Running the demo
 toc: true
 sidebar: sfdemo
 permalink: /sfdemo_step2.html
-summary: 
+summary: In this step, you will run the demo!
 ---
 
 ## Objectives
