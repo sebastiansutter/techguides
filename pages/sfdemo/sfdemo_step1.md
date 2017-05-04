@@ -28,7 +28,7 @@ summary:
 
 3. Right-click the Desktop and run **Open Terminal Here**.
 
-4. Update the MQSFB configuration to use your Salesforce.com account, in accordance with [Knowldge Center](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.con.doc/q129310_.htm).
+4. Update the MQSFB configuration to use your Salesforce.com account, in accordance with [Knowldge Center](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.con.doc/q129310_.htm).  
 
    **Note**: You may find these instructions easier to follow if you convert your Salesforce.com UI from the Salesforce Lightning Experience to the Salesforce Classic Experience.  To do so, click on your avatar icon in the top-right corner and select **Switch to Salesforce Classic**.
   
