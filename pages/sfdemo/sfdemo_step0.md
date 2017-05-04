@@ -13,8 +13,6 @@ summary: In this step, you will establish your Salesforce.com developer account 
 
 ## 0.1 Create Developer Account
 
-### Setting up an account
-
 1. Go to [developer.salesforce.com](http://developer.salesforce.com) and click **Sign up**. ![Sign up](/images/sfdemo_step0_signup.png)
 
 2. Complete and submit the registration form.  
@@ -23,8 +21,6 @@ summary: In this step, you will establish your Salesforce.com developer account 
 3. Login to your email account and locate the new message from Salesforce.com with the subject **Salesforce.com login confirmation**.
 
 4. Follow the link to complete the registration and setup a new password for your account.
-
-5. That's it!
 
 ## 0.2 Customize Salesforce Objects
 
