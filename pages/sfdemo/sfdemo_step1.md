@@ -30,26 +30,27 @@ summary:
 
 4. Update the MQSFB configuration to use your Salesforce.com account, in accordance with [Knowldge Center](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.con.doc/q129310_.htm).
 
-  **Note**: You may find these instructions easier to follow if you convert your Salesforce.com UI from the Salesforce Lightning Experience to the Salesforce Classic Experience.  To do so, click on your avatar icon in the top-right corner and select **Switch to Salesforce Classic**.
+   **Note**: You may find these instructions easier to follow if you convert your Salesforce.com UI from the Salesforce Lightning Experience to the Salesforce Classic Experience.  To do so, click on your avatar icon in the top-right corner and select **Switch to Salesforce Classic**.
   
-  a. Run Step 3 from the [Knowldge Center](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.con.doc/q129310_.htm): _Create a self-signed security certificate in Salesforce._  
+   a. Run Step 3 from the [Knowldge Center](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.con.doc/q129310_.htm): _Create a self-signed security certificate in Salesforce._  
   
-  **Note**: Run this from inside the Runtimes VM to avoid having to transfer the JKS file.
+   **Note**: Run this from inside the Runtimes VM to avoid having to transfer the JKS file.
   
-  b. Run Step 4 from the [Knowldge Center](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.con.doc/q129310_.htm): _Use the IBM Key Management GUI to open the keystore you exported from Salesforce and populate the signer certificates._
+   b. Run Step 4 from the [Knowldge Center](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.con.doc/q129310_.htm): _Use the IBM Key Management GUI to open the keystore you exported from Salesforce and populate the signer certificates._
   
-  c. Run Step 7 from the [Knowldge Center](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.con.doc/q129310_.htm): _Create a configuration file with connection and security paramters for IBM MQ, Salesforce, and the IBM MQ Bridge to Salesforce behavior._  
+   c. Run Step 7 from the [Knowldge Center](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.con.doc/q129310_.htm): _Create a configuration file with connection and security paramters for IBM MQ, Salesforce, and the IBM MQ Bridge to Salesforce behavior._  
   
-  Use the following commands:
+   Use the following commands:
   
-  ```
-  sudo cp /opt/mqm/mqsf/samp/new_config.cfg /opt/mqm/mqsf/samp/new_config.cfg.bak  
-  sudo /opt/mqm/bin/runmqsfb -o /opt/mqm/mqsf/samp/new_config.cfg  
-  sudo chmod 640 /opt/mqm/mqsf/samp/new_config.cfg
-  ```
-  Use the following values:
+   ```
+   sudo cp /opt/mqm/mqsf/samp/new_config.cfg /opt/mqm/mqsf/samp/new_config.cfg.bak  
+   sudo /opt/mqm/bin/runmqsfb -o /opt/mqm/mqsf/samp/new_config.cfg  
+   sudo chmod 640 /opt/mqm/mqsf/samp/new_config.cfg
+   ```
   
-  ```
+   Use the following values:
+  
+   ```
 Connection to Queue Manager  
 ---------------------------  
 Queue Manager or JNDI CF   : []QM1  
@@ -62,7 +63,7 @@ JNDI provider URL          : []
 MQ Userid                  : []  
 MQ Password                : []  
 ```
-  ```
+   ```
 Connection to Salesforce  
 ------------------------  
 Salesforce Userid (reqd)   : [] **  
@@ -72,7 +73,7 @@ Login Endpoint             : [https://login.salesforce.com]
 Consumer Key               : []  
 Consumer Secret            : []  
 ```
-  ```
+   ```
 Certificate stores for TLS connections  
 --------------------------------------  
 Personal keystore for TLS certificates : [] **  
@@ -81,7 +82,7 @@ Trusted store for signer certificates : []
 Trusted store password     : []  
 Use TLS for MQ connection  : [N]  
 ```
-  ```
+   ```
 Behaviour of bridge program  
 ---------------------------  
 PushTopic Names            : []ShipmentUpgradeRequests  

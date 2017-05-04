@@ -313,29 +313,28 @@ $('#toc').on('click', 'a', function() {
   </li>
   <li>
     <p>Update the MQSFB configuration to use your Salesforce.com account, in accordance with <a href="https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.con.doc/q129310_.htm">Knowldge Center</a>.</p>
-  </li>
-</ol>
 
-<p><strong>Note</strong>: You may find these instructions easier to follow if you convert your Salesforce.com UI from the Salesforce Lightning Experience to the Salesforce Classic Experience.  To do so, click on your avatar icon in the top-right corner and select <strong>Switch to Salesforce Classic</strong>.</p>
+    <p><strong>Note</strong>: You may find these instructions easier to follow if you convert your Salesforce.com UI from the Salesforce Lightning Experience to the Salesforce Classic Experience.  To do so, click on your avatar icon in the top-right corner and select <strong>Switch to Salesforce Classic</strong>.</p>
 
-<p>a. Run Step 3 from the <a href="https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.con.doc/q129310_.htm">Knowldge Center</a>: <em>Create a self-signed security certificate in Salesforce.</em></p>
+    <p>a. Run Step 3 from the <a href="https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.con.doc/q129310_.htm">Knowldge Center</a>: <em>Create a self-signed security certificate in Salesforce.</em></p>
 
-<p><strong>Note</strong>: Run this from inside the Runtimes VM to avoid having to transfer the JKS file.</p>
+    <p><strong>Note</strong>: Run this from inside the Runtimes VM to avoid having to transfer the JKS file.</p>
 
-<p>b. Run Step 4 from the <a href="https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.con.doc/q129310_.htm">Knowldge Center</a>: <em>Use the IBM Key Management GUI to open the keystore you exported from Salesforce and populate the signer certificates.</em></p>
+    <p>b. Run Step 4 from the <a href="https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.con.doc/q129310_.htm">Knowldge Center</a>: <em>Use the IBM Key Management GUI to open the keystore you exported from Salesforce and populate the signer certificates.</em></p>
 
-<p>c. Run Step 7 from the <a href="https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.con.doc/q129310_.htm">Knowldge Center</a>: <em>Create a configuration file with connection and security paramters for IBM MQ, Salesforce, and the IBM MQ Bridge to Salesforce behavior.</em></p>
+    <p>c. Run Step 7 from the <a href="https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.con.doc/q129310_.htm">Knowldge Center</a>: <em>Create a configuration file with connection and security paramters for IBM MQ, Salesforce, and the IBM MQ Bridge to Salesforce behavior.</em></p>
 
-<p>Use the following commands:</p>
+    <p>Use the following commands:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>  sudo cp /opt/mqm/mqsf/samp/new_config.cfg /opt/mqm/mqsf/samp/new_config.cfg.bak  
-  sudo /opt/mqm/bin/runmqsfb -o /opt/mqm/mqsf/samp/new_config.cfg  
-  sudo chmod 640 /opt/mqm/mqsf/samp/new_config.cfg
+    <div class="highlighter-rouge"><pre class="highlight"><code>sudo cp /opt/mqm/mqsf/samp/new_config.cfg /opt/mqm/mqsf/samp/new_config.cfg.bak  
+sudo /opt/mqm/bin/runmqsfb -o /opt/mqm/mqsf/samp/new_config.cfg  
+sudo chmod 640 /opt/mqm/mqsf/samp/new_config.cfg
 </code></pre>
-</div>
-<p>Use the following values:</p>
+    </div>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Connection to Queue Manager  
+    <p>Use the following values:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>Connection to Queue Manager  
 ---------------------------  
 Queue Manager or JNDI CF   : []QM1  
 MQ Base Topic              : []/sf  
@@ -347,8 +346,8 @@ JNDI provider URL          : []
 MQ Userid                  : []  
 MQ Password                : []  
 </code></pre>
-</div>
-<div class="highlighter-rouge"><pre class="highlight"><code>Connection to Salesforce  
+    </div>
+    <div class="highlighter-rouge"><pre class="highlight"><code>Connection to Salesforce  
 ------------------------  
 Salesforce Userid (reqd)   : [] **  
 Salesforce Password (reqd) : [] **  
@@ -357,8 +356,8 @@ Login Endpoint             : [https://login.salesforce.com]
 Consumer Key               : []  
 Consumer Secret            : []  
 </code></pre>
-</div>
-<div class="highlighter-rouge"><pre class="highlight"><code>Certificate stores for TLS connections  
+    </div>
+    <div class="highlighter-rouge"><pre class="highlight"><code>Certificate stores for TLS connections  
 --------------------------------------  
 Personal keystore for TLS certificates : [] **  
 Keystore password          : []  
@@ -366,8 +365,8 @@ Trusted store for signer certificates : []
 Trusted store password     : []  
 Use TLS for MQ connection  : [N]  
 </code></pre>
-</div>
-<div class="highlighter-rouge"><pre class="highlight"><code>Behaviour of bridge program  
+    </div>
+    <div class="highlighter-rouge"><pre class="highlight"><code>Behaviour of bridge program  
 ---------------------------  
 PushTopic Names            : []ShipmentUpgradeRequests  
 Platform Event Names       : []  
@@ -378,9 +377,8 @@ Delay before starting to process events : [0]
 Runtime logfile for copy of stdout/stderr : []/var/mqm/qmgrs/QM1/errors/mqsfb.out  
 Done.
 </code></pre>
-</div>
-
-<ol>
+    </div>
+  </li>
   <li>
     <p>If MQ is already running, you will need to restart the mqsfb service.  It is configured to start automatically with the queue manager QM1, so it’s easiest to simply stop the queue manager.  Unfortunately, mqsfb does not shut down automatically, so we need to invoke the following:</p>
 
