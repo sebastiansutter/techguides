@@ -11,3 +11,6 @@ entries:
     - title: Salesforce Demo
       url: /sfdemo_start.html
       output: web
+    - title: API Connect OpenID Integration Guide
+      external_url: https://github.com/ibm-apiconnect/oidc-blueid
+      output: web
