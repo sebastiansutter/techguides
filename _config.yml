@@ -100,3 +100,5 @@ description: "Cloud Integration"
 
 # needed for sitemap.xml file only
 url: http://ibm.com
+
+theme: jekyll-theme-slate
