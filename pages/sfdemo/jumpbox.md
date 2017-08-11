@@ -1,7 +1,6 @@
 ---
 title: jumpbox.md
 toc: true
-sidebar: sfdemo
 permalink: /jumpbox.html
 summary: Jumpbox readme information
 ---
