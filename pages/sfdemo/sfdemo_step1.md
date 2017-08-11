@@ -12,11 +12,7 @@ summary: In this step, you will log into Bluedemos to provision your environment
 3. Log into your newly provisioned environment and get aclimated to the demo environment.
 
 ## 1.1 Log into Bluedemos.com
-1. Log in to [bluedemos.com](http://bluedemos.com) with your credentials.  If you do not have these yet, this was done in the previous step [Step 0](sfdemo_step0.html).
-
-2. From the  **Search Demos** bar enter in the name of the demo `App Connect Professional Demo for Salesforce` and click the Magnifying Glass Icon to start the search.
-
-3. Once the search completes, Click the **Details** button to bring up the Demo Information.
+1. Direct your browser to this link to access the demo instance [App Connect Professional Demo for Salesforce at bluedemos.com](http://bluedemos.com/show/22) with your credentials.  If you do not have these yet, this was done in the previous step [Step 0](sfdemo_step0.html).
 
 4. On this page, you can view the requisite information about the demo, including documentation and other important information about the environment.
 
