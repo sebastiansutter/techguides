@@ -9,7 +9,7 @@ summary: Jumpbox readme information
 
 A few key notes:
 
-1. You can find all of the credentials for your key endpoints in the file **credentials.bat** located on the desktop
+1. You can find all of the credentials for your key endpoints in the file **credentials.txt** located on the desktop
 2. Upon completion of your reservation, this environment will be wiped clean
 3. Documentation of the demo script can be found [here](https://ibm-cloudintegration.github.io/techguides/sfdemo_step2.html)
 
