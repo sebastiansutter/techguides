@@ -1,5 +1,5 @@
 ---
-title: jumpbox.md
+title: Demonstration Environment README file
 toc: true
 permalink: /jumpbox.html
 summary: Jumpbox readme information
