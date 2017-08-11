@@ -1,6 +1,6 @@
 ---
 title: Demonstration Environment README file
-toc: true
+toc: false
 permalink: /jumpbox.html
 summary: Jumpbox readme information
 ---
