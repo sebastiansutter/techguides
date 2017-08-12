@@ -12,11 +12,14 @@ summary: In this step, you will run the demo!
 3. Understand what to show.
 
 ## 2.1 Background
-The main idea of this demonstration is to show how an end user could trigger backend processes through their use of Salesforce.com.
+Salesforce.com as a clould platform is leveraged by many organizations throughout the world, both large and small.  One of the primary concerns around adoption of a clould based platform such as Salesforce, is its ability to be integrated into the enterprise.  The demonstration here shows the art of the possible of showing what an integrated enterprise looks like from the context of cloud, on-premise and mobile set in the context of a typical work day scenario.
 
-In preparation to visit a client, a seller will check an account status and discover a delayed shipment.
+The demo depicts the day in the life of a salesperson who is on the road to visit a customer.  This is a good customer for the company, where there is a pending large deal on the table and the salesperson wants to ensure everything is in order from a customer satisfaction standpoint.
 
-The seller will then request a shipment upgrade, which the system processes automatically.
+The scenario is set where the salesperson is in their rental car on the way to the customer, and before they pull of out of the parking lot, they check the Salesforce One mobile app and notice that one of their key shipments has been delayed.  In the past, this process used to require multiple phone calls to different departments in different time zones.  In this case, the meeting is in 30 minutes, and this needs to be resolved ASAP.  The seller will then request a shipment upgrade, which the system processes automatically.
+
+The demonstration script is built around how an end user could trigger multiple backend processes through their use of Salesforce.com, showing how both cloud and on-premise applications can be integrated easily.
+
 
 ## 2.2 Trigger the flow
 1. Before running the demo, Log into Salesforce via the browser on the demo VM.  You will find the credentials for Salesforce in the **credentials.txt** on the Desktop of the Windows VM
@@ -48,7 +51,7 @@ The seller will then request a shipment upgrade, which the system processes auto
 
 **Introduction:**  To capture changes to data inside of Salesforce Objects, messaging events are generated in real time using the Streaming API to generate messages that can be captured and sent out externally to a Push Topic.  In this demo, once the user inside the mobile app clicked the `Expedite Shipment` tab and filled in the dialogue box with the Shipment information, a check box on the Account object was enabled which triggered the PushTopic event.  
 
-3.  To explain how the PushTopic interaction works, in the Slide Deck there is a screenshot of the code used to trigger off the event on the Account Object.  Note the query defined there that is the triggered once the event happens.  This payload is then deposited on a push Topic that is being monitored by an App Connect integration.
+3.  To explain how the PushTopic interaction works, in the Slide Deck there is a screenshot of the code used to trigger off the event on the Account Object (Slide #11).  Note the query defined there that is the triggered once the event happens.  This payload is then deposited on a push Topic that is being monitored by an App Connect integration.  You can find the deck [here](https://github.com/ibm-cloudintegration/techguides/blob/master/IBM%20CI%20for%20SF%20Demo.pptx).
 
 3. Next, you can return to the Demo VM and Open up MQ Explorer and show the Subscriptions (one is an MQ subscription that moves the message to an unused `IIB.QUEUE`, the other is the JMS app that moves the message to the `ACP.QUEUE`).
 
