@@ -24,7 +24,7 @@ The demonstration script is built around how an end user could trigger multiple 
 ## 2.2 Trigger the flow
 1. Before running the demo, Log into Salesforce via the browser on the demo VM.  You will find the credentials for Salesforce in the **credentials.txt** on the Desktop of the Windows VM
 
-3. Start the Salesforce One Simulator from the desktop on the VM.  Log in with your credentials as per the **credentials.txt**
+3. Start the Salesforce One Simulator from the desktop on the VM.  Log in with your credentials as per the **credentials.txt**.  **note** it is possible that you will be required to enter in a verification code to validate your login from a newly provisioned browser.  If this happen, it will send a note to a gmail address attached to this user.  To access this account, in your Chrome browser go to `Bookmarks` then select the gmail account for the ibm.salesforce.demo.user, it will login automatically for you.  The new mail will be at the top.  To proceed, open this mail and then enter in the code into the Salesforce emulator to complete the login process.
 
 2. Once you are logged into Salesforce, Navigate to the **Burlington Textiles of America** account.  The default state of the Account should be with Shipment Status of green.  Be sure to check under `Details` you will see the flag icon that is green.  Additionally, under the `Related` tab you will see the **Shipments** object.  You should see a single shipment with the Priority of `Standard` and the Status of `Started`.  **Note** only the Burlington Textiles of America Account is to be used with the demo, as it is the only account set up currently with shipments.
 
@@ -91,4 +91,4 @@ The demonstration script is built around how an end user could trigger multiple 
 
 ### (Optional) Show the Web Management Console
 
-Launch the App Connect WMC in Chrome and navigate to the completed orchestration.  Full logging is enabled for most of the Projects (except the OData), so you can show how every step in the orchestration provides a good amount of detail on inputs and outputs.  Credentials for the WMC can be found in the **credentials.txt** file on the Desktop of the Demo VM. 
+Launch the App Connect WMC in Chrome and navigate to the completed orchestration.  Full logging is enabled for most of the Projects (except the OData), so you can show how every step in the orchestration provides a good amount of detail on inputs and outputs.  Credentials for the WMC can be found in the **credentials.txt** file on the Desktop of the Demo VM. **Note** the newly provisioned system might require you to allow the `Adobe Flash` add on to be enabled in the browser when you log into the WMC.  Allow the access for the browser to access the functions of the WMC.
