@@ -12,7 +12,7 @@ summary: In this step, you will run the demo!
 3. Understand what to show.
 
 ## 2.1 Background
-Salesforce.com as a clould platform is leveraged by many organizations throughout the world, both large and small.  One of the primary concerns around adoption of a clould based platform such as Salesforce, is its ability to be integrated into the enterprise.  The demonstration here shows the art of the possible of showing what an integrated enterprise looks like from the context of cloud, on-premise and mobile set in the context of a typical work day scenario.
+Salesforce.com as a clould platform is leveraged by many organizations throughout the world, both large and small.  One of the primary concerns around adoption of a clould based platform such as Salesforce, is its ability to be integrated into the enterprise.  The demonstration here shows the art of the possible of showing what an integrated enterprise looks like from the perspective of cloud, on-premise and mobile set in the context of a typical work day scenario.
 
 The demo depicts the day in the life of a salesperson who is on the road to visit a customer.  This is a good customer for the company, where there is a pending large deal on the table and the salesperson wants to ensure everything is in order from a customer satisfaction standpoint.
 
