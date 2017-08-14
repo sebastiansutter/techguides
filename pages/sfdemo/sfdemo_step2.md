@@ -49,7 +49,7 @@ The demonstration script is built around how an end user could trigger multiple 
 
 ### Showing Messaging support via Streaming APIs and Push Topics
 
-**Introduction:**  To capture changes to data inside of Salesforce Objects, messaging events are generated in real time using the Streaming API to generate messages that can be captured and sent out externally to a Push Topic.  In this demo, once the user inside the mobile app clicked the `Expedite Shipment` tab and filled in the dialogue box with the Shipment information, a check box on the Account object was enabled which triggered the PushTopic event.  
+**Introduction:**  To capture changes to data inside of Salesforce Objects, messaging events are generated in real time using the Streaming API that can be captured and sent out externally to a Push Topic.  In this demo, once the user inside the mobile app clicked the `Expedite Shipment` tab and filled in the dialogue box with the Shipment information, a check box on the Account object was enabled which triggered the PushTopic event.  
 
 3.  To explain how the PushTopic interaction works, in the Slide Deck there is a screenshot of the code used to trigger off the event on the Account Object (Slide #11).  Note the query defined there that is the triggered once the event happens.  This payload is then deposited on a push Topic that is being monitored by an App Connect integration.  You can find the deck [here](https://github.com/ibm-cloudintegration/techguides/blob/master/IBM%20CI%20for%20SF%20Demo.pptx).
 
