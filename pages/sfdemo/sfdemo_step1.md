@@ -31,6 +31,6 @@ summary: In this step, you will log into Bluedemos to provision your environment
 
 2. If the environment comes up suspended, click on the **Resume** button to resume the VM.
 
-3. Click on the VM Box to open a remote desktop window to the VM.  Once you are in, a Readme.txt will pop up on the desktop.  Be sure to read the instructions closely, as it will provide critical information for the smooth running of your demo.
+3. Click on the VM Box to open a remote desktop window to the VM.  Once you are in, a the browser will open that will have information about your demo environment.  Be sure to read the instructions closely.
 
 4. Proceed to the next section for the demo script.  [Step 2](sfdemo_step2.html)
