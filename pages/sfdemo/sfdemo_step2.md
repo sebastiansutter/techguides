@@ -20,6 +20,8 @@ The scenario is set where the salesperson is in their rental car on the way to t
 
 The demonstration script is built around how an end user could trigger multiple backend processes through their use of Salesforce.com, showing how both cloud and on-premise applications can be integrated easily.
 
+**Hint** it is highly suggested to run through the demo steps a few times about an hour before you do your actual demo.  This will give you the best performance for your demo.  Optimally, the synchronization and real time events happen in 1 second or less.
+
 
 ## 2.2 Trigger the flow
 1. Before running the demo, Log into Salesforce via the browser on the demo VM.  You will find the credentials for Salesforce in the **credentials.txt** on the Desktop of the Windows VM
