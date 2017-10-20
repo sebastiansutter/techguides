@@ -24,8 +24,10 @@ topnav_dropdowns:
 ##          external_url: http://idratherbewriting.com/category-jekyll/
     - title: Tech Guides
       folderitems:
-        - title: Salesforce Demo
+        - title: App Connect (Studio) Demo for Salesforce
           url: /sfdemo_start.html
+        - title: App Connect (Designer) Labs for Dreamforce 2017
+          url: /df17labs_start.html
 ##        - title: Products 1
 ##          url: /p1_landing_page.html
 ##        - title: Product 2

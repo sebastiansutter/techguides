@@ -4,9 +4,9 @@
     <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="In this step, you will establish your Salesforce.com developer account and create the custom fields and objects required by the demo.">
+<meta name="description" content="In this step, you will get an ID that will allow you to access the Bluedemos.com environment">
 <meta name="keywords" content=" ">
-<title>0. Setup Salesforce.com | Cloud Integration</title>
+<title>0. Setup Access to Bluedemos.com | Cloud Integration</title>
 <link rel="stylesheet" href="css/syntax.css">
 
 
@@ -119,11 +119,11 @@
                     <ul class="dropdown-menu">
                         
                         
-                        <li><a href="sfdemo_start.html">Salesforce Demo</a></li>
+                        <li><a href="sfdemo_start.html">App Connect (Studio) Demo for Salesforce</a></li>
                         
                         
                         
-                        <li><a href="https://github.com/ibm-apiconnect/oidc-blueid" target="_blank">API Connect OpenID Integration Guides</a></li>
+                        <li><a href="df17labs_start.html">App Connect (Designer) Labs for Dreamforce 2017</a></li>
                         
                         
                     </ul>
@@ -135,7 +135,7 @@
 
 
 
-  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:andygro@us.ibm.com?subject=Cloud Integration feedback&body=I have some feedback about the 0. Setup Salesforce.com page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
+  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:andygro@us.ibm.com?subject=Cloud Integration feedback&body=I have some feedback about the 0. Setup Access to Bluedemos.com page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
 
 </li>
 
@@ -153,7 +153,7 @@
                                 searchInput: document.getElementById('search-input'),
                                 resultsContainer: document.getElementById('results-container'),
                                 dataSource: 'search.json',
-                                searchResultTemplate: '<li><a href="{url}" title="0. Setup Salesforce.com">{title}</a></li>',
+                                searchResultTemplate: '<li><a href="{url}" title="0. Setup Access to Bluedemos.com">{title}</a></li>',
                     noResultsText: 'No results found.',
                             limit: 10,
                             fuzzy: true,
@@ -191,7 +191,7 @@
     
     
     <li>
-        <a href="#">Salesforce Demo</a>
+        <a href="#">App Connect (Studio) Demo for Salesforce</a>
         <ul>
             
             
@@ -203,14 +203,14 @@
             
             
             
-            <li class="active"><a href="sfdemo_step0.html">0. Setup Salesforce.com</a></li>
+            <li class="active"><a href="sfdemo_step0.html">0. Setup access to Bluedemos.com</a></li>
             
             
             
             
             
             
-            <li><a href="sfdemo_step1.html">1. Starting the environment</a></li>
+            <li><a href="sfdemo_step1.html">1. Log into Bluedemos and reserve your demo instance</a></li>
             
             
             
@@ -244,7 +244,7 @@
         <!-- Content Column -->
         <div class="col-md-9" id="tg-sb-content">
             <div class="post-header">
-   <h1 class="post-title-main">0. Setup Salesforce.com</h1>
+   <h1 class="post-title-main">0. Setup Access to Bluedemos.com</h1>
 </div>
 
 
@@ -252,7 +252,7 @@
 <div class="post-content">
 
    
-    <div class="summary">In this step, you will establish your Salesforce.com developer account and create the custom fields and objects required by the demo.</div>
+    <div class="summary">In this step, you will get an ID that will allow you to access the Bluedemos.com environment</div>
    
 
     
@@ -285,207 +285,30 @@ $('#toc').on('click', 'a', function() {
 
   <h2 id="objectives">Objectives</h2>
 <ol>
-  <li>Establish a Developer Userid/Password on Salesforce.com.</li>
-  <li>Customize the Salesforce Objects to match the demo requirements.</li>
-  <li>Capture the security token required by the demo components.</li>
+  <li>Create IBM Id</li>
 </ol>
 
-<h2 id="01-create-developer-account">0.1 Create Developer Account</h2>
+<h2 id="01-create-ibm-id">0.1 Create IBM ID</h2>
 
 <ol>
   <li>
-    <p>Go to <a href="http://developer.salesforce.com">developer.salesforce.com</a> and click <strong>Sign up</strong>. <img src="/images/sfdemo_step0_signup.png" alt="Sign up" /></p>
+    <p>Go to <a href="http://bluedemos.com">bluedemos.com</a> and click <strong>Create an IBMid</strong>.</p>
   </li>
   <li>
     <p>Complete and submit the registration form.<br />
-<strong>Note</strong>: You will need a valid and accessible email account to complete the registration.</p>
+<strong>Note</strong>: You will need a valid and accessible email account to complete the registration.  In order to expedite access to the demo environment, be sure to use your <strong>Salesforce.com</strong> email address.</p>
   </li>
   <li>
-    <p>Login to your email account and locate the new message from Salesforce.com with the subject <strong>Salesforce.com login confirmation</strong>.</p>
+    <p>Login to your email account and locate the new message with the login confirmation</p>
   </li>
   <li>
     <p>Follow the link to complete the registration and setup a new password for your account.</p>
   </li>
 </ol>
 
-<h2 id="02-customize-salesforce-objects">0.2 Customize Salesforce Objects</h2>
-
-<ol>
-  <li>
-    <p>Login to <a href="http://developer.salesforce.com">developer.salesforce.com</a>.</p>
-  </li>
-  <li>
-    <p>Click your name in the top-right corner of the screen, and select <strong>My Developer Account</strong>.</p>
-  </li>
-  <li>
-    <p>If prompted, log in again.</p>
-  </li>
-  <li>
-    <p>Click the gear icon in the top-right corner of the screen, and select <strong>Setup</strong>.</p>
-  </li>
-</ol>
-
-<h3 id="add-the-request-shipment-upgrade-field-to-the-account-object">Add the <code class="highlighter-rouge">Request Shipment Upgrade</code> field to the Account Object</h3>
-
-<ol>
-  <li>
-    <p>On the left navigation, under <strong>Objects and Fields</strong>, select <strong>Object Manager</strong>.</p>
-  </li>
-  <li>
-    <p>Click on <strong>Account</strong>.</p>
-  </li>
-  <li>
-    <p>Scroll down, under <strong>Fields &amp; Relationships</strong>, click <strong>New</strong>.</p>
-  </li>
-  <li>
-    <p>Select <strong>Checkbox</strong>, and click <strong>Next</strong>.</p>
-  </li>
-  <li>
-    <p>For <strong>Field Label</strong>, enter <code class="highlighter-rouge">Request Shipment Upgrade</code>.</p>
-  </li>
-  <li>
-    <p>For <strong>Default Value</strong>, leave it <strong>Unchecked</strong>.</p>
-  </li>
-  <li>
-    <p>For <strong>Field Name</strong>, enter <code class="highlighter-rouge">RequestShipmentUpgrade</code> (i.e., remove the generated underscores).</p>
-  </li>
-  <li>
-    <p>Click <strong>Next</strong> for Steps 2 and 3, and click <strong>Save</strong> on Step 4.</p>
-  </li>
-</ol>
-
-<h3 id="create-the-shipment-object">Create the <code class="highlighter-rouge">Shipment</code> Object</h3>
-
-<ol>
-  <li>
-    <p>On the left navigation, under <strong>Objects and Fields</strong>, select <strong>Object Manager</strong>.</p>
-  </li>
-  <li>
-    <p>Click <strong>Create</strong> -&gt; <strong>Custom Object</strong>.</p>
-  </li>
-  <li>
-    <p>For <strong>Label</strong>, enter <code class="highlighter-rouge">Shipment</code>.</p>
-  </li>
-  <li>
-    <p>For <strong>Plural Label</strong>, enter <code class="highlighter-rouge">Shipments</code>.</p>
-  </li>
-  <li>
-    <p>For <strong>Object Name</strong>, enter <code class="highlighter-rouge">Shipment</code>.</p>
-  </li>
-  <li>
-    <p>Click <strong>Save</strong>.</p>
-  </li>
-  <li>
-    <p>Similar to steps 3 - 8 above, create the following fields:</p>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Data Type</th>
-          <th>Related To</th>
-          <th>Field Label</th>
-          <th>Length</th>
-          <th>Values</th>
-          <th>Field Name</th>
-          <th>Required</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Lookup Relationship</td>
-          <td><code class="highlighter-rouge">Account</code></td>
-          <td><code class="highlighter-rouge">Account</code></td>
-          <td><em>n/a</em></td>
-          <td><em>n/a</em></td>
-          <td><code class="highlighter-rouge">Account</code></td>
-          <td>Yes</td>
-        </tr>
-        <tr>
-          <td>Text</td>
-          <td><em>n/a</em></td>
-          <td><code class="highlighter-rouge">Description</code></td>
-          <td>200</td>
-          <td>n/a</td>
-          <td><code class="highlighter-rouge">Description</code></td>
-          <td>No</td>
-        </tr>
-        <tr>
-          <td>Picklist</td>
-          <td><em>n/a</em></td>
-          <td><code class="highlighter-rouge">Priority</code></td>
-          <td><em>n/a</em></td>
-          <td><code class="highlighter-rouge">Standard, Expedited</code></td>
-          <td><code class="highlighter-rouge">Priority</code></td>
-          <td>Yes</td>
-        </tr>
-        <tr>
-          <td>Picklist</td>
-          <td><em>n/a</em></td>
-          <td><code class="highlighter-rouge">Status</code></td>
-          <td><em>n/a</em></td>
-          <td><code class="highlighter-rouge">Started, Shipped, Delivered, Delayed</code></td>
-          <td><code class="highlighter-rouge">Status</code></td>
-          <td>Yes</td>
-        </tr>
-      </tbody>
-    </table>
-  </li>
-</ol>
-
-<h3 id="create-the-pushtopic">Create the PushTopic</h3>
-
-<ol>
-  <li>
-    <p>Click the gear icon in the top-right corner of the screen, and select <strong>Developer Console</strong>.</p>
-  </li>
-  <li>
-    <p>Click <strong>Debug</strong> -&gt; <strong>Open Execute Anonymous Window</strong>.</p>
-  </li>
-  <li>
-    <p>Paste the following code and click <strong>Execute</strong>.</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code>PushTopic pushTopic = new PushTopic();
-pushTopic.Name = 'ShipmentUpgradeRequests';
-pushTopic.Query = 'SELECT Id, AccountNumber, Name FROM Account WHERE RequestShipmentUpgrade__c = true';
-pushTopic.ApiVersion = 39.0;
-pushTopic.NotifyForOperationCreate = true;
-pushTopic.NotifyForOperationUpdate = true;
-pushTopic.NotifyForFields = 'Where';
-insert pushTopic;
-</code></pre>
-    </div>
-  </li>
-</ol>
-
-<h2 id="03-reset-security-token">0.3 Reset Security Token</h2>
-
-<ol>
-  <li>
-    <p>Login to <a href="http://developer.salesforce.com">developer.salesforce.com</a>.</p>
-  </li>
-  <li>
-    <p>Click your name in the top-right corner of the screen, and select <strong>My Developer Account</strong>.</p>
-  </li>
-  <li>
-    <p>If prompted, log in again.</p>
-  </li>
-  <li>
-    <p>Click your avatar icon in the top-right corner of the screen, and select <strong>Settings</strong>.</p>
-  </li>
-  <li>
-    <p>On the left navigation, under <strong>My Personal Information</strong>, select <strong>Reset My Security Token</strong>.</p>
-  </li>
-  <li>
-    <p>Click the button to <strong>Reset Security Token</strong>.</p>
-  </li>
-  <li>
-    <p>Login to your email account and locate the new message from Salesforce.com with the subject <strong>Your new Salesforce security token</strong>.</p>
-  </li>
-</ol>
-
 <h2 id="conclusion">Conclusion</h2>
 
-<p>You are now ready to begin the demo!</p>
+<p>You are now ready to reserve your first demo environment</p>
 
 
     <div class="tags">
@@ -502,7 +325,7 @@ insert pushTopic;
             <div class="row">
                 <div class="col-lg-6 footer-left">
                &copy;2017 IBM. All rights reserved. <br />
- Site last generated: May 8, 2017 <br />
+ Site last generated: Oct 20, 2017 <br />
 				</div>
 				<div class="col-lg-6 footer-right">
 					<p><img src="images/ibm-logo-small.png" alt="IBM"/></p>

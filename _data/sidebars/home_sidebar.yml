@@ -8,8 +8,11 @@ entries:
     url: /index.html
     output: web
     folderitems:
-    - title: Salesforce Demo
+    - title: App Connect (Studio) Demo for Salesforce
       url: /sfdemo_start.html
+      output: web
+    - title: App Connect (Designer) Labs for Dreamforce 2017
+      url: /dflabs17_start.html
       output: web
 
       

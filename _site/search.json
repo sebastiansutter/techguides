@@ -3,6 +3,50 @@
 
 
 
+{
+"title": "Lab 1 (TBD)",
+"tags": "",
+"keywords": "",
+"url": "df17labs_1.html",
+"summary": "Lab 1 (TBD)"
+}
+,
+
+
+
+{
+"title": "Lab 2 (TBD)",
+"tags": "",
+"keywords": "",
+"url": "df17labs_2.html",
+"summary": "Lab 2 (TBD)"
+}
+,
+
+
+
+{
+"title": "Lab 3 (TBD)",
+"tags": "",
+"keywords": "",
+"url": "df17labs_3.html",
+"summary": "Lab 3 (TBD)"
+}
+,
+
+
+
+{
+"title": "Labs Introduction",
+"tags": "",
+"keywords": "",
+"url": "df17labs_start.html",
+"summary": "This guide provides lab instructions for App Connect at Dreamforce 2017."
+}
+,
+
+
+
 
 
 {
@@ -11,6 +55,17 @@
 "keywords": "",
 "url": "index.html",
 "summary": "Welcome to the Github-hosted repository of technical guides for Cloud Integration."
+}
+,
+
+
+
+{
+"title": "Demonstration Environment README file",
+"tags": "",
+"keywords": "",
+"url": "jumpbox.html",
+"summary": "Jumpbox readme information"
 }
 ,
 
@@ -30,7 +85,7 @@
 
 
 {
-"title": "Introduction",
+"title": "Demo Introduction",
 "tags": "",
 "keywords": "",
 "url": "sfdemo_start.html",
@@ -41,22 +96,22 @@
 
 
 {
-"title": "0. Setup Salesforce.com",
+"title": "0. Setup Access to Bluedemos.com",
 "tags": "",
 "keywords": "",
 "url": "sfdemo_step0.html",
-"summary": "In this step, you will establish your Salesforce.com developer account and create the custom fields and objects required by the demo."
+"summary": "In this step, you will get an ID that will allow you to access the Bluedemos.com environment"
 }
 ,
 
 
 
 {
-"title": "1. Starting the environment",
+"title": "1. Log into Bluedemos and reserve your instance",
 "tags": "",
 "keywords": "",
 "url": "sfdemo_step1.html",
-"summary": "In this step, you will deploy the environment and configure it to use your own Salesforce.com credentials."
+"summary": "In this step, you will log into Bluedemos to provision your environment"
 }
 ,
 
@@ -97,6 +152,17 @@
 
 
 
+
+
+
+
+{
+"title": "",
+"tags": "",
+"keywords": "",
+"url": "assetscssstyle.css",
+"summary": ""
+}
 
 
 

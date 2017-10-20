@@ -5,7 +5,7 @@ entries:
   levels: one
   folders:
 
-  - title: Salesforce Demo
+  - title: App Connect (Studio) Demo for Salesforce
     output: web
     folderitems:
     - title: Introduction
