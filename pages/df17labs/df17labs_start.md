@@ -35,12 +35,12 @@ Work through both scenarios if you have time, or jump to the one that interests 
 ***Integration Scenario 1 – Connect your Applications***
 
 Cassie is a rising star in the marketing department.
- ![](./images/cassie.png)   
+ ![](./images/df17labs/cassie.png)   
 She is always looking for new digital tools to engage with customers, and has recently started using a SaaS service called Mailchimp to revolutionise email marketing within Paradise Audiophiles. However, she is frustrated with how much time she spends sifting through responses, and reconciling them with their Salesforce CRM system.
 
 ***Integration Scenario 2 – Create an API using Flows***
 
-Kirk  ![](./images/kirk.png)   
+Kirk  ![](./images//df17labs/kirk.png)   
 is responsible for keeping track of Paradise Audiofiles dealer network and registered customer base in their CRM system, sitting within a team of business analysts. Since the merger with Big Blue Tweeters they have reconciled their dealer information into Salesforce. He is working on a project with a business partner to build a mobile app for their dealers to register service requests, and they need an API. Kirk has done some coding before, but he isn’t a developer.
 
 The exercises are based upon Firefox as the default browser so it is suggested this be used.

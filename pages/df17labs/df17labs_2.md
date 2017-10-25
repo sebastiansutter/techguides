@@ -1,9 +1,9 @@
 ---
-title: Lab 2 (TBD)
+title: Lab 2
 toc: false
 sidebar: df17labs
 permalink: df17labs_2.html
-summary: Lab 2 (TBD)
+summary: Lab 2
 ---
 
 # Integration Scenario 2 – Create an API using flows
