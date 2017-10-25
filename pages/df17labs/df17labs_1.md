@@ -1,7 +1,15 @@
+---
+title: Lab 1
+toc: false
+sidebar: df17labs
+permalink: df17labs_1.html
+summary: Lab 1
+---
  
 # Integration Scenario 1 – Connect your applications
 
 ## Overview
+![](./images/df17labs/cassie.png)  
 Cassie is a rising star in the marketing department. She is always looking for new digital tools to engage with customers, and has recently started using a SaaS service called Mailchimp to revolutionise email marketing within Paradise Audiophiles. However, she is frustrated with how much time she spends sifting through responses, and reconciling them with their Salesforce CRM system.
 
 {% include note.html content="If doing this exercise at an event, you will probably have been given a separate hardcopy with your own lab account credentials for **IBM App Connect**, **Salesforce** and **Mailchimp**. Firefox toolbar bookmarks exist to help with navigating to those applications.    

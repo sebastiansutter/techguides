@@ -11,10 +11,10 @@ entries:
     - title: Introduction and Getting Started
       url: /df17labs_start.html
       output: web
-    - title: 1. Lab 1 - Create an API Using Flows
+    - title: 1. Lab 1 - Connect your applications
       url: /df17labs_1.html
       output: web
-    - title: 2. Lab 2 
+    - title: 2. Lab 2 - Create an API using flows
       url: /df17labs_2.html
       output: web
 #    - title: 3. Lab 3 (TBD)
