@@ -9,7 +9,7 @@ summary: Lab 2
 # Integration Scenario 2 – Create an API using flows
 
 ## Overview
-![](./images/df17labs/df2-image1.png)   
+![](./images/df17labs/kirk.png)   
 Kirk is responsible for keeping track of Paradise Audiofiles dealer network and registered customer base in their CRM system, sitting within a team of business analysts. Since the merger with Big Blue Tweeters they have reconciled their dealer information into Salesforce. He is working on a project with a business partner to build a mobile app for their dealers to register service requests, and they need an API. Kirk has done some coding before, but he isn’t a developer.
 
 {% include note.html content="You should have a separate print-out with credentials for:
@@ -86,43 +86,43 @@ We now need to build the logic that connects this model to Salesforce.
 The mobile app is going to supply us just and e-mail address, but we need the full customer details to be able to create the ticket. So the first thing our flow needs to do is to retrieve the Contact from Salesforce.
 
 1. Click the “+” button to add an action to the flow:  
-![](./images/df17labs/df2-image17.png)
+![](./images/df17labs/df2-image17-a.png)
  
 1. Scroll down to Salesforce and further scroll down and select the “Retrieve Contact” action:  
-![](./images/df17labs/df2-image18.png)
+![](./images/df17labs/df2-image17.png)
  
  
 1. Choose “EMail” as the left side of the lookup condition, and click the icon on the right to display a list of references that are available in the context at this point in the flow:  
-![](./images/df17labs/df2-image19.png)
+![](./images/df17labs/df2-image18.png)
 
     {% include note.html content="We apologize if you see a lot of entries in the drop-down menu, including non-English language items and if these are not sorted alphabetically. This is a known issue at the time of writing this Lab, and will be addressed shortly." %}
 
  	
 1. Choose “SuppliedEmail” from the inbound request:   
-![](./images/df17labs/df2-image20.png)
+![](./images/df17labs/df2-image19.png)
  
 1. The configure the flow to only process the first matching Contact:   
-![](./images/df17labs/df2-image21.png)
+![](./images/df17labs/df2-image20.png)
  
 1. You now have a fully configured retrieve operation that will look for exactly one Contact in Salesforce that matches that e-mail address that will be included in the Request parameters when the API is invoked. If zero or more-than-one are found, then the flow will report an error when it runs.   
-![](./images/df17labs/df2-image22.png)
+![](./images/df17labs/df2-image21.png)
  
 
 ## Lookup the product by MPN
 We also want the find the full details of the product from the MPN field that was passed in on the API call.
 
 1. Click on the ‘+’ to the right of the salesforce Retrieve Contact node and add a Salesforce “Retrieve Product” operation to your flow. Then configure it as below:   
-![](./images/df17labs/df2-image23.png)
+![](./images/df17labs/df2-image22.png)
  
 1. Now configure the flow to only process the first matching Product:    
-![](./images/df17labs/df2-image24.png)
+![](./images/df17labs/df2-image23.png)
  
 
 ## Create the Case in Salesforce
 Now we want to create the actual Case in Salesforce, using all the details we have retrieved.
 
 1. Click on the ‘+’ to the right of the Retrieve Product node to add another node and  add a “Create Case” Salesforce action to the flow after Retrieve Product:   
-![](./images/df17labs/df2-image25.png)
+![](./images/df17labs/df2-image24.png)
  
 1. Configure the following fields in the Case, where “Web” is typed in as a literal value, and the other fields are filled in from references in the context. Note that if you begin typing then matching values will be displayed for you to select from.
 
@@ -131,16 +131,16 @@ Now we want to create the actual Case in Salesforce, using all the details we ha
     * In “Description” you combine the “Product Name” you looked up in the Salesforce “Product” with the incoming “Description” from the API request.
 
     You will notice some field mappings have a warning associated with them, like:  
-    ![](./images/df17labs/df2-image26.png)
+    ![](./images/df17labs/df2-image25.png)
  
 
     These are arrays. Click on the “How can I…?” link and see the suggestions:
 
     For this lab example solution, indicate that you will single the first instance:   
-    ![](./images/df17labs/df2-image27.png)
+    ![](./images/df17labs/df2-image26.png)
  
     The mapped fields should be:    
-    ![](./images/df17labs/df2-image28.png)
+    ![](./images/df17labs/df2-image27.png)
 
 
 ## Return the ID of the new Service Ticket
@@ -150,26 +150,26 @@ We want the API to return an identifier that the app can use as a reference to r
 
  	
 1. Click on the Response action in the flow, and fill in the reply mapping for “Id” to “Case ID” from the Salesforce Create Case action (there is no need to fill in the other fields). Note that the simplest way to do this is to type ‘case’ and select Case Id as shown below.   
-![](./images/df17labs/df2-image27.png)
+![](./images/df17labs/df2-image28.png)
  
 1. Click on the source field to set the mapping:   
-![](./images/df17labs/df2-image28.png)
+![](./images/df17labs/df2-image29.png)
  
 
 ## Switch on your API
 Now we have the first operation on our API – to create ServiceTickets by retrieving Contacts and Products from Salesforce, and create Cases. So let’s give it a try.
 
 1. Click “Done” to exit the flow editor:   
-![](./images/df17labs/df2-image29.png)
+![](./images/df17labs/df2-image30.png)
  
 1. Click on the menu in the top-right and select “Start API”:   
-![](./images/df17labs/df2-image30.png)
+![](./images/df17labs/df2-image31.png)
  
     {% include note.html content="If the “Start API” option is greyed out, click back into Operations -> Edit Flow to re-enter the flow editor. Then click on each Action in turn, letting the page load and then check there are no missing details. Then click “Done” and try to start the API again. There is a known issue at the time of writing. This issue is to be addressed shortly." %}
 
 
 1. Return to the dashboard; the flow API is running:   
-![](./images/df17labs/df2-image31.png)
+![](./images/df17labs/df2-image32.png)
  
 
 ## Create a Contact and Product in Salesforce to test
@@ -179,19 +179,19 @@ So that we can try out our API, we will create some objects in Salesforce.
  	 
 1. Log into Salesforce at <https://login.salesforce.com>
 1. Click to create a new Contact:    
-![](./images/df17labs/df2-image32.png)
- 
-1. Make sure to fill in the “Name”, “Last Name” and “Email” with some suitably unique values:   
 ![](./images/df17labs/df2-image33.png)
  
-1. Open the App Launcher:    
+1. Make sure to fill in the “Name”, “Last Name” and “Email” with some suitably unique values:   
 ![](./images/df17labs/df2-image34.png)
  
-1. Select “Products”
+1. Open the App Launcher:    
 ![](./images/df17labs/df2-image35.png)
  
-1. Create a new Product with a suitably unique “Name“, and “Product Code”:    
+1. Select “Products”
 ![](./images/df17labs/df2-image36.png)
+ 
+1. Create a new Product with a suitably unique “Name“, and “Product Code”:    
+![](./images/df17labs/df2-image37.png)
  
 
 ## Test your new API operation
@@ -199,13 +199,13 @@ Now we want to test our API and see what it can do.
 
 1. Using your Chrome browser, start the Postman plugin tool using the App Launcher:
 1. Before we can test our API, do that we need to know the details of how our API has been exposed by App Connect. From the dashboard, open the API:   
-![](./images/df17labs/df2-image37.png)
- 
-1. Then click **Manage**:    
 ![](./images/df17labs/df2-image38.png)
  
-1. This shows the URL and credentials for the API. Leave the browser open as you will use the **Copy to clipboard** link in a minute:   
+1. Then click **Manage**:    
 ![](./images/df17labs/df2-image39.png)
+ 
+1. This shows the URL and credentials for the API. Leave the browser open as you will use the **Copy to clipboard** link in a minute:   
+![](./images/df17labs/df2-image40.png)
  
 1. Go to the Postman tool launched from the Chrome browser. Click the Authorization tab, and then:
     1. Set the verb to POST
@@ -217,13 +217,13 @@ Now we want to test our API and see what it can do.
     1. Set type as JSON
     1. Enter the JSON request in the body pane.
     1. Press **Send**.    
-    ![](./images/df17labs/df2-image40.png)
+    ![](./images/df17labs/df2-image41.png)
   
 1. You should see a successful HTTP response code of 201 and a JSON response returned.
 
 ## Examine the new Case in Salesforce
 If you navigate back to <https://login.salesforce.com> in your browser, and look at Cases. If they are not on the header bar, can find them via the “App Launcher” you used to find “Products” in Salesforce.     
-![](./images/df17labs/df2-image41.png)
+![](./images/df17labs/df2-image42.png)
 
 {% include note.html content="You have now created and tested an API exposed by IBM App Connect!
 You can stop here, go to another exercise, or continue and add more operations and logic to this API at your leisure." %} 
@@ -233,7 +233,7 @@ You can stop here, go to another exercise, or continue and add more operations a
 ## Thank You!
 
 In this Lab you’ve seen how IBM App Connect lets you build flows driven by events and flows that implement an API. You have seen how the APIs are defined so that they conform to the conventions modern developers expect, and that you can build flows quickly via rich graphical tooling with multiple operations and logic.    
-![](./images/df17labs/df2-image42.png)
+![](./images/df17labs/df2-image43.png)
 
  
 
@@ -242,7 +242,7 @@ If you didn’t complete the lab exercises or want to go further, then why not s
 
 ### Do you want to keep up to date or influence the product?
 IBM App Connect is a rapidly evolving service in IBM Cloud. If you have been interested by what you’ve explored in the product today, then please sign up to our sponsored user program. The program provides the opportunity for you to influence how we extend and enhance the product to meet the needs of our customers.    
-![](./images/df17labs/df2-image43.png)
+![](./images/df17labs/df2-image44.png)
   
 ## Appendix A: Credentials Required
 

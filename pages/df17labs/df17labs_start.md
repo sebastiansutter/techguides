@@ -6,7 +6,7 @@ permalink: df17labs_start.html
 summary: This guide provides lab instructions for App Connect at Dreamforce 2017.
 ---
 
-# Introduction and Getting Started
+# Experience How to Integrate Cloud Applications and Expose as APIs Using App Connect
 
 ## Overview
 IBM® App Connect helps you automate workflows and integrate data, applications and APIs across hybrid cloud environments.
