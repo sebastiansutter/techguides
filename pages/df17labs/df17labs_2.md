@@ -187,7 +187,7 @@ So that we can try out our API, we will create some objects in Salesforce.
 1. Open the App Launcher:    
 ![](./images/df17labs/df2-image35.png)
  
-1. Select “Products”
+1. Select “Products”  
 ![](./images/df17labs/df2-image36.png)
  
 1. Create a new Product with a suitably unique “Name“, and “Product Code”:    
@@ -210,7 +210,7 @@ Now we want to test our API and see what it can do.
 1. Go to the Postman tool launched from the Chrome browser. Click the Authorization tab, and then:
     1. Set the verb to POST
     1. Set the URL to the API of the URL. To this you must append the resource name of **ServiceTickets**.
-    1. Set the authorization type to **Basic Auth**, and then set  the credentials of user and password.   
+    1. Set the authorization type to **Basic Auth**, and then set  the credentials of user and password.        
     ![](./images/df17labs/df2-image41.png)
  
 1. Still from within Postman, then click the Body tab, and then:  
