@@ -210,20 +210,21 @@ Now we want to test our API and see what it can do.
 1. Go to the Postman tool launched from the Chrome browser. Click the Authorization tab, and then:
     1. Set the verb to POST
     1. Set the URL to the API of the URL. To this you must append the resource name of **ServiceTickets**.
-    1. Set the authorization type to **Basic Auth**, and then set  the credentials of user and password
+    1. Set the authorization type to **Basic Auth**, and then set  the credentials of user and password.   
+    ![](./images/df17labs/df2-image41.png)
  
 1. Still from within Postman, then click the Body tab, and then:  
     1. Click **raw**
     1. Set type as JSON
     1. Enter the JSON request in the body pane.
     1. Press **Send**.    
-    ![](./images/df17labs/df2-image41.png)
+    ![](./images/df17labs/df2-image42.png)
   
 1. You should see a successful HTTP response code of 201 and a JSON response returned.
 
 ## Examine the new Case in Salesforce
 If you navigate back to <https://login.salesforce.com> in your browser, and look at Cases. If they are not on the header bar, can find them via the “App Launcher” you used to find “Products” in Salesforce.     
-![](./images/df17labs/df2-image42.png)
+![](./images/df17labs/df2-image43.png)
 
 {% include note.html content="You have now created and tested an API exposed by IBM App Connect!
 You can stop here, go to another exercise, or continue and add more operations and logic to this API at your leisure." %} 
@@ -233,7 +234,7 @@ You can stop here, go to another exercise, or continue and add more operations a
 ## Thank You!
 
 In this Lab you’ve seen how IBM App Connect lets you build flows driven by events and flows that implement an API. You have seen how the APIs are defined so that they conform to the conventions modern developers expect, and that you can build flows quickly via rich graphical tooling with multiple operations and logic.    
-![](./images/df17labs/df2-image43.png)
+![](./images/df17labs/df2-image44.png)
 
  
 
@@ -242,7 +243,7 @@ If you didn’t complete the lab exercises or want to go further, then why not s
 
 ### Do you want to keep up to date or influence the product?
 IBM App Connect is a rapidly evolving service in IBM Cloud. If you have been interested by what you’ve explored in the product today, then please sign up to our sponsored user program. The program provides the opportunity for you to influence how we extend and enhance the product to meet the needs of our customers.    
-![](./images/df17labs/df2-image44.png)
+![](./images/df17labs/df2-image45.png)
   
 ## Appendix A: Credentials Required
 
