@@ -11,7 +11,7 @@ summary: This guide provides lab instructions for App Connect at Dreamforce 2017
 ## Overview
 IBM® App Connect helps you automate workflows and integrate data, applications and APIs across hybrid cloud environments.
 
-In this Lab we focus on the App Connect offering which provides features for simple, guided app-to-app integration. With IBM App Connect you can link your applications so that when something happens in one application, other relevant applications get updated automatically, so you can:
+In this lab we focus on the App Connect offering which provides features for simple, guided app-to-app integration. With IBM App Connect you can link your applications so that when something happens in one application, other relevant applications get updated automatically, so you can:
 
 * Stop wasting time on repetitive manual tasks
 * Use this intuitive business tool to take back control
@@ -20,9 +20,9 @@ In this Lab we focus on the App Connect offering which provides features for sim
 These short exercises demonstrate the key integration capabilities of App Connect. Because this product is a cloud based SaaS offering you can explore it yourself easily from anywhere.
 
 ## Meet Paradise Audiophiles (Fictional)
-Paradise Audiophiles is a high-end Hifi manufacturer, with 50 years of history building the best in high quality audio and home cinema equipment. They started small, with artisan attention to detail, components and sound quality. They’ve grown over the years building on this reputation, and are embracing new technologies and business approaches.
+Paradise Audiophiles is a high-end HiFi manufacturer, with 50 years of history building the best in high quality audio and home cinema equipment. They started small, with artisan attention to detail, components and sound quality. They’ve grown over the years building on this reputation, and are embracing new technologies and business approaches.
 
-5 years ago realised they needed to make a big change to keep up with the market, and they merged with a speaker manufacturer Big Blue Tweeters with an overlapping customer base. The best engineers from the two companies joined forces to design their latest range. They took a radically different approach building compact visually beautiful products that fit into modern digital lifestyles – as well as providing the purity of sound both companies are renowned for.
+5 years ago they realised they needed to make a big change to keep up with the market, and they merged with a speaker manufacturer, Big Blue Tweeters, with an overlapping customer base. The best engineers from the two companies joined forces to design their latest range. They took a radically different approach building compact visually beautiful products that fit into modern digital lifestyles – as well as providing the purity of sound both companies are renowned for.
 
 They sell through a network of small independent dealers, and target the mid to high level market – with individual products such as selling from $500 to in excess of $20,000. 
 
@@ -30,7 +30,7 @@ They sell through a network of small independent dealers, and target the mid to 
 
 {% include note.html content="Pick the scenario that interests you most and if you have time, look at another one." %}
 
-Work through both scenarios if you have time, or jump to the one that interests you most. If you don’t manage to complete them, you can always do using your own trial account when you return home. See the end of this guide for more details.
+Work through both scenarios if you have time, or jump to the one that interests you most. If you don’t manage to complete them, you can always do so using your own trial account when you return home. See the end of this guide for more details.
 
 ***Integration Scenario 1 – Connect your Applications***
 
