@@ -25,8 +25,8 @@ The account usernames are assigned by laptop.
 
 | Application | Laptop 1 | Laptop 2 | Laptop 3 | Laptop 4 | Laptop 5 | Laptop 6 |
 |:-----------:|:-------:|:--------:|:-------:|:------:|:------:|:---:|
-| [IBM App Connect] https://designer.appconnect.ibmcloud.com | \_2N4E7UN | e-3TKSCq | yCiOCE9o | No4O5Glu | 92pHxY0e | p4NMoqc0 |
-| [Gmail] https://gmail.com | NU7E4N2_ | e-3TKSCq_ | yCiOCE9o | No4O5Glu_ | 92pHxY0e_ | p4NMoqc0_ |
-| [MailChimp] https://www.mailchimp.com  |  nU7E4N2_ | e-3TKSCq | yCiOCE9- | No4O5Gl- | 92pHxY0- | p4NMoqc- |
-| [Salesforce] https://login.salesforce.com  | \_2N4E7UN | e-3TKSCq | yCiOCE9o | No4O5Glu | 92pHxY0e | p4NMoqc0 |
+| [AppConnect] (https://designer.appconnect.ibmcloud.com) | \_2N4E7UN | e-3TKSCq | yCiOCE9o | No4O5Glu | 92pHxY0e | p4NMoqc0 |
+| [Gmail] (https://gmail.com) | NU7E4N2_ | e-3TKSCq_ | yCiOCE9o | No4O5Glu_ | 92pHxY0e_ | p4NMoqc0_ |
+| [MailChimp] (https://www.mailchimp.com)  |  nU7E4N2_ | e-3TKSCq | yCiOCE9- | No4O5Gl- | 92pHxY0- | p4NMoqc- |
+| [Salesforce] (https://login.salesforce.com)  | \_2N4E7UN | e-3TKSCq | yCiOCE9o | No4O5Glu | 92pHxY0e | p4NMoqc0 |
 
