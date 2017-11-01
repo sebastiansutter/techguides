@@ -12,11 +12,12 @@ summary: Lab 1
 ![](./images/df17labs/cassie.png)  
 Cassie is a rising star in the marketing department. She is always looking for new digital tools to engage with customers, and has recently started using a SaaS service called Mailchimp to revolutionise email marketing within Paradise Audiophiles. However, she is frustrated with how much time she spends sifting through responses, and reconciling them with their Salesforce CRM system.
 
-{% include note.html content="If doing this exercise at an event, you will probably have been given a separate hardcopy with your own lab account credentials for **IBM App Connect**, **Salesforce** and **Mailchimp**. Firefox toolbar bookmarks exist to help with navigating to those applications.    
-Everywhere you see *ibmappconnect0XX* in the lab instructions, replace XX with the ID you have been assigned." %}
+{% include note.html content="{% include note.html content="Refer to the [Logon Credentials](http:/df17labs_creds.html) page for the userids and passwords you should use on your laptop." %}" %}
 
  
 ## Log into IBM App Connect
+1. Launch the Chrome browser. 
+
 1. In your browser, go to <https://designer.appconnect.ibmcloud.com/> and sign in with the ibmappconnect0XX@gmail.com IBMid account you have been given.   
 ![](./images/df17labs/df1-image0.png)
  

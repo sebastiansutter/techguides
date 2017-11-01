@@ -10,13 +10,14 @@ summary: Lab 2
 
 ## Overview
 ![](./images/df17labs/kirk.png)   
-Kirk is responsible for keeping track of Paradise Audiofiles dealer network and registered customer base in their CRM system, sitting within a team of business analysts. Since the merger with Big Blue Tweeters they have reconciled their dealer information into Salesforce. He is working on a project with a business partner to build a mobile app for their dealers to register service requests, and they need an API. Kirk has done some coding before, but he isn’t a developer.
+Kirk is responsible for keeping track of Paradise Audiophiles dealer network and registered customer base in their CRM system, sitting within a team of business analysts. Since the merger with Big Blue Tweeters they have reconciled their dealer information into Salesforce. He is working on a project with a business partner to build a mobile app for their dealers to register service requests, and they need an API. Kirk has done some coding before, but he isn’t a developer.
 
-{% include note.html content="You should have a separate print-out with credentials for:
-**IBM App Connect** and **Salesforce**. Wherever you see ibmappconnect0**XX** then use the ID you were given.
-Firefox toolbar bookmarks exist to help with navigating to those applications." %}
+{% include note.html content="Refer to the [Logon Credentials](http:/df17labs_creds.html) page for the userids and passwords you should use on your laptop." %}
 
 ## Log into IBM App Connect
+
+1. Launch the Chrome browser. 
+
 1. In your browser, go to <https://designer.appconnect.ibmcloud.com/> and sign in with the ***ibmappconnect0XX@gmail.com*** account you have been given.   
 ![](./images/df17labs/df2-image1.png)
  
@@ -45,7 +46,7 @@ As Kirk, you know you want to build his API to create and retrieve “Case” ob
 1. Return to the dashboard and click New->Flow for an API to create an API:   
 ![](./images/df17labs/df2-image6.png)
  
-1. We want an API for managing Service Tickets. Type “Service Tickets API” as the title of the API as shown below, and name the model for the resource “ServiceTickets” being careful to ensure that it is capitalised ash shown and there is no space between ‘Service’ and ‘Tickets’.    
+1. We want an API for managing Service Tickets. Type “Service Tickets API” as the title of the API as shown below, and name the model for the resource “ServiceTickets” being careful to ensure that it is capitalised as shown and there is no space between ‘Service’ and ‘Tickets’.    
 ![](./images/df17labs/df2-image7.png) 
  
     Then click Create model.
@@ -83,7 +84,7 @@ We now need to build the logic that connects this model to Salesforce.
  
 
 ## Retrieve the contact from Salesforce
-The mobile app is going to supply us just and e-mail address, but we need the full customer details to be able to create the ticket. So the first thing our flow needs to do is to retrieve the Contact from Salesforce.
+The mobile app is going to supply us just an e-mail address, but we need the full customer details to be able to create the ticket. So the first thing our flow needs to do is to retrieve the Contact from Salesforce.
 
 1. Click the “+” button to add an action to the flow:  
 ![](./images/df17labs/df2-image17-a.png)
