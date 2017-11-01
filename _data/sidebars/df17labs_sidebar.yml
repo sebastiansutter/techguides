@@ -17,6 +17,9 @@ entries:
     - title: 2. Lab 2 - Create an API using flows
       url: /df17labs_2.html
       output: web
+    - title: User Credentials
+      url: /df17labs_creds.html
+      output: web
 #    - title: 3. Lab 3 (TBD)
 #      url: /df17labs_3.html
 #      output: web
