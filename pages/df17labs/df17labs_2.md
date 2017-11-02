@@ -209,18 +209,25 @@ Now we want to test our API and see what it can do.
 ![](./images/df17labs/df2-image40.png)
  
 1. Go to the Postman tool launched from the Chrome browser. Click the Authorization tab, and then:
-    1. Set the verb to POST
+    1. Set the verb to POST.
     1. Set the URL to the API of the URL. To this you must append the resource name of **ServiceTickets**.
     1. Set the authorization type to **Basic Auth**, and then set  the credentials of user and password.        
     ![](./images/df17labs/df2-image41.png)
  
 1. Still from within Postman, then click the Body tab, and then:  
-    1. Click **raw**
-    1. Set type as JSON
-    1. Enter the JSON request in the body pane.
+    1. Click **raw**.
+    1. Set type as JSON.
+    1. Enter the JSON request in the body pane. You may copy and paste from the code snippet shown below replacing the samples with the data you entered in Salesforce.  
     1. Press **Send**.    
-    ![](./images/df17labs/df2-image42.png)
-  
+    ![](./images/df17labs/df2-image42.png)    
+        
+   ``{ 
+        "Description": "sample_description", 
+        "Id": "sample_id",
+        "SuppliedEmail": "sample_suppliedemail",
+        "MPN": "sample_MPN"
+    } `` 
+    
 1. You should see a successful HTTP response code of 201 and a JSON response returned.
 
 ## Examine the new Case in Salesforce
