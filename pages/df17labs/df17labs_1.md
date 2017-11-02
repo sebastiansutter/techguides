@@ -25,7 +25,9 @@ Cassie is a rising star in the marketing department. She is always looking for n
 ## Create or update your mailing list in Mailchimp
 Let us set up a new e-mail marketing campaign in Mailchimp.
 1. Log into https://www.mailchimp.com with the credentials supplied:   
-![](./images/df17labs/df1-image1.png)
+![](./images/df17labs/df1-image1.png)    
+    {% include important.html content="If prompted for verification, click I'll do this later " %}    
+    ![](./images/df17labs/df1-image25.png)
    
 1. Click on Lists:   
 ![](./images/df17labs/df1-image2.png)
@@ -113,10 +115,12 @@ If we generate the event in the source application we should be able to observe 
 ![](./images/df17labs/df1-image20.png)
 
     {% include important.html content="If prompted for verification, choose Confirm your recovery email, then enter *ibmappconnect***000***@yahoo.com* " %}    
-    ![](./images/df17labs/df1-image23.png)
+    ![](./images/df17labs/df1-image23.png) ![](./images/df17labs/df1-image23.png)
 
  
-1. We want to see the result in Salesforce. Open a browser tab and log into Salesforce at <https://login.salesforce.com>
+1. We want to see the result in Salesforce. Open a browser tab and log into Salesforce at <https://login.salesforce.com>   
+    If prompted to register your mobile phone, click I'll do it later.
+    
 1. Click on the Leads tab and find the new lead:    
 ![](./images/df17labs/df1-image21.png) 
 
