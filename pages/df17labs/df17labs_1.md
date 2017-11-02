@@ -121,8 +121,14 @@ If we generate the event in the source application we should be able to observe 
     If your Salesforce dashboard does not look like the above, then go to the App Launcher in the top left and then navigate to the Leads:    
     ![](./images/df17labs/df1-image22.png)
 
+## Thank You!
+
+In this Lab you’ve seen how IBM App Connect provides features for simple, guided app-to-app integration. With IBM App Connect you can link your applications so that when something happens in one application, other relevant applications get updated automatically, so you can:
+
+* Stop wasting time on repetitive manual tasks
+* Use this intuitive business tool to take back control
+* Link your apps in a few simple steps
+
  
-1. END OF THIS SCENARIO
+END OF SCENARIO
 
-
- 
