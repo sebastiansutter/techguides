@@ -115,7 +115,7 @@ If we generate the event in the source application we should be able to observe 
 ![](./images/df17labs/df1-image20.png)
 
     {% include important.html content="If prompted for verification, choose Confirm your recovery email, then enter *ibmappconnect***000***@yahoo.com* " %}    
-    ![](./images/df17labs/df1-image23.png) ![](./images/df17labs/df1-image23.png)
+    ![](./images/df17labs/df1-image23.png) ![](./images/df17labs/df1-image24.png)
 
  
 1. We want to see the result in Salesforce. Open a browser tab and log into Salesforce at <https://login.salesforce.com>   
