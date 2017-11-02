@@ -3,7 +3,7 @@ title: Lab 2
 toc: false
 sidebar: df17labs
 permalink: df17labs_2.html
-summary: Lab 2
+summary:  Create flows for an API using models to implement operations 
 ---
 
 # Integration Scenario 2 – Create an API using flows

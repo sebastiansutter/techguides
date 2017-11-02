@@ -3,7 +3,7 @@ title: Lab 1
 toc: false
 sidebar: df17labs
 permalink: df17labs_1.html
-summary: Lab 1
+summary: Simple guided application-to-application integration
 ---
  
 # Integration Scenario 1 – Connect your applications
@@ -111,6 +111,10 @@ If we generate the event in the source application we should be able to observe 
  
 1. Then you need to log into <https://gmail.com> as your ibmappconnect0**XX** user and click the confirmation e-mail:     
 ![](./images/df17labs/df1-image20.png)
+
+    {% include important.html content="If prompted for verification, choose Confirm your recovery email, then enter *ibmappconnect***000***@yahoo.com* " %}    
+    ![](./images/df17labs/df1-image23.png)
+
  
 1. We want to see the result in Salesforce. Open a browser tab and log into Salesforce at <https://login.salesforce.com>
 1. Click on the Leads tab and find the new lead:    
