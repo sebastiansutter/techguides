@@ -12,7 +12,7 @@ summary: Lab 2
 ![](./images/df17labs/kirk.png)   
 Kirk is responsible for keeping track of Paradise Audiophiles dealer network and registered customer base in their CRM system, sitting within a team of business analysts. Since the merger with Big Blue Tweeters they have reconciled their dealer information into Salesforce. He is working on a project with a business partner to build a mobile app for their dealers to register service requests, and they need an API. Kirk has done some coding before, but he isn’t a developer.
 
-{% include note.html content="Refer to the [Logon Credentials](http:/df17labs_creds.html) page for the userids and passwords you should use on your laptop." %}
+{% include note.html content="Refer to the [Logon Credentials](http:/df17labs_creds.html) page for the userids and passwords you should use on your laptop. Everywhere you see ibmappconnect0XX in the lab instructions, replace XX with the ID you have been assigned." %}
 
 ## Log into IBM App Connect
 
