@@ -237,14 +237,12 @@ If you navigate back to <https://login.salesforce.com> in your browser, and look
 {% include note.html content="You have now created and tested an API exposed by IBM App Connect!
 You can stop here, go to another exercise, or continue and add more operations and logic to this API at your leisure." %} 
 
-
  
 ## Thank You!
 
 In this Lab you’ve seen how IBM App Connect lets you build flows driven by events and flows that implement an API. You have seen how the APIs are defined so that they conform to the conventions modern developers expect, and that you can build flows quickly via rich graphical tooling with multiple operations and logic.    
 ![](./images/df17labs/df2-image44.png)
 
- 
 
 ### Want to learn more?
 If you didn’t complete the lab exercises or want to go further, then why not sign up for a free trial? Go to <https://designer.appconnect.ibmcloud.com/>newAccount and complete the registration.
@@ -253,40 +251,3 @@ If you didn’t complete the lab exercises or want to go further, then why not s
 IBM App Connect is a rapidly evolving service in IBM Cloud. If you have been interested by what you’ve explored in the product today, then please sign up to our sponsored user program. The program provides the opportunity for you to influence how we extend and enhance the product to meet the needs of our customers.    
 ![](./images/df17labs/df2-image45.png)
   
-## Appendix A: Credentials Required
-
-The Labs in this document use the following SaaS systems:  
-  
-* IBM App Connect
-* Gmail
-* Salesforce
-* Mailchimp
-
-In order to complete the Lab, you will need logins to each of these services. If you are running through this Lab in an IBM hosted location, you might have been given a softcopy or hardcopy printout with a set of credentials. If so, please use them.
-
-Otherwise, you will need to sign up to each of the systems using the instructions below. You can sign up for all of the systems up-front, or sign-up as to each system as you run through the Lab. You might want to sign up to Gmail first and then you can use that e-mail address to sign up to the other accounts.
-
-{% include note.html content="Everywhere you see ibmappconnect0**XX** in the Lab guide, swap in the ID you have obtained for that system." %}
- 	
-***Gmail***
-Sign up at:  https://accounts.google.com/SignUp?service=mail
-
-***IBM App Connect***
-There are two ways to sign up to IBM App Connect
-
-1.	Sign up to IBM App Connect outside of Bluemix here:
-<https://designer.appconnect.ibmcloud.com/newAccount> 
-
-2.	Create a service instance inside of IBM Bluemix:
-<http://ibm.biz/appconnect-bluemix> 
-If you do not already have an IBM Bluemix account, you will be prompted to sign up for a trial.
-
-***Salesforce***
-Sign up for a Developer account here: <https://developer.salesforce.com/>signup 
-
-{% include note.html content="You must sign up for a **developer** account, not a trial account. A Salesforce trial account does not provide the API access required by IBM App Connect." %}
- 	
-
-***Mailchimp***
-Sign up here: <https://mailchimp.com/signup/>
-
