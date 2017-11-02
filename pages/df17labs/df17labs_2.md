@@ -221,13 +221,12 @@ Now we want to test our API and see what it can do.
     1. Press **Send**.    
     ![](./images/df17labs/df2-image42.png)    
         
-   ```text
-   { 
+   ``{ 
         "Description": "sample_description", 
         "Id": "sample_id",
         "SuppliedEmail": "sample_suppliedemail",
         "MPN": "sample_MPN"
-    } 
+    } `` 
     
 1. You should see a successful HTTP response code of 201 and a JSON response returned.
 
