@@ -12,7 +12,7 @@ summary: Lab 2
 ![](./images/df17labs/kirk.png)   
 Kirk is responsible for keeping track of Paradise Audiophiles dealer network and registered customer base in their CRM system, sitting within a team of business analysts. Since the merger with Big Blue Tweeters they have reconciled their dealer information into Salesforce. He is working on a project with a business partner to build a mobile app for their dealers to register service requests, and they need an API. Kirk has done some coding before, but he isn’t a developer.
 
-{% include note.html content="Refer to the [Logon Credentials](http:/df17labs_creds.html) page for the userids and passwords you should use on your laptop. Everywhere you see ibmappconnect0XX in the lab instructions, replace XX with the ID you have been assigned." %}
+{% include note.html content="Refer to the [Logon Credentials](df17labs_creds.html) page for the userids and passwords you should use on your laptop. Everywhere you see ibmappconnect0XX in the lab instructions, replace XX with the ID you have been assigned." %}
 
 ## Log into IBM App Connect
 
@@ -221,12 +221,13 @@ Now we want to test our API and see what it can do.
     1. Press **Send**.    
     ![](./images/df17labs/df2-image42.png)    
         
-   ``{ 
+   ```text
+   { 
         "Description": "sample_description", 
         "Id": "sample_id",
         "SuppliedEmail": "sample_suppliedemail",
         "MPN": "sample_MPN"
-    } `` 
+    } 
     
 1. You should see a successful HTTP response code of 201 and a JSON response returned.
 
