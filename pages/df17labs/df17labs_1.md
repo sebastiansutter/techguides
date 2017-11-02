@@ -137,6 +137,9 @@ In this Lab you’ve seen how IBM App Connect provides features for simple, guid
 * Use this intuitive business tool to take back control
 * Link your apps in a few simple steps
 
- 
-END OF SCENARIO
+### Want to learn more?
+If you didn’t complete the lab exercises or want to go further, then why not sign up for a free trial? Go to <https://designer.appconnect.ibmcloud.com/>newAccount and complete the registration.
 
+### Do you want to keep up to date or influence the product?
+IBM App Connect is a rapidly evolving service in IBM Cloud. If you have been interested by what you’ve explored in the product today, then please sign up to our sponsored user program. The program provides the opportunity for you to influence how we extend and enhance the product to meet the needs of our customers.    
+![](./images/df17labs/df2-image45.png)
