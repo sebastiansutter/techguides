@@ -26,7 +26,7 @@ Cassie is a rising star in the marketing department. She is always looking for n
 Let us set up a new e-mail marketing campaign in Mailchimp.
 1. Log into https://www.mailchimp.com with the credentials supplied:   
 ![](./images/df17labs/df1-image1.png)    
-    {% include important.html content="If prompted for verification, click I'll do this later " %}    
+    {% include important.html content="If prompted for verification, click I'll do this later... If that is not an option, verify using security questions, and the answer to any question about a city is **Armonk**" %}    
     ![](./images/df17labs/df1-image25.png)
    
 1. Click on Lists:   
