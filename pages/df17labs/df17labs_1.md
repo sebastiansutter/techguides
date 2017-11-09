@@ -111,7 +111,7 @@ If we generate the event in the source application we should be able to observe 
 1. Once you click “Subscribe to list” you will need to do a Captcha verification:    
 ![](./images/df17labs/df1-image19.png)
  
-1. Then you need to log into <https://gmail.com> as your ibmappconnect0**XX** user and click the confirmation e-mail:     
+1. You *may* need to log into <https://gmail.com> as your ibmappconnect0**XX** user and click the confirmation e-mail.  If you do not receive this emai, continue to the next step.   
 ![](./images/df17labs/df1-image20.png)
 
     {% include important.html content="If prompted for verification, choose Confirm your recovery email, then enter *ibmappconnect***000***@yahoo.com* " %}    
