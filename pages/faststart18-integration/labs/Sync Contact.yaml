@@ -1,0 +1,254 @@
+$integration: 'http://ibm.com/appconnect/integration/v2/integrationFile'
+integration:
+  type: trigger-action
+  trigger-interfaces:
+    trigger-interface-1:
+      type: event-trigger
+      triggers:
+        CREATED_POLLER:
+          input-context:
+            data: Contact
+          assembly:
+            $ref: '#/integration/assemblies/assembly-1'
+          options:
+            subscription:
+              createdField: CreatedDate
+              updatedField: LastModifiedDate
+              timeFormat: 'YYYY-MM-DDTHH:mm:ss.SSSZZ'
+              timeZone: UTC
+              pollingInterval: 1
+      connector-type: salesforce
+      account-name: Account 1
+  action-interfaces:
+    action-interface-1:
+      type: api-action
+      business-object: request
+      connector-type: http
+      actions:
+        INVOKE: {}
+      account-name: Account 1
+    action-interface-2:
+      type: api-action
+      business-object: request
+      connector-type: http
+      account-name: Account 1
+      actions:
+        INVOKE: {}
+    action-interface-3:
+      type: api-action
+      business-object: Contact
+      connector-type: salesforce
+      account-name: Account 1
+      actions:
+        UPSERTWITHWHERE: {}
+  assemblies:
+    assembly-1:
+      assembly:
+        execute:
+          - custom-action:
+              name: HTTP Invoke method 2
+              target:
+                $ref: '#/integration/action-interfaces/action-interface-2'
+              action: INVOKE
+              map:
+                mappings:
+                  - method:
+                      template: POST
+                  - requestHeaders:
+                      expression: >-
+                        {"Content-Type":"application/json","Authorization":"Basic
+                        YXBwY29udXNlcjAxOjlhNjEyNTIzLTI4MDMtNGZkMy1hNjBhLTExOGI5ZDg4ZTc2OA=="}
+                  - url:
+                      template: 'https://apis-3.appconnect.ibmcloud.com/hx4YCV/token'
+                $map: 'http://ibm.com/appconnect/map/v1'
+                input:
+                  - variable: Trigger
+                    $ref: '#/trigger/payload'
+          - parse:
+              name: JSON Parser Parse
+              parse-format: json
+              source:
+                template: '{{$HTTPInvokemethod2.responseBody}}'
+                input:
+                  - variable: Trigger
+                    $ref: '#/trigger/payload'
+                  - variable: HTTPInvokemethod2
+                    $ref: '#/node-output/HTTP Invoke method 2/response/payload'
+                  - variable: HTTPInvokemethod2Metadata
+                    $ref: '#/node-output/HTTP Invoke method 2/response'
+              sample-data: |-
+                {
+                    "bearer_token": "cb6c155c-5c67-44d3-9aa8-fe93f909ec16",
+                    "expiresin": "2073006",
+                    "userid": ""
+                }
+              output-schema:
+                $schema: 'http://json-schema.org/draft-04/schema#'
+                type: object
+                properties:
+                  bearer_token:
+                    type: string
+                  expiresin:
+                    type: string
+                  userid:
+                    type: string
+                title: Parsed JSON
+          - custom-action:
+              name: HTTP Invoke method
+              target:
+                $ref: '#/integration/action-interfaces/action-interface-1'
+              action: INVOKE
+              map:
+                mappings:
+                  - method:
+                      template: POST
+                  - requestBody:
+                      template: |
+                        {
+                            "firstName":"{{$Trigger.FirstName}}",
+                            "lastName":"{{$Trigger.LastName}}",
+                            "titleCode":"{{$lowercase($substringBefore($Trigger.Salutation, "."))}}",
+                            "line1":"{{$Trigger.MailingStreet}}",
+                            "line2":"",
+                            "town":"{{$Trigger.MailingCity}}",
+                            "postalCode":"{{$Trigger.MailingPostalCode}}",
+                            "country":{
+                                "isocode": "{{$uppercase($Trigger.MailingCountry)}}"
+                            },
+                            "region":{
+                                "isocode":"{{$uppercase($Trigger.MailingCountry)}}-{{$uppercase($Trigger.MailingState)}}"
+                            }
+                        }
+                  - requestHeaders:
+                      expression: >-
+                        {"Accept":"application/json","Content-Type":"application/json","Authorization":"Bearer
+                        "&$JSONParserParse.bearer_token&""}
+                  - url:
+                      template: >-
+                        http://cap-sg-prd-4.integration.ibmcloud.com:18447/rest/v2/electronics/users/keenreviewer11@hybris.com/addresses
+                $map: 'http://ibm.com/appconnect/map/v1'
+                input:
+                  - variable: Trigger
+                    $ref: '#/trigger/payload'
+                  - variable: HTTPInvokemethod2
+                    $ref: '#/node-output/HTTP Invoke method 2/response/payload'
+                  - variable: HTTPInvokemethod2Metadata
+                    $ref: '#/node-output/HTTP Invoke method 2/response'
+                  - variable: JSONParserParse
+                    $ref: '#/node-output/JSON Parser Parse/response/payload'
+          - parse:
+              name: JSON Parser Parse 2
+              parse-format: json
+              source:
+                template: '{{$HTTPInvokemethod.responseBody}}'
+                input:
+                  - variable: Trigger
+                    $ref: '#/trigger/payload'
+                  - variable: HTTPInvokemethod2
+                    $ref: '#/node-output/HTTP Invoke method 2/response/payload'
+                  - variable: HTTPInvokemethod2Metadata
+                    $ref: '#/node-output/HTTP Invoke method 2/response'
+                  - variable: JSONParserParse
+                    $ref: '#/node-output/JSON Parser Parse/response/payload'
+                  - variable: GmailCreatemessage
+                    $ref: '#/node-output/Gmail Create message/response/payload'
+                  - variable: HTTPInvokemethod
+                    $ref: '#/node-output/HTTP Invoke method/response/payload'
+                  - variable: HTTPInvokemethodMetadata
+                    $ref: '#/node-output/HTTP Invoke method/response'
+              sample-data: |-
+                {
+                    "country": {
+                        "isocode": "US"
+                    },
+                    "defaultAddress": false,
+                    "firstName": "Richard",
+                    "id": "8796094988311",
+                    "lastName": "Dean",
+                    "line1": "First St.",
+                    "line2": "",
+                    "postalCode": "10001",
+                    "region": {
+                        "isocode": "US-CA"
+                    },
+                    "town": "San Francisco"
+                }
+              output-schema:
+                $schema: 'http://json-schema.org/draft-04/schema#'
+                type: object
+                properties:
+                  country:
+                    type: object
+                    properties:
+                      isocode:
+                        type: string
+                  defaultAddress:
+                    type: boolean
+                  firstName:
+                    type: string
+                  id:
+                    type: string
+                  lastName:
+                    type: string
+                  line1:
+                    type: string
+                  line2:
+                    type: string
+                  postalCode:
+                    type: string
+                  region:
+                    type: object
+                    properties:
+                      isocode:
+                        type: string
+                  town:
+                    type: string
+                title: Parsed JSON
+          - upsert-action:
+              name: Salesforce Update or create Contact
+              target:
+                $ref: '#/integration/action-interfaces/action-interface-3'
+              map:
+                mappings:
+                  - ExternalContactReference__c:
+                      template: '{{$JSONParserParse2.id}}'
+                  - LastName:
+                      template: '{{$Trigger.LastName}}'
+                $map: 'http://ibm.com/appconnect/map/v1'
+                input:
+                  - variable: Trigger
+                    $ref: '#/trigger/payload'
+                  - variable: HTTPInvokemethod2
+                    $ref: '#/node-output/HTTP Invoke method 2/response/payload'
+                  - variable: HTTPInvokemethod2Metadata
+                    $ref: '#/node-output/HTTP Invoke method 2/response'
+                  - variable: JSONParserParse
+                    $ref: '#/node-output/JSON Parser Parse/response/payload'
+                  - variable: HTTPInvokemethod
+                    $ref: '#/node-output/HTTP Invoke method/response/payload'
+                  - variable: HTTPInvokemethodMetadata
+                    $ref: '#/node-output/HTTP Invoke method/response'
+                  - variable: JSONParserParse2
+                    $ref: '#/node-output/JSON Parser Parse 2/response/payload'
+              filter:
+                where:
+                  Id: '{{$Trigger.Id}}'
+                input:
+                  - variable: Trigger
+                    $ref: '#/trigger/payload'
+                  - variable: HTTPInvokemethod2
+                    $ref: '#/node-output/HTTP Invoke method 2/response/payload'
+                  - variable: HTTPInvokemethod2Metadata
+                    $ref: '#/node-output/HTTP Invoke method 2/response'
+                  - variable: JSONParserParse
+                    $ref: '#/node-output/JSON Parser Parse/response/payload'
+                  - variable: GmailCreatemessage
+                    $ref: '#/node-output/Gmail Create message/response/payload'
+                  - variable: HTTPInvokemethod
+                    $ref: '#/node-output/HTTP Invoke method/response/payload'
+                  - variable: HTTPInvokemethodMetadata
+                    $ref: '#/node-output/HTTP Invoke method/response'
+                  - variable: JSONParserParse2
+                    $ref: '#/node-output/JSON Parser Parse 2/response/payload'
+  name: Sync Contact
+models: {}

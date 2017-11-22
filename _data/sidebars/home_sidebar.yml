@@ -14,5 +14,8 @@ entries:
     - title: App Connect (Designer) Labs for Dreamforce 2017
       url: /df17labs_start.html
       output: web
+    - title: App Connect (Designer) Labs for FastStart 2018
+      url: /fs18labs_start.html
+      output: web
 
       

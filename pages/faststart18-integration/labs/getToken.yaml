@@ -1,0 +1,136 @@
+$integration: 'http://ibm.com/appconnect/integration/v2/integrationFile'
+integration:
+  type: api
+  trigger-interfaces:
+    trigger-interface-1:
+      triggers:
+        createToken:
+          assembly:
+            $ref: '#/integration/assemblies/assembly-1'
+          input-context:
+            data: token
+          output-context:
+            data: token
+      options:
+        resources:
+          - business-object: token
+            model:
+              $ref: '#/models/token'
+            triggers:
+              create: createToken
+      type: api-trigger
+  action-interfaces:
+    action-interface-1:
+      type: api-action
+      business-object: request
+      connector-type: http
+      account-name: Account 1
+      actions:
+        INVOKE: {}
+  assemblies:
+    assembly-1:
+      assembly:
+        execute:
+          - custom-action:
+              name: HTTP Invoke method
+              target:
+                $ref: '#/integration/action-interfaces/action-interface-1'
+              action: INVOKE
+              map:
+                mappings:
+                  - method:
+                      template: POST
+                  - requestHeaders:
+                      expression: >-
+                        {"Accept":"application/json","Content-Type":"application/json"}
+                  - url:
+                      template: >-
+                        http://cap-sg-prd-4.integration.ibmcloud.com:18447/authorizationserver/oauth/token?client_id=resttest&client_secret=WaBbvHBxECw6ZGkz&grant_type=password&username=keenreviewer11@hybris.com&password=2LFPz45d3QskX65Y
+                $map: 'http://ibm.com/appconnect/map/v1'
+                input:
+                  - variable: Request
+                    $ref: '#/trigger/payload'
+          - parse:
+              name: JSON Parser Parse
+              parse-format: json
+              source:
+                template: '{{$HTTPInvokemethod.responseBody}}'
+                input:
+                  - variable: Request
+                    $ref: '#/trigger/payload'
+                  - variable: HTTPInvokemethod
+                    $ref: '#/node-output/HTTP Invoke method/response/payload'
+                  - variable: HTTPInvokemethodMetadata
+                    $ref: '#/node-output/HTTP Invoke method/response'
+              sample-data: |
+                {
+                    "access_token": "...",
+                    "token_type": "bearer",
+                    "refresh_token": "...",
+                    "expires_in": 3599,
+                    "scope": "basic"
+                }
+              output-schema:
+                $schema: 'http://json-schema.org/draft-04/schema#'
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                  token_type:
+                    type: string
+                  refresh_token:
+                    type: string
+                  expires_in:
+                    type: number
+                  scope:
+                    type: string
+                title: Parsed JSON
+          - response:
+              name: response-1
+              reply-maps:
+                - title: token successfully created
+                  status-code: 201
+                  map:
+                    $map: 'http://ibm.com/appconnect/map/v1'
+                    input:
+                      - variable: Request
+                        $ref: '#/trigger/payload'
+                      - variable: HTTPInvokemethod
+                        $ref: '#/node-output/HTTP Invoke method/response/payload'
+                      - variable: HTTPInvokemethodMetadata
+                        $ref: '#/node-output/HTTP Invoke method/response'
+                      - variable: JSONParserParse
+                        $ref: '#/node-output/JSON Parser Parse/response/payload'
+                    mappings:
+                      - bearer_token:
+                          template: '{{$JSONParserParse.access_token}}'
+                      - expiresin:
+                          template: '{{$JSONParserParse.expires_in}}'
+                      - userid:
+                          template: '{{$Request.userid}}'
+                  input: []
+  name: getToken
+models:
+  token:
+    name: token
+    properties:
+      userid:
+        type: string
+        required: false
+        id: true
+      password:
+        type: string
+        required: false
+        id: false
+      bearer_token:
+        type: string
+        required: false
+        id: false
+      expiresin:
+        type: string
+        required: false
+        id: false
+    plural: token
+    description: ' '
+    operations:
+      create: '#/integration/assemblies/assembly-1'
