@@ -1,7 +1,7 @@
 ---
 title: Labs Introduction
 toc: false
-sidebar: fs18labs_sidebar
+sidebar: fs18labs
 permalink: fs18labs_start.html
 summary: This guide provides lab instructions for App Connect at FastStart 2018.
 ---
