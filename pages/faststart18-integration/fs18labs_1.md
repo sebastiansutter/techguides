@@ -3,7 +3,7 @@ title: Lab 1
 toc: false
 sidebar: fs18labs
 permalink: fs18labs_1.html
-summary: Simple guided application-to-application integration
+summary: FastStart Cloud Integration Project Tutorial
 ---
  
 # Integration Scenario 1 – Connect your applications
@@ -80,8 +80,65 @@ Note also you will need your own Salesforce.com account.  You can get one for fr
 	* URL: your URL for the exposed API in the previous step e.g. `https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/1234567889009293939399/abcDEF0/token`
 	* Request Headers: `{"Content-Type":"application/json","X-IBM-Client-ID":"yourclientidgoeshere"}` Be sure to replace the `X-IBM-Client-ID` with your ID from the step previous.
 	* Body: Leave Blank
-6. Configure the `HTTP Invoke` with the following values:
-7. 
+6. Next Drop in a `JSON Parse`
+7. Configure the `JSON Parse` by pasting this value into the JSONInput: `{{$HTTPInvokemethod.responseBody}}` you can copy and paste this or browse using the "3 bar" icon to the right of the text field and the bring up the drop down menu for the `HTTP Invoke Method` and then select the `Response Body`.
+8. Use the following JSON Sample for the Output Schema    
+>`{
+    "bearer_token": "cb6c155c-5c67-44d3-9aa8-fe93f909ec16",    
+    "expiresin": "2073006",    
+    "userid": ""    
+ }`
+6. Click `Generate Schema` to generate the JSON Schema for the response.
+8. Add another `HTTP Invoke` after the `JSON Parse`  This will be the Invoke operation that will retrieve all of the Contacts from SAP Hybris.  Configure the operation as follows:
+	* HTTP Method:  `GET`
+	* Request Headers:  `{"Accept":"application/json","Authorization":"Bearer "&$JSONParserParse.bearer_token&""}`
+	* Body: Leave Blank
+6. Drop another `JSON Parse` Operation.  
+7.  Configure the `JSON Parse` by pasting this value into the JSONInput: `{{$HTTPInvokemethod2.responseBody}}` you can copy and paste this or browse using the "3 bar" icon to the right of the text field and the bring up the drop down menu for the `HTTP Invoke Method 2` and then select the `Response Body`. 
+8. Use the following JSON Sample for the `JSON Parse` #2.  Again, this is a snippet of the output coming from SAP Hybris:
+>`{ 
+    "addresses": [ 
+        {
+            "country": {  
+                "isocode": "US"
+            },
+            "defaultAddress": false,
+            "firstName": "Richard",
+            "id": "8796095676439",
+            "lastName": "Dean",
+            "line1": "First St.",
+            "line2": "",
+            "postalCode": "10001", 
+            "region": {
+                "isocode": "US-CA"
+            },
+            "town": "San Francisco"    
+        },
+        {
+            "country": {
+                "isocode": "US"
+            },
+            "defaultAddress": false,
+            "firstName": "Mike",
+            "id": "8796224651287",
+            "lastName": "Alley",
+            "line1": "1061 W Addison Street",
+            "line2": "",
+            "postalCode": "60613",
+            "region": {
+                "isocode": "US-IL"
+            },
+            "town": "Chicago" 
+}
+]
+}`
+6. Click `Generate Schema` to generate the JSON Schema for the output.
+7. Add a `ForEach` operation after the previous step.  Here we will iterate through each record returned back from SAP Hybris 	
+	
+	
+	
+	
+	
 ## Create the Synchronization Flow that will sync Contacts from Saleforce into Addresses in SAP Hybris on an ongoing basis
 Let us set up a new Flow that will take contacts we have in Salesforce, and take the new Contacts that are created, and have them automatically create a new Address in SAP Hybris for that Contact
 
