@@ -5,7 +5,6 @@ sidebar: fs18labs
 permalink: fs18labs_1.html
 summary: Simple guided application-to-application integration
 ---
- 
 # Integration Scenario 1 – Connect your applications
 
 ## Overview
