@@ -28,6 +28,8 @@ They sell through a network of small independent dealers, and target the mid to 
 
 ***Integration Scenario – Migrate your data from on-premise applications into the cloud, and set up ongoing synchronization of Objects***
 
-![](./images/df17labs/cassie.png) Cassie has just been assigned to a new project team where she has taken on a new role as an integration developer. The project has very recently gone live with SAP Hybris, and the decision was made by the project lead to use Salesforce.com as the CRM System of Record, and to make sure that Hybris and Salesforce are keeping information in sync.
+![](./images/df17labs/cassie.png)
+
+Cassie has just been assigned to a new project team where she has taken on a new role as an integration developer. The project has very recently gone live with SAP Hybris, and the decision was made by the project lead to use Salesforce.com as the CRM System of Record, and to make sure that Hybris and Salesforce are keeping information in sync.
 
 The exercises are based upon Chrome as the default browser so it is suggested this be used.
