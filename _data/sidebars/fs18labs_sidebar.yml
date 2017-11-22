@@ -8,6 +8,6 @@ entries:
   - title: App Connect (Studio) Demo for FastStart 2018
     output: web
     folderitems:
-    - title: Introduction
-      url: /fs18labs_start.html
+    - title: Lab 1
+      url: /fs18labs_1.html
       output: web
