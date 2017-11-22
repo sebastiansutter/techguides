@@ -43,19 +43,19 @@ Note also you will need your own Salesforce.com account.  You can get one for fr
 9. Use the following JSON sample for the response:
 
 >{  
-	>"access_token": "...",  
-	>"token_type": "bearer",  
-	>"refresh_token": "...",  
-	>"expires_in": 3599,  
-	>"scope": "basic"  
+	"access_token": "...",  
+	"token_type": "bearer",  
+	"refresh_token": "...",  
+	"expires_in": 3599,  
+	"scope": "basic"  
 >}  
 
 10. Click on 	`Generate Schema` to populate the JSON Schema section of the operation
 
 11. Back to the main flow, click the `Response` operation to populate the JSON response. Set the following variables.  You can copy and paste the following, or use the browse capability to select the proper variable
-	* userid -> `{{$Request.userid}}`
-	* bearertoken -> `{{$JSONParserParse.access_token}}`
-	* expiresin -> `{{$JSONParserParse.expires_in}}`
+	* userid -> `$Request.userid`
+	* bearertoken -> `$JSONParserParse.access_token`
+	* expiresin -> `$JSONParserParse.expires_in`
 12. You can now start up the Flow by clicking the `Done` button then the icon in the upper right hand corner that looks like 3 dots.  Click that and then select `Start API` you will see that the status will change to `Running`.
 13. Click on the Manage section of the new flow you created.  Here you will see the information about how to use the IBM Cloud Native API Management capability.
 14. Scroll down to `Sharing Outside of Bluemix Organization` and click on `Create API Key`.  
@@ -97,10 +97,10 @@ Note also you will need your own Salesforce.com account.  You can get one for fr
 7.  Configure the `JSON Parse` by pasting this value into the JSONInput: `{{$HTTPInvokemethod2.responseBody}}` you can copy and paste this or browse using the "3 bar" icon to the right of the text field and the bring up the drop down menu for the `HTTP Invoke Method 2` and then select the `Response Body`. 
 8. Use the following JSON Sample for the `JSON Parse` #2.  Again, this is a snippet of the output coming from SAP Hybris:
 >`{ 
->    "addresses": [ 
->        {
->            "country": {  
->                "isocode": "US"
+    "addresses": [ 
+       {
+           "country": {  
+               "isocode": "US"
             },
             "defaultAddress": false,
             "firstName": "Richard",
@@ -131,9 +131,12 @@ Note also you will need your own Salesforce.com account.  You can get one for fr
             "town": "Chicago" 
 }
 ]
-}`
+>}`
 6. Click `Generate Schema` to generate the JSON Schema for the output.
-7. Add a `ForEach` operation after the previous step.  Here we will iterate through each record returned back from SAP Hybris 	
+7. Add a `ForEach` operation after the previous step.  Here we will iterate through each record returned back from SAP Hybris.
+8. Configure the `ForEach` by selecting the following variable collection to iterate through:  `$JSONParserParse2.addresses`.  You can also manually browse again by selecting the `addresses` object from the JSON Parse #2.	
+9. Set the Display Name to something meaningful to represent what is being looped through.  `Address` works fine here.
+10. Set the Radio Button for the collection processing to reflect `Process items in parallel in any order (optimized for best performance)`
 	
 	
 	
