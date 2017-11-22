@@ -4,7 +4,6 @@ entries:
 - title: sidebar
   levels: one
   folders:
-
   - title: FastStart 2018 Labs for App Connect Designer
     output: web
     folderitems:
