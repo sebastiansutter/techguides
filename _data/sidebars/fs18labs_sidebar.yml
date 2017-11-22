@@ -5,7 +5,7 @@ entries:
   levels: one
   folders:
 
-  - title: FastStart 2018 Labs for App Connect Designer running on IBM Cloud
+  - title: FastStart 2018 Labs for App Connect Designer
     output: web
     folderitems:
     - title: Lab 1
