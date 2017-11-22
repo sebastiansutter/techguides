@@ -41,7 +41,7 @@ Note also you will need your own Salesforce.com account.  You can get one for fr
 8. Add a `JSONParse` operation after the `HTTPInvoke`
 9. The `JSONInput` to use will be the `Response Body` found in the `HTTP/Invoke Method`.  Click on the triple bar Icon to the right of the text field to select the proper input variable.
 9. Use the following JSON sample for the response:
->
+
 >{  
 	>"access_token": "...",  
 	>"token_type": "bearer",  
@@ -84,10 +84,10 @@ Note also you will need your own Salesforce.com account.  You can get one for fr
 7. Configure the `JSON Parse` by pasting this value into the JSONInput: `{{$HTTPInvokemethod.responseBody}}` you can copy and paste this or browse using the "3 bar" icon to the right of the text field and the bring up the drop down menu for the `HTTP Invoke Method` and then select the `Response Body`.
 8. Use the following JSON Sample for the Output Schema    
 >`{
-    "bearer_token": "cb6c155c-5c67-44d3-9aa8-fe93f909ec16",    
-    "expiresin": "2073006",    
-    "userid": ""    
- }`
+    >"bearer_token": "cb6c155c-5c67-44d3-9aa8-fe93f909ec16",    
+    >"expiresin": "2073006",    
+    >"userid": ""    
+>}`
 6. Click `Generate Schema` to generate the JSON Schema for the response.
 8. Add another `HTTP Invoke` after the `JSON Parse`  This will be the Invoke operation that will retrieve all of the Contacts from SAP Hybris.  Configure the operation as follows:
 	* HTTP Method:  `GET`
@@ -97,10 +97,10 @@ Note also you will need your own Salesforce.com account.  You can get one for fr
 7.  Configure the `JSON Parse` by pasting this value into the JSONInput: `{{$HTTPInvokemethod2.responseBody}}` you can copy and paste this or browse using the "3 bar" icon to the right of the text field and the bring up the drop down menu for the `HTTP Invoke Method 2` and then select the `Response Body`. 
 8. Use the following JSON Sample for the `JSON Parse` #2.  Again, this is a snippet of the output coming from SAP Hybris:
 >`{ 
-    "addresses": [ 
-        {
-            "country": {  
-                "isocode": "US"
+>    "addresses": [ 
+>        {
+>            "country": {  
+>                "isocode": "US"
             },
             "defaultAddress": false,
             "firstName": "Richard",
