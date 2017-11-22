@@ -1,8 +1,8 @@
 ---
 title: Lab 1
 toc: false
-sidebar: faststart18labs
-permalink: fs18_int_labs_1.html
+sidebar: fs18labs
+permalink: fs18labs_1.html
 summary: Simple guided application-to-application integration
 ---
  
