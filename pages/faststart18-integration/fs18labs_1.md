@@ -5,6 +5,7 @@ sidebar: fs18labs
 permalink: fs18labs_1.html
 summary: Simple guided application-to-application integration
 ---
+ 
 # Integration Scenario 1 – Connect your applications
 
 ## Overview
@@ -63,7 +64,7 @@ Note also you will need your own Salesforce.com account.  You can get one for fr
 17. Be sure to note the following information about your service, as you will be calling it in other portions of this lab.
 
 * Specific items to note and keep handy for later are:
-	* Route to invoke your API (you can find this in the manage section) You will also 	need to append the model name to the end of the URL - e.g. 	`https://	service.us.apiconnect.ibmcloud.com/gws/apigateway/api/	1234567889009293939399/abcDEF0/model` 
+	* Route to invoke your API (you can find this in the manage section) You will also 	need to append the model name to the end of the URL - e.g. `https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/1234567889009293939399/abcDEF0/model` 
 	* Model name in this case is, 	`token`.  Note your URL will be different.
 	* The API Key, which can be found at the bottom section of the manage screen under the `Sharing Outside of Cloud Foundry organization` heading. 
 
@@ -75,8 +76,12 @@ Note also you will need your own Salesforce.com account.  You can get one for fr
 4. Click on `Operations` and then `Implement Flow`
 5. Add a `HTTP Invoke` to your flow for the call to get the Oauth Token
 6. Configure the `HTTP Invoke` with the following values:
-	* 
-
+	* HTTP Method: `POST`
+	* URL: your URL for the exposed API in the previous step e.g. `https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/1234567889009293939399/abcDEF0/token`
+	* Request Headers: `{"Content-Type":"application/json","X-IBM-Client-ID":"yourclientidgoeshere"}` Be sure to replace the `X-IBM-Client-ID` with your ID from the step previous.
+	* Body: Leave Blank
+6. Configure the `HTTP Invoke` with the following values:
+7. 
 ## Create the Synchronization Flow that will sync Contacts from Saleforce into Addresses in SAP Hybris on an ongoing basis
 Let us set up a new Flow that will take contacts we have in Salesforce, and take the new Contacts that are created, and have them automatically create a new Address in SAP Hybris for that Contact
 
