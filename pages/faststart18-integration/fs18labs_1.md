@@ -18,6 +18,9 @@ The project requirements are broken down into 2 phases.  Phase 1 is the migratio
 
 Note also you will need your own Salesforce.com account.  You can get one for free from www.sforce.com.  This will be your own permanent developer account.  Note - Make sure you have created a developer account and not a trial account.  Trial accounts to do not have access to the Saleforce API, and thus will not work with AppConnect.
 
+#### Prepare your Salesforce.com account to be used with the lab
+Once you get your Developer Account set up for Salesforce.com, you will need to add a custom field to your Contact object to support the integration scenario. Instructions on how to do this can be found here:  [https://help.salesforce.com/articleView?id=adding_fields.htm&type=0]().  Call this custom field `ExternalContactID`.
+
  
 ## Log into IBM App Connect and create the OAuth Token Generator API for SAP Hybris
 #### The SAP Hybris system you are using has its own API secured using OAuth.  You will need to have your integration get an Oauth token before making any subsequent API Calls.  The steps below will guide you through the process of creating an API that will allow you do this inline with your flow
@@ -137,7 +140,25 @@ Note also you will need your own Salesforce.com account.  You can get one for fr
 8. Configure the `ForEach` by selecting the following variable collection to iterate through:  `$JSONParserParse2.addresses`.  You can also manually browse again by selecting the `addresses` object from the JSON Parse #2.	
 9. Set the Display Name to something meaningful to represent what is being looped through.  `Address` works fine here.
 10. Set the Radio Button for the collection processing to reflect `Process items in parallel in any order (optimized for best performance)`
-	
+11. The ForEach will create a block in you flow.  Here you can add operations that will be executed once for each iteration of the object (e.g. Address).  Add a Salesforce operation to create a new contact
+12. Map the following fields into the Contact object, note that the input is not coming from the JSONParse of the original call to Hybris, rather coming from the `Foreachitem` variable:
+	* Last Name -> `$Foreachitem.lastName`
+	* First Name -> `$Foreachitem.firstName`
+	* Mailing Street -> `$Foreachitem.line1`
+	* Mailing City -> `$Foreachitem.town`
+	* Mailing State/Province -> `{{$substringAfter($Foreachitem.region.isocode, "-")}}`
+	* Mailing Zip/Postal Code -> `$Foreachitem.postalCode`
+	* Mailing Country -> `$Foreachitem.country.isocode`
+	* ExternalContactReference -> `$Foreachitem.id`
+1. Lastly, modify the `Response` operation to provide a total count of all the fields loaded.  Set the value of the `Numberofcontactssynced` value to `{{$count($JSONParserParse2.addresses)}}`
+2. 	12. You can now start up the Flow by clicking the `Done` button then the icon in the upper right hand corner that looks like 3 dots.  Click that and then select `Start API` you will see that the status will change to `Running`.
+13. Click on the Manage section of the new flow you created.  Here you will see the information about how to use the IBM Cloud Native API Management capability.
+14. Scroll down to `Sharing Outside of Bluemix Organization` and click on `Create API Key`.  
+15. Copy the `API KEY` and then click on the `API PORTAL LINK` link. You can explore your API in the portal and invoke it by clicking on `Try it`.
+16. To call the API, you will need to paste in your `X-IBM-Client-ID` and then on `Call Operation` if it is successful, you will see the JSON output with your token id.
+17. Upon completion, if successful, some contacts will be loaded into your Salesforce account.  You will also see a numeric value in the `Numberofcontactssynced` value.  
+
+#### This completes the initial load of contacts.  The next step now is to create a flow that will automatically synchronize newly created Contacts in Salesforce.com into SAP Hybris. 
 	
 	
 	
