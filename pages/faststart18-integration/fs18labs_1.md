@@ -197,15 +197,15 @@ Let us set up a new Flow that will take contacts we have in Salesforce, and take
 	* Be sure to replace the `X-IBM-Client-ID` with your Client ID.
 	* Body:
 
-`{"firstName":"{{$Trigger.FirstName}}",`   
-`"lastName":"{{$Trigger.LastName}}",`   
-`"titleCode":"{{$lowercase($substringBefore($Trigger.Salutation, "."))}}",`   
-`"line1":"{{$Trigger.MailingStreet}}",`   
+`{"firstName":"{{&#36;Trigger.FirstName}}",`   
+`"lastName":"{{&#36;Trigger.LastName}}",`   
+`"titleCode":"{{&#36;lowercase($substringBefore($Trigger.Salutation, "."))}}",`   
+`"line1":"{{&#36;Trigger.MailingStreet}}",`   
 `"line2":"",`      
-`"town":"{{$Trigger.MailingCity}}",`   
-`"postalCode":"{{$Trigger.MailingPostalCode}}",`      
-`"country":{"isocode": "{{$uppercase($Trigger.MailingCountry)}}"},`   
-`"region":{"isocode":"{{$uppercase($Trigger.MailingCountry)}}-{{$uppercase($Trigger.MailingState)}}"}`   
+`"town":"{{&336;Trigger.MailingCity}}",`   
+`"postalCode":"{{&#36;Trigger.MailingPostalCode}}",`      
+`"country":{"isocode": "{{&#36;uppercase($Trigger.MailingCountry)}}"},`   
+`"region":{"isocode":"{{&#36;uppercase($Trigger.MailingCountry)}}-{{&#36;uppercase(&#36;Trigger.MailingState)}}"}`   
 `}`   
 
 6. Click `Generate Schema` to generate the JSON Schema for the response.
