@@ -156,7 +156,11 @@ Let us set up a new Flow that will take contacts we have in Salesforce, and take
 6. Configure the `HTTP Invoke` with the following values:
 	* HTTP Method: `POST`
 	* URL: your URL for the exposed API in the previous step e.g. `https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/1234567889009293939399/abcDEF0/token`
-	* Request Headers: `{"Content-Type":"application/json","X-IBM-Client-ID":"yourclientidgoeshere"}` Be sure to replace the `X-IBM-Client-ID` with your Client ID.
+	* Request Headers:
+	```
+	 {"Content-Type":"application/json","X-IBM-Client-ID":"yourclientidgoeshere"}
+```
+	* Be sure to replace the `X-IBM-Client-ID` with your Client ID.
 	* Body: Leave Blank
 6. Next Drop in a `JSON Parse`
 7. Configure the `JSON Parse` by pasting this value into the JSONInput: `{{$HTTPInvokemethod.responseBody}}` you can copy and paste this or browse using the "3 bar" icon to the right of the text field and the bring up the drop down menu for the `HTTP Invoke Method` and then select the `Response Body`.
@@ -170,20 +174,24 @@ Let us set up a new Flow that will take contacts we have in Salesforce, and take
 7. Add another `HTTP Invoke` to the flow.  This will be the REST call to SAP Hybris to add the new Address based upon the Contact info coming from Salesforce.
 * HTTP Method: `POST`
 	* URL: `http://cap-sg-prd-4.integration.ibmcloud.com:18447/rest/v2/electronics/users/keenreviewer11@hybris.com/addresses`
-	* Request Headers: 
-	>{"Accept":"application/json","Content-Type":"application/json","Authorization":"Bearer "&$JSONParserParse.bearer_token&""} 
+	* Request Headers:
+``` 
+	{"Accept":"application/json","Content-Type":"application/json","Authorization":"Bearer "&$JSONParserParse.bearer_token&""}
+```	 
 	* Be sure to replace the `X-IBM-Client-ID` with your Client ID.
-	* Body:   
->{"firstName":"{{$Trigger.FirstName}}",
->"lastName":"{{$Trigger.LastName}}",
->"titleCode":"{{$lowercase($substringBefore($Trigger.Salutation, "."))}}",
->"line1":"{{$Trigger.MailingStreet}}",
->"line2":"",   
->"town":"{{$Trigger.MailingCity}}",
->"postalCode":"{{$Trigger.MailingPostalCode}}",   
->"country":{"isocode": "{{$uppercase($Trigger.MailingCountry)}}"},
-> "region":{"isocode":"{{$uppercase($Trigger.MailingCountry)}}-{{$uppercase($Trigger.MailingState)}}"}   
->}   
+	* Body:
+```   
+{"firstName":"{{$Trigger.FirstName}}",   
+"lastName":"{{$Trigger.LastName}}",   
+"titleCode":"{{$lowercase($substringBefore($Trigger.Salutation, "."))}}",   
+"line1":"{{$Trigger.MailingStreet}}",   
+"line2":"",      
+"town":"{{$Trigger.MailingCity}}",   
+"postalCode":"{{$Trigger.MailingPostalCode}}",      
+"country":{"isocode": "{{$uppercase($Trigger.MailingCountry)}}"},   
+"region":{"isocode":"{{$uppercase($Trigger.MailingCountry)}}-{{$uppercase($Trigger.MailingState)}}"}   
+}   
+```   
 6. Click `Generate Schema` to generate the JSON Schema for the response.
 7. Add a `JSON Parse` after the Invoke.  This will parse the Response in Hybris so we can sync back the created Address record back into Salesforce
 	* Set the `JSONInput` to $HTTPInvokemethod.responseBody
