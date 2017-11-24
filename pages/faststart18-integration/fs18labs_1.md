@@ -96,28 +96,28 @@ Once you get your Developer Account set up for Salesforce.com, you will need to 
 6. Drop another `JSON Parse` Operation.  
 7.  Configure the `JSON Parse` by pasting this value into the JSONInput: `{{$HTTPInvokemethod2.responseBody}}` you can copy and paste this or browse using the "3 bar" icon to the right of the text field and the bring up the drop down menu for the `HTTP Invoke Method 2` and then select the `Response Body`. 
 8. Use the following JSON Sample for the `JSON Parse` #2.  Again, this is a snippet of the output coming from SAP Hybris:
->`{ "addresses": 
->[ {"country": {  "isocode": "US"},
->"defaultAddress": false,
->"firstName": "Richard",
->"id": "8796095676439",
->"lastName": "Dean",
->"line1": "First St.",
->"line2": "",
->"postalCode": "10001", 
->"region": {"isocode": "US-CA"},
->"town": "San Francisco"},
->{"country": {"isocode": "US"},
->"defaultAddress": false,
->"firstName": "Mike",
->"id": "8796224651287",
->"lastName": "Alley",
->"line1": "1061 W Addison Street",
->"line2": "",
->"postalCode": "60613",
->"region": {"isocode": "US-IL"},
->"town": "Chicago"}]
->}
+>`{ "addresses":     
+>[ {"country": {  "isocode": "US"},    
+>"defaultAddress": false,   
+>"firstName": "Richard",   
+>"id": "8796095676439",   
+>"lastName": "Dean",   
+>"line1": "First St.",   
+>"line2": "",   
+>"postalCode": "10001",    
+>"region": {"isocode": "US-CA"},   
+>"town": "San Francisco"},   
+>{"country": {"isocode": "US"},   
+>"defaultAddress": false,   
+>"firstName": "Mike",   
+>"id": "8796224651287",   
+>"lastName": "Alley",   
+>"line1": "1061 W Addison Street",   
+>"line2": "",   
+>"postalCode": "60613",   
+>"region": {"isocode": "US-IL"},   
+>"town": "Chicago"}]   
+>}   
 6. Click `Generate Schema` to generate the JSON Schema for the output.
 7. Add a `ForEach` operation after the previous step.  Here we will iterate through each Address record returned back from SAP Hybris.
 8. Configure the `ForEach` by selecting the following variable collection to iterate through:  `$JSONParserParse2.addresses`.  You can also manually browse again by selecting the `Addresses` object from the JSON Parse #2.	
@@ -161,47 +161,66 @@ Let us set up a new Flow that will take contacts we have in Salesforce, and take
 6. Next Drop in a `JSON Parse`
 7. Configure the `JSON Parse` by pasting this value into the JSONInput: `{{$HTTPInvokemethod.responseBody}}` you can copy and paste this or browse using the "3 bar" icon to the right of the text field and the bring up the drop down menu for the `HTTP Invoke Method` and then select the `Response Body`.
 8. Use the following JSON Sample for the Output Schema    
->`{
-	"bearer_token": "cb6c155c-5c67-44d3-9aa8-fe93f909ec16",    
-	"expiresin": "2073006",    
-	"userid": ""    
->}`
+>{   
+	"bearer_token": "cb6c155c-5c67-44d3-9aa8-fe93f909ec16",       
+	"expiresin": "2073006",   
+	"userid": ""   
+>}   
 6. Click `Generate Schema` to generate the JSON Schema for the response.
 7. Add another `HTTP Invoke` to the flow.  This will be the REST call to SAP Hybris to add the new Address based upon the Contact info coming from Salesforce.
 * HTTP Method: `POST`
 	* URL: `http://cap-sg-prd-4.integration.ibmcloud.com:18447/rest/v2/electronics/users/keenreviewer11@hybris.com/addresses`
 	* Request Headers: `{"Accept":"application/json","Content-Type":"application/json","Authorization":"Bearer "&$JSONParserParse.bearer_token&""}` Be sure to replace the `X-IBM-Client-ID` with your Client ID.
-	* Body: 
+	* Body:   
 >{
-    "firstName":"{{$Trigger.FirstName}}",
-    "lastName":"{{$Trigger.LastName}}",
-    "titleCode":"{{$lowercase($substringBefore($Trigger.Salutation, "."))}}",
-    "line1":"{{$Trigger.MailingStreet}}",
-    "line2":"",
-    "town":"{{$Trigger.MailingCity}}",
-    "postalCode":"{{$Trigger.MailingPostalCode}}",
-    "country":{
-        "isocode": "{{$uppercase($Trigger.MailingCountry)}}"
-    },
-    "region":{
-        "isocode":"{{$uppercase($Trigger.MailingCountry)}}-{{$uppercase($Trigger.MailingState)}}"
-    }
->}
+"firstName":"{{$Trigger.FirstName}}",   
+"lastName":"{{$Trigger.LastName}}",   
+"titleCode":"{{$lowercase($substringBefore($Trigger.Salutation, "."))}}",   
+"line1":"{{$Trigger.MailingStreet}}",   
+"line2":"",   
+"town":"{{$Trigger.MailingCity}}",   
+"postalCode":"{{$Trigger.MailingPostalCode}}",   
+"country":{   
+"isocode": "{{$uppercase($Trigger.MailingCountry)}}"},   
+"region":{   
+"isocode":"{{$uppercase($Trigger.MailingCountry)}}-{{$uppercase($Trigger.MailingState)}}"}   
+>}   
 6. Click `Generate Schema` to generate the JSON Schema for the response.
 7. Add a `JSON Parse` after the Invoke.  This will parse the Response in Hybris so we can sync back the created Address record back into Salesforce
 	* Set the `JSONInput` to $HTTPInvokemethod.responseBody
 	* Set the Sample JSON Response to the following:
+>{"country": {"isocode": "US"},   
+    "defaultAddress": false,   
+    "firstName": "Richard",   
+    "id": "8796094988311",   
+    "lastName": "Dean",   
+    "line1": "First St.",   
+    "line2": "",   
+    "postalCode": "10001",   
+    "region": {   
+        "isocode": "US-CA"   
+    },   
+    "town": "San Francisco"   
+>}   
 	* Select `Generate Schema` to generate the Output Schema.
-
- 
-You are now ready to test your flow.
-
-## Let’s try it out!
+6. We will now write back the Address ID back into Salesforce.  For the last operation, go ahead add a Salesfore `Update or Create` operation. Point it to the `Contact` Object.
+7. Map the following fields:
+	* Last Name:  `$Trigger.LastName`
+	* ExternalContactId: `$JSONParserParse2.id` 
+7.  You are now ready to test your flow.  Enable the flow
+8. Create a new Contact in Salesforce.  Make sure the following values have data in them before saving the record in Salesforce.
+	* Salutation (either Mr. or Mrs.)
+	* First Name
+	* Last Name
+	* Mailing Address
+	* Mailing City
+	* Mailing Postal Code
+	* Mailing Country
 
 
 ## Thank You!
 
-In this Lab you’ve seen how IBM App Connect provides features for simple, guided app-to-app integration. With IBM App Connect you can link your applications so that when something happens in one application, other relevant applications get updated automatically, so you can:
+In this Lab you’ve seen how IBM App Connect provides features for simple, guided app-to-app integration. With this lab, you covered the two primary patterns that App Connect supports:  Exposing applications as APIs and Event based integration.  The primary value of the App Connect platform can be summarized below:
 
 * Stop wasting time on repetitive manual tasks
 * Use this intuitive business tool to take back control
