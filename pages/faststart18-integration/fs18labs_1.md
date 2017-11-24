@@ -170,7 +170,9 @@ Let us set up a new Flow that will take contacts we have in Salesforce, and take
 7. Add another `HTTP Invoke` to the flow.  This will be the REST call to SAP Hybris to add the new Address based upon the Contact info coming from Salesforce.
 * HTTP Method: `POST`
 	* URL: `http://cap-sg-prd-4.integration.ibmcloud.com:18447/rest/v2/electronics/users/keenreviewer11@hybris.com/addresses`
-	* Request Headers: `{"Accept":"application/json","Content-Type":"application/json","Authorization":"Bearer "&$JSONParserParse.bearer_token&""}` Be sure to replace the `X-IBM-Client-ID` with your Client ID.
+	* Request Headers: 
+	>{"Accept":"application/json","Content-Type":"application/json","Authorization":"Bearer "&$JSONParserParse.bearer_token&""} 
+	* Be sure to replace the `X-IBM-Client-ID` with your Client ID.
 	* Body:   
 >{
 "firstName":"{{$Trigger.FirstName}}",   
@@ -189,7 +191,7 @@ Let us set up a new Flow that will take contacts we have in Salesforce, and take
 7. Add a `JSON Parse` after the Invoke.  This will parse the Response in Hybris so we can sync back the created Address record back into Salesforce
 	* Set the `JSONInput` to $HTTPInvokemethod.responseBody
 	* Set the Sample JSON Response to the following:
->{"country": {"isocode": "US"},   
+> `{"country": {"isocode": "US"},   
     "defaultAddress": false,   
     "firstName": "Richard",   
     "id": "8796094988311",   
@@ -201,7 +203,7 @@ Let us set up a new Flow that will take contacts we have in Salesforce, and take
         "isocode": "US-CA"   
     },   
     "town": "San Francisco"   
->}   
+>}`   
 	* Select `Generate Schema` to generate the Output Schema.
 6. We will now write back the Address ID back into Salesforce.  For the last operation, go ahead add a Salesfore `Update or Create` operation. Point it to the `Contact` Object.
 7. Map the following fields:
