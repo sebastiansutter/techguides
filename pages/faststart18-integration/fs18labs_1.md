@@ -96,35 +96,27 @@ Once you get your Developer Account set up for Salesforce.com, you will need to 
 6. Drop another `JSON Parse` Operation.  
 7.  Configure the `JSON Parse` by pasting this value into the JSONInput: `{{$HTTPInvokemethod2.responseBody}}` you can copy and paste this or browse using the "3 bar" icon to the right of the text field and the bring up the drop down menu for the `HTTP Invoke Method 2` and then select the `Response Body`. 
 8. Use the following JSON Sample for the `JSON Parse` #2.  Again, this is a snippet of the output coming from SAP Hybris:
->`{ 
-	"addresses": [ 
-		{
-			"country": {  
-          "isocode": "US"},
-            "defaultAddress": false,
-            "firstName": "Richard",
-            "id": "8796095676439",
-            "lastName": "Dean",
-            "line1": "First St.",
-            "line2": "",
-            "postalCode": "10001", 
-            "region": {"isocode": "US-CA"},
-            "town": "San Francisco"    
-        },
-        {
-            "country": {
-            "isocode": "US"},
-            	"defaultAddress": false,
-            	"firstName": "Mike",
-            	"id": "8796224651287",
-            	"lastName": "Alley",
-            	"line1": "1061 W Addison Street",
-            	"line2": "",
-            	"postalCode": "60613",
-            	"region": {
-                "isocode": "US-IL"
-            },
-            "town": "Chicago"}]
+>`{ "addresses": 
+>[ {"country": {  "isocode": "US"},
+>"defaultAddress": false,
+>"firstName": "Richard",
+>"id": "8796095676439",
+>"lastName": "Dean",
+>"line1": "First St.",
+>"line2": "",
+>"postalCode": "10001", 
+>"region": {"isocode": "US-CA"},
+>"town": "San Francisco"},
+>{"country": {"isocode": "US"},
+>"defaultAddress": false,
+>"firstName": "Mike",
+>"id": "8796224651287",
+>"lastName": "Alley",
+>"line1": "1061 W Addison Street",
+>"line2": "",
+>"postalCode": "60613",
+>"region": {"isocode": "US-IL"},
+>"town": "Chicago"}]
 >}`
 6. Click `Generate Schema` to generate the JSON Schema for the output.
 7. Add a `ForEach` operation after the previous step.  Here we will iterate through each Address record returned back from SAP Hybris.
@@ -137,7 +129,7 @@ Once you get your Developer Account set up for Salesforce.com, you will need to 
 	* First Name -> `$Foreachitem.firstName`
 	* Mailing Street -> `$Foreachitem.line1`
 	* Mailing City -> `$Foreachitem.town`
-	* Mailing State/Province -> ```{{$substringAfter($Foreachitem.region.isocode, "-")}}```
+	* Mailing State/Province ->`$substringAfter($Foreachitem.region.isocode, "-")`
 	* Mailing Zip/Postal Code -> `$Foreachitem.postalCode`
 	* Mailing Country -> `$Foreachitem.country.isocode`
 	* ExternalContactReference -> `$Foreachitem.id`
@@ -155,9 +147,47 @@ Let us set up a new Flow that will take contacts we have in Salesforce, and take
 
 1. Make sure you are still logged into App Connect
 2. Create a link to your Salesforce Account by going to `Applications` and add your Salesforce instance.  App Connect will step you through the process of granting App Connect Access to your Salesforce instance.
-3. CLick the `+NEW` icon and create a new Event Driven Flow
+3. CLick the `+NEW` icon and then select `Event Driven Flow`.
 4. From the `How do you want to start the flow` list, you can browse down to `Salesforce` or use the search box to limit list.
-5. 
+5. Here you have two choices.  You can leverage real time events using the Streaming API that leverages push topics by selecting from the list, which as of the time of the writing of this lab is: `Account`, `Campaign`, `Case`, `Contact`, `Lead`, or `Opportunity`.  If you go the Streaming API route, select from `Contact` where it indicates `New Contact`.  If you choose the streaming api option, you can skip steps 6 and 7 and continue with step 8.
+6. If you wish to go the polling route, you can select from the `Configure More Event` option from the bottom of list.
+7. You can then limit the list of Objects to choose from, by typing `Contact` in the text box.  Scroll down and find the `Contact` and then select `New or Updated Contact`.
+8. Add a `HTTP Invoke` Operation to call the Oauth Token API created in Part 1.
+6. Configure the `HTTP Invoke` with the following values:
+	* HTTP Method: `POST`
+	* URL: your URL for the exposed API in the previous step e.g. `https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/1234567889009293939399/abcDEF0/token`
+	* Request Headers: `{"Content-Type":"application/json","X-IBM-Client-ID":"yourclientidgoeshere"}` Be sure to replace the `X-IBM-Client-ID` with your Client ID.
+	* Body: Leave Blank
+6. Next Drop in a `JSON Parse`
+7. Configure the `JSON Parse` by pasting this value into the JSONInput: `{{$HTTPInvokemethod.responseBody}}` you can copy and paste this or browse using the "3 bar" icon to the right of the text field and the bring up the drop down menu for the `HTTP Invoke Method` and then select the `Response Body`.
+8. Use the following JSON Sample for the Output Schema    
+>`{
+	"bearer_token": "cb6c155c-5c67-44d3-9aa8-fe93f909ec16",    
+	"expiresin": "2073006",    
+	"userid": ""    
+>}`
+6. Click `Generate Schema` to generate the JSON Schema for the response.
+7. Add another `HTTP Invoke` to the flow.  This will be the REST call to SAP Hybris to add the new Address based upon the Contact info coming from Salesforce.
+* HTTP Method: `POST`
+	* URL: `http://cap-sg-prd-4.integration.ibmcloud.com:18447/rest/v2/electronics/users/keenreviewer11@hybris.com/addresses`
+	* Request Headers: `{"Accept":"application/json","Content-Type":"application/json","Authorization":"Bearer "&$JSONParserParse.bearer_token&""}` Be sure to replace the `X-IBM-Client-ID` with your Client ID.
+	* Body: 
+>{
+    "firstName":"{{$Trigger.FirstName}}",
+    "lastName":"{{$Trigger.LastName}}",
+    "titleCode":"{{$lowercase($substringBefore($Trigger.Salutation, "."))}}",
+    "line1":"{{$Trigger.MailingStreet}}",
+    "line2":"",
+    "town":"{{$Trigger.MailingCity}}",
+    "postalCode":"{{$Trigger.MailingPostalCode}}",
+    "country":{
+        "isocode": "{{$uppercase($Trigger.MailingCountry)}}"
+    },
+    "region":{
+        "isocode":"{{$uppercase($Trigger.MailingCountry)}}-{{$uppercase($Trigger.MailingState)}}"
+    }
+>}
+6. Click `Generate Schema` to generate the JSON Schema for the response.
 
  
 You are now ready to test your flow.
