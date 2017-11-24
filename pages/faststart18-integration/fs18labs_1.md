@@ -9,7 +9,7 @@ summary: FastStart Cloud Integration Project Tutorial
 
 ## Overview
 ![](./images/df17labs/cassie.png)  
-Cassie has just been assigned to a new project team where she has taken on a new role as an integration developer. The project has very recently gone live with SAP Hybris, and the decision was made by the project lead to use Salesforce.com as the CRM System of Record, and to make sure that Hybris and Salesforce are keeping information in sync.  
+Cassie has just been assigned to a new project team where she has taken on a new role as an integration developer. The project has very recently gone live with SAP Hybris, and the decision was made by the project lead to use Salesforce.com as the CRM System of Record, and it is up to her to make sure that Salesforce is loaded up with data from Salesforce and that new Contact information entered into Salesforce is automatically synced into Hybris.  This doesn't bother Cassie very much, as she knows that App Connect is built to handle these requirements simply, without writing any code.
 
 The project requirements are broken down into 2 phases.  Phase 1 is the migration of existing contacts from Salesforce to Hybris.  Phase 2 is the ongoing synchronization of new and updated contacts into Hybris.  For this lab you will be completing phase 1 and part of phase 2.
 
@@ -37,19 +37,22 @@ Once you get your Developer Account set up for Salesforce.com, you will need to 
 5. Configure the `HTTP Invoke` by following these steps:
 	* Set the method to `POST`
 	* Set the URL to:  `http://cap-sg-prd-4.integration.ibmcloud.com:18447/authorizationserver/oauth/token?client_id=resttest&client_secret=WaBbvHBxECw6ZGkz&grant_type=password&username=keenreviewer11@hybris.com&password=2LFPz45d3QskX65Y`
-	* Set the headers to: `{"Accept":"application/json","Content-Type":"application/json"}`
+	* Set the headers to: 
+	```
+	{"Accept":"application/json","Content-Type":"application/json"}
+	```
 8. Add a `JSONParse` operation after the `HTTPInvoke`
 9. The `JSONInput` to use will be the `Response Body` found in the `HTTP/Invoke Method`.  Click on the triple bar Icon to the right of the text field to select the proper input variable.
 9. Use the following JSON sample for the response:
-
->{  
+```
+{  
 	"access_token": "...",  
 	"token_type": "bearer",  
 	"refresh_token": "...",  
 	"expires_in": 3599,  
 	"scope": "basic"  
->}  
-
+}  
+```
 10. Click on 	`Generate Schema` to populate the JSON Schema section of the operation
 
 11. Back to the main flow, click the `Response` operation to populate the JSON response. Set the following variables.  You can copy and paste the following, or use the browse capability to select the proper variable
@@ -65,7 +68,7 @@ Once you get your Developer Account set up for Salesforce.com, you will need to 
 
 * Specific items to note and keep handy for later are:
 	* Route to invoke your API (you can find this in the manage section) You will also 	need to append the model name to the end of the URL - e.g. `https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/1234567889009293939399/abcDEF0/model` 
-	* Model name in this case is, 	`token`.  Note your URL will be different.
+	* Model name in this case is, `token`.  Note your URL will be different.
 	* The API Key, which can be found at the bottom section of the manage screen under the `Sharing Outside of Cloud Foundry organization` heading. 
 
 ## Part 2: Configure the Flow to do the initial load of SAP Hybris Contacts as Salesforce Contacts
@@ -78,46 +81,57 @@ Once you get your Developer Account set up for Salesforce.com, you will need to 
 6. Configure the `HTTP Invoke` with the following values:
 	* HTTP Method: `POST`
 	* URL: your URL for the exposed API in the previous step e.g. `https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/1234567889009293939399/abcDEF0/token`
-	* Request Headers: `{"Content-Type":"application/json","X-IBM-Client-ID":"yourclientidgoeshere"}` Be sure to replace the `X-IBM-Client-ID` with your Client ID.
+	* Request Headers: 
+	```
+	{"Content-Type":"application/json","X-IBM-Client-ID":"yourclientidgoeshere"}
+	``` 
+	* Be sure to replace the `X-IBM-Client-ID` with your Client ID.
 	* Body: Leave Blank
 6. Next Drop in a `JSON Parse`
 7. Configure the `JSON Parse` by pasting this value into the JSONInput: `{{$HTTPInvokemethod.responseBody}}` you can copy and paste this or browse using the "3 bar" icon to the right of the text field and the bring up the drop down menu for the `HTTP Invoke Method` and then select the `Response Body`.
 8. Use the following JSON Sample for the Output Schema    
->`{
+```
+{
 	"bearer_token": "cb6c155c-5c67-44d3-9aa8-fe93f909ec16",    
 	"expiresin": "2073006",    
 	"userid": ""    
->}`
+}
+```
 6. Click `Generate Schema` to generate the JSON Schema for the response.
 8. Add another `HTTP Invoke` after the `JSON Parse`  This will be the Invoke operation that will retrieve all of the Contacts from SAP Hybris.  Configure the operation as follows:
 	* HTTP Method:  `GET`
-	* Request Headers:  `{"Accept":"application/json","Authorization":"Bearer "&$JSONParserParse.bearer_token&""}`
+	* Request Headers: 
+```
+{"Accept":"application/json","Authorization":"Bearer "&$JSONParserParse.bearer_token&""}
+```
 	* Body: Leave Blank
 6. Drop another `JSON Parse` Operation.  
 7.  Configure the `JSON Parse` by pasting this value into the JSONInput: `{{$HTTPInvokemethod2.responseBody}}` you can copy and paste this or browse using the "3 bar" icon to the right of the text field and the bring up the drop down menu for the `HTTP Invoke Method 2` and then select the `Response Body`. 
 8. Use the following JSON Sample for the `JSON Parse` #2.  Again, this is a snippet of the output coming from SAP Hybris:
->`{ "addresses":     
->[ {"country": {  "isocode": "US"},    
->"defaultAddress": false,   
->"firstName": "Richard",   
->"id": "8796095676439",   
->"lastName": "Dean",   
->"line1": "First St.",   
->"line2": "",   
->"postalCode": "10001",    
->"region": {"isocode": "US-CA"},   
->"town": "San Francisco"},   
->{"country": {"isocode": "US"},   
->"defaultAddress": false,   
->"firstName": "Mike",   
->"id": "8796224651287",   
->"lastName": "Alley",   
->"line1": "1061 W Addison Street",   
->"line2": "",   
->"postalCode": "60613",   
->"region": {"isocode": "US-IL"},   
->"town": "Chicago"}]   
->}   
+```
+{ "addresses":     
+[ {"country": {  "isocode": "US"},    
+"defaultAddress": false,   
+"firstName": "Richard",   
+"id": "8796095676439",   
+"lastName": "Dean",   
+"line1": "First St.",   
+"line2": "",   
+"postalCode": "10001",    
+"region": {"isocode": "US-CA"},   
+"town": "San Francisco"},   
+{"country": {"isocode": "US"},   
+"defaultAddress": false,   
+"firstName": "Mike",   
+"id": "8796224651287",   
+"lastName": "Alley",   
+"line1": "1061 W Addison Street",   
+"line2": "",   
+"postalCode": "60613",   
+"region": {"isocode": "US-IL"},   
+"town": "Chicago"}]   
+}
+```   
 6. Click `Generate Schema` to generate the JSON Schema for the output.
 7. Add a `ForEach` operation after the previous step.  Here we will iterate through each Address record returned back from SAP Hybris.
 8. Configure the `ForEach` by selecting the following variable collection to iterate through:  `$JSONParserParse2.addresses`.  You can also manually browse again by selecting the `Addresses` object from the JSON Parse #2.	
@@ -165,11 +179,13 @@ Let us set up a new Flow that will take contacts we have in Salesforce, and take
 6. Next Drop in a `JSON Parse`
 7. Configure the `JSON Parse` by pasting this value into the JSONInput: `{{$HTTPInvokemethod.responseBody}}` you can copy and paste this or browse using the "3 bar" icon to the right of the text field and the bring up the drop down menu for the `HTTP Invoke Method` and then select the `Response Body`.
 8. Use the following JSON Sample for the Output Schema    
->{   
+```
+{   
 	"bearer_token": "cb6c155c-5c67-44d3-9aa8-fe93f909ec16",       
 	"expiresin": "2073006",   
 	"userid": ""   
->}   
+}
+```   
 6. Click `Generate Schema` to generate the JSON Schema for the response.
 7. Add another `HTTP Invoke` to the flow.  This will be the REST call to SAP Hybris to add the new Address based upon the Contact info coming from Salesforce.
 * HTTP Method: `POST`
@@ -196,19 +212,21 @@ Let us set up a new Flow that will take contacts we have in Salesforce, and take
 7. Add a `JSON Parse` after the Invoke.  This will parse the Response in Hybris so we can sync back the created Address record back into Salesforce
 	* Set the `JSONInput` to $HTTPInvokemethod.responseBody
 	* Set the Sample JSON Response to the following:
-> `{"country": {"isocode": "US"},   
-> "defaultAddress": false,   
-> "firstName": "Richard",   
-> "id": "8796094988311",   
-> "lastName": "Dean",   
-> "line1": "First St.",   
-> "line2": "",   
-> "postalCode": "10001",   
-> "region": {   
-> "isocode": "US-CA"   
-> },   
-> "town": "San Francisco"   
->}`   
+```
+{"country": {"isocode": "US"},   
+"defaultAddress": false,   
+"firstName": "Richard",   
+"id": "8796094988311",   
+"lastName": "Dean",   
+"line1": "First St.",   
+"line2": "",   
+"postalCode": "10001",   
+"region": {   
+"isocode": "US-CA"   
+},   
+"town": "San Francisco"   
+}
+```   
 	* Select `Generate Schema` to generate the Output Schema.
 6. We will now write back the Address ID back into Salesforce.  For the last operation, go ahead add a Salesfore `Update or Create` operation. Point it to the `Contact` Object.
 7. Map the following fields:
