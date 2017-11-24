@@ -117,7 +117,7 @@ Once you get your Developer Account set up for Salesforce.com, you will need to 
 >"postalCode": "60613",
 >"region": {"isocode": "US-IL"},
 >"town": "Chicago"}]
->}`
+>}
 6. Click `Generate Schema` to generate the JSON Schema for the output.
 7. Add a `ForEach` operation after the previous step.  Here we will iterate through each Address record returned back from SAP Hybris.
 8. Configure the `ForEach` by selecting the following variable collection to iterate through:  `$JSONParserParse2.addresses`.  You can also manually browse again by selecting the `Addresses` object from the JSON Parse #2.	
@@ -188,6 +188,10 @@ Let us set up a new Flow that will take contacts we have in Salesforce, and take
     }
 >}
 6. Click `Generate Schema` to generate the JSON Schema for the response.
+7. Add a `JSON Parse` after the Invoke.  This will parse the Response in Hybris so we can sync back the created Address record back into Salesforce
+	* Set the `JSONInput` to $HTTPInvokemethod.responseBody
+	* Set the Sample JSON Response to the following:
+	* Select `Generate Schema` to generate the Output Schema.
 
  
 You are now ready to test your flow.
