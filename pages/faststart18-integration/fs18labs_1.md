@@ -174,35 +174,32 @@ Let us set up a new Flow that will take contacts we have in Salesforce, and take
 	>{"Accept":"application/json","Content-Type":"application/json","Authorization":"Bearer "&$JSONParserParse.bearer_token&""} 
 	* Be sure to replace the `X-IBM-Client-ID` with your Client ID.
 	* Body:   
->{
-"firstName":"{{$Trigger.FirstName}}",   
-"lastName":"{{$Trigger.LastName}}",   
-"titleCode":"{{$lowercase($substringBefore($Trigger.Salutation, "."))}}",   
-"line1":"{{$Trigger.MailingStreet}}",   
-"line2":"",   
-"town":"{{$Trigger.MailingCity}}",   
-"postalCode":"{{$Trigger.MailingPostalCode}}",   
-"country":{   
-"isocode": "{{$uppercase($Trigger.MailingCountry)}}"},   
-"region":{   
-"isocode":"{{$uppercase($Trigger.MailingCountry)}}-{{$uppercase($Trigger.MailingState)}}"}   
+>{"firstName":"{{$Trigger.FirstName}}",
+>"lastName":"{{$Trigger.LastName}}",
+>"titleCode":"{{$lowercase($substringBefore($Trigger.Salutation, "."))}}",
+>"line1":"{{$Trigger.MailingStreet}}",
+>"line2":"",   
+>"town":"{{$Trigger.MailingCity}}",
+>"postalCode":"{{$Trigger.MailingPostalCode}}",   
+>"country":{"isocode": "{{$uppercase($Trigger.MailingCountry)}}"},
+> "region":{"isocode":"{{$uppercase($Trigger.MailingCountry)}}-{{$uppercase($Trigger.MailingState)}}"}   
 >}   
 6. Click `Generate Schema` to generate the JSON Schema for the response.
 7. Add a `JSON Parse` after the Invoke.  This will parse the Response in Hybris so we can sync back the created Address record back into Salesforce
 	* Set the `JSONInput` to $HTTPInvokemethod.responseBody
 	* Set the Sample JSON Response to the following:
 > `{"country": {"isocode": "US"},   
-    "defaultAddress": false,   
-    "firstName": "Richard",   
-    "id": "8796094988311",   
-    "lastName": "Dean",   
-    "line1": "First St.",   
-    "line2": "",   
-    "postalCode": "10001",   
-    "region": {   
-        "isocode": "US-CA"   
-    },   
-    "town": "San Francisco"   
+> "defaultAddress": false,   
+> "firstName": "Richard",   
+> "id": "8796094988311",   
+> "lastName": "Dean",   
+> "line1": "First St.",   
+> "line2": "",   
+> "postalCode": "10001",   
+> "region": {   
+> "isocode": "US-CA"   
+> },   
+> "town": "San Francisco"   
 >}`   
 	* Select `Generate Schema` to generate the Output Schema.
 6. We will now write back the Address ID back into Salesforce.  For the last operation, go ahead add a Salesfore `Update or Create` operation. Point it to the `Contact` Object.
