@@ -196,7 +196,7 @@ Let us set up a new Flow that will take contacts we have in Salesforce, and take
 ```	 
 	* Be sure to replace the `X-IBM-Client-ID` with your Client ID.
 	* Body:
-
+```
 {"firstName":"{{\$Trigger.FirstName}}",   
 "lastName":"{{\$Trigger.LastName}}",   
 "titleCode":"{{\$lowercase($substringBefore($Trigger.Salutation, "."))}}",   
