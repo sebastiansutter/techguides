@@ -195,18 +195,7 @@ Let us set up a new Flow that will take contacts we have in Salesforce, and take
 	{"Accept":"application/json","Content-Type":"application/json","Authorization":"Bearer "&$JSONParserParse.bearer_token&""}
 ```	 
 	* Be sure to replace the `X-IBM-Client-ID` with your Client ID.
-	* Body:
-
-`{"firstName":"{{&#36;Trigger.FirstName}}",`   
-`"lastName":"{{&#36;Trigger.LastName}}",`   
-`"titleCode":"{{&#36;lowercase($substringBefore($Trigger.Salutation, "."))}}",`   
-`"line1":"{{&#36;Trigger.MailingStreet}}",`   
-`"line2":"",`      
-`"town":"{{&336;Trigger.MailingCity}}",`   
-`"postalCode":"{{&#36;Trigger.MailingPostalCode}}",`      
-`"country":{"isocode": "{{&#36;uppercase($Trigger.MailingCountry)}}"},`   
-`"region":{"isocode":"{{&#36;uppercase($Trigger.MailingCountry)}}-{{&#36;uppercase(&#36;Trigger.MailingState)}}"}`   
-`}`   
+	* Body: [Click Here for JSON](https://github.com/ibm-cloudintegration/techguides/blob/master/pages/faststart18-integration/labs/body.json)
 
 6. Click `Generate Schema` to generate the JSON Schema for the response.
 7. Add a `JSON Parse` after the Invoke.  This will parse the Response in Hybris so we can sync back the created Address record back into Salesforce
