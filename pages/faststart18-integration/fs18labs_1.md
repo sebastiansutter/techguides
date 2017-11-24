@@ -196,7 +196,7 @@ Let us set up a new Flow that will take contacts we have in Salesforce, and take
 ```	 
 	* Be sure to replace the `X-IBM-Client-ID` with your Client ID.
 	* Body:
-```
+
 {"firstName":&34;&123;&123;&36;Trigger.FirstName&125;&125;&34;,   
 "lastName":"{{$Trigger.LastName}}",   
 "titleCode":"{{$lowercase($substringBefore($Trigger.Salutation, "."))}}",   
@@ -207,7 +207,7 @@ Let us set up a new Flow that will take contacts we have in Salesforce, and take
 "country":{"isocode": "{{$uppercase($Trigger.MailingCountry)}}"},   
 "region":{"isocode":"{{$uppercase($Trigger.MailingCountry)}}-{{$uppercase($Trigger.MailingState)}}"}   
 }   
-```   
+   
 6. Click `Generate Schema` to generate the JSON Schema for the response.
 7. Add a `JSON Parse` after the Invoke.  This will parse the Response in Hybris so we can sync back the created Address record back into Salesforce
 	* Set the `JSONInput` to $HTTPInvokemethod.responseBody
