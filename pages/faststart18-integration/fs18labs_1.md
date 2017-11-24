@@ -88,7 +88,7 @@ Once you get your Developer Account set up for Salesforce.com, you will need to 
 	* Be sure to replace the `X-IBM-Client-ID` with your Client ID.
 	* Body: Leave Blank
 6. Next Drop in a `JSON Parse`
-7. Configure the `JSON Parse` by pasting this value into the JSONInput: `{{$HTTPInvokemethod.responseBody}}` you can copy and paste this or browse using the "3 bar" icon to the right of the text field and the bring up the drop down menu for the `HTTP Invoke Method` and then select the `Response Body`.
+7. Configure the `JSON Parse` by pasting this value into the JSONInput: `{{&#34;HTTPInvokemethod.responseBody}}` you can copy and paste this or browse using the "3 bar" icon to the right of the text field and the bring up the drop down menu for the `HTTP Invoke Method` and then select the `Response Body`.
 8. Use the following JSON Sample for the Output Schema    
 ```
 {
