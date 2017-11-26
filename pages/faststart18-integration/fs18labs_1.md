@@ -41,6 +41,7 @@ Once you get your Developer Account set up for Salesforce.com, you will need to 
 	```
 	{"Accept":"application/json","Content-Type":"application/json"}
 	```
+	* Body: Leave Blank
 8. Add a `JSONParse` operation after the `HTTPInvoke`
 9. The `JSONInput` to use will be the `Response Body` found in the `HTTP/Invoke Method`.  Click on the triple bar Icon to the right of the text field to select the proper input variable.
 9. Use the following JSON sample for the response:
