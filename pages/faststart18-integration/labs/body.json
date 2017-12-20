@@ -1,9 +1,0 @@
-{"firstName":"{{$Trigger.FirstName}}",
-  "lastName":"{{$Trigger.LastName}}",
-  "titleCode":"{{$lowercase($substringBefore($Trigger.Salutation, "."))}}",
-  "line1":"{{$Trigger.MailingStreet}}",
-  "line2":"",
-  "town":"{{$Trigger.MailingCity}}",
-  "postalCode":"{{$Trigger.MailingPostalCode}}",
-  "country":{"isocode": "{{$uppercase($Trigger.MailingCountry)}}"},
-  "region":{"isocode":"{{$uppercase($Trigger.MailingCountry)}}-{{$uppercase($Trigger.MailingState)}}"}}
