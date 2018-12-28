@@ -13,24 +13,24 @@ applies_to: [developer,administrator,consumer]
 
 ## Familiarization with the Cloud Integration Platform
 
-The Cloud Integration Platform (CIP) is built on top of IBM Cloud Private.  This lab guide is meant to give you an overview of the capabilities of the platform, and get some hands on time with setting up your own environment for the purpose of creating your own demo environment
+The Cloud Integration Platform (CIP) is built on top of IBM Cloud Private.  This lab guide is meant to give you an overview of the capabilities of the platform, and get some hands on time with setting up your own environment for the purpose of creating your own demo environment.
 
-This lab guide assumes some familiarity with IBM Cloud Private, docker & kubernetes, as well as helm.  
+This lab guide assumes some familiarity with IBM Cloud Private, Docker & Kubernetes, as well as Helm.  
 
 There are two primary components of CIP:
 
 **IBM Cloud Private (ICP)** -  An application platform for developing and managing on-premises, containerized applications. It is an integrated environment for managing containers that includes the container orchestrator Kubernetes, a private image repository, a management console, and monitoring frameworks. In this particular boot camp, ICP is deployed on Softlayer, using Skytap as the primary operational interface.
 
-**Platform Navigator** -- is a application that provides a primary user interface where instances of App Connect Enterprise (ACE), API Connect (APIC), Event Streams and MQ Advanced can be created with a few clicks.  It is automatically deployed with the CIP Bundle.
+**Platform Navigator** -- is a application that is built to run on top of IBM Cloud Private that provides a primary user interface where instances of App Connect Enterprise (ACE), API Connect (APIC), Event Streams and MQ Advanced can be managed from a single place.  It is automatically deployed with the CIP Bundle.
 
-As a convention for these labs, a <span style="color:red"> **red box** </span> will be used to identify a particular area, and when information is to be entered and/or an action is to be taken, it will be in **bold** characters. <span style="color:red"> **Red arrows or lines** </span> may be used to indicate where nodes are to be placed when building your message flow.
+As a convention for these labs, a <span style="color:red"> **red box** </span> will be used to identify a particular area, and when information is to be entered and/or an action is to be taken, it will be in **bold** characters. <span style="color:red"> **Red arrows or lines** </span> may be used to indicate specific items that need to be noted as part of the lab
 
-A number of sections will be labeled “Key Idea” or “Key Concept”. Be sure to review these sections when you come across them, as they will explain concepts of IBM Integration Bus that you will explore in some detail in the early labs, but in more detail as you continue to work through the more advanced labs.
+A number of sections will be labeled “Key Idea” or “Key Concept”. Be sure to review these sections when you come across them, as they will  explain important items as it relates to the lab content.
 
 Lab Overview
 -------------------------------------------
 
-This lab is broken up into a key parts. 
+This lab is broken up into two key parts. 
 
 **Part One**:  Use of the Cloud Integration Platform
 **Part Two**:  Reference Materials:  Installation of the Cloud Integration Platform
@@ -38,7 +38,7 @@ This lab is broken up into a key parts.
 
 Part one contains the hands on section of the lab where you will get acquainted with the Platform Navigator and be setting up the individual components of the platform and deploying some basic assets.
 
-Part two is an informational section that provides you key information about your environment and provides guidance should you ever have to install your own environment.  *You will not be installing CIP from scratch as part of this lab*
+Part two is an informational section that provides you key information about your environment and provides guidance should you ever have to install your own environment.  *You will not be installing CIP from scratch as part of this lab*.
 
 
 
@@ -47,7 +47,27 @@ Part One: Hands on acclimation exercise with the Cloud Integration Platform
 
 1.  You have been provided a pre-installed environment of the Cloud Integration Platform.  It includes a vanilla ICP 3.1.1 install with the CIP Platform Navigator installed.
 2. The environment you are using consists of 9 different nodes.  8 of which are ICP Nodes and one is a developer image that you will be using to access the ICP User Interfaces.  You can access this VM directly using the Skytap interface.
-3. If required, you are also able to SSH into your environment.  You can find this information in your Skytap window under *networking*.
+3. If required, you are also able to SSH into your environment.  You can find this information in your Skytap window under *networking*.  You can do the majority of your CLI work from the Master node.
+4. Before you can execute any of the `kubectl` commands you will need to execute a `cloudctl login`.  The credentials for the system are `admin`/`admin`.
+5. Password-less SSH has also been enabled between the Master node and the other nodes in the environment.  **note** a table with the environment configuration is provided below.  Credentials for each machine are `student`/`Passw0rd`.  You are able to `su` to the root user using the same password if you need to. 
+
+| VM        | Hostname  | IP Address | # of CPU | RAM    | Disk Space (LOCAL) | Shared Storage | Additional Notes |
+|-----------|-----------|------------|----------|--------|--------------------|----------------|------------------|
+| Master    | master    | 10.0.0.1   | 12       | 32 GB  | 400 GB             | N/A            |                  |
+| Proxy     | proxy     | 10.0.0.5   | 4        | 8 GB   | 20 GB              | N/A            |                  |
+| Worker 1  | worker-1  | 10.0.0.2   | 8        | 16 GB  | 400 GB             | 200 GB (Ceph)  | Ceph Master      |
+| Worker 2  | worker-2  | 10.0.0.3   | 8        | 16 GB  | 400 GB             | 200 GB (Ceph)  | OSD 1            |
+| Worker 3  | worker-3  | 10.0.0.4   | 8        | 16 GB  | 400 GB             | 200 GB (Ceph)  | OSD 2            |
+| Worker 4  | worker-4  | 10.0.0.7   | 8        | 16 GB  | 400 GB             |                |                  |
+| Worker 5  | worker-5  | 10.0.0.8   | 8        | 16 GB  | 400 GB             |                |                  |
+| Worker 6  | worker-6  | 10.0.0.9   | 8        | 16 GB  | 400 GB             |                |                  |
+| Developer | developer | 10.0.0.6   |          |        |                    |                |                  |
+
+
+6. Let's start by having you access Developer Instance from the Skytap UI.  Click on the Developer Machine, and it will take you directly to the Developer Machine running X-Windows.  Should you need to Authenticate, you can use the credentials of `student`/`Passw0rd!`.
+7. Bring up the Firefox browser.  Navigate to the main ICP UI by going to `https://10.0.0.1:8443`.  The credentials again are `admin/admin`.  Here you have access to all of the typical ICP functions.
+8. Open up a new tab in the browser to bring up the ICIP Platform Navigator.  The ICIP Platform navigator can be found by navigating to `https://xxxxx`.
+9. The Platform Navigator UI can be use to create and manage instances of all of the components that make up the Cloud Integration Platform. **note** at the time of this lab, the ability to create and manage Aspera instances has not yet be added to the Platform Navigator, and will be added at a later date.
 
 Part Two: Installation/Configuration Reference for the Cloud Integration Platform
 -------------------------------------------
