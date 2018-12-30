@@ -33,6 +33,7 @@ Lab Overview
 This lab is broken up into two key parts. 
 
 **Part One**:  Use of the Cloud Integration Platform
+
 **Part Two**:  Reference Materials:  Installation of the Cloud Integration Platform
 
 
@@ -68,6 +69,7 @@ Part One: Hands on acclimation exercise with the Cloud Integration Platform
 7. Bring up the Firefox browser.  Navigate to the main ICP UI by going to `https://10.0.0.1:8443`.  The credentials again are `admin/admin`.  Here you have access to all of the typical ICP functions.
 8. Open up a new tab in the browser to bring up the ICIP Platform Navigator.  The ICIP Platform navigator can be found by navigating to `https://xxxxx`.
 9. The Platform Navigator UI can be use to create and manage instances of all of the components that make up the Cloud Integration Platform. **note** at the time of this lab, the ability to create and manage Aspera instances has not yet be added to the Platform Navigator, and will be added at a later date.
+10. Let's start by creating an App Connect Enterprise Integration Server.
 
 Part Two: Installation/Configuration Reference for the Cloud Integration Platform
 -------------------------------------------
