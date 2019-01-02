@@ -65,11 +65,14 @@ Part One: Hands on acclimation exercise with the Cloud Integration Platform
 | Developer | developer | 10.0.0.6   |          |        |                    |                |                  |
 
 
-6. Let's start by having you access Developer Instance from the Skytap UI.  Click on the Developer Machine, and it will take you directly to the Developer Machine running X-Windows.  Should you need to Authenticate, you can use the credentials of `student`/`Passw0rd!`.
+6. Let's start by having you access Developer Instance from the Skytap UI.  Click on the Developer Machine, and it will take you directly to the Developer Machine running X-Windows.  Should you need to Authenticate, you can use the credentials of `student`/`Passw0rd!`.[
 7. Bring up the Firefox browser.  Navigate to the main ICP UI by going to `https://10.0.0.1:8443`.  The credentials again are `admin/admin`.  Here you have access to all of the typical ICP functions.
 8. Open up a new tab in the browser to bring up the ICIP Platform Navigator.  The ICIP Platform navigator can be found by navigating to `https://xxxxx`.
 9. The Platform Navigator UI can be use to create and manage instances of all of the components that make up the Cloud Integration Platform. **note** at the time of this lab, the ability to create and manage Aspera instances has not yet be added to the Platform Navigator, and will be added at a later date.
-10. Let's start by creating an App Connect Enterprise Integration Server.
+10. Before we create any of the new application instances, we will need to create three new `namespaces` and `pull secrets` within ICP.  More info on namespaces can be found [here](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_3.1.1/user_management/projects.html)
+11. Each application instance will require its own namespace and pull secret.  Using the ICP UI create your namespace and pull secret for each of the following:  `ace`, `mq`, `apic` and `es`.
+10. Let's start by creating an App Connect Enterprise Integration Server.  From the Platform Navigator, locate the middle panel for `Application Integration` and click on the `add new instance` link.
+11. A pop up window will give you some important information about pre-requisites for the 
 
 Part Two: Installation/Configuration Reference for the Cloud Integration Platform
 -------------------------------------------
