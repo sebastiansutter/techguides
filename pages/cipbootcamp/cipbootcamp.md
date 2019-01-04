@@ -32,89 +32,104 @@ Lab Overview
 
 This lab is broken up into two key parts. 
 
-**Part One**:  Use of the Cloud Integration Platform
+**Part One**:  Create and Deploy your CIP Applications
 
-**Part Two**:  Reference Materials:  Installation of the Cloud Integration Platform
-
-
-Part one contains the hands on section of the lab where you will get acquainted with the Platform Navigator and be setting up the individual components of the platform and deploying some basic assets.
-
-Part two is an informational section that provides you key information about your environment and provides guidance should you ever have to install your own environment.  *You will not be installing CIP from scratch as part of this lab*.
+**Part Two**:  Deploy Integration Assets
 
 
+Part one contains the hands on section of the lab where you will get acquainted with the Platform Navigator and be setting up the individual components of the platform.
 
-Part One: Hands on acclimation exercise with the Cloud Integration Platform
+Part two you will be deploying some basic assets to your newly created environment
+
+
+Part One: Create and Deploy your CIP Applications
 -------------------------------------------
 
-1.  You have been provided a pre-installed environment of the Cloud Integration Platform.  It includes a vanilla ICP 3.1.1 install with the CIP Platform Navigator installed.
+1.  You have been provided a pre-installed environment of the Cloud Integration Platform.  It includes a vanilla ICP 3.1.1 install with the CIP Platform Navigator installed and all of the base container images that make up CIP.
 2. The environment you are using consists of 9 different nodes.  8 of which are ICP Nodes and one is a developer image that you will be using to access the ICP User Interfaces.  You can access this VM directly using the Skytap interface.
-3. If required, you are also able to SSH into your environment.  You can find this information in your Skytap window under *networking*.  You can do the majority of your CLI work from the Master node.
-4. Before you can execute any of the `kubectl` commands you will need to execute a `cloudctl login`.  The credentials for the system are `admin`/`admin`.
-5. Password-less SSH has also been enabled between the Master node and the other nodes in the environment.  **note** a table with the environment configuration is provided below.  Credentials for each machine are `student`/`Passw0rd`.  You are able to `su` to the root user using the same password if you need to. 
+3. **VERY IMPORTANT** It is very important you do not suspend your lab environment.  We have seen cases when the environment goes into suspend mode, the Rook-Ceph shared storage gets corrupted.  Also it is a good practice that you shut down ICP before powering down your enviroment.  A script has been included to handle that for you that will be explained in the coming sections.
+3. You are also able to SSH into your environment.  You can find out the exact address to SSH to in your Skytap Environment window under *networking* and `published services`.  The Published Service set up for you will be for the SSH Port (22) under the `CIP Master` node.  The published service will look something like `services-uscentral.skytap.com:10000`.  Your environment will have a different port on it.  You can then SSH to to the machine from your local machine.  
+4. Additionally, you can access the machine direct via the Skytap UI.  This is functional, but can be cumbersome to work with as its not easy to copy and paste into Skytap.  
+5. Password-less SSH has also been enabled between the Master node and the other nodes in the environment.  **note** a table with the environment configuration is provided below.  Credentials for each machine are `root`/`Passw0rd`.   You shouldn't need this for the lab, but its provided for your information.
 
 | VM        | Hostname  | IP Address | # of CPU | RAM    | Disk Space (LOCAL) | Shared Storage | Additional Notes |
 |-----------|-----------|------------|----------|--------|--------------------|----------------|------------------|
 | Master    | master    | 10.0.0.1   | 12       | 32 GB  | 400 GB             | N/A            |                  |
 | Proxy     | proxy     | 10.0.0.5   | 4        | 8 GB   | 20 GB              | N/A            |                  |
-| Worker 1  | worker-1  | 10.0.0.2   | 8        | 16 GB  | 400 GB             | 200 GB (Ceph)  | Ceph Master      |
-| Worker 2  | worker-2  | 10.0.0.3   | 8        | 16 GB  | 400 GB             | 200 GB (Ceph)  | OSD 1            |
-| Worker 3  | worker-3  | 10.0.0.4   | 8        | 16 GB  | 400 GB             | 200 GB (Ceph)  | OSD 2            |
+| Worker 1  | worker-1  | 10.0.0.2   | 8        | 16 GB  | 400 GB             | Monitor  | Ceph Master      |
+| Worker 2  | worker-2  | 10.0.0.3   | 8        | 16 GB  | 400 GB             | 			  | 		           |
+| Worker 3  | worker-3  | 10.0.0.4   | 8        | 16 GB  | 400 GB             | 			  | 		            |
 | Worker 4  | worker-4  | 10.0.0.7   | 8        | 16 GB  | 400 GB             |                |                  |
-| Worker 5  | worker-5  | 10.0.0.8   | 8        | 16 GB  | 400 GB             |                |                  |
-| Worker 6  | worker-6  | 10.0.0.9   | 8        | 16 GB  | 400 GB             |                |                  |
+| Worker 5  | worker-5  | 10.0.0.8   | 8        | 16 GB  | 400 GB             | Ceph OSD1               |                  |
+| Worker 6  | worker-6  | 10.0.0.9   | 8        | 16 GB  | 400 GB             | Ceph OSD2               |                  |
 | Developer | developer | 10.0.0.6   |          |        |                    |                |                  |
 
 
-6. Let's start by having you access Developer Instance from the Skytap UI.  Click on the Developer Machine, and it will take you directly to the Developer Machine running X-Windows.  Should you need to Authenticate, you can use the credentials of `student`/`Passw0rd!`.[
-7. Bring up the Firefox browser.  Navigate to the main ICP UI by going to `https://10.0.0.1:8443`.  The credentials again are `admin/admin`.  Here you have access to all of the typical ICP functions.
-8. Open up a new tab in the browser to bring up the ICIP Platform Navigator.  The ICIP Platform navigator can be found by navigating to `https://xxxxx`.
-9. The Platform Navigator UI can be use to create and manage instances of all of the components that make up the Cloud Integration Platform. **note** at the time of this lab, the ability to create and manage Aspera instances has not yet be added to the Platform Navigator, and will be added at a later date.
-10. Before we create any of the new application instances, we will need to create three new `namespaces` and `pull secrets` within ICP.  More info on namespaces can be found [here](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_3.1.1/user_management/projects.html)
-11. Each application instance will require its own namespace and pull secret.  Using the ICP UI create your namespace and pull secret for each of the following:  `ace`, `mq`, `apic` and `es`.
+6. If it is not done already, power up your Environment.  It could take about 5 minutes for all nodes to start up.  The master node takes the longest to come up, so if you can see the login prompt from the Skytap UI on the master node, then you are good to go. 
+7. SSH into the Master Node or use the Skytap UI.  In the home directory of root (`/root`) there is a script called `icpStopStart.sh`.  Run this script by typing in `icpStopStart.sh start` Note that it takes 30 minutes for the ICP Services to come up completely on startup.
+8. You can tell if the start of icp is complete by checking using one of these two methods:
+	- Click on the Developer Machine, and it will take you directly to the Developer Machine running X-Windows.  Should you need to Authenticate, you can use the credentials of `student`/`Passw0rd!`. Bring up the Firefox browser.  Navigate to the main ICP UI by going to `https://10.0.0.1:8443`.  The credentials again are `admin/admin`.  If you can log in and see the main ICP Dashboard, you are good to go.  
+	- Alternatively, you can SSH to the Master node.  Execute a `cloudctl login` from the command line.  If all there services are up, it will prompt you for credentials (use `admin`/`admin`) and setup your kubernetes environment.
+8. The best place to do your kubernetes CLI work is from the Master node.  Again, Before you can execute any of the `kubectl` commands you will need to execute a `cloudctl login`. 
+9. Next step is to find The Platform Navigator UI can be use to create and manage instances of all of the components that make up the Cloud Integration Platform. **note** at the time of this lab, the ability to create and manage Aspera instances has not yet be added to the Platform Navigator, and will be added at a later date.
+10. You can access the Platform Navigator using the browser on the developer machine.  The URL for the navigator was set up in this environment as: `https://10.0.0.5/icip1-navigator1`.  You might be asked to authenticate into ICP again, but once you do that you should now see the Platform Navigator page.
+11. The Platform Navigator is designed for you to easily keep track of your integration toolset.  Here you can see all of the various APIC, Event Streams, MQ and ACE instances you have running.  You can also add new instances using the Platform Navigator.
+11. Each application instance requires its own namespace and pull secret.  To support this lab, namespaces and pull secrets have been provided for you already, with the exception of Event Streams (ES).  We'll talk more about ES later in the lab.
+
+
+### App Connect Enterprise
+
 10. Let's start by creating an App Connect Enterprise Integration Server.  From the Platform Navigator, locate the middle panel for `Application Integration` and click on the `add new instance` link.
-11. A pop up window will give you some important information about pre-requisites for the 
+11. A pop up window will give you some important information about pre-requisites for creating the instance.  Click `continue`.
+12. This will take you to the chart configuration.  If you scroll to the bottom, you can peruse the information about the chart you are about to use to create your instance of App Connect Enteprise.  Click the `Configure` button to configure your chart.
+13. Here you can fil in the information for install of your chart.  Give your helm release a `name`.  Call the release `ace-icip`.
+14. To the right of the `name` field, Select the `ace` namespace from the `Target Namespace` dropdown.
+15. Tick checkbox under `license`
+16. Expand the `All Parameters` twisty
+17. Find the `Image Pull Secret` line.  Set that to `acekey` (This is pre-defined for you, normally, you would need to create this).
+18. For the `Hostname of the ingress proxy to be configured` section. Change the default value provided to `mycluster.icp`.  
+18. **IMPORTANT** - Find the `Enable Persistant Storage` Section.  This box must be unticked (disabled).  In order to support persistant storage, Gluster storage must be used (Ceph is not supported with ACE).  Using Gluster Storage beyond the scope of this lab.
+19. Leave the other default values in the chart.  Scroll down and Click `Install` button on lower right portion of the screen.
+20. Once you see the `Installation Started` pop up. You can validate the progress via the `Helm Releases` in the ICP Portal or via the command line.
+21. Return to your command line and  open up a SSH session to your master node on your laptop or desktop.  **Note** Each environment has a Skytap Published Service set up for every node on port 22 so you can SSH to the nodes from your machine.  If you do a `kubectl get pods -n ace` you should see your pods in a running state.
+22. Returning to the Platform Navigator, you should see your new ACE instance there.  Click on it to bring up the ACE Enterprise UI.  **Note**  if you encounter issues with the self signed certs on the browser.  Click on the link where it says `open ace`.  This will open a new browser window and should allow you to access the UI properly.
+22. The ACE Dashboard can alternatively be accessed via a web browser. Run the following commands to get the dashboard URL via SSH:
 
-Part Two: Installation/Configuration Reference for the Cloud Integration Platform
--------------------------------------------
+`export ACE_DASHBOARD_URL=$(kubectl get ingress ace-icip-ibm-ace-dashboard-icip-prod-hostname -o jsonpath="{.spec.rules[0].host}{.spec.rules[0].http.paths[0].path}")`
 
-1.  Although you won't be installing the entire Cloud Integration Platform as part of this lab, it is important to understand how it is installed and how to properly size an environment for Demo or POC purposes.  
+then `echo "Open your web browser to https://${ACE_DASHBOARD_URL}"`
 
-2. Below you will find the structure of the CIP environment used for this bootcamp.  It represents the bare minimum to run CIP in any environment for development or POC purposes only.  As is evident below, a sizable amount of resources are required.  
+your output will look something like:  `Open your web browser to https://mycluster.icp/ace-ace-icip`
 
-| VM        | Hostname  | IP Address | # of CPU | RAM    | Disk Space (LOCAL) | Shared Storage | Additional Notes |
-|-----------|-----------|------------|----------|--------|--------------------|----------------|------------------|
-| Master    | master    | 10.0.0.1   | 12       | 32 GB  | 400 GB             | N/A            |                  |
-| Proxy     | proxy     | 10.0.0.5   | 4        | 8 GB   | 20 GB              | N/A            |                  |
-| Worker 1  | worker-1  | 10.0.0.2   | 8        | 16 GB  | 400 GB             | 200 GB (Ceph)  | Ceph Master      |
-| Worker 2  | worker-2  | 10.0.0.3   | 8        | 16 GB  | 400 GB             | 200 GB (Ceph)  | OSD 1            |
-| Worker 3  | worker-3  | 10.0.0.4   | 8        | 16 GB  | 400 GB             | 200 GB (Ceph)  | OSD 2            |
-| Worker 4  | worker-4  | 10.0.0.7   | 8        | 16 GB  | 400 GB             |                |                  |
-| Worker 5  | worker-5  | 10.0.0.8   | 8        | 16 GB  | 400 GB             |                |                  |
-| Worker 6  | worker-6  | 10.0.0.9   | 8        | 16 GB  | 400 GB             |                |                  |
-| Developer | developer | 10.0.0.6   |          |        |                    |                |                  |
+*Hint* If the first command fails, you might not be in the `ace` name space.  Quickest way to set your context is just to relogin using `cloudctl login` and then set your namespace to `ace`.  
 
-3. This lab environment uses Skytap to managed the infrastructure on Softlayer, but it can be deployed in any public/private cloud where ICP is supported.
+23. If you can see the App Connect Enterprise portal, then you are are done with this step.  We'll load in a .bar file later.
 
-4. Before starting your installation, be sure to make sure all prerequisites and setup steps have been completed.  Follow these steps [here](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_2.1.0.3/installing/install_app_mod.html), take special care in ensuring you can completed the steps under *Configuring your cluster*. 
+## MQ
 
-![](./images/pots/cip/skytap.png)
-
-4. CIP is provided as a single download file that can be uploaded to what will become your master node.  
-
-5. Shared Storage is *required* for persistence to be supported on all components.  Ceph is required for API Connect, and Gluster is required for App Connect Enterprise, MQ and Event Streams.  **Note** all components *except* for API Connect can be installed without persisence being enabled.  You *must* have Ceph shared storage set up before hand.
-
-5. This will take you to the catalog screen. 
-
-6. 
-
-7. 
+10. From the Platform Navigator, locate the panel on the far right for `Messaging` and click on the `add new instance` link and then select `New Message Queue` instance.
+11. A pop up window will give you some important information about pre-requisites for creating the instance.  Click `continue`.
+12. This will take you to the chart configuration.  If you scroll to the bottom, you can peruse the information about the chart you are about to use to create your instance of MQ.  Click the `Configure` button to configure your chart.
+13. Here you can fil in the information for install of your chart.  Give your helm release a `name`.  Call the release `mq-icip`.
+14. To the right of the `name` field, Select the `acemq` namespace from the `Target Namespace` dropdown.
+15. Tick checkbox under `license`
+16. Expand the `All Parameters` twisty
+17. Untick the `Production Usage` tick box.
+18. Under `Persistence` untick both `Enable Persistence` and `Use Dynamic Provisioning`.  *Note* failure to untick this will cause your install to fail.
+19. Under the `Queue Manager` section.  Enter your queue manager name  `QMGR.DEV`.
+19. You can leave the other settings as defaults.
+20. Click `Install` to start the process.
+21. You can monitor the installation from Helm Releases in the ICP UI or via the command line using `kubectl get pods -n acemq`.  Once you see your pod up and running, you can navigate to the UI via the Platform Navigator.  Find your MQ instance and click on it.  **Note**  if you encounter issues with the self signed certs in the browser.  Click on the link where it says `open mq`.  This will open a new browser window and should allow you to access the MQ UI properly.
+22. In the MQ UI, click on the `3 dots` icon to the right of the properties Hamburger icon.  Select the option that says `Add a new dashboard tab` this creates a new management tab for your Queue Manager
+23. Click on the `+` button to create a new queue.  Call this Queue `TEST.OUT`.
+24. Authority records??
+24. You Have now configured MQ
 
 
+## Event Streams
 
 
-
-
-Building a simple integration flow
+Add in some Integration Assets
 -----------------------------
 
 1.  While logged into your App Connect Instance, in the main dashboard, Click on the **New+** button and then select **Flows for an API**.
@@ -122,132 +137,7 @@ Building a simple integration flow
 
 	![](./images/pots/ace-designer/acplab1newflow.png)
 
-1.  Enter in a name for your new flow.  Call it **FirstFlow**.  Also, APIs built in the Designer are model based.  Let's name our mode **sample**.  Click on **Create Model**.
 
-	![](./images/pots/ace-designer/acplab1newflow2.png)
-
-1.  You will now define your model.  The structure of the model itself will be JSON based, but with the App Connect Designer, you can define this model graphically by adding *properties*.  The Properties can either be simple objects, such as a *String*.  They can also be complex objects like an *object* or an *array*.  For this lab, define three properties for our model as defined below.  Use the **+Add Property** to add a new property after the first.  **Note** App Connect will automatically save any changes to your flow when you make them, so there is no need to manually save your work.
-
-	* firstname - Type String
-	* lastname - Type String
-	* message - Type String
-	
-	![](./images/pots/ace-designer/acplab1newflow3.png)
-
-2.  Next to the **Properties** heading you will see a second heading called **Operations**.  Here we will define the operations for an API.  In this case, we will be doing a create operation, select the **Create sample** option from the list.
-
-	![](./images/pots/ace-designer/acplab1newflow4.png)
-
-1.  You will see that the **Create Sample** Operation created a new *POST* resource `/sample`.  You will now define this API by clicking on **Implement flow**
-
-	![](./images/pots/ace-designer/acplab1newflow5.png)
-
-2.  You will then see the framework of what the API looks like.  There is the request structure, some space in the middle for where you will define the structure of the API, and then the response.  Note the Request body example that took the model you just created and shows in JSON format.  Click on the **+** icon on the flow to add  the first operation.
-
-	![](./images/pots/ace-designer/acplab1newflow6.png)
-	
-3. The first operation we will add is a Gmail activity that will send a mail whenever we invoke our API.  You can filter the list of connnectors by typing into the search bar.  Enter in **Gmail** and the connector list will limited to the Gmail operations.  Click on **Create Email** to move to the next step.
-
-	![](./images/pots/ace-designer/acplab1newflow7.png)
-	
-	
-4. In order to work with your Gmail account, you need to connect to and grant access to App Connect to be able to work with your gmail account to send emails.  Click the **Connect** button to start this process.  You will be asked to log into your Gmail account.
-
-	![](./images/pots/ace-designer/acplab1newflow8.png)
-	
-5. Click the **Allow** button to complete the process..
-
-	![](./images/pots/ace-designer/acplab1newflow9.png)
-	
-6. Next, you can populate the email with hard coded values.  
-
-	* To:  This can be your Gmail account or another address where you would like the email to be send
-	* Subject:  use `Hello`
-	* Body:  use `a quick test note`
-
-	![](./images/pots/ace-designer/acplab1newflow10.png)
-
-7. Back to the Flow Framework.  Click on the **Response** Icon.  Here you need to populate response.  Normally, this would be a response body that would be sent back to the requestor who invoked your API, but for this basic lab, just hard code your first name in the **firstname** field in the Response Body.  Click the **Done** button in the upper right hand corner of the screen.
-
-	![](./images/pots/ace-designer/acplab1newflow11.png)
-
-8. To switch on the API, click on the 3 dot icon in the upper right hand corner.  Select **Start API**.
-
-	![](./images/pots/ace-designer/acplab1newflow12.png)
-	
-9. You should see the status of the API change to **Running**.  Click on the **Manage** tab to view the runtime information and how you can test the API.
-
-	![](./images/pots/ace-designer/acplab1newflow13.png)
-
-10. Here you will the see the API inside of the IBM Cloud Native API Management that is powered by IBM API Connect.  In order to make this  API executable, we will need to get an API Key.  Scroll down to the bottom and find the **Sharing Outside of Cloud Foundry organization** section.  Click the **Create API Key+** button.
-
-	![](./images/pots/ace-designer/acplab1newflow13b.png)
-
-11. When the create API Key dialogue comes uo, enter in a name for your API Key in the **Descriptive Name** field.
-
-	![](./images/pots/ace-designer/acplab1newflow14.png)
-
-12. Once that is completed, you should see the API Portal Link section popuated with a URL.  Click on that link to go to your API Developer portal page.
-
-	![](./images/pots/ace-designer/acplab1newflow15.png)
-
-13. The API Developer Page is designed to be a mechanism where you can socialize your APIs to others to be able to use or embed within their application.  There are key bits of information here a developer would be keen to find if they want to get documentation and endpoint information.  There is even a place where the API can be downloaded in OpenAPI format.  For this lab, you will use the test tool in the portal in order to execute and validate your API.  Click on the **Try It** on the right hand side to use the test tool.
-
-	![](./images/pots/ace-designer/acplab1newflow16.png)
-	
-14. Click on the **Try It** on the right hand side to use the test tool.  The test tool will generate some sample data for you if you click **Generate**.  You can modify the test data if you wish.  Click **Call Operation** to invoke the API.
-
-	![](./images/pots/ace-designer/acplab1newflow17.png)
-
-15. Once the API runs, you can view the results at the bottom. To double check that everything worked, go into your inbox where you sent your mail to.  You should see your mail there.
-
-	![](./images/pots/ace-designer/acplab1newflow18.png)
-
-16. Now that we have the basics out of the way, lets augment our flow to include an additional step that willl call out to a new endpoint.  Close down the developer portal and return back to App Connect. Before you can make changes, you need to stop your API.  Click on the  three dots icon and then click **Stop API**. Then click on the **Define** heading.
-
-	![](./images/pots/ace-designer/acplab1newflow19.png)
-
-17. Click the **Operations** tab and then select **Edit Flow**.  **Note** if you only see a **View Flow** instead of **Edit Flow** then this means your API is still running.  This happens as you are not allowed to make changes to your flow while it is still running, although you can view it.  Follow the instructions in the previous step to do that.
-
-	![](./images/pots/ace-designer/acplab1newflow20.png)
-
-18. Add a new operation by clicking on the large **+** icon in the flow.  Filter the list of connectors under Applications to include the **Salesforce** connector.  Click on **Create account**.
-
-	![](./images/pots/ace-designer/acplab1newflow21.png)
-
-19. You will then see the new Salesforce Create Account operation in your flow.  Click the **Connect** button twice to start the process of connecting your Salesforce.com account to App Connect.
-
-	![](./images/pots/ace-designer/acplab1newflow22.png)
-
-20. You will see a pop up that reminds you that Salesforce.com API access is required for App Connect to work with your Salesforce instance.  Click **Continue**.
-
-	![](./images/pots/ace-designer/acplab1newflow23.png)
-
-21. You will then see Salesforce prompt for access by App Connect to your Salesforce account.  Click **Allow** to complete the process.
-
-	![](./images/pots/ace-designer/acplab1newflow24.png)
-
-22. You can then populate the mappings into your Salesforce account.  Lets use a dynamic value that is coming in from the model we defined earlier. Click on the **Account Name** field and then click the "Hamburger" Icon on the right hand side of the text box.  Here you can select variables that have been already defined and made available for use within the integration.  Click on the **firstname**  field.  Repeat the process for **lastname**.  You can add a space in between the firstname and lastname fields if you wish.
-
-	![](./images/pots/ace-designer/acplab1newflow25.png)
-
-23. Let's apply a function to do some transformation.  Click the **lastname** field box on the Account Name. and then select **Apply a function**.
-
-	![](./images/pots/ace-designer/acplab1newflow26.png)
-
-24. This will bring up a functions list.  Transformation functions in App Connect are done via JSONata.  The Functions tab here allows you to apply these functions quickly.  Find the **Uppercase** function under the String Functions heading.  Click on it.
-
-	![](./images/pots/ace-designer/acplab1newflow27.png)
-
-25. You will then see Account name with the applied transformation on the **lastname** field.
-
-	![](./images/pots/ace-designer/acplab1newflow28.png)
-
-8. Switch on the API, click on the 3 dot icon in the upper right hand corner.  Select **Start API**.
-
-	![](./images/pots/ace-designer/acplab1newflow12.png)
-	
-9. Repeat the same process as above by going back into the developer portal by clicking **Manage** and then find the URL for your portal at the bottom.  Use the **Try it** option and then **Generate** new input test data.  You should see the email sent as before and additionally, a new account will be generated in Salesforce using the information provided in the input test data.
 
 ### Conclusion
 You have completed the "Hello World" section of the App Connect Designer labs.  You should have a good feel for the UI now, and the subsequent labs will dive into some more complex use cases that are based on real world examples.
