@@ -76,6 +76,16 @@ Part One: Create and Deploy your CIP Applications
 11. The Platform Navigator is designed for you to easily keep track of your integration toolset.  Here you can see all of the various APIC, Event Streams, MQ and ACE instances you have running.  You can also add new instances using the Platform Navigator.
 11. Each application instance requires its own namespace and pull secret.  To support this lab, namespaces and pull secrets have been provided for you already, with the exception of Event Streams (ES).  We'll talk more about ES later in the lab.
 
+### Key Concepts - Troubleshooting with `kubectl`
+
+There are times where things may not be going right, so your best bet is to use `kubectl` commands to uncover more information about what is going on.  If you post queries in Slack about trouble with the lab, we will be asking you to execute a series of these, depending upon what you were doing, and what error occured.  A list of useful commands are provided below:
+
+ - `kubectl get pods -n <some-namespace>` This command shows all of the pods in a given name space.  Here you will see if any pods are up, down, errored or otherwise in transition.
+ - `kubectl describe pods <some-pod> -n <some-namespace>` This will provide verbose information about a given pod.  You can use the `describe` command for other objects.
+ - `kubectl logs <some-object> -n <some-namespace>` This command will work with other objects as well
+
+ There are plenty other commands to use, but these are by far the most common the author of these labs has used while setting these up :)
+
 
 ### App Connect Enterprise
 
@@ -103,9 +113,9 @@ your output will look something like:  `Open your web browser to https://myclust
 
 *Hint* If the first command fails, you might not be in the `ace` name space.  Quickest way to set your context is just to relogin using `cloudctl login` and then set your namespace to `ace`.  
 
-23. If you can see the App Connect Enterprise portal, then you are are done with this step.  We'll load in a .bar file later.
+If you can see the App Connect Enterprise portal, then you are are done with this step.  We'll load in a .bar file later.
 
-## MQ
+### MQ
 
 10. From the Platform Navigator, locate the panel on the far right for `Messaging` and click on the `add new instance` link and then select `New Message Queue` instance.
 11. A pop up window will give you some important information about pre-requisites for creating the instance.  Click `continue`.
@@ -115,19 +125,47 @@ your output will look something like:  `Open your web browser to https://myclust
 15. Tick checkbox under `license`
 16. Expand the `All Parameters` twisty
 17. Untick the `Production Usage` tick box.
+18. Under the `Image Pull Secret` section enter in `acemqkey`.
 18. Under `Persistence` untick both `Enable Persistence` and `Use Dynamic Provisioning`.  *Note* failure to untick this will cause your install to fail.
 19. Under the `Queue Manager` section.  Enter your queue manager name  `QMGR.DEV`.
 19. You can leave the other settings as defaults.
 20. Click `Install` to start the process.
 21. You can monitor the installation from Helm Releases in the ICP UI or via the command line using `kubectl get pods -n acemq`.  Once you see your pod up and running, you can navigate to the UI via the Platform Navigator.  Find your MQ instance and click on it.  **Note**  if you encounter issues with the self signed certs in the browser.  Click on the link where it says `open mq`.  This will open a new browser window and should allow you to access the MQ UI properly.
-22. In the MQ UI, click on the `3 dots` icon to the right of the properties Hamburger icon.  Select the option that says `Add a new dashboard tab` this creates a new management tab for your Queue Manager
+22. In the MQ UI, click on the `3 dots` icon to the right of the properties Hamburger icon.  Select the option that says `Add a new dashboard tab` this creates a new management tab for your new Queue Manager
 23. Click on the `+` button to create a new queue.  Call this Queue `TEST.OUT`.
 24. Authority records??
 24. You Have now configured MQ
 
 
-## Event Streams
+### Event Streams
 
+20. Before we create a new Event Streams instance, you will need to delete the existing Event Streams instance on the environment as well as deleting the existing eventstreams namespace.
+21. There a couple of ways to remove an installation.  We'll do this using in two parts, one by UI, one by CLI. Using the ICP UI (`https://10.0.0.1:8443`) go to the top left hamburger config menu select `Workloads` -> `Helm Releases`.  Locate the `eventstreams` install.    Find the `action` icon on the far right (looks like 3 dots).  Click that and then select `Delete`.  ICP will remove all of the Pods that are part of this install.
+22. Next we will remove the old namespace. Lets do that via the command line.  Connect to your master node via SSH.  Login via `cloudctl login` if you have to.  Select default namespace.
+23. Delete the namespace as follows  `kubectl delete namespace eventstreams`.  Deleting the namespace should be fairly quick.
+24. Now lets recreate the namespace.  Do this via `kubectl create namespace eventstreams` 
+22. Change context to this new namespace by issuing `kubectl config set-context mycluster-context --user=admin --namespace=eventstreams`
+23. re-create your pullsecret then by issuing: `kubectl create secret docker-registry eskey --docker-server=mycluster.icp:8500 --docker-username=admin --docker-password=admin --docker-email=admin`
+24. Return back to the Developer Machine via Skytap.  Bring up the Platform Navigator again.  Locate the panel on the far right for `Messaging` and click on the `add new instance` link and then select `New Event Streams` instance.
+25. Similar to the other instances you have setup, you will have a pop up that gives you some advice on requirements.  Click `continue`
+26. Select the `configuration` tab on the top. Here we will configure the chart for install.
+27. Under `Helm Releases` call it `eventstreams-cip`
+28. Set the `Target Namespace` to `event streams`
+29. Tick the checkbox under `License`
+30. Moving down, set the `Image Pull Secret` to `eskey`
+31. Click the `All Parameters` Twisty
+32. Under the Global Install Parameters heading, untick the `Used in Production` checkbox.
+33. Modify the `Docker Image Registry` entry by removing the last trailing '/' character.  e.g. `mycluster.icp:8500/icip`
+34. Moving down, make sure all of the persistant storage checkboxes are unticked.
+35. That is the last change.  Click the `Install` button on the lower right.
+36. Check the progress of the install using the command line (via SSH) to the master node.  `kubectl get pods -n eventstreams`
+37. If you see all the pods up properly then you are good to go.  
+38. You can access the management interface by returning back to the ICP UI on the Developer Machine.  From the main ICP UI, upper left hand corner, click on the hamburger icon and go to `Workloads` -> `Helm Releases`.  Locate your Eventstreams release and then click the `launch` button on the far right. From the drop down list select `admin-ui-https`.  If you see the event streams UI come up, you are then ready to configure event streams
+
+### API Connect
+
+20. To install API Connect, return to the Developer Machine and bring up the Platform Navigator.  On the left hand side of the screen
+21. jkjhjkhk
 
 Add in some Integration Assets
 -----------------------------
