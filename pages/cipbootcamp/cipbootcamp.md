@@ -87,11 +87,11 @@ There are times where things may not be going right, so your best bet is to use 
  There are plenty other commands to use, but these are by far the most common the author of these labs has used while setting these up :)
 
 
-### App Connect Enterprise
+## App Connect Enterprise
 
 10. Let's start by creating an App Connect Enterprise Integration Server.  From the Platform Navigator, locate the middle panel for `Application Integration` and click on the `add new instance` link.
 11. A pop up window will give you some important information about pre-requisites for creating the instance.  Click `continue`.
-12. This will take you to the chart configuration.  If you scroll to the bottom, you can peruse the information about the chart you are about to use to create your instance of App Connect Enteprise.  Click the `Configure` button to configure your chart.
+12. This will take you to the chart configuration.  If you scroll to the bottom, you can peruse the information about the chart you are about to use to create your instance of App Connect Enteprise.  Click the `Configure` button to configure your chart.  Other than the items listed below, we will be accepting the default values in the chart.
 13. Here you can fil in the information for install of your chart.  Give your helm release a `name`.  Call the release `ace-icip`.
 14. To the right of the `name` field, Select the `ace` namespace from the `Target Namespace` dropdown.
 15. Tick checkbox under `license`
@@ -115,11 +115,11 @@ your output will look something like:  `Open your web browser to https://myclust
 
 If you can see the App Connect Enterprise portal, then you are are done with this step.  We'll load in a .bar file later.
 
-### MQ
+## MQ
 
 10. From the Platform Navigator, locate the panel on the far right for `Messaging` and click on the `add new instance` link and then select `New Message Queue` instance.
 11. A pop up window will give you some important information about pre-requisites for creating the instance.  Click `continue`.
-12. This will take you to the chart configuration.  If you scroll to the bottom, you can peruse the information about the chart you are about to use to create your instance of MQ.  Click the `Configure` button to configure your chart.
+12. This will take you to the chart configuration.  If you scroll to the bottom, you can peruse the information about the chart you are about to use to create your instance of MQ.  Click the `Configure` button to configure your chart.  Other than the items listed below, we will be accepting the default values in the chart.
 13. Here you can fil in the information for install of your chart.  Give your helm release a `name`.  Call the release `mq-icip`.
 14. To the right of the `name` field, Select the `acemq` namespace from the `Target Namespace` dropdown.
 15. Tick checkbox under `license`
@@ -137,7 +137,7 @@ If you can see the App Connect Enterprise portal, then you are are done with thi
 24. You Have now configured MQ
 
 
-### Event Streams
+## Event Streams
 
 20. Before we create a new Event Streams instance, you will need to delete the existing Event Streams instance on the environment as well as deleting the existing eventstreams namespace.
 21. There a couple of ways to remove an installation.  We'll do this using in two parts, one by UI, one by CLI. Using the ICP UI (`https://10.0.0.1:8443`) go to the top left hamburger config menu select `Workloads` -> `Helm Releases`.  Locate the `eventstreams` install.    Find the `action` icon on the far right (looks like 3 dots).  Click that and then select `Delete`.  ICP will remove all of the Pods that are part of this install.
@@ -148,9 +148,9 @@ If you can see the App Connect Enterprise portal, then you are are done with thi
 23. re-create your pullsecret then by issuing: `kubectl create secret docker-registry eskey --docker-server=mycluster.icp:8500 --docker-username=admin --docker-password=admin --docker-email=admin`
 24. Return back to the Developer Machine via Skytap.  Bring up the Platform Navigator again.  Locate the panel on the far right for `Messaging` and click on the `add new instance` link and then select `New Event Streams` instance.
 25. Similar to the other instances you have setup, you will have a pop up that gives you some advice on requirements.  Click `continue`
-26. Select the `configuration` tab on the top. Here we will configure the chart for install.
+26. Select the `configuration` tab on the top. Here we will configure the chart for install.  Other than the items listed below, we will be accepting the default values in the chart.
 27. Under `Helm Releases` call it `eventstreams-cip`
-28. Set the `Target Namespace` to `event streams`
+28. Set the `Target Namespace` to `eventstreams`
 29. Tick the checkbox under `License`
 30. Moving down, set the `Image Pull Secret` to `eskey`
 31. Click the `All Parameters` Twisty
@@ -160,12 +160,55 @@ If you can see the App Connect Enterprise portal, then you are are done with thi
 35. That is the last change.  Click the `Install` button on the lower right.
 36. Check the progress of the install using the command line (via SSH) to the master node.  `kubectl get pods -n eventstreams`
 37. If you see all the pods up properly then you are good to go.  
-38. You can access the management interface by returning back to the ICP UI on the Developer Machine.  From the main ICP UI, upper left hand corner, click on the hamburger icon and go to `Workloads` -> `Helm Releases`.  Locate your Eventstreams release and then click the `launch` button on the far right. From the drop down list select `admin-ui-https`.  If you see the event streams UI come up, you are then ready to configure event streams
+38. You can access the management interface by returning back to the ICP UI (https://10.0.0.1:8443) on the Developer Machine.  From the main ICP UI, upper left hand corner, click on the hamburger icon and go to `Workloads` -> `Helm Releases`.  Locate your Eventstreams release and then click the `launch` button on the far right. From the drop down list select `admin-ui-https`.  If you see the event streams UI come up, you are then ready to configure event streams
 
-### API Connect
+## API Connect
 
-20. To install API Connect, return to the Developer Machine and bring up the Platform Navigator.  On the left hand side of the screen
-21. jkjhjkhk
+20. To install API Connect, there are a few items that are needed in order to properly configure your ICP environment.  These are listed below
+	- Persistant Storage (Ceph is required, and has been set up for you already)
+	- 7 FQDN's for the various UIs/Portal of API Connect
+21. Below is a list of the FQDN's you will be using for this configuration.
+
+### API Connect Management ###
+**Platform API Endpoint:**   `https://mgmt.10.0.0.5.nip.io`
+
+**Consumer API Endpoint:**   `https://mgmt.10.0.0.5.nip.io`
+
+**Cloud Admin UI Endpoint:** `https://mgmt.10.0.0.5.nip.io`
+
+**API Manager UI Endpoint:** `https://mgmt.10.0.0.5.nip.io`
+
+### API Connect Portal ###
+**Portal Director API Endpoint:** `https://pd.10.0.0.5.nip.io`
+
+**Portal Web UI Endpoint:**       `https://pw.10.0.0.5.nip.io`
+
+### API Connect Analytics ###
+**Analytics Ingestion API Endpoint:** `https://ai.10.0.0.5.nip.io`
+
+**Analytics Client API Endpoint:**    `https://ac.10.0.0.5.nip.io`
+
+### API Connect Gateway ###
+**Gateway Service API Endpoint:** `https://gws.10.0.0.5.nip.io`
+
+**API Gateway Endpoint:**         `https://apigw.10.0.0.5.nip.io`
+
+21. Return to the Developer Machine and bring up the Platform Navigator.  On the left hand side of the screen locate the `API Lifecycle and Secure Access` section.  At the bottom of this section, locate and click on the `add new instance` link.
+21. A pop up will come up, giving you some information about setting up the instance.  Click `Continue`.
+22. Click on the `Configuration` heading.  Other than the items listed below, we will be accepting the default values in the chart.
+23. Set the `Helm Release` to `apic-cip`.  
+24. Moving to the right, set the `Target Namespace` from the dropdown to `apic`
+25. Tick the checkbox under `License`
+26. Under the `Parameters` heading.  Set the `Registry Secret` to `apickey`.
+27. Set `Storage Class` to `rbd-storage-class` This is your Ceph Storage class name. **NOTE** it is very important that this setting is correct, otherwise the setup of the shared storage volumes will fail.
+28. Set the `Helm TLS Secret` to `helm-tls-secret`
+29. Contuining on, under the `Management` heading.  Here you need to fill in the four different management headings as per the chart in step 2 above.
+30. Same thing for the `Portal`, `Analytics`and `Gateway` sections.  Follow the chart above and enter in the values for each of the above values in the FQDN list in Step 2.
+31. When done, click the `All Parameters` twisty.
+32. Scroll up a bit and start with the values under the `Global` heading.  Select the `Mode` drop down, and set the value to `dev`.
+33. Scroll down a bit and located the `Cassandra` heading.  Set that value of `Cluster Size` to the value of `1`.
+34. Scroll down some more to the `Gateway` section.  Set the `Replica Count` to the value of `1`.
+35. That completes the chart configuration.  Click the `Install` button to start the process.  The Entire Process to install API Connect takes about 15 minutes to spin up all of the pods.  You can monitor things using a command like `watch kubectl get pods -n apic`.  
 
 Add in some Integration Assets
 -----------------------------
