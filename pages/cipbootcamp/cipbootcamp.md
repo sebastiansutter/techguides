@@ -100,7 +100,7 @@ There are times where things may not be going right, so your best bet is to use 
 15. Tick checkbox under `license`
 16. Expand the `All Parameters` twisty
 17. Find the `Image Pull Secret` line.  Set that to `acekey` (This is pre-defined for you, normally, you would need to create this).
-18. For the `Hostname of the ingress proxy to be configured` section. Change the default value provided to `mycluster.icp`.  
+18. For the `Hostname of the ingress proxy to be configured` section. Change the default value provided to `ace.10.0.0.5.nip.io`.  
 18. **IMPORTANT** - Find the `Enable Persistant Storage` Section.  This box must be unticked (disabled).  In order to support persistant storage, Gluster storage must be used (Ceph is not supported with ACE).  Implementing/Using Gluster Storage with CIP beyond the scope of this lab.
 19. Leave the other default values in the chart.  Scroll down and Click `Install` button on lower right portion of the screen.
 20. Once you see the `Installation Started` pop up. You can validate the progress via the `Helm Releases` in the ICP Portal or via the command line.
@@ -112,7 +112,7 @@ There are times where things may not be going right, so your best bet is to use 
 
 then `echo "Open your web browser to https://${ACE_DASHBOARD_URL}"`
 
-your output will look something like:  `Open your web browser to https://mycluster.icp/ace-ace-icip`
+your output will look something like:  `Open your web browser to https://ace.10.0.0.5.nip.io/ace-ace-icip`
 
 *Hint* If the first command fails, you might not be in the `ace` namespace.  Quickest way to set your context is just to relogin using `cloudctl login` and then set your namespace to `ace`.  
 
@@ -236,15 +236,47 @@ If you can see the App Connect Enterprise portal, then you are are done with thi
 Add in some Integration Assets
 -----------------------------
 
-1.  While logged into your App Connect Instance, in the main dashboard, Click on the **New+** button and then select **Flows for an API**.
+1.  One your developer machine.  Go to a command prompt and execute a `git clone https://github.com/ibm-cloudintegration/techguides`.  
+2.  Load up the management page for your ACE install.  You can access it from the Platform Navigator by clicking on your `ace` install or just direct your browser to `https://ace.10.0.0.5.nip.io/ace-ace-cip/`
+3. Click on the `+Server` button.  On the local file system, navigate to the `/home/student/techguides` directory and find the lone bar file which should be `RESTRequest_Everything.bar'.  A pop up with a content URL will come up.  Copy this to your clipboard.  You will need it for the next step.
+4. You will now deploy your bar file using the ACE chart, so you will be taken to the chart configuration screen in ICP.  Click the `Configure` button or the `Configuration` tab at the top to continue
+5. Set the `Helm Release` to `lab`
+6. Change the `Target Namespace` to `ace`
+7. Tick the `License` checkbox
+8. Click on the `All Parameters` twisty to open it up
+7. Paste in the URL given to you above `Content Server URL`
+8. Untick the `Production Usage` checkbox
+9. Set the `Image Pull Secret` to `acekey`
+10. Untick the `Enable Persistence` and `Use Dynamic Provisioning` checkboxes.
+11. Under the `Service` settings, find the `NodePort IP` change this to `lab.10.0.0.5.nip.io`.  This will be the endpoint for your service running on ACE.
+12. Leave the remaining settings as defaults and then click `Install` at the bottom.  Your chart will now install.  You can view the progress of the install via Helm Releases as prompted or use `kubectl`.
+13. Return back to your ACE Management UI. (Click the `done` on the window from the previous step).  You should now see one service running on your integration server.  Click on the 3 dot hamburger button on the `lab` icon.  Click Open.
+14. You will now see 3 icons, one for the REST Request API, Application and Shared Library.  Click on the hamburger icon for REST Request_API and then click open
+15. You will then see two URL's that look something (but not exactly) like this:  
 
+	- REST API Base URL `http://lab.10.0.0.5.nip.io:30098/restrequest_api/v1`
+	- OpenAPI document `http://lab.10.0.0.5.nip.io:30098/restrequest_api/v1/Tutorial_swagger.json`
 
-	![](./images/pots/ace-designer/acplab1newflow.png)
+Copy and paste the link for the OpenAPI document into a browser window and then save the json file on the local file system.  We will use this inside of API Connect
 
-
+16. Open up your API Manager Window inside the developer machine - `https://mgmt.10.0.0.5.nip.io/manager`.  The login should happen automatically as it will use your ICP credentials for login.
+17. From the API Manager homescreen, use the menu on the left to navigate to `Develop`.
+18. On the APIs and Products screen click t`add` -> `Api`
+19. Select the `From Existing API Service` radio button option.  Click `Next`.
+20. Click the `browse` button to navigate to the `Tutorial_swagger.json` file on your file system you had saved previously.
+21. Click `Next`
+22. Review the settings then click `Next` twice (do not activate the API yet).
+23. Review the summary to ensure the API was created properly, and then click the `Edit API` button.
+24. Click the `Assemble` tab to bring up the Assembly editor.
+25. Click the Play button to start the Test tool.
+25. Click the blue `Activate API` button to deploy.
+26. Select the `get /UserNumber` operation.
+27. Scroll down to the `Parameters` section and find the `UserNumber` - replace what is there with the number `1`.
+26. Scroll down and click the `Invoke` button.  The first time you invoke this, it will bring up a CORS warning.  Copy and paste the link for the API into a new browser tab.  It will return a 401 error for authorization, but this will load up the cert.
+27. Run the invoke again, and you should see the output properly.
 
 ### Conclusion
-You have completed the "Hello World" section of the App Connect Designer labs.  You should have a good feel for the UI now, and the subsequent labs will dive into some more complex use cases that are based on real world examples.
+You have completed the initial CIP Labs by taking a base ICP install and then imported some basic integration assets and exposed that as an API running on the configuration.  The key value is having the single platform that runs all of the capability that can be managed easily, user the power of Kubernetes.  
 
  
 **End of Lab**
