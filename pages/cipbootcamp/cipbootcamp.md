@@ -124,7 +124,7 @@ If you can see the App Connect Enterprise portal, then you are are done with thi
 
 10. For MQ we will not be using the default chart that is linked to the Platform Navigator.  What comes with the CIP is the production version of the chart that requires the installer to configure everything, which is cumbersome if you are just looking to spin up an environment quickly.  Fortunately, ICP comes with a chart that is designed specifically for developer types that comes with a pre-configured queue manager, queues, server channels and the like.
 11. To access this chart, make sure you are logged into the ICP UI via the Developer Machine (`https:10.0.0.1:8443`). Using the top menu, right hand side, click on `Catalog`
-12. usign the context based search filter - type in `mq-dev`into the filter bar.  Select the `ibm-mqadvanced-server-dev` chart.  You can scroll down a bit to peruse the pre-requisites.  
+12. usign the context based search filter - type in `mq`into the filter bar.  Select the `ibm-mqadvanced-server-dev` chart.  You can scroll down a bit to peruse the pre-requisites.  
 12. This will take you to the chart configuration.  If you scroll to the bottom, you can peruse the information about the chart you are about to use to create your instance of MQ.  Click the `Configure` button to configure your chart.  Other than the items listed below, we will be accepting the default values in the chart.
 13. Here you can fil in the information for install of your chart.  Give your helm release a `name`.  Call the release `mq-icip`.
 14. To the right of the `name` field, Select the `acemq` namespace from the `Target Namespace` dropdown.
