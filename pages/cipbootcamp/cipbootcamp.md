@@ -50,7 +50,7 @@ Part One: Create and Deploy your CIP Applications
 3. **VERY IMPORTANT** It is very important you do not suspend your lab environment.  We have seen cases when the environment goes into suspend mode, the Rook-Ceph shared storage gets corrupted.  Also it is a good practice that you shut down ICP before powering down your enviroment.  A script has been included to handle that for you that will be explained in the coming sections.  When you power down your environment, you can safely use the `power off` option as the shared storage can interfere with the normal graceful shutdown method.  So far using power off hasn't caused any problems that we are aware of.
 3. You are also able to SSH into your environment.  You can find out the exact address to SSH to in your Skytap Environment window under `networking` and `published services`.  The Published Services set up for you will be for the SSH Port (22) under the `CIP Master` node.  The published service will look something like `services-uscentral.skytap.com:10000`.  Your environment will have a different port on it.  You can then SSH to to the machine from your local machine.  
 4. Additionally, you can access the machine direct via the Skytap UI.  This is functional, but can be cumbersome to work with as its not easy to copy and paste into and out of Skytap, especially for the non X-Windows based environments.  
-5. Password-less SSH has also been enabled between the Master node and the other nodes in the environment.  **note** a table with the environment configuration is provided below.  Credentials for each machine are `root`/`Passw0rd`.   You shouldn't need to use this for the lab, but its provided for your information.
+5. Password-less SSH has also been enabled between the Master node and the other nodes in the environment.  **note** a table with the environment configuration is provided below.  Credentials for each machine are `root`/`Passw0rd`.   
 
 | VM        | Hostname  | IP Address | # of CPU | RAM    | Disk Space (LOCAL) | Shared Storage | Additional Notes |
 |-----------|-----------|------------|----------|--------|--------------------|----------------|------------------|
@@ -84,7 +84,7 @@ There are times where things may not be going right, so your best bet is to use 
  - `kubectl describe pods <some-pod> -n <some-namespace>` This will provide verbose information about a given pod.  You can use the `describe` command for other objects.
  - `kubectl logs <some-object> -n <some-namespace>` This command will work with other objects as well.  You can also tail the logs by using the `-f` switch at the end.
 
- If you happen to mess up an install of the components, its not difficult to recover.  You can use the ICP UI to remove the release or use the CLI by issuing `helm delete --purge <helm-release-name> --tls`
+ If you happen to mess up an install of the components, its not difficult to recover.  You can use the ICP UI to remove the release or use the CLI by issuing `helm delete --purge <helm-release-name> --tls`.  Be careful using this though, as this process is not reversable.
 
  There are plenty other commands to use, but these are by far the most common the author of these labs has used while setting these up :)
 
@@ -242,12 +242,12 @@ If you can see the App Connect Enterprise portal, then you are are done with thi
 
 
 
-Add in some Integration Assets
+Part Two: Deploy some Integration Assets
 -----------------------------
 
 1.  One your developer machine.  Go to a command prompt and execute a `git clone https://github.com/ibm-cloudintegration/techguides`.  
 2.  Load up the management page for your ACE install.  You can access it from the Platform Navigator by clicking on your `ace` install or just direct your browser to `https://ace.10.0.0.5.nip.io/ace-ace-cip/`
-3. Click on the `+Server` button.  On the local file system, navigate to the `/home/student/techguides` directory and find the lone bar file which should be `RESTRequest_Everything.bar'.  A pop up with a content URL will come up.  Copy this to your clipboard.  You will need it for the next step.
+3. Click on the `+Server` button.  On the local file system, navigate to the `/home/student/techguides` directory and find the lone bar file which should be `RESTRequest_Everything.bar`.  A pop up with a content URL will come up.  Copy this to your clipboard.  You will need it for the next step.
 4. You will now deploy your bar file using the ACE chart, so you will be taken to the chart configuration screen in ICP.  Click the `Configure` button or the `Configuration` tab at the top to continue
 5. Set the `Helm Release` to `lab`
 6. Change the `Target Namespace` to `ace`
@@ -270,7 +270,7 @@ Copy and paste the link for the OpenAPI document into a browser window and then 
 
 16. Open up your API Manager Window inside the developer machine - `https://mgmt.10.0.0.5.nip.io/manager`.  The login should happen automatically as it will use your ICP credentials for login.
 17. From the API Manager homescreen, use the menu on the left to navigate to `Develop`.
-18. On the APIs and Products screen click t`add` -> `Api`
+18. On the APIs and Products screen click `add` -> `Api`
 19. Select the `From Existing API Service` radio button option.  Click `Next`.
 20. Click the `browse` button to navigate to the `Tutorial_swagger.json` file on your file system you had saved previously.
 21. Click `Next`
