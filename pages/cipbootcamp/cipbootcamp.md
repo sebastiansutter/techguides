@@ -217,7 +217,7 @@ If you can see the App Connect Enterprise portal, then you are are done with thi
 ## API Connect Configuration
 
 20. These next steps are the standard setup steps for configuring a provider organization inside of APIC.  
-21. On the Developer Machine, open a new browser tab to `https://mgmt.10.0.0.5.nip.io/admin`.  Once the Admin Portal comes up, you can log in with `admin/7iron-hide`.  You will be logged in and forced to change your password.  Set it to whatever you like.
+21. On the Developer Machine, open a new browser tab to `https://mgmt.10.0.0.5.nip.io/admin`.  Once the Admin Portal comes up, you can log in with `admin/7iron-hide`.  You will be logged in and forced to change your password.  Set it to whatever you like, but don't forget it.
 22. You will now be placed into the Cloud Manager Portal.  Click the link to `Configure Topology`
 23. Click on `Register Service`
 24. Select `Datapower Gateway v5 Compatible`
@@ -228,8 +228,17 @@ If you can see the App Connect Enterprise portal, then you are are done with thi
 30. Once returned back to Topology screen, click `Register Service` then select `Portal`.  *Note* this doesn't create a portal yet - it just registers the service.  We'll add the portal after we create the provider org.
 31. Set the Title to whatever you like then change the `Management Endpoint` to `https://pd.10.0.0.5.nip.io`.  
 32. Change the `Portal Website URL` `https://pw.10.0.0.5.nip.io`.  Click Save.
-33. 
-
+33. You can then associate the analytics service to the gateway service by clicking on the `Associate Analytics` link.
+34. Setup notifications for your APIC Instance.  Go to `Settings` -> `Notifications`
+35. Under Sender & Email Server click `Edit`.
+36. Enter in a `Name` and `Email` for your Admin user, this can be anything.
+37. Down Below, click on the link that says `Configure Email Server`
+38. Set up an email server of your choice, Gmail works fine here, just set it up for port 587 pointing to smtp.gmail.com.  Enter in the credentials for a gmail account.  Its not necessary to go to gmail to get the notification we will need, as once the mail is sent, we will have access to the link we need in API Connect.  Click `Save`
+39. From the top left menu - go to `Provider Organizations`.
+40. Click `Add` -> `Invite Organization Owner`.  Enter in a email address, use something different here.
+41. Once you see the activation link, click on it.  Copy the link and paste it to a new browser tab window on the developer machine.
+42. No need to fill out any of the information that pops up, API Connect will grab your credentials from ICP, so going forward the API Manager UI will use SSO facilitated via ICP.
+43. You will automatically be logged into the API Manager.  From here you can continue with the next section.
 
 
 
