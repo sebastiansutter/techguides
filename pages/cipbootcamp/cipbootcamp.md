@@ -85,7 +85,9 @@ There are times where things may not be going right, so your best bet is to use 
  - `kubectl logs <some-object> -n <some-namespace>` This command will work with other objects as well.  You can also tail the logs by using the `-f` switch at the end.
 
  If you happen to mess up an install of the components, its not difficult to recover.  You can use the ICP UI to remove the release or use the CLI by issuing `helm delete --purge <helm-release-name> --tls`.  Be careful using this though, as this process is not reversable.
-
+ 
+ Logging is also done inside of ICP using the ELK stack.  You can access the logging inside of ICP and use Elastic Search commands to drill into things.  For example, if you were to bring up Kibana and enter in a search like `kubernetes.namespace:<your namespace>`.  Using this along with the `kubectl` commands gives you a lot of power to dig into root cause.
+ 
  There are plenty other commands to use, but these are by far the most common the author of these labs has used while setting these up :)
 
 
