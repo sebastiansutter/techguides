@@ -175,28 +175,28 @@ If you can see the App Connect Enterprise portal, then you are are done with thi
 21. Below is a list of the FQDN's you will be using for this configuration.
 
 ### API Connect Management ###
-**Platform API Endpoint:**   `https://mgmt.10.0.0.5.nip.io`
+**Platform API Endpoint:**   `mgmt.10.0.0.5.nip.io`
 
-**Consumer API Endpoint:**   `https://mgmt.10.0.0.5.nip.io`
+**Consumer API Endpoint:**   `mgmt.10.0.0.5.nip.io`
 
-**Cloud Admin UI Endpoint:** `https://mgmt.10.0.0.5.nip.io`
+**Cloud Admin UI Endpoint:** `mgmt.10.0.0.5.nip.io`
 
-**API Manager UI Endpoint:** `https://mgmt.10.0.0.5.nip.io`
+**API Manager UI Endpoint:** `mgmt.10.0.0.5.nip.io`
 
 ### API Connect Portal ###
-**Portal Director API Endpoint:** `https://pd.10.0.0.5.nip.io`
+**Portal Director API Endpoint:** `pd.10.0.0.5.nip.io`
 
-**Portal Web UI Endpoint:**       `https://pw.10.0.0.5.nip.io`
+**Portal Web UI Endpoint:**       `pw.10.0.0.5.nip.io`
 
 ### API Connect Analytics ###
-**Analytics Ingestion API Endpoint:** `https://ai.10.0.0.5.nip.io`
+**Analytics Ingestion API Endpoint:** `ai.10.0.0.5.nip.io`
 
-**Analytics Client API Endpoint:**    `https://ac.10.0.0.5.nip.io`
+**Analytics Client API Endpoint:**    `ac.10.0.0.5.nip.io`
 
 ### API Connect Gateway ###
-**Gateway Service API Endpoint:** `https://gws.10.0.0.5.nip.io`
+**Gateway Service API Endpoint:** `gws.10.0.0.5.nip.io`
 
-**API Gateway Endpoint:**         `https://apigw.10.0.0.5.nip.io`
+**API Gateway Endpoint:**         `apigw.10.0.0.5.nip.io`
 
 21. Return to the Developer Machine and bring up the Platform Navigator.  On the left hand side of the screen locate the `API Lifecycle and Secure Access` section.  At the bottom of this section, locate and click on the `add new instance` link.
 21. A pop up will come up, giving you some information about setting up the instance.  Click `Continue`.
