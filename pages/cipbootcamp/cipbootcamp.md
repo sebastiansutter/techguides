@@ -130,7 +130,6 @@ If you can see the App Connect Enterprise portal, then you are are done with thi
 14. To the right of the `name` field, Select the `acemq` namespace from the `Target Namespace` dropdown.
 15. Tick checkbox under `license`
 16. Expand the `All Parameters` twisty
-17. Untick the `Production Usage` tick box.
 18. Under the `Image Pull Secret` section enter in `acemqkey`.
 18. Under `Persistence` untick both `Enable Persistence` and `Use Dynamic Provisioning`.  *Note* failure to untick this will cause your install to fail.
 19. In the `Service Type` section, select `Node Port`.
