@@ -153,7 +153,7 @@ If you can see the App Connect Enterprise portal, then you are are done with thi
 23. re-create your pullsecret then by issuing: `kubectl create secret docker-registry eskey --docker-server=mycluster.icp:8500 --docker-username=admin --docker-password=admin --docker-email=admin`
 24. Return back to the Developer Machine via Skytap.  Bring up the Platform Navigator again.  Locate the panel on the far right for `Messaging` and click on the `add new instance` link and then select `New Event Streams` instance.
 25. Similar to the other instances you have setup, you will have a pop up that gives you some advice on requirements for install.  Click `continue`
-26. Select the `configuration` tab on the top. Here we will configure the chart for install.  Other than the items listed below, we will be accepting the default values in the chart.
+26. Like before Click `Continue` in the lower right hand corner. Here we will configure the chart for install.  Other than the items listed below, we will be accepting the default values in the chart.
 27. Under `Helm Releases` call it `eventstreams-cip`
 28. Set the `Target Namespace` to `eventstreams`
 29. Tick the checkbox under `License`
