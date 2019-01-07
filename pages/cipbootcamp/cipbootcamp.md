@@ -271,6 +271,11 @@ Part Two: Deploy some Integration Assets
 Copy and paste the link for the OpenAPI document into a browser window and then save the json file on the local file system.  We will use this inside of API Connect
 
 16. Open up your API Manager Window inside the developer machine - `https://mgmt.10.0.0.5.nip.io/manager`.  The login should happen automatically as it will use your ICP credentials for login.
+2. Click on the `Manage Catalogs`
+3. Click on `Sandbox`
+4. Click on `Settings` from left menu
+5. Click on `Gateway Services`
+6. Click `edit` and choose `Gateway`.
 17. From the API Manager homescreen, use the menu on the left to navigate to `Develop`.
 18. On the APIs and Products screen click `add` -> `Api`
 19. Select the `From Existing API Service` radio button option.  Click `Next`.
