@@ -193,9 +193,9 @@ If you can see the App Connect Enterprise portal, then you are are done with thi
 **Analytics Client API Endpoint:**    `ac.10.0.0.5.nip.io`
 
 ### API Connect Gateway ###
-**Gateway Service API Endpoint:** `gws.10.0.0.5.nip.io`
+**Gateway Service API Endpoint:** aka Management Endpoint `gws.10.0.0.5.nip.io`
 
-**API Gateway Endpoint:**         `apigw.10.0.0.5.nip.io`
+**API Gateway Endpoint:** aka API Invocation Endpoint       `apigw.10.0.0.5.nip.io`
 
 21. Return to the Developer Machine and bring up the Platform Navigator.  On the left hand side of the screen locate the `API Lifecycle and Secure Access` section.  At the bottom of this section, locate and click on the `add new instance` link.
 21. A pop up will come up, giving you some information about setting up the instance.  Click `Continue`.
