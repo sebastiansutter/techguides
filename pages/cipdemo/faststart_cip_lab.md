@@ -109,7 +109,8 @@ Configure Event Streams on your ICP environment according to these parameters
 
 ## ACE Integraton Assets 
 
-10. You can clone your repository
+10. Your integration assets are found in this repository: `https://github.com/ibm-cloudintegration/techguides`.  You can find the specific files you need in the `/techguides/pages/cipdemo` directory.  **hint** clone this on your Developer machine so you don't have to copy the files over.
+11. There are two 
 
 
 ## Event Streams
