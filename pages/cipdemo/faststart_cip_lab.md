@@ -2,8 +2,8 @@
 title: CIP Bootcamp
 toc: false
 sidebar: labs_sidebar
-folder: pots/cip-bootcamp
-permalink: /cip-bootcamp-lab.html
+folder: pots/cipdemo
+permalink: /cip-demo-lab.html
 summary: Introduction to the Cloud Integration Platform
 applies_to: [developer,administrator,consumer]
 ---
