@@ -197,7 +197,7 @@ Import the project interchange provided in the `faststartflows.zip` file.
 
 Modify the `Order` flow by adding two additional operations. after the App Connect REST operation.  One that will put to a MQ queue, and second that will put to a EventStreams Topic.  No transformation required - a vanilla put into each of the endpoints.  Use the environment information provided above.
 
-Generate a new bar files for the orders flow.
+Generate a new bar files for the orders flow.  You can give it a new name or keep the same name as the original.
 
 ## Deploy the bar files
 
@@ -206,6 +206,8 @@ Deploy the `inventoryproject.generated.bar` as provided to the CIP environment.
 Deploy the newly generated bar file for the orders flow.
 
 **Hint** each will need to be done separately.  Also create unique hostnames for each flow in the `NodePort IP` setting when configuring the Helm Release. e.g. `orders.10.0.0.5.nip.io`
+
+**Need a refresher on how to deploy bar files to ICP?** - This link [here](https://ibm-cloudintegration.github.io/techguides/cip-bootcamp-lab.html#part-two-deploy-some-integration-assets) has the instructions from the bootcamp on how this.
 
 Be sure to test using cURL before moving to next step.
 
