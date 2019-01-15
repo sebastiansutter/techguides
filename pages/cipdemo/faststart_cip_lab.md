@@ -149,12 +149,18 @@ You will need to download the AcmeMart microservices and deploy the containers o
 	- TCP - 9093
 	- TCP - 443
 
-22. Click `Create`.  The new pod should be created very quickly
+22. Click `Create`.  The new pod should be created very quickly.  You click on your release and view the results in the UI. **Note** you will not see a `Launch` button like you see in the screenshot until you complete the Service in the next section.
+
+	![](./images/cipdemo/deployment_done.gif)
+	
 23. Once you see the Pod up, the next step is to bind a Network service that can be associated with the Pod.
 24. From the Hamburger menu on top left go to `Workloads` -> `Services`.
 25. Create a New Service.  Call it `acmemartapp`.
 26. Select the proper namespace - `acmemartapi`
 27. Under `Type` select from the dropdown `NodePort`
+
+	![](./images/cipdemo/service3.gif)
+
 28. Under the `Labels` tab set the Label to `app` and value to `acmemart`.
 29. Under the `Ports` tab. Create 3 ports per the chart below:
 
@@ -164,13 +170,25 @@ You will need to download the AcmeMart microservices and deploy the containers o
 | TCP       | eventstreams | 9093 | 9093        |
 | TCP       | kafka        | 443  | 443         |
 
-29. Under the `Selectors` tab.  Set the `Selector` to `app` and the Value to `acmemart`.
+29. Ports should look like the following when done:
+
+	![](./images/cipdemo/serviceports.gif)
+
+30. Under the `Selectors` tab.  Set the `Selector` to `app` and the Value to `acmemart`.
 30. Click Create and the service should create quickly. 
 31. You will know the Service was generated properly when you return back to your deployment, and you see the `Launch` button in the upper right hand corner.  
+
+	![](./images/cipdemo/service_deployment_done_launch.gif)
+
 32. Click the Launch button and from the dropdown, select the `app` button and it should launch the main portal for the AcmeMartUtils. If so, then your microservices for the demo has deployed successfully. 
 33. The AcmeMart microservices comes with its own swagger based developer documentation.  From the main App screen, click on the `Developer Docs`.
+
+	![](./images/cipdemo/acedemo.gif)
+
 34. There are 3 categories of APIs here.  Click on the `Utility` apis.  From the list Select, the `GET /Utilities/ping` option
 35. Find the `try it out` button.  Click it.  It should return back the date/time.
+
+	![](./images/cipdemo/pingtest.gif)
 
 ## Modify the Order ACE Flow
 
@@ -193,6 +211,10 @@ Be sure to test using cURL before moving to next step.
 Use the following value as input for the inventory API `key` query parameter : `AJ1-05.jpg` 
 
 Once you have confirmed the functionality for both `order` and `inventory` message flows, export the swagger for each from the ACE Management Portal.  Save it to the file system on the developer machine, you will be using this in the next section
+
+Once Deployed, your ACE Management UI should display both `inventory` and `order` APIs running
+
+![](./images/cipdemo/appconnect.gif)
 
 
 ## Create API Facades
