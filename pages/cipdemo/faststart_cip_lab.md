@@ -1,14 +1,14 @@
 ---
-title: CIP Bootcamp
+title: FastStart 2019 Lab - CIP 
 toc: false
 sidebar: labs_sidebar
 folder: pots/cipdemo
 permalink: /cip-demo-lab.html
-summary: Introduction to the Cloud Integration Platform
+summary: Deeper dive into the Cloud Integration Platform
 applies_to: [developer,administrator,consumer]
 ---
 
-# Fast Start 2019 Lab - Cloud Integration Platform (CIP)
+# Mastering the Cloud Integration Platform
 ===============
 
 ## Overview
