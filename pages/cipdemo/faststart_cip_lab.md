@@ -170,6 +170,7 @@ You will need to download the AcmeMart microservices and deploy the containers o
 | TCP       | eventstreams | 9093 | 9093        |
 | TCP       | kafka        | 443  | 443         |
 
+
 29. Ports should look like the following when done:
 
 	![](./images/cipdemo/serviceports.gif)
