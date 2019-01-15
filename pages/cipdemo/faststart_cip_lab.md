@@ -15,9 +15,9 @@ applies_to: [developer,administrator,consumer]
 
 During the CIP Bootcamp, you had the opportunity to get some hands on with the CIP Platform.  This exercise here is to provide you some more hands on with the platform and build your skills with the platform with the goal of creating a demo environment everyone is able to build and use on their own.
 
-This lab guide will lay out the scenario for you, along with the requirements of what you are to complete.  This guide is different than other labs, such that it will not be a step by step walkthrough of what to complete, rather will give you a list of requirements to complete, and it is up to you and your team to deliver on those.
+This lab guide will lay out the scenario for you, along with the requirements of what you are to complete.  This guide is different than other labs, such that it will (for the most part) not be a step by step walkthrough of what to complete, rather will give you a list of requirements to complete, and it is up to you and your team to deliver on those.
 
-This lab guide assumes some familiarity with the Cloud Integration Platform (CIP), IBM Cloud Private (ICP), Docker & Kubernetes, as well as Helm.  
+This lab will be a team effort.  It is highly suggested that you form your teams of folks who can cover the entire I&D Portfolio - especially: App Connect Enterprise (using Toolkit), API Connect, Messaging (MQ and ES).  Its helpful also to have someone who knows `kubectl` commands and has some background with ICP. 
 
 Lab Overview
 -------------------------------------------
@@ -29,7 +29,7 @@ You will be building a demo environment that supports the "AcmeMart" demo scenar
 *  On-premises based MQ and ES based assets
 *  API Facades for RESTful assets to be created in API Connect
 
-All assets created are to be implemented on the given CIP environment provided for you.  All pre-requisites and utilities should be on the environments provided for you.  If there are other utilities and tools you would like to use to support you during this exercise, you may do so at your own risk.
+All assets created are to be implemented on the given CIP environment provided for you.  All pre-requisites and utilities should be on the environments provided.  If there are other utilities and tools you would like to use to support you during this exercise, you may do so at your own risk.
 
 
 Lab Environment Overview 
@@ -47,9 +47,11 @@ You should be able to access all portals from the Platform Navigator, but if you
 * MQ Portal on `https://10.0.0.5:31694/ibmmq/console/`
 * Event Streams on `https://10.0.0.5:32208/gettingstarted?integration=1.0.0`
 
-2. The environment you are using consists of 9 different nodes.  8 of which are ICP Nodes and one is a developer image that you will be using to access the ICP User Interfaces.  You can access this VM directly using the Skytap interface to use the X-Windows based components.  
+**Note**: there are some known certificate issue with the various portals on this environment. These are fairly easy to workaround, and will be fixed in a later release of this demo environment.
 
-3. **VERY IMPORTANT** It is very important you do not suspend your lab environment.  We have seen cases when the environment goes into suspend mode, the Rook-Ceph shared storage gets corrupted.  Also it is a good practice that you shut down ICP before powering down your enviroment.  A script has been included to handle that for you that will be explained in the coming sections.  When you power down your environment, you can safely use the `power off` option as the shared storage can interfere with the normal graceful shutdown method.  So far using power off hasn't caused any problems that we are aware of.
+2. The environment you are using is the same environment used with the CIP Bootcamp.  It consists of 9 different nodes.  8 of which are ICP Nodes and one is a developer image that you will be using to access the ICP User Interfaces.  You can access this VM directly using the Skytap interface to use the X-Windows based components. The biggest difference with this environment vs what you used at the bootcamp is that all of the base CIP Charts are already installed and configured. 
+
+3. **VERY IMPORTANT** It is very important you do not suspend your lab environment.  We have seen cases when the environment goes into suspend mode, the Rook-Ceph shared storage gets corrupted.  Also it is a good practice that you shut down ICP before powering down your enviroment.  A script has been included to handle that for you that will be explained in the coming sections.  When you power down your environment, you can safely use the `power off` option as the shared storage can interfere with the normal graceful shutdown method.  So far using power off hasn't caused any problems that we are aware of.  If you find that your API Connect environments are not coming up properly, it suggested that you run the `./icpStopStart.sh stop` script (you may need to run it more than once).  When it stops, go ahead and run the `./icpStopStart.sh start`.  As indicated previously, this may take ~30 minutes or so to come up.  
 
 3. You are also able to SSH into your environment.  You can find out the exact address to SSH to in your Skytap Environment window under `networking` and `published services`.  The Published Services set up for you will be for the SSH Port (22) under the `CIP Master` node.  The published service will look something like `services-uscentral.skytap.com:10000`.  Your environment will have a different port on it.  You can then SSH to to the machine from your local machine.  
 
