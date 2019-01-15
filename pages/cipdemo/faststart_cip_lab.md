@@ -184,7 +184,7 @@ You will need to download the AcmeMart microservices and deploy the containers o
 32. Click the Launch button and from the dropdown, select the `app` button and it should launch the main portal for the AcmeMartUtils. If so, then your microservices for the demo has deployed successfully. 
 33. The AcmeMart microservices comes with its own swagger based developer documentation.  From the main App screen, click on the `Developer Docs`.
 
-	![](./images/cipdemo/acedemo.gif)
+	![](./images/cipdemo/acmemart.gif)
 
 34. There are 3 categories of APIs here.  Click on the `Utility` apis.  From the list Select, the `GET /Utilities/ping` option
 35. Find the `try it out` button.  Click it.  It should return back the date/time.
@@ -217,12 +217,20 @@ Once Deployed, your ACE Management UI should display both `inventory` and `order
 
 ![](./images/cipdemo/appconnect.gif)
 
+If you Drill into the `order` API you should see something that resembles the following (yours will be a little different)
+
+![](./images/cipdemo/appconn_order_api.gif)
+
+And here is `inventory`:
+
+![](./images/cipdemo/appconn_inventory_api.gif)
+
 
 ## Create API Facades
 
 Create APIs for each of the inventory, order and AcmeMart APIs.
 
-**Note** the Swagger for the two ACE flows can be imported as APIs using the `From Existing Open API Service` option in API Connect.  The AcmeMart swagger can be downloaded from the main developer page and then imported, but use the `New Open API` option instead
+**Note** the Swagger for the two ACE flows can be imported as APIs using the `From Existing Open API Service` option in API Connect.  The AcmeMart swagger can be downloaded from the main developer page and then imported, but use the `New Open API` option instead.
 
 
 ## Test the entire flow
