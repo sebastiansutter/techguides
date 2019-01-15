@@ -227,6 +227,7 @@ And here is `inventory`:
 
 ![](./images/cipdemo/appconn_inventory_api.gif)
 
+Test both APIs using `cURL`.  The input for the `orders` flow is the `order.json` file that was pulled down from the `techguides` github pull. 
 
 ## Create API Facades
 
@@ -234,6 +235,21 @@ Create APIs for each of the inventory, order and AcmeMart APIs.
 
 **Note** the Swagger for the two ACE flows can be imported as APIs using the `From Existing Open API Service` option in API Connect.  The AcmeMart swagger can be downloaded from the main developer page and then imported, but use the `New Open API` option instead.
 
+Test your APIs in the test tool inside of API Connect.  For the `AcmeMartUtilityAPI`, the quickest way to do this is open up the Assembly view of the AcmeMart and select the `/Utilities/Ping` API.  It requires no arguments.
+
+Before:
+
+![](./images/cipdemo/test_acmemart_api1.gif)
+
+After:
+
+![](./images/cipdemo/test_acmemart_api2.gif)
+
+Testing the `Inventory` API can be done in the Assembly view by using the following value as input for `key`: `AJ1-05.jpg`
+
+![](./images/cipdemo/store_inventory_assembly_test.gif)
+
+The orders flow can't be (easily) tested inside of the Assembly test view as it requires a json payload.  We will test this using the flow below.
 
 ## Test the entire flow
 
