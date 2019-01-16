@@ -333,7 +333,9 @@ Example Output:
 {"accountid":"A-10000","orderid":"6981359"}
 ```
 
-5. CHECK EVENTS - USER THE ORDER ID FROM THE PREVIOUS CALL
+### CHECK EVENTS - USER THE ORDER ID FROM THE PREVIOUS CALL
+
+Currently for this lab, events are being written to both Event Streams on your ICP and in the Cloud.  We're still working through some of the challenges with the ES on-premesis but we can still show events for the demo that are running on the IBM Cloud.  Execute this command to get a feel for what those look like.
 
 ```
 curl -X GET \
@@ -348,7 +350,7 @@ Example Output:
 ```
 
 ### Conclusion
-You have put together the main building blocks for the combined CIP Demonstration.  The only things left are to plug in the mobile app to make these api calls, and make a minor change to the microservices to use the on-premises based event streams versus the cloud.  This will be covered in a forthcoming remote enablement session later in this quarter. 
+You have put together the main building blocks for the combined CIP Demonstration.  The only things left are to plug in the mobile app to make these api calls, and make a minor change to the microservices to use the on-premises based event streams versus the cloud.  There is also a Watson Assistant (aka Conversations) bit that will be added as well. Keep an eye out for further sessions, as all of these items will be covered in a forthcoming remote enablement session later in this quarter. 
 
  
 **End of Lab**
