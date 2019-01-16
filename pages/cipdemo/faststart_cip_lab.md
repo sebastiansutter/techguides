@@ -17,7 +17,7 @@ During the CIP Bootcamp, you had the opportunity to get some hands on with the C
 
 This lab guide will lay out the scenario for you, along with the requirements of what you are to complete.  This guide is different than other labs, such that it will (for the most part) not be a step by step walkthrough of what to complete, rather will give you a list of requirements to complete, and it is up to you and your team to deliver on those.
 
-This lab will be a team effort.  It is highly suggested that you form your teams of folks who can cover the entire I&D Portfolio - especially: App Connect Enterprise (using Toolkit), API Connect, Messaging (MQ and ES).  Its helpful also to have someone who knows `kubectl` commands and has some background with ICP. 
+This lab will be a team effort.  It is highly suggested that you form your teams of folks who can cover the entire I&D Portfolio - especially: App Connect Enterprise (using Toolkit), API Connect, Messaging (MQ and ES).  Its helpful also to have someone who knows `kubectl` and `docker` commands and has some background with ICP. 
 
 Lab Overview
 -------------------------------------------
@@ -47,7 +47,7 @@ You should be able to access all portals from the Platform Navigator, but if you
 * MQ Portal on `https://10.0.0.5:31694/ibmmq/console/`
 * Event Streams on `https://10.0.0.5:32208/gettingstarted?integration=1.0.0`
 
-**Note**: there are some known certificate issue with the various portals on this environment. These are fairly easy to workaround, and will be fixed in a later release of this demo environment.
+**Note**: there are some known certificate issues with the various portals on this environment. These are fairly easy to workaround, and will be fixed in a later release of this demo environment.
 
 2. The environment you are using is the same environment used with the CIP Bootcamp.  It consists of 9 different nodes.  8 of which are ICP Nodes and one is a developer image that you will be using to access the ICP User Interfaces.  You can access this VM directly using the Skytap interface to use the X-Windows based components. The biggest difference with this environment vs what you used at the bootcamp is that all of the base CIP Charts are already installed and configured. 
 
@@ -92,8 +92,6 @@ There are times where things may not be going right, so your best bet is to use 
  - `kubectl get pods -n <some-namespace>` This command shows all of the pods in a given name space.  Here you will see if any pods are up, down, errored or otherwise in transition.
  - `kubectl describe pods <some-pod> -n <some-namespace>` This will provide verbose information about a given pod.  You can use the `describe` command for other objects.
  - `kubectl logs <some-object> -n <some-namespace>` This command will work with other objects as well.  You can also tail the logs by using the `-f` switch at the end.
-
- If you happen to mess up an install of the components, its not difficult to recover.  You can use the ICP UI to remove the release or use the CLI by issuing `helm delete --purge <helm-release-name> --tls`.  Be careful using this though, as this process is not reversable.
  
  Logging is also done inside of ICP using the ELK stack.  You can access the logging inside of ICP and use Elastic Search commands to drill into things.  For example, if you were to bring up Kibana and enter in a search like `kubernetes.namespace:<your namespace>`.  Using this along with the `kubectl` commands gives you a lot of power to dig into root cause.
  
