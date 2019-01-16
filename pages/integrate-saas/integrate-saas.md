@@ -1,10 +1,10 @@
 ---
-title: FastStart 2019 Lab - CIP 
+title: Integrate SaaS Basic Demo 
 toc: false
 sidebar: labs_sidebar
 folder: pots/integrate-saas
 permalink: /integrate-saas.html
-summary: Deeper dive into the Cloud Integration Platform
+summary: Integration of SaaS Applications using App Connect
 applies_to: [developer,administrator,consumer]
 ---
 
