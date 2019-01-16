@@ -130,10 +130,10 @@ You will need to download the AcmeMart microservices and deploy the containers o
 
 
 14. Access the `master` node via SSH session.  Make a new directory in the root home directory, call it whatever you like.  Change directories into that.
-13. Once in that new directory, clone this repository here on the `master` node:  `https://github.com/dashby3000/AcmeMartUtilityAPI`.  The reason we do this on the master node because we need to load the docker images into ICP.
+13. Once in that new directory, clone this repository here on the `master` node:  `https://github.com/dashby3000/AcmeMartUtilityAPI`.  The reason we do this on the master node because we need to load the docker images into ICP.  You might need to authenticate using your github.com account.  If you don't have one, you can sign up for your free one here at `github.com`
 14. Go into the AcmeMartUtilityAPI directory.  Also, now is a good time to make sure you are logged into your ICP environment - execute a `cloudctl login` using the `admin`/`admin` credentials.  Make sure you are in the `default` name space.
-15. Run this command:  `docker build . -t acmemartutilityapi`
-16. Tag your new image by running this command:  `docker tag acmemartutilityapi:v1.0.0 mycluster.icp:8500/acmemartapi/acmemartutilityapi:v1.0.0`
+15. Run this command:  `docker build . -t acmemartutilityapi`.  The image and its dependencies will be downloaded.
+16. Tag your new image by running this command:  `docker tag acmemartutilityapi mycluster.icp:8500/acmemartapi/acmemartutilityapi:v1.0.0`
 17. Push the docker image out to your ICP instance by issuing this command `docker push mycluster.icp:8500/acmemartapi/acmemartutilityapi:v1.0.0`.
 18. Create a new namespace in the ICP instance.  Easiest way to do that is via the ICP UI.  On the Developer Machine, direct your browser to `https://10.0.0.1:8443`.  Login using the credentials of `admin`/`admin`.
 14. In the UI, starting from the top left hamburger icon select `Manage` -> `Namespaces`.  Create a new namespace and call it `acmemartapi`.  Using the `ibm-anyuid-hostpath-psp` security policy is fine for this one.
