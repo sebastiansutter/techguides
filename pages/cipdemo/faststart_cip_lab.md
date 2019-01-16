@@ -283,49 +283,34 @@ Example Output:
 {"ping":"Tue Jan 15 2019 22:08:20 GMT+0000 (UTC)"}
 ```
 
-### UPLOAD AN IMAGE - GIVE THE UPLOADED IMAGE A UNIQUE NAME TO PREVENT COLLISIONS
-
-```
-curl -X POST \
-  https://apigw.10.0.0.5.nip.io/admin-admin/sandbox/Utilities/images/upload \
-  -H 'cache-control: no-cache' \
-  -H 'content-type: multipart/form-data' \
-  -H 'x-ibm-client-id: 5fa14472d2aa8f1ff5389ad20c1eed03' \
-  -H 'x-ibm-client-secret: ca0986b82a21e3af67bc19ef72b7bf99' \
-  -F fileUpload=@AJ1-05-dashby.jpg
-```  
-
-Example Output:
-
-```
-{"result":{"files":{"fileUpload":[{"container":"images","name":"AJ1-05-dashby.jpg","type":"image/jpeg","size":214075}]},"fields":{},"cos_key_name":"AJ1-05-dashby.jpg”}}
-```
-
-
 ### CHECK INVENTORY - SUPPLY IT THE NAME OF THE IMAGE UPLOADED
 
-```
-curl -X GET \
-  'https://api.eu-gb.apiconnect.appdomain.cloud/dennisashby-demo/acmemartud/api/inventory/request?key=AJ1-05-dashby.jpg' \
-  -H 'cache-control: no-cache' \
-  -H 'x-ibm-client-id: af0a85e4-92fe-4b87-8545-f536fbf811a3' \
-  -H 'x-ibm-client-secret: M6hQ5nR0kT2jO6mU5gA3dS3yN7uT8vY7eG3jH4xN1pS7vM7hN3'
-```
+replace client id and secret with yours
 
 ```
+curl -k -X GET \
+  'https://apigw.10.0.0.5.nip.io/admin-admin/sandbox/storeinventory/v1/retrieve?key=AJ1-05.jpg' \
+  -H 'cache-control: no-cache' \
+  -H 'x-ibm-client-id: 5fa14472d2aa8f1ff5389ad20c1eed03' \
+  -H 'x-ibm-client-secret: ca0986b82a21e3af67bc19ef72b7bf99'
+```
+
 Example Output:
+```
 {"Inventory":[{"color":"ultramarine color","location":"In Store","pictureFile":"AJ1-05","productDescription":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean egestas nec mauris non cursus. Donec non justo lacinia, imperdiet nibh quis, laoreet ante. Sed quis luctus ligula. Donec urna libero, malesuada eu nibh vitae, facilisis pharetra quam. Donec ullamcorper porttitor bibendum. Nulla nec arcu nec metus auctor efficitur. Ut at magna condimentum, semper augue id, finibus tortor.\\n\\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean egestas nec mauris non cursus. Donec non justo lacinia, imperdiet nibh quis, laoreet ante. Sed quis luctus ligula. Donec urna libero, malesuada eu nibh vitae, facilisis pharetra quam. Donec ullamcorper porttitor bibendum. Nulla nec arcu nec metus auctor efficitur. Ut at magna condimentum, semper augue id, finibus tortor.\\n\\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean egestas nec mauris non cursus. Donec non justo lacinia, imperdiet nibh quis, laoreet ante. Sed quis luctus ligula. Donec urna libero, malesuada eu nibh vitae, facilisis pharetra quam. Donec ullamcorper porttitor bibendum. Nulla nec arcu nec metus auctor efficitur. Ut at magna condimentum, semper augue id, finibus tortor.\\n\\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean egestas nec mauris non cursus. Donec non justo lacinia, imperdiet nibh quis, laoreet ante. Sed quis luctus ligula. Donec urna libero, malesuada eu nibh vitae, facilisis pharetra quam. Donec ullamcorper porttitor bibendum. Nulla nec arcu nec metus auctor efficitur. Ut at magna condimentum, semper augue id, finibus tortor.\\n\\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean egestas nec mauris non cursus. Donec non justo lacinia, imperdiet nibh quis, laoreet ante. Sed quis luctus ligula. Donec urna libero, malesuada eu nibh vitae, facilisis pharetra quam. Donec ullamcorper porttitor bibendum. Nulla nec arcu nec metus auctor efficitur. Ut at magna condimentum, semper augue id, finibus tortor.","productID":"AJ1-05","productName":"Blue & White","qtyOnHand":"1050","rating":"2","type":"AirJordan1","typeDescription":"Air Jordan 1 (Extra Crispy)","unitPrice":"105.99"}]}
 ```
 
 ### ORDER A PRODUCT - USE THE PRODUCT ID SELECTED FROM THE CHECK INVENTORY CALL
 
+replace client and id and secret with yours
+
 ```
-curl -X POST \
-  https://api.eu-gb.apiconnect.appdomain.cloud/dennisashby-demo/acmemartud/api/order/create \
+curl -k -X POST \
+  https://apigw.10.0.0.5.nip.io/admin-admin/sandbox/orders/v1/create \
   -H 'cache-control: no-cache' \
   -H 'content-type: application/json' \
-  -H 'x-ibm-client-id: af0a85e4-92fe-4b87-8545-f536fbf811a3' \
-  -H 'x-ibm-client-secret: M6hQ5nR0kT2jO6mU5gA3dS3yN7uT8vY7eG3jH4xN1pS7vM7hN3' \
+  -H 'x-ibm-client-id: 5fa14472d2aa8f1ff5389ad20c1eed03' \
+  -H 'x-ibm-client-secret: ca0986b82a21e3af67bc19ef72b7bf99' \
   -d '    {
     "accountid": "A-10000",
      "order": {
@@ -350,15 +335,17 @@ Example Output:
 
 5. CHECK EVENTS - USER THE ORDER ID FROM THE PREVIOUS CALL
 
+```
 curl -X GET \
   'https://am-utilityapi.eu-gb.mybluemix.net/api/Events/findOne?filter=%7B%22where%22%3A%20%7B%22purchaseOrder%22%3A%20%225688471%22%7D%7D' \
   -H 'cache-control: no-cache' \
   -H 'x-ibm-client-id: af0a85e4-92fe-4b87-8545-f536fbf811a3' \
   -H 'x-ibm-client-secret: M6hQ5nR0kT2jO6mU5gA3dS3yN7uT8vY7eG3jH4xN1pS7vM7hN3'
-
+```
 Example Output:
+```
 {"id":"f58d732c494dc8ce9c1d2dbdba8817dd","purchaseOrder":"5688471","shipTo":{"name":"Test Account","street":"1060 West Addison","city":"Chicago","state":"IL","zip":"60680"},"billTo":{"name":"Test Account","street":"1060 West Addison","city":"Chicago","state":"IL","zip":"60680"},"item":{"partNum":"AJ1-03","productName":"Red, Black & Green","quantity":"1","price":"103.99","shipDate":"2019-01-08T19:46:28.314Z"},"status_code":500,"last_update":"2019-01-08T19:56:01.479Z","history":[{"type":"initial","timestamp":"2019-01-08T19:46:29.350Z","topic":"kafka-nodejs-console-sample-topic","partition":0,"offset":334,"key":null},{"type":"update","timestamp":"2019-01-08T19:48:03.328Z","topic":"acmemart_update_order","partition":0,"offset":151,"key":[75,101,121]},{"type":"update","timestamp":"2019-01-08T19:50:01.362Z","topic":"acmemart_update_order","partition":0,"offset":153,"key":[75,101,121]},{"type":"update","timestamp":"2019-01-08T19:52:01.403Z","topic":"acmemart_update_order","partition":0,"offset":155,"key":[75,101,121]},{"type":"update","timestamp":"2019-01-08T19:54:01.438Z","topic":"acmemart_update_order","partition":0,"offset":157,"key":[75,101,121]},{"type":"update","timestamp":"2019-01-08T19:56:01.479Z","topic":"acmemart_update_order","partition":0,"offset":159,"key":[75,101,121]}]}
-
+```
 
 ### Conclusion
 You have put together the main building blocks for the combined CIP Demonstration.  The only things left are to plug in the mobile app to make these api calls, and make a minor change to the microservices to use the on-premises based event streams versus the cloud.  This will be covered in a forthcoming remote enablement session later in this quarter. 
