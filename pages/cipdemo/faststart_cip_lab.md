@@ -268,7 +268,7 @@ These are samples only - you will need to update client id and secret references
 **Note** you will need to recreate your client id and secret.  There is no portal deployed on this system, but you can re-create the client id and secret for the `Sandbox Test App` inside of API Connect.
 
 
-1. PING - MAKE SURE THE SERVER IS ALIVE
+### PING - MAKE SURE THE SERVER IS ALIVE
 
 ```
 `curl -k -X GET \
@@ -283,7 +283,7 @@ Example Output:
 {"ping":"Tue Jan 15 2019 22:08:20 GMT+0000 (UTC)"}
 ```
 
-2. UPLOAD AN IMAGE - GIVE THE UPLOADED IMAGE A UNIQUE NAME TO PREVENT COLLISIONS
+### UPLOAD AN IMAGE - GIVE THE UPLOADED IMAGE A UNIQUE NAME TO PREVENT COLLISIONS
 
 ```
 curl -X POST \
@@ -302,24 +302,24 @@ Example Output:
 ```
 
 
+### CHECK INVENTORY - SUPPLY IT THE NAME OF THE IMAGE UPLOADED
 
-
-
-3. CHECK INVENTORY - SUPPLY IT THE NAME OF THE IMAGE UPLOADED
-
+```
 curl -X GET \
   'https://api.eu-gb.apiconnect.appdomain.cloud/dennisashby-demo/acmemartud/api/inventory/request?key=AJ1-05-dashby.jpg' \
   -H 'cache-control: no-cache' \
   -H 'x-ibm-client-id: af0a85e4-92fe-4b87-8545-f536fbf811a3' \
   -H 'x-ibm-client-secret: M6hQ5nR0kT2jO6mU5gA3dS3yN7uT8vY7eG3jH4xN1pS7vM7hN3'
+```
 
 ```
 Example Output:
 {"Inventory":[{"color":"ultramarine color","location":"In Store","pictureFile":"AJ1-05","productDescription":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean egestas nec mauris non cursus. Donec non justo lacinia, imperdiet nibh quis, laoreet ante. Sed quis luctus ligula. Donec urna libero, malesuada eu nibh vitae, facilisis pharetra quam. Donec ullamcorper porttitor bibendum. Nulla nec arcu nec metus auctor efficitur. Ut at magna condimentum, semper augue id, finibus tortor.\\n\\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean egestas nec mauris non cursus. Donec non justo lacinia, imperdiet nibh quis, laoreet ante. Sed quis luctus ligula. Donec urna libero, malesuada eu nibh vitae, facilisis pharetra quam. Donec ullamcorper porttitor bibendum. Nulla nec arcu nec metus auctor efficitur. Ut at magna condimentum, semper augue id, finibus tortor.\\n\\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean egestas nec mauris non cursus. Donec non justo lacinia, imperdiet nibh quis, laoreet ante. Sed quis luctus ligula. Donec urna libero, malesuada eu nibh vitae, facilisis pharetra quam. Donec ullamcorper porttitor bibendum. Nulla nec arcu nec metus auctor efficitur. Ut at magna condimentum, semper augue id, finibus tortor.\\n\\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean egestas nec mauris non cursus. Donec non justo lacinia, imperdiet nibh quis, laoreet ante. Sed quis luctus ligula. Donec urna libero, malesuada eu nibh vitae, facilisis pharetra quam. Donec ullamcorper porttitor bibendum. Nulla nec arcu nec metus auctor efficitur. Ut at magna condimentum, semper augue id, finibus tortor.\\n\\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean egestas nec mauris non cursus. Donec non justo lacinia, imperdiet nibh quis, laoreet ante. Sed quis luctus ligula. Donec urna libero, malesuada eu nibh vitae, facilisis pharetra quam. Donec ullamcorper porttitor bibendum. Nulla nec arcu nec metus auctor efficitur. Ut at magna condimentum, semper augue id, finibus tortor.","productID":"AJ1-05","productName":"Blue & White","qtyOnHand":"1050","rating":"2","type":"AirJordan1","typeDescription":"Air Jordan 1 (Extra Crispy)","unitPrice":"105.99"}]}
 ```
 
-4. ORDER A PRODUCT - USE THE PRODUCT ID SELECTED FROM THE CHECK INVENTORY CALL
+### ORDER A PRODUCT - USE THE PRODUCT ID SELECTED FROM THE CHECK INVENTORY CALL
 
+```
 curl -X POST \
   https://api.eu-gb.apiconnect.appdomain.cloud/dennisashby-demo/acmemartud/api/order/create \
   -H 'cache-control: no-cache' \
@@ -341,6 +341,7 @@ curl -X POST \
      }
     }
 '
+```
 
 Example Output:
 ```
