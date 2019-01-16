@@ -256,11 +256,95 @@ The orders flow can't be (easily) tested inside of the Assembly test view as it 
 We will be using cURL to test the entire flow of the assets deployed today.  This is going to simulate what the mobile app would be doing at demo runtime by executing a series of steps in sequence
 
 
+1. PING - MAKE SURE THE SERVER IS ALIVE
 
+`curl -X GET \
+  https://apigw.10.0.0.5.nip.io/admin-admin/acmemartud/api/Utilities/ping \
+  -H 'cache-control: no-cache' \
+  -H 'x-ibm-client-id: af0a85e4-92fe-4b87-8545-f536fbf811a3' \
+  -H 'x-ibm-client-secret: M6hQ5nR0kT2jO6mU5gA3dS3yN7uT8vY7eG3jH4xN1pS7vM7hN3'
+
+Example Output:
+```
+{"ping":"Tue Jan 15 2019 22:08:20 GMT+0000 (UTC)"}
+```
+
+2. UPLOAD AN IMAGE - GIVE THE UPLOADED IMAGE A UNIQUE NAME TO PREVENT COLLISIONS
+
+curl -X POST \
+  https://api.eu-gb.apiconnect.appdomain.cloud/dennisashby-demo/acmemartud/api/Utilities/images/upload \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: multipart/form-data' \
+  -H 'x-ibm-client-id: af0a85e4-92fe-4b87-8545-f536fbf811a3' \
+  -H 'x-ibm-client-secret: M6hQ5nR0kT2jO6mU5gA3dS3yN7uT8vY7eG3jH4xN1pS7vM7hN3' \
+  -F fileUpload=@AJ1-05-dashby.jpg
+
+Example Output:
+
+```
+{"result":{"files":{"fileUpload":[{"container":"images","name":"AJ1-05-dashby.jpg","type":"image/jpeg","size":214075}]},"fields":{},"cos_key_name":"AJ1-05-dashby.jpg”}}
+```
+
+
+
+
+
+3. CHECK INVENTORY - SUPPLY IT THE NAME OF THE IMAGE UPLOADED
+
+curl -X GET \
+  'https://api.eu-gb.apiconnect.appdomain.cloud/dennisashby-demo/acmemartud/api/inventory/request?key=AJ1-05-dashby.jpg' \
+  -H 'cache-control: no-cache' \
+  -H 'x-ibm-client-id: af0a85e4-92fe-4b87-8545-f536fbf811a3' \
+  -H 'x-ibm-client-secret: M6hQ5nR0kT2jO6mU5gA3dS3yN7uT8vY7eG3jH4xN1pS7vM7hN3'
+
+```
+Example Output:
+{"Inventory":[{"color":"ultramarine color","location":"In Store","pictureFile":"AJ1-05","productDescription":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean egestas nec mauris non cursus. Donec non justo lacinia, imperdiet nibh quis, laoreet ante. Sed quis luctus ligula. Donec urna libero, malesuada eu nibh vitae, facilisis pharetra quam. Donec ullamcorper porttitor bibendum. Nulla nec arcu nec metus auctor efficitur. Ut at magna condimentum, semper augue id, finibus tortor.\\n\\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean egestas nec mauris non cursus. Donec non justo lacinia, imperdiet nibh quis, laoreet ante. Sed quis luctus ligula. Donec urna libero, malesuada eu nibh vitae, facilisis pharetra quam. Donec ullamcorper porttitor bibendum. Nulla nec arcu nec metus auctor efficitur. Ut at magna condimentum, semper augue id, finibus tortor.\\n\\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean egestas nec mauris non cursus. Donec non justo lacinia, imperdiet nibh quis, laoreet ante. Sed quis luctus ligula. Donec urna libero, malesuada eu nibh vitae, facilisis pharetra quam. Donec ullamcorper porttitor bibendum. Nulla nec arcu nec metus auctor efficitur. Ut at magna condimentum, semper augue id, finibus tortor.\\n\\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean egestas nec mauris non cursus. Donec non justo lacinia, imperdiet nibh quis, laoreet ante. Sed quis luctus ligula. Donec urna libero, malesuada eu nibh vitae, facilisis pharetra quam. Donec ullamcorper porttitor bibendum. Nulla nec arcu nec metus auctor efficitur. Ut at magna condimentum, semper augue id, finibus tortor.\\n\\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean egestas nec mauris non cursus. Donec non justo lacinia, imperdiet nibh quis, laoreet ante. Sed quis luctus ligula. Donec urna libero, malesuada eu nibh vitae, facilisis pharetra quam. Donec ullamcorper porttitor bibendum. Nulla nec arcu nec metus auctor efficitur. Ut at magna condimentum, semper augue id, finibus tortor.","productID":"AJ1-05","productName":"Blue & White","qtyOnHand":"1050","rating":"2","type":"AirJordan1","typeDescription":"Air Jordan 1 (Extra Crispy)","unitPrice":"105.99"}]}
+```
+
+4. ORDER A PRODUCT - USE THE PRODUCT ID SELECTED FROM THE CHECK INVENTORY CALL
+
+curl -X POST \
+  https://api.eu-gb.apiconnect.appdomain.cloud/dennisashby-demo/acmemartud/api/order/create \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'x-ibm-client-id: af0a85e4-92fe-4b87-8545-f536fbf811a3' \
+  -H 'x-ibm-client-secret: M6hQ5nR0kT2jO6mU5gA3dS3yN7uT8vY7eG3jH4xN1pS7vM7hN3' \
+  -d '    {
+    "accountid": "A-10000",
+     "order": {
+       "orderDate": "2018-11-28 17:05:39 +0000",
+       "contractId": "00000100",
+       "orderDetails": [
+        {
+           "lineItemNumber": 1,
+           "productId": "AJ1-05",
+           "quantity": "20"
+         }
+       ]
+     }
+    }
+'
+
+Example Output:
+```
+{"accountid":"A-10000","orderid":"6981359"}
+```
+
+5. CHECK EVENTS - USER THE ORDER ID FROM THE PREVIOUS CALL
+
+curl -X GET \
+  'https://am-utilityapi.eu-gb.mybluemix.net/api/Events/findOne?filter=%7B%22where%22%3A%20%7B%22purchaseOrder%22%3A%20%225688471%22%7D%7D' \
+  -H 'cache-control: no-cache' \
+  -H 'x-ibm-client-id: af0a85e4-92fe-4b87-8545-f536fbf811a3' \
+  -H 'x-ibm-client-secret: M6hQ5nR0kT2jO6mU5gA3dS3yN7uT8vY7eG3jH4xN1pS7vM7hN3'
+
+Example Output:
+{"id":"f58d732c494dc8ce9c1d2dbdba8817dd","purchaseOrder":"5688471","shipTo":{"name":"Test Account","street":"1060 West Addison","city":"Chicago","state":"IL","zip":"60680"},"billTo":{"name":"Test Account","street":"1060 West Addison","city":"Chicago","state":"IL","zip":"60680"},"item":{"partNum":"AJ1-03","productName":"Red, Black & Green","quantity":"1","price":"103.99","shipDate":"2019-01-08T19:46:28.314Z"},"status_code":500,"last_update":"2019-01-08T19:56:01.479Z","history":[{"type":"initial","timestamp":"2019-01-08T19:46:29.350Z","topic":"kafka-nodejs-console-sample-topic","partition":0,"offset":334,"key":null},{"type":"update","timestamp":"2019-01-08T19:48:03.328Z","topic":"acmemart_update_order","partition":0,"offset":151,"key":[75,101,121]},{"type":"update","timestamp":"2019-01-08T19:50:01.362Z","topic":"acmemart_update_order","partition":0,"offset":153,"key":[75,101,121]},{"type":"update","timestamp":"2019-01-08T19:52:01.403Z","topic":"acmemart_update_order","partition":0,"offset":155,"key":[75,101,121]},{"type":"update","timestamp":"2019-01-08T19:54:01.438Z","topic":"acmemart_update_order","partition":0,"offset":157,"key":[75,101,121]},{"type":"update","timestamp":"2019-01-08T19:56:01.479Z","topic":"acmemart_update_order","partition":0,"offset":159,"key":[75,101,121]}]}
 
 
 ### Conclusion
-You have completed the initial CIP Labs by taking a base ICP install and then imported some basic integration assets and exposed that as an API running on the configuration.  The key value is having the single platform that runs all of the capability that can be managed easily, user the power of Kubernetes.  
+You have put together the main building blocks for the combined CIP Demonstration.  The only things left are to plug in the mobile app to make these api calls, and make a minor change to the microservices to use the on-premises based event streams versus the cloud.  This will be covered in a forthcoming remote enablement session later in this quarter. 
 
  
 **End of Lab**
