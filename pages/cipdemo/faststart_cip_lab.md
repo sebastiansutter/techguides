@@ -235,6 +235,14 @@ Create APIs for each of the inventory, order and AcmeMart APIs.
 
 **Note** the Swagger for the two ACE flows can be imported as APIs using the `From Existing Open API Service` option in API Connect.  The AcmeMart swagger can be downloaded from the main developer page and then imported, but use the `New Open API` option instead.
 
+**For the AcmeMartUtilityAPI** you will need to modify your invoke URL to look like the following:  
+
+`http://(yourapp ip):(your port)$(request.path)$(request.search)`
+
+Where `yourapp ip` and `your port` is the port that ICP has put your Utility App. 
+
+![](./images/cipdemo/invoke.gif)
+
 Test your APIs in the test tool inside of API Connect.  For the `AcmeMartUtilityAPI`, the quickest way to do this is open up the Assembly view of the AcmeMart and select the `/Utilities/Ping` API.  It requires no arguments.
 
 Before:
@@ -253,16 +261,22 @@ The orders flow can't be (easily) tested inside of the Assembly test view as it 
 
 ## Test the entire flow
 
-We will be using cURL to test the entire flow of the assets deployed today.  This is going to simulate what the mobile app would be doing at demo runtime by executing a series of steps in sequence
+We will be using cURL to test the entire flow of the assets deployed today.  This is going to simulate what the mobile app would be doing at demo runtime by executing a series of steps in sequence.
+
+These are samples only - you will need to update client id and secret references accordingly
+
+**Note** you will need to recreate your client id and secret.  There is no portal deployed on this system, but you can re-create the client id and secret for the `Sandbox Test App` inside of API Connect.
 
 
 1. PING - MAKE SURE THE SERVER IS ALIVE
 
-`curl -X GET \
-  https://apigw.10.0.0.5.nip.io/admin-admin/acmemartud/api/Utilities/ping \
+```
+`curl -k -X GET \
+  https://apigw.10.0.0.5.nip.io/admin-admin/sandbox/api/Utilities/ping \
   -H 'cache-control: no-cache' \
-  -H 'x-ibm-client-id: af0a85e4-92fe-4b87-8545-f536fbf811a3' \
-  -H 'x-ibm-client-secret: M6hQ5nR0kT2jO6mU5gA3dS3yN7uT8vY7eG3jH4xN1pS7vM7hN3'
+  -H 'x-ibm-client-id: 5fa14472d2aa8f1ff5389ad20c1eed03' \
+  -H 'x-ibm-client-secret: ca0986b82a21e3af67bc19ef72b7bf99'
+```
 
 Example Output:
 ```
@@ -271,13 +285,15 @@ Example Output:
 
 2. UPLOAD AN IMAGE - GIVE THE UPLOADED IMAGE A UNIQUE NAME TO PREVENT COLLISIONS
 
+```
 curl -X POST \
-  https://api.eu-gb.apiconnect.appdomain.cloud/dennisashby-demo/acmemartud/api/Utilities/images/upload \
+  https://apigw.10.0.0.5.nip.io/admin-admin/sandbox/Utilities/images/upload \
   -H 'cache-control: no-cache' \
   -H 'content-type: multipart/form-data' \
-  -H 'x-ibm-client-id: af0a85e4-92fe-4b87-8545-f536fbf811a3' \
-  -H 'x-ibm-client-secret: M6hQ5nR0kT2jO6mU5gA3dS3yN7uT8vY7eG3jH4xN1pS7vM7hN3' \
+  -H 'x-ibm-client-id: 5fa14472d2aa8f1ff5389ad20c1eed03' \
+  -H 'x-ibm-client-secret: ca0986b82a21e3af67bc19ef72b7bf99' \
   -F fileUpload=@AJ1-05-dashby.jpg
+```  
 
 Example Output:
 
