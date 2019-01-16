@@ -1,12 +1,12 @@
-<!-- BEFORE YOU START:
-
-* READ THE GUIDELINES FOR IMAGES AND LEGAL GUIDELINES FOR CONTENT:  https://www.ibm.com/cloud/garage/content/engagement/getStartedGM/style
-
-* READ THE SEARCH RECOMMENDATIONS: http://ibm.biz/search-and-engagement-checklist
-
-* READ THE GUIDE TO CREATING ENGAGING CONTENT: http://ibm.biz/engaging-content-tips
-
--->
+---
+title: FastStart 2019 Lab - CIP 
+toc: false
+sidebar: labs_sidebar
+folder: pots/integrate-saas
+permalink: /integrate-saas.html
+summary: Deeper dive into the Cloud Integration Platform
+applies_to: [developer,administrator,consumer]
+---
 
 {{#template name="integrate-saas"}}
 
