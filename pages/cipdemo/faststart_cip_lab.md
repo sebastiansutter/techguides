@@ -101,7 +101,8 @@ Lab Requirements
 
 ## ACE Integration Assets 
 
-10. Your integration assets are found in this repository: `https://github.com/ibm-cloudintegration/techguides`.  You can find the specific files you need in the `/techguides/pages/cipdemo` directory.  **hint** clone this on your Developer machine so you don't have to copy the files over.
+10. Your integration assets are found in this repository: `https://github.com/ibm-cloudintegration/techguides`.  You can find the specific files you need in the `/techguides/pages/cipdemo` directory.  
+    >**hint:** clone this on your Developer machine so you don't have to copy the files over.
 11. Below is a description of each of the files in archive that you should take note of (disregard the others).
 
 | File                           | Description                                                                                      |
