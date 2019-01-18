@@ -101,18 +101,17 @@ Lab Requirements
 
 ## ACE Integration Assets 
 
-10. Your integration assets are found in this repository: `https://github.com/ibm-cloudintegration/techguides`.  You can find the specific files you need in the `/techguides/pages/cipdemo` directory.  
+1. Your integration assets are found in this repository: `https://github.com/ibm-cloudintegration/techguides`.  You can find the specific files you need in the `/techguides/pages/cipdemo` directory.  
     >**hint:** clone this on your Developer machine so you don't have to copy the files over.
-11. Below is a description of each of the files in archive that you should take note of (disregard the others).
+2. Below is a description of each of the files in archive that you should take note of (disregard the others).
 
 | File                           | Description                                                                                      |
 |--------------------------------|--------------------------------------------------------------------------------------------------|
-| faststartflows.zip             | ACE Project Interchange export of integration flows                                                     |
-| inventoryproject.generated.bar | generated bar file for the Inventory API.  You will be deploying this as is into the environment |
-                                                                  |
-| orderproject.generated.bar     | original bar file for order API. Disregard this, you will be generating a new bar file to deploy |
+| faststartflows.zip             | ACE Project Interchange export of integration flows|
+| inventoryproject.generated.bar | generated bar file for the Inventory API.  You will be deploying this as is into the environment|
+| orderproject.generated.bar     | original bar file for order API. Disregard this, you will be generating a new bar file to deploy|
 
-keep the project interchange zip file handy, you will be loading that up into the toolkit in a later section.
+  >keep the project interchange zip file handy, you will be loading that up into the toolkit in a later section. 
 
 
 ## AcmeMart Microservices
@@ -120,65 +119,66 @@ keep the project interchange zip file handy, you will be loading that up into th
 You will need to download the AcmeMart microservices and deploy the containers on ICP.  
 
 
-14. Access the `master` node via SSH session.  Make a new directory in the root home directory, call it whatever you like.  Change directories into that.
-13. Once in that new directory, clone this repository here on the `master` node:  `https://github.com/dashby3000/AcmeMartUtilityAPI`.  The reason we do this on the master node because we need to load the docker images into ICP.  You might need to authenticate using your github.com account.  If you don't have one, you can sign up for your free one here at `github.com`
-14. Go into the AcmeMartUtilityAPI directory.  Also, now is a good time to make sure you are logged into your ICP environment - execute a `cloudctl login` using the `admin`/`admin` credentials.  Make sure you are in the `default` name space.
-15. Run this command:  `docker build . -t acmemartutilityapi`.  The image and its dependencies will be downloaded.
-16. Tag your new image by running this command:  `docker tag acmemartutilityapi mycluster.icp:8500/acmemartapi/acmemartutilityapi:v1.0.0`
-17. Push the docker image out to your ICP instance by issuing this command `docker push mycluster.icp:8500/acmemartapi/acmemartutilityapi:v1.0.0`.
-18. Create a new namespace in the ICP instance.  Easiest way to do that is via the ICP UI.  On the Developer Machine, direct your browser to `https://10.0.0.1:8443`.  Login using the credentials of `admin`/`admin`.
-14. In the UI, starting from the top left hamburger icon select `Manage` -> `Namespaces`.  Create a new namespace and call it `acmemartapi`.  Using the `ibm-anyuid-hostpath-psp` security policy is fine for this one.
-18. Next step is to deploy the microservices into ICP.  Create a new Deployment in ICP using the UI via Hamburger Icon in top left. Go to `Workloads -> Deployments`.  Click `+Create Deployment`.
-19. In the `General` tab.  Give it a name of `acmemart`.  Select the new namespace created previous via the dropdown (`acmemartapi`). Leave Replicas at `1`.
-20. Go to `Container Settings`.  Set the name to `acmemartutility`.  Set the `Image` value to `mycluster.icp:8500/acmemartapi/acmemartutilityapi:v1.0.0`
+1. Access the `master` node via SSH session.  Make a new directory in the root home directory, call it whatever you like.  Change directories into that.
+2. Once in that new directory, clone this repository here on the `master` node:  `https://github.com/dashby3000/AcmeMartUtilityAPI`.  The reason we do this on the master node because we need to load the docker images into ICP.  You might need to authenticate using your github.com account.  If you don't have one, you can sign up for your free one here at `github.com`
+3. Go into the AcmeMartUtilityAPI directory.  Also, now is a good time to make sure you are logged into your ICP environment - execute a `cloudctl login` using the `admin`/`admin` credentials.  Make sure you are in the `default` name space.
+4. Run this command:  `docker build . -t acmemartutilityapi`.  The image and its dependencies will be downloaded.
+5. Tag your new image by running this command:  `docker tag acmemartutilityapi mycluster.icp:8500/acmemartapi/acmemartutilityapi:v1.0.0`
+6. Push the docker image out to your ICP instance by issuing this command `docker push mycluster.icp:8500/acmemartapi/acmemartutilityapi:v1.0.0`.
+7. Create a new namespace in the ICP instance.  Easiest way to do that is via the ICP UI.  On the Developer Machine, direct your browser to `https://10.0.0.1:8443`.  Login using the credentials of `admin`/`admin`.
+8. In the UI, starting from the top left hamburger icon select `Manage` -> `Namespaces`.  Create a new namespace and call it `acmemartapi`.  Using the `ibm-anyuid-hostpath-psp` security policy is fine for this one.
+9. Next step is to deploy the microservices into ICP.  Create a new Deployment in ICP using the UI via Hamburger Icon in top left. Go to `Workloads -> Deployments`.  Click `+Create Deployment`.
+10. In the `General` tab.  Give it a name of `acmemart`.  Select the new namespace created previous via the dropdown (`acmemartapi`). Leave Replicas at `1`.
+11. Go to `Container Settings`.  Set the name to `acmemartutility`.  Set the `Image` value to `mycluster.icp:8500/acmemartapi/acmemartutilityapi:v1.0.0`
 
 	![](./images/cipdemo/deployment2.gif)
 
-21. In the same tab, scroll down to where the TCP ports are.  We need to open up a few ports on this image such that it can interact with all components.  Set the ports to the following
+12. In the same tab, scroll down to where the TCP ports are.  We need to open up a few ports on this image such that it can interact with all components.  Set the ports to the following
 
 	- TCP - 3000
 	- TCP - 9093
 	- TCP - 443
 
-22. Click `Create`.  The new pod should be created very quickly.  You click on your release and view the results in the UI. **Note** you will not see a `Launch` button like you see in the screenshot until you complete the Service in the next section.
+13. Click `Create`.  The new pod should be created very quickly.  You click on your release and view the results in the UI. 
+    >**Note** you will not see a `Launch` button like you see in the screenshot until you complete the Service in the next section.
 
 	![](./images/cipdemo/deployment_done.gif)
 	
-23. Once you see the Pod up, the next step is to bind a Network service that can be associated with the Pod.
-24. From the Hamburger menu on top left go to `Workloads` -> `Services`.
-25. Create a New Service.  Call it `acmemartapp`.
-26. Select the proper namespace - `acmemartapi`
-27. Under `Type` select from the dropdown `NodePort`
+14. Once you see the Pod up, the next step is to bind a Network service that can be associated with the Pod.
+15. From the Hamburger menu on top left go to `Workloads` -> `Services`.
+16. Create a New Service.  Call it `acmemartapp`.
+17. Select the proper namespace - `acmemartapi`
+18. Under `Type` select from the dropdown `NodePort`
 
 	![](./images/cipdemo/service3.gif)
 
-28. Under the `Labels` tab set the Label to `app` and value to `acmemart`.
-29. Under the `Ports` tab. Create 3 ports per the chart below:
+19. Under the `Labels` tab set the Label to `app` and value to `acmemart`.
+20. Under the `Ports` tab. Create 3 ports per the chart below:
 
-| Protocol  | Name         | Port | Target Port |
-|-----------|--------------|------|-------------|
-| TCP       | app          | 3000 | 3000        |
-| TCP       | eventstreams | 9093 | 9093        |
-| TCP       | kafka        | 443  | 443         |
+    | Protocol  | Name         | Port | Target Port |
+    |-----------|--------------|------|-------------|
+    | TCP       | app          | 3000 | 3000        |
+    | TCP       | eventstreams | 9093 | 9093        |
+    | TCP       | kafka        | 443  | 443         |
 
 
-29. Ports should look like the following when done:
+21. Ports should look like the following when done:
 
 	![](./images/cipdemo/serviceports.gif)
 
-30. Under the `Selectors` tab.  Set the `Selector` to `app` and the Value to `acmemart`.
-30. Click Create and the service should create quickly. 
-31. You will know the Service was generated properly when you return back to your deployment, and you see the `Launch` button in the upper right hand corner.  
+22. Under the `Selectors` tab.  Set the `Selector` to `app` and the Value to `acmemart`.
+23. Click Create and the service should create quickly. 
+24. You will know the Service was generated properly when you return back to your deployment, and you see the `Launch` button in the upper right hand corner.  
 
 	![](./images/cipdemo/service_deployment_done_launch.gif)
 
-32. Click the Launch button and from the dropdown, select the `app` button and it should launch the main portal for the AcmeMartUtils. If so, then your microservices for the demo has deployed successfully. 
-33. The AcmeMart microservices comes with its own swagger based developer documentation.  From the main App screen, click on the `Developer Docs`.
+25. Click the Launch button and from the dropdown, select the `app` button and it should launch the main portal for the AcmeMartUtils. If so, then your microservices for the demo has deployed successfully. 
+26. The AcmeMart microservices comes with its own swagger based developer documentation.  From the main App screen, click on the `Developer Docs`.
 
 	![](./images/cipdemo/acmemart.gif)
 
-34. There are 3 categories of APIs here.  Click on the `Utility` apis.  From the list Select, the `GET /Utilities/ping` option
-35. Find the `try it out` button.  Click it.  It should return back the date/time.
+27. There are 3 categories of APIs here.  Click on the `Utility` apis.  From the list Select, the `GET /Utilities/ping` option
+28. Find the `try it out` button.  Click it.  It should return back the date/time.
 
 	![](./images/cipdemo/pingtest.gif)
 
@@ -217,10 +217,9 @@ Create a BAR (Broker Archive) file. Give it the Name: `orders` and click `Finish
 
 Deploy the `inventoryproject.generated.bar` as provided to the CIP environment.
 
+>**Hint** each will need to be done separately.  Also create unique hostnames for each flow in the `NodePort IP` setting when configuring the Helm Release. e.g. `orders.10.0.0.5.nip.io` and `inventory.10.0.0.5.nip.io`
 
-**Hint** each will need to be done separately.  Also create unique hostnames for each flow in the `NodePort IP` setting when configuring the Helm Release. e.g. `orders.10.0.0.5.nip.io` and `inventory.10.0.0.5.nip.io`
-
-**Need a refresher on how to deploy bar files to ICP?** - This link [here](https://ibm-cloudintegration.github.io/techguides/cip-bootcamp-lab.html#part-two-deploy-some-integration-assets) has the instructions from the bootcamp on how this.
+>**Need a refresher on how to deploy bar files to ICP?** - This link [here](https://ibm-cloudintegration.github.io/techguides/cip-bootcamp-lab.html#part-two-deploy-some-integration-assets) has the instructions from the bootcamp on how this.
 
 The process for the new order flow file is similar, but has a few extra steps.  Take note of the following in the Helm Chart:
 
@@ -274,7 +273,7 @@ a.	You will see acemqserver (Queue Manager running)
 
 Create APIs for each of the inventory, order and AcmeMart APIs.
 
-**Note** the Swagger for the two ACE flows can be imported as APIs using the `From Existing Open API Service` option in API Connect.  The AcmeMart swagger can be downloaded from the main developer page and then imported, but use the `New Open API` option instead.
+>**Note** the Swagger for the two ACE flows can be imported as APIs using the `From Existing Open API Service` option in API Connect.  The AcmeMart swagger can be downloaded from the main developer page and then imported, but use the `New Open API` option instead.
 
 **For the AcmeMartUtilityAPI** you will need to modify your invoke URL to look like the following:  
 
@@ -306,7 +305,7 @@ We will be using cURL to test the entire flow of the assets deployed today.  Thi
 
 These are samples only - you will need to update client id and secret references accordingly
 
-**Note** you will need to recreate your client id and secret.  There is no portal deployed on this system, but you can re-create the client id and secret for the `Sandbox Test App` inside of API Connect.
+>**Note** you will need to recreate your client id and secret.  There is no portal deployed on this system, but you can re-create the client id and secret for the `Sandbox Test App` inside of API Connect.
 
 
 ### PING - MAKE SURE THE SERVER IS ALIVE
