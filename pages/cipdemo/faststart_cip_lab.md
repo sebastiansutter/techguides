@@ -187,7 +187,7 @@ Import the project interchange provided in the `faststartflows.zip` file.
 
 Modify the `Order` flow by adding the following additional operations. 
 
-After the App Connect REST operation you will be adding three operations  One that will strip the HTTP Headers, another that will put to a MQ queue, and third that will put to a Queue that will be transfered to EventStreams (simulated).  No transformation required - a vanilla put into each of the endpoints.  
+After the App Connect REST operation you will be adding three operations.  One that will strip the HTTP Headers, another that will put to a MQ queue, and third that will put to a Queue that will be transfered to EventStreams (simulated).    
 
 Here is what the flow will look like.  Instructions to follow
 
@@ -200,6 +200,7 @@ Here is what the flow will look like.  Instructions to follow
 2.	Add 2 `MQ Output` nodes. 
 
 3.	At the first `MQ Output`, go to Basic and type the queue name: NEWORDER.ES (case sensitive). The messages will sent to Event Streams (simulated).
+
 4. Click on `MQ Connection` and select Local queue manager (ACE Server will create a local queue manager for you). Type Destination queue manager name: `acemqserver` (case sensitive).
 
 ![](./images/cipdemo/ace3.png)
