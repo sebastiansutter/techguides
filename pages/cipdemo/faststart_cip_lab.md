@@ -199,18 +199,16 @@ Here is what the flow will look like.  Instructions to follow
 
 2.	Add 2 `MQ Output` nodes. 
 
-3.	At the first `MQ Output`, go to Basic and type the queue name: NEWORDER.ES (case sensitive). The messages will sent to Event Streams (simulated).
+3.	At the first `MQ Output`, go to Basic and type the queue name: `NEWORDER.ES` (case sensitive). The messages will sent to Event Streams (simulated).
 
 4. Click on `MQ Connection` and select Local queue manager (ACE Server will create a local queue manager for you). Type Destination queue manager name: `acemqserver` (case sensitive).
 
 ![](./images/cipdemo/ace3.png)
 
-5. For the second `MQ Output` make the configuration. Type Queue name: `NEWORDER.MQ`.
-6. Click on `MQ Connection` and select Local queue manager (ACE Server will create a local queue manager for you). Type Destination queue manager name: `acemqserver` (case sensitive). Save your flow.
+For the second `MQ Output` make the configuration. Type Queue name: `NEWORDER.MQ`.
+Click on `MQ Connection` and select Local queue manager (ACE Server will create a local queue manager for you). Type Destination queue manager name: `acemqserver` (case sensitive). Save your flow.
 
-![](./images/cipdemo/ace4.png)
-
-7. Create a BAR (Broker Archive) file. Give it the Name: `orders` and click `Finish`.
+Create a BAR (Broker Archive) file. Give it the Name: `orders` and click `Finish`.
 
 
 
