@@ -74,14 +74,14 @@ You should be able to access all portals from the Platform Navigator, but if you
 
 6. If it is not done already, power up your Environment.  It could take about 5 minutes for all nodes to start up.  The master node takes the longest to come up, so if you can see the login prompt from the Skytap UI on the master node, then you are good to go. 
 
-7. SSH into the Master Node or use the Skytap UI.  In the home directory of root (`/root`) there is a script called `icpStopStart.sh`.  Run this script by typing in `icpStopStart.sh start` Note that it takes around 30 minutes for the ICP Services to come up completely.
+7. SSH into the Master Node or use the Skytap UI.  In the home directory of root (`/root`) there is a script called `icpStopStart.sh`.  Run this script by typing in `./icpStopStart.sh start` Note that it takes around 30 minutes for the ICP Services to come up completely.
 
 8. You can tell if the start of ICP is complete by checking using one of these two methods:
 	- Click on the Developer Machine, and it will take you directly to the Developer Machine running X-Windows.  Should you need to Authenticate, you can use the credentials of `student`/`Passw0rd!`. Bring up the Firefox browser.  Navigate to the main ICP UI by going to `https://10.0.0.1:8443`.  The credentials again are `admin/admin`.  If you can log in and see the main ICP Dashboard, you are good to go.  
 	- Alternatively, you can SSH to the Master node.  Execute a `cloudctl login` from the command line.  If all there services are up, it will prompt you for credentials (use `admin`/`admin`) and setup your kubernetes environment.
 8. The best place to do your Kubernetes CLI work is from the Master node.  Again, Before you can execute any of the `kubectl` commands you will need to execute a `cloudctl login`. 
 9. Next step is to find The Platform Navigator UI can be use to create and manage instances of all of the components that make up the Cloud Integration Platform. 
-10. You can access the Platform Navigator using the browser on the developer machine.  The URL for the navigator was set up in this environment as: `https://10.0.0.5/cip-platform-navigator`.  You might be asked to authenticate into ICP again, but once you do that you should now see the Platform Navigator page.
+10. You can access the Platform Navigator using the browser on the developer machine.  The URL for the navigator was set up in this environment as: `https://10.0.0.5/icip1-navigator1`.  You might be asked to authenticate into ICP again, but once you do that you should now see the Platform Navigator page.
 11. The Platform Navigator is designed for you to easily keep track of your integration toolset.  Here you can see all of the various APIC, Event Streams, MQ and ACE instances you have running.  You can also add new instances using the Platform Navigator.
 
 
@@ -99,14 +99,6 @@ There are times where things may not be going right, so your best bet is to use 
 Lab Requirements 
 -------------------------------------------
 
-## Configure MQ
-
-Configure your MQ on your ICP environment according to these parameters:
-
-## Configure Event Streams
-
-Configure Event Streams on your ICP environment according to these parameters
-
 ## ACE Integration Assets 
 
 10. Your integration assets are found in this repository: `https://github.com/ibm-cloudintegration/techguides`.  You can find the specific files you need in the `/techguides/pages/cipdemo` directory.  **hint** clone this on your Developer machine so you don't have to copy the files over.
@@ -116,7 +108,7 @@ Configure Event Streams on your ICP environment according to these parameters
 |--------------------------------|--------------------------------------------------------------------------------------------------|
 | faststartflows.zip             | ACE Project Interchange export of integration flows                                                     |
 | inventoryproject.generated.bar | generated bar file for the Inventory API.  You will be deploying this as is into the environment |
-| order.json                     | test data for the order api                                                                      |
+                                                                  |
 | orderproject.generated.bar     | original bar file for order API. Disregard this, you will be generating a new bar file to deploy |
 
 keep the project interchange zip file handy, you will be loading that up into the toolkit in a later section.
@@ -193,21 +185,54 @@ You will need to download the AcmeMart microservices and deploy the containers o
 
 Import the project interchange provided in the `faststartflows.zip` file.
 
-Modify the `Order` flow by adding two additional operations. after the App Connect REST operation.  One that will put to a MQ queue, and second that will put to a EventStreams Topic.  No transformation required - a vanilla put into each of the endpoints.  Use the environment information provided above.
+Modify the `Order` flow by adding two additional operations. after the App Connect REST operation.  One that will put to a MQ queue, and second that will put to a Queue that will be transfered to EventStreams.  No transformation required - a vanilla put into each of the endpoints.  
 
-Generate a new bar files for the orders flow.  You can give it a new name or keep the same name as the original.
+Here is what the flow will look like.  Instructions to follow
+
+![](./images/cipdemo/ace1.png)
+
+1.	Add `Http Header` operation from the ACE palette and then under properties set it to Delete http header 
+
+![](./images/cipdemo/ace2.png)
+
+2.	Add 2 `MQ Output` nodes. 
+
+3.	At the first `MQ Output`, go to Basic and type the queue name: NEWORDER.ES (case sensitive). The messages will sent to Event Streams (simulated).
+4. Click on `MQ Connection` and select Local queue manager (ACE Server will create a local queue manager for you). Type Destination queue manager name: `acemqserver` (case sensitive).
+
+![](./images/cipdemo/ace3.png)
+
+5. For the second `MQ Output` make the configuration. Type Queue name: `NEWORDER.MQ`.
+6. Click on `MQ Connection` and select Local queue manager (ACE Server will create a local queue manager for you). Type Destination queue manager name: `acemqserver` (case sensitive). Save your flow.
+
+![](./images/cipdemo/ace4.png)
+
+7. Create a BAR (Broker Archive) file. Give it the Name: `orders` and click `Finish`.
+
+
 
 ## Deploy the bar files
 
 Deploy the `inventoryproject.generated.bar` as provided to the CIP environment.
 
-Deploy the newly generated bar file for the orders flow.
 
-**Hint** each will need to be done separately.  Also create unique hostnames for each flow in the `NodePort IP` setting when configuring the Helm Release. e.g. `orders.10.0.0.5.nip.io`
+**Hint** each will need to be done separately.  Also create unique hostnames for each flow in the `NodePort IP` setting when configuring the Helm Release. e.g. `orders.10.0.0.5.nip.io` and `inventory.10.0.0.5.nip.io`
 
 **Need a refresher on how to deploy bar files to ICP?** - This link [here](https://ibm-cloudintegration.github.io/techguides/cip-bootcamp-lab.html#part-two-deploy-some-integration-assets) has the instructions from the bootcamp on how this.
 
-Be sure to test using cURL before moving to next step.
+The process for the new order flow file is similar, but has a few extra steps.  Take note of the following in the Helm Chart:
+
+For the Queue manager settings (**Warning** these are case sensitive)
+queue manager name is `acemqserver`
+Under the heading `MQSC file for Queue Manager:`
+```
+   DEFINE QL(NEWORDER.MQ)
+   DEFINE QL(NEWORDER.ES)
+```   
+
+Leave the remaining settings as defaults and then click Install at the bottom. Your chart will now install. You can view the progress of the install via Helm Releases as prompted or use kubectl. You can reciew the changes inside the ACE Management UI.
+
+Be sure to test using cURL for each flow before moving on.  
 
 Use the following value as input for the inventory API `key` query parameter : `AJ1-05.jpg` 
 
@@ -226,6 +251,22 @@ And here is `inventory`:
 ![](./images/cipdemo/appconn_inventory_api.gif)
 
 Test both APIs using `cURL`.  The input for the `orders` flow is the `order.json` file that was pulled down from the `techguides` github pull. 
+
+If you want to review that the MQ portions are working properly, execute the following:
+
+1.	Open a Terminal Window on Developer Machine
+2.	Execute `sudo cloudctl login`
+3.	User = `admin`
+4.	Password=`admin`
+5. Set the namespace context to `acemq`
+5.	Execute `kubectl get pods`
+6.	Find the acemqserver pod and copy the full name to the clipboard
+7.	Execute kubectl exec (use your actual pod name here) `acemqserver-ib-92e8-01` dspmq
+a.	You will see acemqserver (Queue Manager running)
+8.	To Browse a message in a queue: `kubectl exec -it acemqserver-ib-92e8-0 /opt/mqm/samp/bin/amqsbcg NEWORDER.ES`
+9.	Get a message in a queue: `kubectl exec -it acemqserver-ib-92e8-0 /opt/mqm/samp/bin/amqsget NEWORDER.MQ`
+10. Again, replace the pod name above with your pod
+
 
 ## Create API Facades
 
