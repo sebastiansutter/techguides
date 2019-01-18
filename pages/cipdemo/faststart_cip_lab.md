@@ -185,7 +185,9 @@ You will need to download the AcmeMart microservices and deploy the containers o
 
 Import the project interchange provided in the `faststartflows.zip` file.
 
-Modify the `Order` flow by adding two additional operations. after the App Connect REST operation.  One that will put to a MQ queue, and second that will put to a Queue that will be transfered to EventStreams.  No transformation required - a vanilla put into each of the endpoints.  
+Modify the `Order` flow by adding the following additional operations. 
+
+After the App Connect REST operation you will be adding three operations  One that will strip the HTTP Headers, another that will put to a MQ queue, and third that will put to a Queue that will be transfered to EventStreams (simulated).  No transformation required - a vanilla put into each of the endpoints.  
 
 Here is what the flow will look like.  Instructions to follow
 
