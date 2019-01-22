@@ -149,7 +149,7 @@ You will need to download the AcmeMart microservices and deploy the containers o
 	![](./images/cipdemo/deployment_done.gif)
 	
 14. Once you see the Pod up, the next step is to bind a Network service that can be associated with the Pod.
-15. From the Hamburger menu on top left go to `Workloads` -> `Services`.
+15. From the Hamburger menu on top left go to `Network Services` -> `Services`.
 16. Create a New Service.  Call it `acmemartapp`.
 17. Select the proper namespace - `acmemartapi`
 18. Under `Type` select from the dropdown `NodePort`
