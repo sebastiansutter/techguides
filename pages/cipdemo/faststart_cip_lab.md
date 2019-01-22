@@ -123,10 +123,10 @@ You will need to download the AcmeMart microservices and deploy the containers o
 2. Once in that new directory, clone this repository here on the `master` node:  `https://github.com/asimX/FS-CIP-Microservices`.  The reason we do this on the master node because we need to load the docker images into ICP.  You might need to authenticate using your github.com account.  If you don't have one, you can sign up for your free one here at `github.com`
 3. Go into the AcmeMartUtilityAPI directory.  Also, now is a good time to make sure you are logged into your ICP environment - execute a `cloudctl login` using the `admin`/`admin` credentials.  Make sure you are in the `default` name space.
 4. Run this command:  `docker build . -t acmemartutilityapi`.  The image and its dependencies will be downloaded.
-5. Tag your new image by running this command:  `docker tag acmemartutilityapi mycluster.icp:8500/acmemartapi/acmemartutilityapi:v1.0.0`
-6. Push the docker image out to your ICP instance by issuing this command `docker push mycluster.icp:8500/acmemartapi/acmemartutilityapi:v1.0.0`.
-7. Create a new namespace in the ICP instance.  Easiest way to do that is via the ICP UI.  On the Developer Machine, direct your browser to `https://10.0.0.1:8443`.  Login using the credentials of `admin`/`admin`.
-8. In the UI, starting from the top left hamburger icon select `Manage` -> `Namespaces`.  Create a new namespace and call it `acmemartapi`.  Using the `ibm-anyuid-hostpath-psp` security policy is fine for this one.
+5. In the UI, starting from the top left hamburger icon select `Manage` -> `Namespaces`.  Create a new namespace and call it `acmemartapi`.  Using the `ibm-anyuid-hostpath-psp` security policy is fine for this one.
+6. Tag your new image by running this command:  `docker tag acmemartutilityapi mycluster.icp:8500/acmemartapi/acmemartutilityapi:v1.0.0`
+7. Push the docker image out to your ICP instance by issuing this command `docker push mycluster.icp:8500/acmemartapi/acmemartutilityapi:v1.0.0`.
+8. Create a new namespace in the ICP instance.  Easiest way to do that is via the ICP UI.  On the Developer Machine, direct your browser to `https://10.0.0.1:8443`.  Login using the credentials of `admin`/`admin`.
 9. Next step is to deploy the microservices into ICP.  Create a new Deployment in ICP using the UI via Hamburger Icon in top left. Go to `Workloads -> Deployments`.  Click `+Create Deployment`.
 10. In the `General` tab.  Give it a name of `acmemart`.  Select the new namespace created previous via the dropdown (`acmemartapi`). Leave Replicas at `1`.
 11. Go to `Container Settings`.  Set the name to `acmemartutility`.  Set the `Image` value to `mycluster.icp:8500/acmemartapi/acmemartutilityapi:v1.0.0`
