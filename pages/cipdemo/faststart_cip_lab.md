@@ -127,10 +127,9 @@ You will need to download the AcmeMart microservices and deploy the containers o
    >**username:** admin  
    >**password:** admin
 5. Run this command:  `docker build . -t acmemartutilityapi`.  The image and its dependencies will be downloaded.
-6. In the UI, starting from the top left hamburger icon select `Manage` -> `Namespaces`.  Create a new namespace and call it `acmemartapi`.  Using the `ibm-anyuid-hostpath-psp` security policy is fine for this one.
+6. In the ICP UI, starting from the top left hamburger icon select `Manage` -> `Namespaces`.  Create a new namespace and call it `acmemartapi`.  Using the `ibm-anyuid-hostpath-psp` security policy is fine for this one.
 7. Tag your new image by running this command:  `docker tag acmemartutilityapi mycluster.icp:8500/acmemartapi/acmemartutilityapi:v1.0.0`
 8. Push the docker image out to your ICP instance by issuing this command `docker push mycluster.icp:8500/acmemartapi/acmemartutilityapi:v1.0.0`.
-9.  Create a new namespace in the ICP instance.  Easiest way to do that is via the ICP UI.  On the Developer Machine, direct your browser to `https://10.0.0.1:8443`.  Login using the credentials of `admin`/`admin`.
 10. Next step is to deploy the microservices into ICP.  Create a new Deployment in ICP using the UI via Hamburger Icon in top left. Go to `Workloads -> Deployments`.  Click `+Create Deployment`.
 11. In the `General` tab.  Give it a name of `acmemart`.  Select the new namespace created previous via the dropdown (`acmemartapi`). Leave Replicas at `1`.
 12. Go to `Container Settings`.  Set the name to `acmemartutility`.  Set the `Image` value to `mycluster.icp:8500/acmemartapi/acmemartutilityapi:v1.0.0`
@@ -188,7 +187,9 @@ You will need to download the AcmeMart microservices and deploy the containers o
 
 ## Modify the Order ACE Flow
 
-Import the project interchange provided in the `faststartflows.zip` file.
+Import the project interchange provided in the `faststartflows.zip` file.  You can find this file in the `/home/student/techguides/pages/cipdemo` folder
+
+You can start up the Ace toolkit using `sudo`. e.g. `sudo ./ace toolkit` 
 
 Modify the `Order` flow by adding the following additional operations. 
 
@@ -223,7 +224,9 @@ Deploy the `inventoryproject.generated.bar` as provided to the CIP environment.
 
 >**Hint** each will need to be done separately.  Also create unique hostnames for each flow in the `NodePort IP` setting when configuring the Helm Release. e.g. `orders.10.0.0.5.nip.io` and `inventory.10.0.0.5.nip.io`
 
->**Need a refresher on how to deploy bar files to ICP?** - This link [here](https://ibm-cloudintegration.github.io/techguides/cip-bootcamp-lab.html#part-two-deploy-some-integration-assets) has the instructions from the bootcamp on how this.
+Access the ACE Dashboard via `Manage` -> `Helm Releases`  find the `ace` release and launch from there.  You can also access it via the Platform Navigator.
+
+Via the ACE Dashboard you can load your bar files and deploy your integration servers from there.
 
 The process for the new order flow file is similar, but has a few extra steps.  Take note of the following in the Helm Chart:
 
@@ -274,6 +277,12 @@ a.	You will see acemqserver (Queue Manager running)
 
 
 ## Create API Facades
+
+**Note** at the time of the writing of this lab, there is an issue with API Connect that must be resolved before continuing, but fortunately is easily fixed.
+
+1. Open the main Admin console for APIC by opening a new browser tab on the Developer machine to `https://mgmt.10.0.0.5.nip.io/admin`
+2. login with the credentials of `admin`/`7Ir0n-hide`.  T
+3. 
 
 Create APIs for each of the inventory, order and AcmeMart APIs.
 
