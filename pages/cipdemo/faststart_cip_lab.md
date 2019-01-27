@@ -224,11 +224,11 @@ Deploy the `inventoryproject.generated.bar` as provided to the CIP environment.
 
 >**Hint** each will need to be done separately.  Also create unique hostnames for each flow in the `NodePort IP` setting when configuring the Helm Release. e.g. `orders.10.0.0.5.nip.io` and `inventory.10.0.0.5.nip.io`
 
-Access the ACE Dashboard via `Manage` -> `Helm Releases`  find the `ace` release and launch from there.  You can also access it via the Platform Navigator.
+Access the ACE Dashboard via `Workloads` -> `Helm Releases`  find the `ace-ace` release and launch from there.  You can also access it via the Platform Navigator.
 
 Via the ACE Dashboard you can load your bar files and deploy your integration servers from there.
 
-The process for the new order flow file is similar, but has a few extra steps.  Take note of the following in the Helm Chart:
+Next, Deploy the new `Order` Flow.  The process to deploy this is similar to `Inventory` but you need to add in the MQ Settings.  Some guidance is provided below:
 
 For the Queue manager settings (**Warning** these are case sensitive)
 queue manager name is `acemqserver`
