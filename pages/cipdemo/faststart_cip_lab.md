@@ -206,17 +206,61 @@ Here is what the flow will look like.  Instructions to follow
 2.	Add 2 `MQ Output` nodes. 
 
 3.	At the first `MQ Output`, go to Basic and type the queue name: `NEWORDER.ES` (case sensitive). The messages will sent to Event Streams (simulated).
+4. Click on MQ Connection and select MQ client connection properties 
+	- Type Destination queue manager name: `QMGR.DEV` (case sensitive)
+	- Type Queue Manager host name: `10.0.0.1`
+5. Type channel name: `ACE.TO.ES`
 
-4. Click on `MQ Connection` and select Local queue manager (ACE Server will create a local queue manager for you). Type Destination queue manager name: `acemqserver` (case sensitive).
+![](./images/cipdemo/ace2-1.png)
+	
+6. Type Listener: `31200`
+	- You can see listener port, on `Helm Repositores -->  mq`
+
+![](./images/cipdemo/ace2-2.png)
+
+
+7. Click on `MQ Connection` and select Local queue manager (ACE Server will create a local queue manager for you). Type Destination queue manager name: `acemqserver` (case sensitive).
 
 ![](./images/cipdemo/ace3.png)
 
-For the second `MQ Output` make the configuration. Type Queue name: `NEWORDER.MQ`.
-Click on `MQ Connection` and select Local queue manager (ACE Server will create a local queue manager for you). Type Destination queue manager name: `acemqserver` (case sensitive). Save your flow.
+8. For the second `MQ Output` make the configuration. Type Queue name: `NEWORDER.MQ`.
+9. Click on `MQ Connection` and select Local queue manager (ACE Server will create a local queue manager for you).
+10. Type Destination queue manager name: `acemqserver` (case sensitive). `Save your flow`.
+11. Create a BAR (Broker Archive) file. Give it the Name: `orders` and click `Finish`.
 
-Create a BAR (Broker Archive) file. Give it the Name: `orders` and click `Finish`.
+## Connecting ACE to a remote MQ on ICP
+ 
+1. Open MQ Console on `mq` Helm Repositories
+2. Click on `mq-console-https 31694/TC`
+3. Click on Queue Manager name: `QMGR.DEV`
+4. Click on Properties
+5. Find on `Communication Properties` `CHLAUTH` option and Select `DISABLE` and Save & Close
+6. Click on Add Widget
+	- Select Queues to add on MQ Console
+	- Click on sign (+) to Create a local Queue: `NEWORDER.ES`
+7. Add a new Widget 
+	- Select `Channel` to add on MQ Console
+	- Create a channel using `Server Connection` on channels window: `ACE.TO.ES`
 
+![](./images/cipdemo/ace3-1.png)
 
+8. You have to work with MQ authorization. 
+9. First you have to open a terminal window on Developer machine.
+10. Execute `sudo cloudctl login`
+11. Tyoe as password = `Passw0rd!`
+12. Select `acemq` nameserver
+13. Type user: `admin` and password: `admin`
+14. Execute `kubectl get pods` and check if the pods name is mq-ibm-mq-0
+16. Execute `kubectl exec -it mq-ibm-mq-0 -- /bin/bash`. You will be on mq server on ICP as root user. You need to configure security in order to ACE connect to a remote MQ. 
+17 Insert aceuser as part of mqm group
+	- `sudo useradd -m aceuser`
+	- `sudo usermod -a -G mqm aceuser`
+18.	Execute `runmqsc QMGR.DEV` to open MQ Configuration
+	- Type `SET CHLAUTH(ACE.TO.ES) TYPE(BLOCKUSER) ACTION(REPLACE) USERLIST('nobody') `
+	- Type `ALTER AUTHINFO(SYSTEM.DEFAULT.AUTHINFO.IDPWOS) AUTHTYPE(IDPWOS) CHCKCLNT(OPTIONAL)`
+	- Type `ALTER QMGR CHLAUTH(DISABLED)`
+	- Type `Refresh Security`
+	- Type exit 
 
 ## Deploy the bar files
 
@@ -235,7 +279,6 @@ queue manager name is `acemqserver`
 Under the heading `MQSC file for Queue Manager:`
 ```
    DEFINE QL(NEWORDER.MQ)
-   DEFINE QL(NEWORDER.ES)
 ```   
 
 Leave the remaining settings as defaults and then click Install at the bottom. Your chart will now install. You can view the progress of the install via Helm Releases as prompted or use kubectl. You can reciew the changes inside the ACE Management UI.
@@ -266,14 +309,18 @@ If you want to review that the MQ portions are working properly, execute the fol
 2.	Execute `sudo cloudctl login`
 3.	User = `admin`
 4.	Password=`admin`
-5. Set the namespace context to `acemq`
+5. 	Set the namespace context to `acemq`
 5.	Execute `kubectl get pods`
 6.	Find the acemqserver pod and copy the full name to the clipboard
 7.	Execute kubectl exec (use your actual pod name here) `acemqserver-ib-92e8-01` dspmq
 a.	You will see acemqserver (Queue Manager running)
-8.	To Browse a message in a queue: `kubectl exec -it acemqserver-ib-92e8-0 /opt/mqm/samp/bin/amqsbcg NEWORDER.ES`
+8.	To Get a message in a queue: `kubectl exec -it acemqserver-ib-92e8-0 /opt/mqm/samp/bin/amqsbcg NEWORDER.MQ`
 9.	Get a message in a queue: `kubectl exec -it acemqserver-ib-92e8-0 /opt/mqm/samp/bin/amqsget NEWORDER.MQ`
-10. Again, replace the pod name above with your pod
+10. You can use MQ Console to check if the message is in NEWORDER.ES queue, using:
+	- Open MQ Console on `mq` Helm Repositories
+	- Click on `mq-console-https 31694/TCP`
+	- Check a message in `NEWORDER.ES` queue on `Queues on QMGR.DEV'.
+
 
 
 ## Create API Facades
