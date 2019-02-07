@@ -196,7 +196,7 @@ Modify the `Order` flow by adding the following additional operations.
 After the App Connect REST operation you will be adding three operations.  One that will strip the HTTP Headers, another that will put to a MQ queue, and third that will put to a Queue that will be transfered to EventStreams (simulated).    
 
 Here is what the flow will look like.  Instructions to follow
-
+ 
 ![](./images/cipdemo/ace1.png)
 
 1.	Add `Http Header` operation from the ACE palette and then under properties set it to Delete http header 
