@@ -197,11 +197,11 @@ After the App Connect REST operation you will be adding three operations.  One t
 
 Here is what the flow will look like.  Instructions to follow
  
-![](./images/cipdemo/ace1.png)
+ ![](./images/cipdemo/ace1.png)
 
 1.	Add `Http Header` operation from the ACE palette and then under properties set it to Delete http header 
 
-![](./images/cipdemo/ace2.png)
+ ![](./images/cipdemo/ace2.png)
 
 2.	Add 2 `MQ Output` nodes. 
 
@@ -211,13 +211,13 @@ Here is what the flow will look like.  Instructions to follow
 	- Type Queue Manager host name: `10.0.0.1`
 	- Type channel name: `ACE.TO.ES`	
 	- Type Listener: `31200`
-	>**Note** You check the listener port, on `Helm Repositores -->  mq` `console-https`
+	>**Note** You check the listener port, on Helm Repositores -->  mq `console-https`
 
   ![](./images/cipdemo/ace2-2.png)
 
          - MQ Node (NEWORDER.ES) :
 	 
-   ![](./images/cipdemo/ace2-3.png)
+  ![](./images/cipdemo/ace2-3.png)
 
 5. For the second `MQ Output` click `MQ Connection` and select `Local queue manager` (ACE Server will create a local queue manager for you). 
 6. Type Destination queue manager name: `acemqserver` (case sensitive).
@@ -259,7 +259,7 @@ Here is what the flow will look like.  Instructions to follow
 	- Type user: `admin` and password: `admin`
 	- Execute `kubectl get pods`
 	- Find mq pod
-	- Execute `kubectl exec -it mq-ibm-mq-0 -- /bin/bash`. You will be on mq server on ICP as root user. 
+	- Execute `kubectl exec -it mq-ibm-mq-0 -- /bin/bash`. You will be root user on mq server on ICP . 
 	
 2. You need to configure security in order to allow ACE send a message to QMGR.DEV (remote MQ) . 
 
