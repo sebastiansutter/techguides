@@ -214,7 +214,7 @@ Here is what the flow will look like.  Instructions to follow
 
   ![](./images/cipdemo/ace2-2.png)
 
- MQ Node (NEWORDER.ES) :
+ MQ Node (NEWORDER.ES):
 	 
   ![](./images/cipdemo/ace2-3.png)
 
