@@ -199,13 +199,12 @@ Here is what the flow will look like.  Instructions to follow
  
  ![](./images/cipdemo/ace1.png)
 
-1.	Add `Http Header` operation from the ACE palette and then under properties set it to Delete http header 
+1. Add `Http Header` operation from the ACE palette and then under properties set it to Delete http header.
 
  ![](./images/cipdemo/ace2.png)
-
-2.	Add 2 `MQ Output` nodes. 
-
-3.	At the first `MQ Output`, go to Basic and type the queue name: `NEWORDER.ES` (case sensitive). The messages will sent to Event Streams (simulated).
+   
+2. Add 2 `MQ Output` nodes. 
+3. At the first `MQ Output`, go to Basic and type the queue name: `NEWORDER.ES` (case sensitive). The messages will sent to Event Streams (simulated).
 4. Click on MQ Connection and select MQ client connection properties 
 	- Type Destination queue manager name: `QMGR.DEV` (case sensitive)
 	- Type Queue Manager host name: `10.0.0.1`
@@ -215,7 +214,7 @@ Here is what the flow will look like.  Instructions to follow
 
   ![](./images/cipdemo/ace2-2.png)
 
-MQ Node (NEWORDER.ES) :
+ MQ Node (NEWORDER.ES) :
 	 
   ![](./images/cipdemo/ace2-3.png)
 
