@@ -8,8 +8,7 @@ summary: Agile Integration with App Connect Enterprise
 applies_to: [developer,administrator,consumer]
 ---
 
-![](images/media/image1.tiff){width="6.5in"
-height="1.9895833333333333in"}
+![](images/media/image1.tiff)
 
 **Lab Center -- Hands-on Lab**
 
@@ -21,7 +20,7 @@ Prasad Imandi, IBM, imandi\@us.ibm.com
 
 Michael Alley, IBM, malley\@us.ibm.com
 
-**Table of Contents** {#table-of-contents .TOCHeading}
+**Table of Contents** 
 =====================
 
 [**Disclaimer** 3](#disclaimer)
@@ -165,8 +164,7 @@ disclosure restricted by GSA ADP Schedule Contract with IBM.**
 **Introduction and Getting Started**
 ====================================
 
-![](images/media/image2.png){width="2.1527777777777777in"
-height="1.7361111111111112in"}
+![](images/media/image2.png)
 
 IBM App Connect Enterprise V11 delivers a platform that supports a
 breadth of integration needs across a modern digital enterprise. It is
@@ -181,7 +179,7 @@ creation and deployment of integrations.
 IBM App Connect Enterprise enables you to adopt agile integration
 architecture \< expand on this\>
 
--   **Aigle Integration Architecture**
+-   **Agile Integration Architecture**
 
 -   
 
@@ -240,31 +238,26 @@ Build a sample integration application using ACE toolkit
 
 1.  Open a terminal and start ACE toolkit with command **ace tools**
 
-![](images/media/image3.png){width="4.088735783027122in"
-height="1.221311242344707in"}
+![](images/media/image3.png)
 
 2.  Enter a workspace directory. You can keep the default directory
     without making any changes
 
-> ![](images/media/image4.png){width="4.025784120734908in"
-> height="2.139343832020997in"}
+> ![](images/media/image4.png)
 
 3.  The toolkit will appear with the **Welcome** screen shown, dismiss
     this by clicking on the **x**:
 
-> ![](images/media/image5.png){width="3.0901640419947505in"
-> height="0.8068766404199476in"}
+> ![](images/media/image5.png)
 
 4.  Create a REST API by selecting **New REST API...**
 
-> ![](images/media/image6.png){width="3.2868055555555555in"
-> height="1.385246062992126in"}
+> ![](images/media/image6.png)
 
 5.  Name the REST API **Customer,** and the base path will automatically
     be generated. Click **Finish** to create the API.
 
-> ![](images/media/image7.png){width="4.270138888888889in"
-> height="2.1803280839895014in"}
+> ![](images/media/image7.png)
 
 6.  Click Finish to create the API.
 
@@ -275,19 +268,16 @@ height="1.221311242344707in"}
     **\<Enter a unique name to create a new model\>** with **Customer**
     and press **enter:**
 
-![](images/media/image8.png){width="2.671527777777778in"
-height="0.8278685476815398in"}
+![](images/media/image8.png)
 
 8.  Select the **Customer** entry, and click the **Add Button** to add a
     child element:
 
-![](images/media/image9.png){width="5.647540463692039in"
-height="1.0652777777777778in"}
+![](images/media/image9.png)
 
 9.  Replace the name **element1** with **ID**:
 
-> ![](images/media/image10.png){width="3.742014435695538in"
-> height="1.172130358705162in"}
+> ![](images/media/image10.png)
 
 10. Repeat the process to create the following additional elements:
 
@@ -297,84 +287,71 @@ height="1.0652777777777778in"}
 
 -   phone
 
-> ![](images/media/image11.png){width="5.560812554680665in"
-> height="0.9180325896762904in"}
+> ![](images/media/image11.png)
 
 11. Now that the model definition has been created, the Resources can be
     added, click on the **+** button associated with the **Resources**
     section:
 
-> ![](images/media/image12.png){width="5.560416666666667in"
-> height="0.4583333333333333in"}
+> ![](images/media/image12.png)
 
 12. The Create Resource pop-up with appear, enter **{id}** for Resource
     path, and check the **GET** operation. Click **OK** to complete the
     Create Resource.
 
-> ![](images/media/image13.png){width="3.3194444444444446in"
-> height="2.286885389326334in"}
+> ![](images/media/image13.png)
 
 13. When resource path was created as **/{id},** **{}** tell the toolkit
     that content is a variable, and therefore the parameter **id** has
     been created. On the far right hand side there is a subflow icon
-    ![](images/media/image14.png){width="0.22688976377952755in"
-    height="0.19327646544181978in"}. This provides access to the
+    ![](images/media/image14.png). This provides access to the
     implementation of the operation. The response from the operation has
     automatically been generated and the return type set as
     **Customer.**
 
-> ![](images/media/image15.png){width="5.9098359580052495in"
-> height="1.6777777777777778in"}
+> ![](images/media/image15.png)
 
 14. On the far right side, click on the subflow icon
-    ![](images/media/image16.png){width="0.2123173665791776in"
-    height="0.19108595800524936in"} to open up the implementation for
+    ![](images/media/image16.png) to open up the implementation for
     the operation.
 
 15. A subflow will open up with an Input and Output node. Add a Mapping
     node to the canvas by:
 
-> ![](images/media/image17.png){width="4.25409886264217in"
-> height="3.406961942257218in"}
+> ![](images/media/image17.png)
 
 16. The nodes need to be wired together. **Click** the Out terminal
     associated with the Input node to the input terminal of the Mapping
     node. **Click** on the Out terminal of the Mapping node to the In
     terminal of the Output node.
 
-> ![](images/media/image18.png){width="2.631147200349956in"
-> height="0.5630544619422572in"}
+> ![](images/media/image18.png)
 
 17. Double click on the Mapping node to open the Map wizard. Accept the
     default and click Finish.
 
-    ![](images/media/image19.png){width="3.7459011373578304in"
-    height="2.5356878827646545in"}
+    ![](images/media/image19.png)
 
 18. The default configuration will create a map between the input and
     outputs for API operation. Expand the output structure **JSON \--\>
     Data**
 
-> ![](images/media/image20.png){width="2.5819674103237094in"
-> height="1.9090912073490813in"}
+> ![](images/media/image20.png)
 
 19. Hover over the **firstName** element and a small yellow circle will
     appear to the left:
 
-> ![](images/media/image21.png){width="2.163934820647419in"
-> height="1.5092989938757655in"}
+> ![](images/media/image21.png)
 
 20. Click on the yellow circle and click again to create a Assign
     operation.
 
-> ![](images/media/image22.png){width="3.5245898950131234in"
-> height="1.645184820647419in"}
+> ![](images/media/image22.png)
 
 21. In the properties pane below, provide a **Value**. This will assign
     a default value for the firstName element.
 
-    ![](images/media/image23.png){width="3.1721314523184603in"
-    height="0.9848523622047244in"}
+    ![](images/media/image23.png)
 
 22. Repeat the steps and assign default values for **lastName** and
     **phone** elements
@@ -382,26 +359,22 @@ height="1.0652777777777778in"}
 23. Expand the input structure **LocalEnvironment \--\> REST \--\> Input
     \--\> Parameters**
 
-    ![](images/media/image24.png){width="3.2459011373578304in"
-    height="5.724253062117235in"}
+    ![](images/media/image24.png)
 
 24. Hover over the **id** element and a small yellow circle will appear
     to the right:
 
-    ![](images/media/image25.png){width="3.7980839895013125in"
-    height="0.6147539370078741in"}
+    ![](images/media/image25.png)
 
 25. Click on the yellow circle and click on the **ID** element on the
     output structure. This will automatically create a **Move** option
     between the two.
 
-> ![](images/media/image26.png){width="4.106557305336833in"
-> height="0.5804461942257217in"}
+> ![](images/media/image26.png)
 
 26. The output structure should appear as follows after the above steps:
 
-    ![](images/media/image27.png){width="4.398877952755906in"
-    height="1.8278685476815397in"}
+    ![](images/media/image27.png)
 
 27. Save and close everything.
 
@@ -421,15 +394,13 @@ docker pull ibmcom/ace
 > The docker image is already loaded in the lab environment to save time
 > from downloading the image.
 
-![](images/media/image28.png){width="4.999141513560805in"
-height="0.8114752843394576in"}
+![](images/media/image28.png)
 
 30. See the images available in local repository using command:
 
     docker images
 
-![](images/media/image29.png){width="4.998611111111111in"
-height="0.9506944444444444in"}
+![](images/media/image29.png)
 
 31. For local testing of the integration flow, run the ACE image in a
     docker container using command:
@@ -441,8 +412,7 @@ height="0.9506944444444444in"}
 32. The command will start ACE in a docker container. You should see the
     following messages:
 
-> ![](images/media/image30.png){width="6.497916666666667in"
-> height="2.221312335958005in"}
+> ![](images/media/image30.png)
 
 33. Leave the terminal window open with the integration server running
     in docker container. If you interrupt the command it will stop the
@@ -455,8 +425,7 @@ Deploying and testing the Integration with ACE docker image
     running in the container. Right-click on **Integration Servers** and
     click on **Connect to an Integration Server**
 
-![](images/media/image31.png){width="4.00625in"
-height="0.9836067366579178in"}
+![](images/media/image31.png)
 
 35. In the Connection details pop up window, enter the following and
     click **Finish**:
@@ -465,20 +434,17 @@ height="0.9836067366579178in"}
 
     Port: 7600
 
-    ![](images/media/image32.png){width="3.5in"
-    height="2.577884951881015in"}
+    ![](images/media/image32.png)
 
 36. Under Integration Servers, you should see the integration server
     MYACESERVER that was started in docker container earlier.
 
-    ![](images/media/image33.png){width="3.0491797900262467in"
-    height="1.0in"}
-
+    ![](images/media/image33.png)
+    
 37. Deploy the application **Customer** which was developed earlier by
     dragging and dropping it on the integration server.
 
-> ![](images/media/image34.png){width="2.385246062992126in"
-> height="2.7803029308836393in"}
+> ![](images/media/image34.png)
 
 38. Now that the application is deployed to integration server, we will
     test the REST API in the application. The REST API requires ID as a
@@ -490,8 +456,7 @@ height="0.9836067366579178in"}
 
     You should see the result as shown below.
 
-![](images/media/image35.png){width="3.336065179352581in"
-height="1.8002635608048994in"}
+![](images/media/image35.png)
 
 This completes Part 1 of the lab.
 
@@ -534,14 +499,12 @@ Build a standard ACE docker image
 
     git clone https://github.com/ot4i/ace-docker
 
-![](images/media/image36.png){width="5.639343832020997in"
-height="1.8701410761154855in"}
+![](images/media/image36.png)
 
 3.  Change directory to ace-docker and you can review the contents of
     the cloned GitHub repository.
 
-    ![](images/media/image37.png){width="5.5327865266841645in"
-    height="1.5120581802274715in"}
+    ![](images/media/image37.png)
 
 4.  The Docker files to build the image in ubuntu directory. Review the
     Dockerfiles to see the customization. For this lab, we will build
@@ -552,14 +515,12 @@ height="1.8701410761154855in"}
     ACE install image is made available in the directory
     /home/student/Downloads.
 
-![](images/media/image38.png){width="4.432262685914261in"
-height="0.9262292213473315in"}
+![](images/media/image38.png)
 
 6.  Copy the ACE install image file ace-11.0.0.2.tar.gz to directory
     /home/student/ace1102image/ace-docker/deps
 
-![](images/media/image39.png){width="5.75409886264217in"
-height="0.39861111111111114in"}
+![](images/media/image39.png)
 
 7.  Change directory to /home/student/ace1102image/ace-docker to run the
     command to build an ACE image.
@@ -573,15 +534,13 @@ height="0.39861111111111114in"}
 > Docker build -t ace1102image --build-arg
 > ACE\_INSTALL=ace-11.0.0.2.tar.gz \--file ubuntu/Dockerfile.aceonly .
 
-![](images/media/image40.png){width="5.6311472003499565in"
-height="1.2208333333333334in"}
+![](images/media/image40.png)
 
 9.  On completion of the image build, you should see a Successfully
     built message. Run the command 'docker images' to see the image that
     was built in previous step
 
-![](images/media/image41.png){width="5.6305555555555555in"
-height="1.75in"}
+![](images/media/image41.png)
 
 Package the integration application into the standard ACE docker image
 ----------------------------------------------------------------------
@@ -622,8 +581,7 @@ cp Dockerfile.aceonly Dockerfile
     Open the file **Dockerfile** using Atom editor or any other editor
     of your choice.
 
-![](images/media/image42.png){width="4.466416229221347in"
-height="2.6557370953630794in"}
+![](images/media/image42.png)
 
 16. In the **Dockerfile**, make the following updates:
 
@@ -633,8 +591,7 @@ Replace bars\_aceonly with deploy\_barfiles
 
 After updating the file should look like this:
 
-![](images/media/image43.png){width="4.5901640419947505in"
-height="2.239176509186352in"}
+![](images/media/image43.png)
 
 17. Save and close the file.
 
@@ -644,14 +601,12 @@ height="2.239176509186352in"}
 
 > Docker build -t ace1102app1 \--file Dockerfile .
 
-![](images/media/image44.png){width="5.189558180227472in"
-height="1.5163932633420822in"}
+![](images/media/image44.png)
 
 19. Run the command 'docker images' and you should see the images that
     was built.
 
-> ![](images/media/image45.png){width="6.5in"
-> height="1.6527777777777777in"}
+> ![](images/media/image45.png)
 >
 > The image **ace1102image** is the base image for ACE V11.0.0.2 that
 > can be used to build images with integration applications. You can
@@ -678,8 +633,7 @@ Load the custom docker image into IBM Cloud Private docker image repository
 
     Enter Username: **admin** and Password: **admin**
 
-![](images/media/image46.png){width="4.6305555555555555in"
-height="1.0737707786526685in"}
+![](images/media/image46.png)
 
 22. To push an image from local file system to ICP image registry, the
     must be tagged with the cluster domain and namespace. The ICP
@@ -693,41 +647,35 @@ docker tag ace1102app mycluster.icp:8500/default/ace1102app:latest
 23. Run the command 'docker images' and you can see the image you tagged
     in previous step as shown below.
 
-![](images/media/image47.png){width="5.8114752843394575in"
-height="1.6020833333333333in"}
+![](images/media/image47.png)
 
 24. Push the docker image to ICP image registry using command. Note this
     step will take a few minutes.
 
 > docker push mycluster.icp:8500/default/ace1102app1:latest
 
-![](images/media/image48.png){width="5.8101399825021876in"
-height="2.3032786526684164in"}
+![](images/media/image48.png)
 
 25. The pushed image should now appear in ICP Container Images. Log into
     ICP console to check the image. Open a Firefox browser and click on
     the ICP Console bookmark in the tool bar.
 
-> ![](images/media/image49.png){width="3.99951990376203in"
-> height="1.4918022747156605in"}
+> ![](images/media/image49.png)
 
 26. Login to ICP Console using the saved credentials. If you need to
     enter the credentials, enter Username admin and Password admin
 
-> ![](images/media/image50.png){width="2.671527777777778in"
-> height="2.8278685476815397in"}
+> ![](images/media/image50.png)
 
 27. Click on the hamburger menu in the top left and select **Container
     Images**
 
-> ![](images/media/image51.png){width="4.17213145231846in"
-> height="1.6637423447069117in"}
+> ![](images/media/image51.png)
 
 28. In Container Images, you can see the custom image that was pushed to
     ICP image registry in the previous steps.
 
-> ![](images/media/image52.png){width="5.6005347769028875in"
-> height="2.286884295713036in"}
+> ![](images/media/image52.png)
 
 Create and load helm chart into IBM Cloud Private
 -------------------------------------------------
@@ -753,8 +701,7 @@ Create and load helm chart into IBM Cloud Private
 
     git clone https://github.com/ot4i/ace-helm
 
-![](images/media/image53.png){width="5.508196631671041in"
-height="1.8402777777777777in"}
+![](images/media/image53.png)
 
 32. The git clone has a directory 'ace-helm/ibm-ace' directory which
     provides pre-configured files to build a helm chart. Change
@@ -794,15 +741,13 @@ height="1.8402777777777777in"}
 
 > helm lint ace1102app1
 
-![](images/media/image54.png){width="4.759970472440945in"
-height="0.8524595363079615in"}
+![](images/media/image54.png)
 
 38. Package the helm chart by running the following command:
 
 > helm package ace1102app1
 
-![](images/media/image55.png){width="6.106557305336833in"
-height="0.6152230971128609in"}
+![](images/media/image55.png)
 
 39. Next step is to load the helm chat into ICP catalog for deployment.
     To load the chart into ICP catalog, first login to ICP using the
@@ -813,24 +758,21 @@ height="0.6152230971128609in"}
 40. Select the default namespace by entering 2 at the prompt as shown
     below:
 
-> ![](images/media/image56.png){width="5.877049431321085in"
-> height="2.9180555555555556in"}
+> ![](images/media/image56.png)
 
 41. Load the helm chart into ICP catalog using the following command:
 
 > cloudctl catalog load-chart \--archive ace1102app1-1.0.0.tgz \--repo
 > local-charts
 
-![](images/media/image57.png){width="5.876388888888889in"
-height="1.2113418635170603in"}
+![](images/media/image57.png)
 
 42. The helm chart should now be available in ICP Catalog for
     deployment. Switch over to Firefox browser to the ICP Console window
     and click on Catalog. The loaded helm chart will appear in the ICP
     Catalog as shown below:
 
-![](images/media/image58.png){width="5.565277777777778in"
-height="2.286885389326334in"}
+![](images/media/image58.png)
 
 Deploy the helm chart and test the integration application
 ----------------------------------------------------------
@@ -845,14 +787,12 @@ Deploy the helm chart and test the integration application
 > \--docker-server=mycluster.icp:8500 \--docker-username=admin
 > \--docker-password=admin
 
-![](images/media/image59.png){width="6.5in"
-height="0.5694444444444444in"}
+![](images/media/image59.png)
 
 44. In the ICP console, in Catalog, click on the helm chart ace1102app1
     to open the chart and start deployment.
 
-> ![](images/media/image60.png){width="5.696721347331583in"
-> height="2.3937182852143484in"}
+> ![](images/media/image60.png)
 
 45. Scroll down and browse the chart and you can see the description and
     additional information. Also notice the chart version is 1.0.0. When
@@ -860,55 +800,46 @@ height="0.5694444444444444in"}
     version of the helm chart can be updated. Click on Configuration
     tab.
 
-> ![](images/media/image61.png){width="4.9672134733158355in"
-> height="2.6518339895013123in"}
+> ![](images/media/image61.png)
 
 46. In Configuration tab, provide Helm release name 'ace1102app1' and in
     the Target namespace drop down select 'default'
 
-> ![](images/media/image62.png){width="5.877049431321085in"
-> height="2.905246062992126in"}
+> ![](images/media/image62.png)
 
 47. Scroll down and click on 'All parameters'
 
-    ![](images/media/image63.png){width="5.811111111111111in"
-    height="1.3278685476815397in"}
+    ![](images/media/image63.png)
 
 48. Scroll down to image section and provide the image pull secret
     'registrykeyace' created earlier in the pullSecret property
 
-    ![](images/media/image64.png){width="5.74590113735783in"
-    height="2.356794619422572in"}
+    ![](images/media/image64.png)
 
 49. Click on **Install** to start the installation of the chart.
 
 50. You will see the below window pop up. Click on View Helm Release
 
-> ![](images/media/image65.png){width="3.991803368328959in"
-> height="2.157536089238845in"}
+> ![](images/media/image65.png)
 
 51. You can see the deployment status and details of deployment.
 
-> ![](images/media/image66.png){width="5.401639326334208in"
-> height="2.8173939195100615in"}
+> ![](images/media/image66.png)
 
 52. On the top right **Launch** button, drop down and select **webui**.
 
-> ![](images/media/image67.png){width="5.730707567804025in"
-> height="1.2049179790026248in"}
+> ![](images/media/image67.png)
 
 53. ACE webui will open in a new browser window and will show
     integration server running one application Customer.
 
-> ![](images/media/image68.png){width="4.639343832020997in"
-> height="2.9977296587926507in"}
+> ![](images/media/image68.png)
 
 54. Switch back to the ICP console window and scroll down to view the
     deployment information. Scroll down to **Service** section. This
     shows the port mapping as shown below:
 
-> ![](images/media/image69.png){width="6.5in"
-> height="1.3524595363079615in"}
+> ![](images/media/image69.png)
 
 55. From the above port mapping, get the port mapping for the
     HTTPListener port 7800. In this case, port 7800 is mapped to
@@ -920,17 +851,7 @@ height="0.5694444444444444in"}
 
 > http://10.0.0.1:32086/customer/v1/123
 
-![](images/media/image70.png){width="5.696721347331583in"
-height="2.481968503937008in"}
+![](images/media/image70.png)
 
 This completes Part 2 of the lab.
 
-**We Value Your Feedback!**
-===========================
-
--   Don't forget to submit your Think 2019 session and speaker feedback!
-    Your feedback is very important to us -- we use it to continually
-    improve the conference.
-
--   Access the Think 2019 agenda tool to quickly submit your surveys
-    from your smartphone, laptop or conference kiosk.
