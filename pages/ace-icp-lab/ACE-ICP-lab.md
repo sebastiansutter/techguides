@@ -8,10 +8,6 @@ summary: A Hands on look at dev ops using App Connect Enterprise on IBM Cloud Pr
 applies_to: [developer,administrator,consumer]
 ---
 
-
-# **TechCon -- Hands-on Lab**
-# **Agile Integration with App Connect Enterprise**
-
 ### Prasad Imandi, IBM, `imandi@us.ibm.com`
 ### Michael Alley, IBM, `malley@us.ibm.com`
 
