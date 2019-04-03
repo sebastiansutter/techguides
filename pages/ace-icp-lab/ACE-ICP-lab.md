@@ -1,3 +1,13 @@
+---
+title: Agile Integration with App Connect Enterprise
+toc: false
+sidebar: labs_sidebar
+folder: pots/ace-icp
+permalink: /ace-icp.html
+summary: Agile Integration with App Connect Enterprise
+applies_to: [developer,administrator,consumer]
+---
+
 ![](images/media/image1.tiff){width="6.5in"
 height="1.9895833333333333in"}
 
