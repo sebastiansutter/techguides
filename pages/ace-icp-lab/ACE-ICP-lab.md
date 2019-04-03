@@ -1,7 +1,7 @@
 ---
 title: Agile Integration with App Connect Enterprise
 toc: false
-sidebar: labs_sidebar
+sidebar: 
 folder: pots/ace-icp
 permalink: /ace-icp.html
 summary: A Hands on look at dev ops using App Connect Enterprise on IBM Cloud Private
