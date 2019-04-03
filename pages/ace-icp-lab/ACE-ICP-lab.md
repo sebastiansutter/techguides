@@ -227,7 +227,7 @@ perform the following tasks.
 Build a sample integration application using ACE toolkit
 --------------------------------------------------------
 
-1.  Open a terminal and start ACE toolkit with command **ace tools**
+1.  Open a terminal and start ACE toolkit with command `ace tools`
 
 ![](images/media/image3.png)
 
@@ -380,7 +380,7 @@ Running a ACE docker image
 29. Pull the docker image for ACE from Docker Hub repository using
     command:
 
-docker pull ibmcom/ace
+`docker pull ibmcom/ace`
 
 > The docker image is already loaded in the lab environment to save time
 > from downloading the image.
@@ -389,16 +389,16 @@ docker pull ibmcom/ace
 
 30. See the images available in local repository using command:
 
-    docker images
+    `docker images`
 
 ![](images/media/image29.png)
 
 31. For local testing of the integration flow, run the ACE image in a
     docker container using command:
 
-    docker run \--name myaceserver -p 7600:7600 -p 7800:7800 -p
+    `docker run \--name myaceserver -p 7600:7600 -p 7800:7800 -p
     7843:7843 \--env LICENSE=accept \--env ACE\_SERVER\_NAME=MYACESERVER
-    ibmcom/ace:latest
+    ibmcom/ace:latest`
 
 32. The command will start ACE in a docker container. You should see the
     following messages:
@@ -421,11 +421,10 @@ Deploying and testing the Integration with ACE docker image
 35. In the Connection details pop up window, enter the following and
     click **Finish**:
 
-    Host name: localhost
+> Host name: localhost
+> Port: 7600
 
-    Port: 7600
-
-    ![](images/media/image32.png)
+![](images/media/image32.png)
 
 36. Under Integration Servers, you should see the integration server
     MYACESERVER that was started in docker container earlier.
@@ -443,7 +442,7 @@ Deploying and testing the Integration with ACE docker image
     ID parameter. We will use 123 as the ID in this test. Open a firefox
     browser and enter the below url to call the API.
 
-    http://localhost:7800/customer/v1/123
+    `http://localhost:7800/customer/v1/123`
 
     You should see the result as shown below.
 
@@ -488,7 +487,7 @@ Build a standard ACE docker image
     server docker image. Review the github repository for usage and
     guidance on customization. Clone the repository using command:
 
-    git clone https://github.com/ot4i/ace-docker
+    `git clone https://github.com/ot4i/ace-docker`
 
 ![](images/media/image36.png)
 
@@ -545,17 +544,17 @@ Package the integration application into the standard ACE docker image
 11. Change directory to '/home/student/ace1102image/ace-docker/sample'
     and make a new directory **deploy\_barfiles**
 
-    cd /home/student/ace1102image/ace-docker/sample
+    `cd /home/student/ace1102image/ace-docker/sample`
 
-    mkdir deploy\_barfiles
+    `mkdir deploy\_barfiles`
 
 12. Copy the integration application bar file from the
     **GeneratedBarFiles** directory in toolkit workspace directory to
     **deploy\_barfiles** directory using below command:
 
-    cp
+    `cp
     /home/student/IBM/ACET11/workspace/GeneratedBarFiles/Customerproject.generated.bar
-    /home/student/ace1102image/ace-docker/sample/deploy\_barfiles/Customerproject.bar
+    /home/student/ace1102image/ace-docker/sample/deploy\_barfiles/Customerproject.bar`
 
 13. Next, we will create a Dockerfile to build a ACE docker image using
     the image previously built and package the integration application
@@ -563,7 +562,7 @@ Package the integration application into the standard ACE docker image
 
 14. Make a copy of Dockerfile.aceonly and call the new file Dockerfile
 
-cp Dockerfile.aceonly Dockerfile
+`cp Dockerfile.aceonly Dockerfile`
 
 15. Edit the Dockerfile and provide the **ace1102image** as the base
     docker image to be used for this build and include
@@ -578,7 +577,7 @@ cp Dockerfile.aceonly Dockerfile
 
     Replace FROM ace-only:latest to FROM ace1102image:latest
 
-Replace bars\_aceonly with deploy\_barfiles
+Replace bars_aceonly with deploy_barfiles
 
 After updating the file should look like this:
 
@@ -594,7 +593,7 @@ After updating the file should look like this:
 
 ![](images/media/image44.png)
 
-19. Run the command 'docker images' and you should see the images that
+19. Run the command `docker images` and you should see the images that
     was built.
 
 > ![](images/media/image45.png)
@@ -620,7 +619,7 @@ Load the custom docker image into IBM Cloud Private docker image repository
 
 21. Login to ICP image registry using command and credentials:
 
-    docker login mycluster.icp:8500
+    `docker login mycluster.icp:8500`
 
     Enter Username: **admin** and Password: **admin**
 
@@ -633,7 +632,7 @@ Load the custom docker image into IBM Cloud Private docker image repository
 
 > Run the command to tag the image to push to ICP image registry:
 
-docker tag ace1102app mycluster.icp:8500/default/ace1102app:latest
+`docker tag ace1102app mycluster.icp:8500/default/ace1102app:latest`
 
 23. Run the command 'docker images' and you can see the image you tagged
     in previous step as shown below.
@@ -677,10 +676,10 @@ Create and load helm chart into IBM Cloud Private
     public GitHub repository which provides standard configuration and
     guidance. This repository is available at:
 
-    https://github.com/ot4i/ace-helm
+    `https://github.com/ot4i/ace-helm`
 
-30. Open a terminal window and create directory using the command mkdir
-    \<directory name\>. In this lab we are using 'ace-helm-charts' as
+30. Open a terminal window and create directory using the command `mkdir
+    <directory name>`. In this lab we are using 'ace-helm-charts' as
     the directory name.
 
 31. Change into the directory 'ace-helm-charts' and clone ACE helm
@@ -690,7 +689,7 @@ Create and load helm chart into IBM Cloud Private
     usage and guidance on customization. Clone the repository using
     command:
 
-    git clone https://github.com/ot4i/ace-helm
+    `git clone https://github.com/ot4i/ace-helm`
 
 ![](images/media/image53.png)
 
@@ -717,15 +716,15 @@ Create and load helm chart into IBM Cloud Private
 
 35. Review the copied files Chart.yaml and values.yaml and the changes
     in the files. In Chart.yaml, the chart name is updated to
-    ace1102app1. In values.yaml, the license parameter is changed to
+    `ace1102app1`. In values.yaml, the license parameter is changed to
     "accept" and the image is updated to container image in the ICP
-    image registry which is default/ace1102app1.
+    image registry which is `default/ace1102app1`.
 
 36. Helm provides the ability to validate the helm chart prior to
     packaging and deploy. Change directory to one level higher to run
     the helm validation and package commands.
 
-    cd \~/ace-helm-charts/ace-helm
+    `cd ~/ace-helm-charts/ace-helm`
 
 37. Run the following command to validate the configuration in the
     charts.
