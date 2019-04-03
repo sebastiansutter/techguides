@@ -477,8 +477,8 @@ perform the following tasks.
 Build a standard ACE docker image
 ---------------------------------
 
-1.  Open a terminal window and create directory using the command mkdir
-    \<directory name\>. In this lab we are using 'ace1102image' as the
+1.  Open a terminal window and create directory using the command `mkdir
+    <directory name>`. In this lab we are using `ace1102image` as the
     directory name.
 
 2.  Change into the directory and clone ACE docker public Github
@@ -521,8 +521,7 @@ Build a standard ACE docker image
     multiple versions of ACE as containers. Enter the command to use
     **Dockerfile.aceonly** to build the image:
 
-> Docker build -t ace1102image --build-arg
-> ACE\_INSTALL=ace-11.0.0.2.tar.gz \--file ubuntu/Dockerfile.aceonly .
+`docker build -t ace1102image --build-arg  ACE_INSTALL=ace-11.0.0.2.tar.gz --file ubuntu/Dockerfile.aceonly .`
 
 ![](images/media/image40.png)
 
@@ -542,15 +541,15 @@ Package the integration application into the standard ACE docker image
     the **Dockerfile** that can be used for this purpose.
 
 11. Change directory to '/home/student/ace1102image/ace-docker/sample'
-    and make a new directory **deploy\_barfiles**
+    and make a new directory **deploy_barfiles**
 
     `cd /home/student/ace1102image/ace-docker/sample`
 
-    `mkdir deploy\_barfiles`
+    `mkdir deploy_barfiles`
 
 12. Copy the integration application bar file from the
     **GeneratedBarFiles** directory in toolkit workspace directory to
-    **deploy\_barfiles** directory using below command:
+    **deploy_barfiles** directory using below command:
 
     `cp
     /home/student/IBM/ACET11/workspace/GeneratedBarFiles/Customerproject.generated.bar
@@ -566,7 +565,7 @@ Package the integration application into the standard ACE docker image
 
 15. Edit the Dockerfile and provide the **ace1102image** as the base
     docker image to be used for this build and include
-    **deploy\_barfiles** as the directory for the bar file.
+    **deploy_barfiles** as the directory for the bar file.
 
     Open the file **Dockerfile** using Atom editor or any other editor
     of your choice.
@@ -575,7 +574,7 @@ Package the integration application into the standard ACE docker image
 
 16. In the **Dockerfile**, make the following updates:
 
-    Replace FROM ace-only:latest to FROM ace1102image:latest
+    Replace `FROM ace-only:latest` to `FROM ace1102image:latest`
 
 Replace bars_aceonly with deploy_barfiles
 
@@ -589,7 +588,7 @@ After updating the file should look like this:
     V11.0.0.2 base image we previously built and package the integration
     application onto the image using the below command:
 
-> Docker build -t ace1102app1 \--file Dockerfile .
+`docker build -t ace1102app1 --file Dockerfile .`
 
 ![](images/media/image44.png)
 
@@ -642,7 +641,7 @@ Load the custom docker image into IBM Cloud Private docker image repository
 24. Push the docker image to ICP image registry using command. Note this
     step will take a few minutes.
 
-> docker push mycluster.icp:8500/default/ace1102app1:latest
+`docker push mycluster.icp:8500/default/ace1102app1:latest`
 
 ![](images/media/image48.png)
 
@@ -699,9 +698,8 @@ Create and load helm chart into IBM Cloud Private
     to customize for the container image created in previous steps and
     customize for this deployment.
 
-> cd ace-helm
->
-> cp -R ibm-ace ace1102app1
+>`cd ace-helm`
+>`cp -R ibm-ace ace1102app1`
 
 33. Change directory to ace1102app1 and review the configuration yaml
     files . The files Chart.yaml and values.yaml require customizing for
@@ -712,7 +710,7 @@ Create and load helm chart into IBM Cloud Private
     /home/student/labfiles directory and overwrite the existing files in
     ace1102app1 directory.
 
-> cp \~/labfiles/\*.yaml .
+`cp ~/labfiles/*.yaml .`
 
 35. Review the copied files Chart.yaml and values.yaml and the changes
     in the files. In Chart.yaml, the chart name is updated to
@@ -729,13 +727,13 @@ Create and load helm chart into IBM Cloud Private
 37. Run the following command to validate the configuration in the
     charts.
 
-> helm lint ace1102app1
+> `helm lint ace1102app1`
 
 ![](images/media/image54.png)
 
 38. Package the helm chart by running the following command:
 
-> helm package ace1102app1
+> `helm package ace1102app1`
 
 ![](images/media/image55.png)
 
@@ -743,7 +741,7 @@ Create and load helm chart into IBM Cloud Private
     To load the chart into ICP catalog, first login to ICP using the
     following ICP CLI command:
 
-> cloudctl login -u admin -p admin -a https://mycluster.icp:8443
+> `cloudctl login -u admin -p admin -a https://mycluster.icp:8443`
 
 40. Select the default namespace by entering 2 at the prompt as shown
     below:
@@ -752,8 +750,8 @@ Create and load helm chart into IBM Cloud Private
 
 41. Load the helm chart into ICP catalog using the following command:
 
-> cloudctl catalog load-chart \--archive ace1102app1-1.0.0.tgz \--repo
-> local-charts
+> `cloudctl catalog load-chart --archive ace1102app1-1.0.0.tgz --repo
+local-charts`
 
 ![](images/media/image57.png)
 
@@ -773,9 +771,9 @@ Deploy the helm chart and test the integration application
     registry. Create image pull secret 'registrykeyace' using the
     following command:
 
-> kubectl create secret docker-registry registrykeyace
+> `kubectl create secret docker-registry registrykeyace
 > \--docker-server=mycluster.icp:8500 \--docker-username=admin
-> \--docker-password=admin
+> \--docker-password=admin`
 
 ![](images/media/image59.png)
 
@@ -839,7 +837,7 @@ Deploy the helm chart and test the integration application
     has been identified above. Enter the below url in the brower to
     test. You should see the below response.
 
-> http://10.0.0.1:32086/customer/v1/123
+> `http://10.0.0.1:32086/customer/v1/123`
 
 ![](images/media/image70.png)
 
