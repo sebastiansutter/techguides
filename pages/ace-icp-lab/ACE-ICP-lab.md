@@ -207,7 +207,9 @@ Environment used for this lab
 4.  ACE Docker images and Helm charts are downloaded from public Github
     repositories
 
-5.  IBM Cloud Private V3.1 (ICP)
+5.  IBM Cloud Private V3.1.1(ICP)
+
+>You will be performing the lab using Ubuntu V1604. Login >credentials for>Ubuntu are:>`Username`: `student`>`Password`: `Passw0rd!`>**Note**, the password contains a zero, not an uppercase letter O.
 
 Getting started with Part 1:
 ============================
@@ -399,8 +401,8 @@ Running a ACE docker image
 31. For local testing of the integration flow, run the ACE image in a
     docker container using command:
 
-    `docker run \--name myaceserver -p 7600:7600 -p 7800:7800 -p
-    7843:7843 \--env LICENSE=accept \--env ACE\_SERVER\_NAME=MYACESERVER
+    `docker run --name myaceserver -p 7600:7600 -p 7800:7800 -p
+    7843:7843 --env LICENSE=accept --env ACE_SERVER_NAME=MYACESERVER
     ibmcom/ace:latest`
 
 32. The command will start ACE in a docker container. You should see the
@@ -490,9 +492,13 @@ Build a standard ACE docker image
     server docker image. Review the github repository for usage and
     guidance on customization. Clone the repository using command:
 
-    `git clone https://github.com/ot4i/ace-docker`
+    `curl -LO https://github.com/ot4i/ace-docker/archive/11.0.0.2a.zip`
 
 ![](images/media/image36.png)
+
+Unzip the repository file `11.0.0.2a.zip` and rename the directory `ace-docker-11.0.0.2a` to `ace-docker` using commands:`unzip 11.0.0.2.zip``mv ace-docker-11.0.0.2a ace-docker`
+
+![](images/media/image36a.png)
 
 3.  Change directory to ace-docker and you can review the contents of
     the cloned GitHub repository.
