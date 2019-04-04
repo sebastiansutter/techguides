@@ -496,7 +496,8 @@ Build a standard ACE docker image
 
 ![](images/media/image36.png)
 
-Unzip the repository file `11.0.0.2a.zip` and rename the directory `ace-docker-11.0.0.2a` to `ace-docker` using commands:`unzip 11.0.0.2.zip``mv ace-docker-11.0.0.2a ace-docker`
+Unzip the repository file `11.0.0.2a.zip` and rename the directory `ace-docker-11.0.0.2a` to `ace-docker` using commands:`unzip 11.0.0.2.zip`
+`mv ace-docker-11.0.0.2a ace-docker`
 
 ![](images/media/image36a.png)
 
@@ -518,6 +519,8 @@ Unzip the repository file `11.0.0.2a.zip` and rename the directory `ace-docker-1
 
 6.  Copy the ACE install image file ace-11.0.0.2.tar.gz to directory
     /home/student/ace1102image/ace-docker/deps
+    
+    `cp /home/student/Downloads/ace-11.0.0.2.tar.gz /home/student/ace1102image/ace-docker/deps`
 
 ![](images/media/image39.png)
 
@@ -562,7 +565,7 @@ Package the integration application into the standard ACE docker image
 
     `cp
     /home/student/IBM/ACET11/workspace/GeneratedBarFiles/Customerproject.generated.bar
-    /home/student/ace1102image/ace-docker/sample/deploy\_barfiles/Customerproject.bar`
+    /home/student/ace1102image/ace-docker/sample/deploy_barfiles/Customerproject.bar`
 
 13. Next, we will create a Dockerfile to build a ACE docker image using
     the image previously built and package the integration application
@@ -640,7 +643,7 @@ Load the custom docker image into IBM Cloud Private docker image repository
 
 > Run the command to tag the image to push to ICP image registry:
 
-`docker tag ace1102app mycluster.icp:8500/default/ace1102app:latest`
+`docker tag ace1102app1 mycluster.icp:8500/default/ace1102app1:latest`
 
 23. Run the command 'docker images' and you can see the image you tagged
     in previous step as shown below.
@@ -687,21 +690,25 @@ Create and load helm chart into IBM Cloud Private
     `https://github.com/ot4i/ace-helm`
 
 30. Open a terminal window and create directory using the command `mkdir
-    <directory name>`. In this lab we are using 'ace-helm-charts' as
+    <directory name>`. In this lab we are using `ace-helm-charts` as
     the directory name.
 
 31. Change into the directory 'ace-helm-charts' and clone ACE helm
     public Github repository. This repository provides pre-built helm
     configuration files with a standard initial customization to package
     the container image for deployment. Review the github repository for
-    usage and guidance on customization. Clone the repository using
+    usage and guidance on customization. Download the files from the repository using
     command:
 
-    `git clone https://github.com/ot4i/ace-helm`
+    `curl -LO https://github.com/ot4i/ace-helm/archive/11.0.0.2a.zip`
+
+Unzip the repository file 11.0.0.2a.zip and rename the directory `ace-docker-11.0.0.2a` to `ace-docker` using commands:
+`unzip 11.0.0.2a.zip`
+`mv ace-helm-11.0.0.2a ace-helm`
 
 ![](images/media/image53.png)
 
-32. The git clone has a directory 'ace-helm/ibm-ace' directory which
+32. The downloaded directory 'ace-helm/ibm-ace' directory which
     provides pre-configured files to build a helm chart. Change
     directory to 'ace-helm' and make a copy of the directory 'ibm-ace'
     to customize for the container image created in previous steps and
