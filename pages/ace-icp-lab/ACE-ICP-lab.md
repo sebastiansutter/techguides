@@ -1,7 +1,6 @@
 ---
 title: Agile Integration with App Connect Enterprise
 toc: false
-sidebar: 
 folder: pots/ace-icp
 permalink: /ace-icp.html
 summary: A Hands on look at dev ops using App Connect Enterprise on IBM Cloud Private
@@ -12,6 +11,7 @@ applies_to: [developer,administrator,consumer]
 Authors of this lab:
 
 Prasad Imandi, IBM, `imandi@us.ibm.com`
+
 Michael Alley, IBM, `malley@us.ibm.com`
 
 **Table of Contents** 
