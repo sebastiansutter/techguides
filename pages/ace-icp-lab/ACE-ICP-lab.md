@@ -7,9 +7,12 @@ permalink: /ace-icp.html
 summary: A Hands on look at dev ops using App Connect Enterprise on IBM Cloud Private
 applies_to: [developer,administrator,consumer]
 ---
+### Hands on lab for IBM Integration TechCon
 
-### Prasad Imandi, IBM, `imandi@us.ibm.com`
-### Michael Alley, IBM, `malley@us.ibm.com`
+Authors of this lab:
+
+Prasad Imandi, IBM, `imandi@us.ibm.com`
+Michael Alley, IBM, `malley@us.ibm.com`
 
 **Table of Contents** 
 =====================
@@ -167,12 +170,12 @@ Available as managed or unmanaged cloud or as an on-premises offering,
 App Connect Enterprise delivers a range of capabilities to optimize the
 creation and deployment of integrations.
 
-IBM App Connect Enterprise enables you to adopt agile integration
-architecture \< expand on this\>
+IBM App Connect Enterprise enables you to adopt Agile Integration
+Architecture.
 
--   **Agile Integration Architecture**
+[**Agile Integration Architecture**](https://developer.ibm.com/integration/blog/2018/02/19/lightweightintegrationpaperannouncement/)
 
--   
+ 
 
 Lab Objectives
 --------------
