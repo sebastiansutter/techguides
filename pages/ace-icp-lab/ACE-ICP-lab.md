@@ -702,11 +702,13 @@ Create and load helm chart into IBM Cloud Private
 
     `curl -LO https://github.com/ot4i/ace-helm/archive/11.0.0.2a.zip`
 
-Unzip the repository file 11.0.0.2a.zip and rename the directory `ace-docker-11.0.0.2a` to `ace-docker` using commands:
-`unzip 11.0.0.2a.zip`
-`mv ace-helm-11.0.0.2a ace-helm`
-
 ![](images/media/image53.png)
+
+Unzip the repository file 11.0.0.2a.zip and rename the directory `ace-docker-11.0.0.2a` to `ace-docker` using commands:
+>`unzip 11.0.0.2a.zip`
+>`mv ace-helm-11.0.0.2a ace-helm`
+
+![](images/media/image53a.png)
 
 32. The downloaded directory 'ace-helm/ibm-ace' directory which
     provides pre-configured files to build a helm chart. Change
