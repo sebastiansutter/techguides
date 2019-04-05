@@ -277,11 +277,11 @@ Build a sample integration application using ACE toolkit
 
 * Repeat the process to create the following additional elements:
 
--   firstName
+	-   firstName
 
--   lastName
+	-   lastName
 
--   phone
+	-   phone
 
 > ![](images/media/image11.png)
 
@@ -307,82 +307,82 @@ Build a sample integration application using ACE toolkit
 
 > ![](images/media/image15.png)
 
-14. On the far right side, click on the subflow icon
+* On the far right side, click on the subflow icon
     ![](images/media/image16.png) to open up the implementation for
     the operation.
 
-15. A subflow will open up with an Input and Output node. Add a Mapping
+* A subflow will open up with an Input and Output node. Add a Mapping
     node to the canvas by:
 
 > ![](images/media/image17.png)
 
-16. The nodes need to be wired together. **Click** the Out terminal
+* The nodes need to be wired together. **Click** the Out terminal
     associated with the Input node to the input terminal of the Mapping
     node. **Click** on the Out terminal of the Mapping node to the In
     terminal of the Output node.
 
 > ![](images/media/image18.png)
 
-17. Double click on the Mapping node to open the Map wizard. Accept the
+* Double click on the Mapping node to open the Map wizard. Accept the
     default and click Finish.
 
     ![](images/media/image19.png)
 
-18. The default configuration will create a map between the input and
-    outputs for API operation. Expand the output structure **JSON \--\>
+* The default configuration will create a map between the input and
+    outputs for API operation. Expand the output structure **JSON -->
     Data**
 
 > ![](images/media/image20.png)
 
-19. Hover over the **firstName** element and a small yellow circle will
+* Hover over the **firstName** element and a small yellow circle will
     appear to the left:
 
 > ![](images/media/image21.png)
 
-20. Click on the yellow circle and click again to create a Assign
+* Click on the yellow circle and click again to create a Assign
     operation.
 
 > ![](images/media/image22.png)
 
-21. In the properties pane below, provide a **Value**. This will assign
+* In the properties pane below, provide a **Value**. This will assign
     a default value for the firstName element.
 
     ![](images/media/image23.png)
 
-22. Repeat the steps and assign default values for **lastName** and
+* Repeat the steps and assign default values for **lastName** and
     **phone** elements
 
-23. Expand the input structure **LocalEnvironment \--\> REST \--\> Input
-    \--\> Parameters**
+* Expand the input structure **LocalEnvironment --> REST --> Input
+    --> Parameters**
 
     ![](images/media/image24.png)
 
-24. Hover over the **id** element and a small yellow circle will appear
+* Hover over the **id** element and a small yellow circle will appear
     to the right:
 
     ![](images/media/image25.png)
 
-25. Click on the yellow circle and click on the **ID** element on the
+* Click on the yellow circle and click on the **ID** element on the
     output structure. This will automatically create a **Move** option
     between the two.
 
 > ![](images/media/image26.png)
 
-26. The output structure should appear as follows after the above steps:
+* The output structure should appear as follows after the above steps:
 
     ![](images/media/image27.png)
 
-27. Save and close everything.
+* Save and close everything.
 
 Running a ACE docker image
 --------------------------
 
-1. Now that developing the integration flow is complete, we will test
+* Now that developing the integration flow is complete, we will test
     the flow locally using ACE for Developers docker image. ACE for
     Developers docker image is available on Docker Hub -
     <https://hub.docker.com/r/ibmcom/ace/>
 
-2. Pull the docker image for ACE from Docker Hub repository using
+* Pull the docker image for ACE from Docker Hub repository using
     command:
 
 `docker pull ibmcom/ace`
@@ -392,38 +392,38 @@ Running a ACE docker image
 
 ![](images/media/image28.png)
 
-3. See the images available in local repository using command:
+* See the images available in local repository using command:
 
     `docker images`
 
 ![](images/media/image29.png)
 
-4. For local testing of the integration flow, run the ACE image in a
+* For local testing of the integration flow, run the ACE image in a
     docker container using command:
 
     `docker run --name myaceserver -p 7600:7600 -p 7800:7800 -p
     7843:7843 --env LICENSE=accept --env ACE_SERVER_NAME=MYACESERVER
     ibmcom/ace:latest`
 
-5. The command will start ACE in a docker container. You should see the
+* The command will start ACE in a docker container. You should see the
     following messages:
 
 > ![](images/media/image30.png)
 
-6. Leave the terminal window open with the integration server running
+* Leave the terminal window open with the integration server running
     in docker container. If you interrupt the command it will stop the
     Integration server and terminate the container
 
 Deploying and testing the Integration with ACE docker image
 -----------------------------------------------------------
 
-34. Switch over to ACE Toolkit to connect to the integration server
+* Switch over to ACE Toolkit to connect to the integration server
     running in the container. Right-click on **Integration Servers** and
     click on **Connect to an Integration Server**
 
 ![](images/media/image31.png)
 
-35. In the Connection details pop up window, enter the following and
+* In the Connection details pop up window, enter the following and
     click **Finish**:
 
 > Host name: localhost
@@ -431,17 +431,17 @@ Deploying and testing the Integration with ACE docker image
 
 ![](images/media/image32.png)
 
-36. Under Integration Servers, you should see the integration server
+* Under Integration Servers, you should see the integration server
     MYACESERVER that was started in docker container earlier.
 
     ![](images/media/image33.png)
     
-37. Deploy the application **Customer** which was developed earlier by
+* Deploy the application **Customer** which was developed earlier by
     dragging and dropping it on the integration server.
 
 > ![](images/media/image34.png)
 
-38. Now that the application is deployed to integration server, we will
+* Now that the application is deployed to integration server, we will
     test the REST API in the application. The REST API requires ID as a
     parameter. This is a sample API and you can use any number for the
     ID parameter. We will use 123 as the ID in this test. Open a firefox
@@ -482,11 +482,11 @@ perform the following tasks.
 Build a standard ACE docker image
 ---------------------------------
 
-1.  Open a terminal window and create directory using the command `mkdir
+*  Open a terminal window and create directory using the command `mkdir
     <directory name>`. In this lab we are using `ace1102image` as the
     directory name.
 
-2.  Change into the directory and clone ACE docker public Github
+*  Change into the directory and clone ACE docker public Github
     repository. This repository provides pre-built Dockerfile with a
     standard initial customization to configure and build a integration
     server docker image. Review the github repository for usage and
@@ -501,33 +501,33 @@ Unzip the repository file `11.0.0.2a.zip` and rename the directory `ace-docker-1
 
 ![](images/media/image36a.png)
 
-3.  Change directory to ace-docker and you can review the contents of
+*  Change directory to ace-docker and you can review the contents of
     the cloned GitHub repository.
 
     ![](images/media/image37.png)
 
-4.  The Docker files to build the image in ubuntu directory. Review the
+*  The Docker files to build the image in ubuntu directory. Review the
     Dockerfiles to see the customization. For this lab, we will build
     the image using the file Dockerfile.aceonly
 
-5.  For building a docker image, the scripts require an install image of
+* For building a docker image, the scripts require an install image of
     ACE must be copied to deps directory. For the purpose of the lab, an
     ACE install image is made available in the directory
-    /home/student/Downloads.
+    `/home/student/Downloads`.
 
 ![](images/media/image38.png)
 
-6.  Copy the ACE install image file ace-11.0.0.2.tar.gz to directory
-    /home/student/ace1102image/ace-docker/deps
+* Copy the ACE install image file ace-11.0.0.2.tar.gz to directory
+    `/home/student/ace1102image/ace-docker/deps`
     
     `cp /home/student/Downloads/ace-11.0.0.2.tar.gz /home/student/ace1102image/ace-docker/deps`
 
 ![](images/media/image39.png)
 
-7.  Change directory to /home/student/ace1102image/ace-docker to run the
+* Change directory to `/home/student/ace1102image/ace-docker` to run the
     command to build an ACE image.
 
-8.  Run the command to build an image ACE image. Since the install
+* Run the command to build an image ACE image. Since the install
     package is ACE V11.0.0.2, we will name the image as
     **ace1102image**. You can build version specific images and run
     multiple versions of ACE as containers. Enter the command to use
@@ -537,7 +537,7 @@ Unzip the repository file `11.0.0.2a.zip` and rename the directory `ace-docker-1
 
 ![](images/media/image40.png)
 
-9.  On completion of the image build, you should see a Successfully
+*  On completion of the image build, you should see a Successfully
     built message. Run the command 'docker images' to see the image that
     was built in previous step
 
@@ -546,20 +546,20 @@ Unzip the repository file `11.0.0.2a.zip` and rename the directory `ace-docker-1
 Package the integration application into the standard ACE docker image
 ----------------------------------------------------------------------
 
-10. Next, using the **ace1102base** image built in previous steps, we
+* Next, using the **ace1102base** image built in previous steps, we
     will build a new image which includes the integration application
     that was developed in Part 1 of the lab. The GitHub repository
     directory '/home/student/ace1102image/ace-docker/sample' provides
     the **Dockerfile** that can be used for this purpose.
 
-11. Change directory to '/home/student/ace1102image/ace-docker/sample'
+* Change directory to '/home/student/ace1102image/ace-docker/sample'
     and make a new directory **deploy_barfiles**
 
     `cd /home/student/ace1102image/ace-docker/sample`
 
     `mkdir deploy_barfiles`
 
-12. Copy the integration application bar file from the
+* Copy the integration application bar file from the
     **GeneratedBarFiles** directory in toolkit workspace directory to
     **deploy_barfiles** directory using below command:
 
@@ -567,36 +567,36 @@ Package the integration application into the standard ACE docker image
     /home/student/IBM/ACET11/workspace/GeneratedBarFiles/Customerproject.generated.bar
     /home/student/ace1102image/ace-docker/sample/deploy_barfiles/Customerproject.bar`
 
-13. Next, we will create a Dockerfile to build a ACE docker image using
+* Next, we will create a Dockerfile to build a ACE docker image using
     the image previously built and package the integration application
     in the image. We will create this from the sample provided.
 
-14. Make a copy of Dockerfile.aceonly and call the new file Dockerfile
+* Make a copy of Dockerfile.aceonly and call the new file Dockerfile
 
 `cp Dockerfile.aceonly Dockerfile`
 
-15. Edit the Dockerfile and provide the **ace1102image** as the base
+* Edit the Dockerfile and provide the **ace1102image** as the base
     docker image to be used for this build and include
     **deploy_barfiles** as the directory for the bar file.
 
     Open the file **Dockerfile** using Atom editor or any other editor
     of your choice.
 
-![](images/media/image42.png)
+> ![](images/media/image42.png)
 
-16. In the **Dockerfile**, make the following updates:
+* In the **Dockerfile**, make the following updates:
 
     Replace `FROM ace-only:latest` to `FROM ace1102image:latest`
 
-Replace bars_aceonly with deploy_barfiles
+Replace `bars_aceonly` with `deploy_barfiles`
 
 After updating the file should look like this:
 
-![](images/media/image43.png)
+> ![](images/media/image43.png)
 
-17. Save and close the file.
+* Save and close the file.
 
-18. We will now use the Dockerfile to build a docker image with the ACE
+* We will now use the Dockerfile to build a docker image with the ACE
     V11.0.0.2 base image we previously built and package the integration
     application onto the image using the below command:
 
@@ -604,7 +604,7 @@ After updating the file should look like this:
 
 ![](images/media/image44.png)
 
-19. Run the command `docker images` and you should see the images that
+* Run the command `docker images` and you should see the images that
     was built.
 
 > ![](images/media/image45.png)
@@ -621,14 +621,14 @@ After updating the file should look like this:
 Load the custom docker image into IBM Cloud Private docker image repository 
 ----------------------------------------------------------------------------
 
-20. Next, the custom docker image **ace1102app1** has to be pushed to a
+* Next, the custom docker image **ace1102app1** has to be pushed to a
     docker registry for deployment. A docker registry holds docker
     images for different tagged versions. IBM Cloud Private (ICP)
     provides a private registry which stores images to be deployed. The
     next steps will push the custom docker image **ace1102app1** from
     local file system to the registry on ICP.
 
-21. Login to ICP image registry using command and credentials:
+* Login to ICP image registry using command and credentials:
 
     `docker login mycluster.icp:8500`
 
@@ -636,7 +636,7 @@ Load the custom docker image into IBM Cloud Private docker image repository
 
 ![](images/media/image46.png)
 
-22. To push an image from local file system to ICP image registry, the
+* To push an image from local file system to ICP image registry, the
     must be tagged with the cluster domain and namespace. The ICP
     cluster domain is 'mycluster.icp' and we will use default
     'namespace'.
@@ -645,35 +645,35 @@ Load the custom docker image into IBM Cloud Private docker image repository
 
 `docker tag ace1102app1 mycluster.icp:8500/default/ace1102app1:latest`
 
-23. Run the command 'docker images' and you can see the image you tagged
+* Run the command 'docker images' and you can see the image you tagged
     in previous step as shown below.
 
 ![](images/media/image47.png)
 
-24. Push the docker image to ICP image registry using command. Note this
+* Push the docker image to ICP image registry using command. Note this
     step will take a few minutes.
 
 `docker push mycluster.icp:8500/default/ace1102app1:latest`
 
 ![](images/media/image48.png)
 
-25. The pushed image should now appear in ICP Container Images. Log into
+* The pushed image should now appear in ICP Container Images. Log into
     ICP console to check the image. Open a Firefox browser and click on
     the ICP Console bookmark in the tool bar.
 
 > ![](images/media/image49.png)
 
-26. Login to ICP Console using the saved credentials. If you need to
+* Login to ICP Console using the saved credentials. If you need to
     enter the credentials, enter Username admin and Password admin
 
 > ![](images/media/image50.png)
 
-27. Click on the hamburger menu in the top left and select **Container
+* Click on the hamburger menu in the top left and select **Container
     Images**
 
 > ![](images/media/image51.png)
 
-28. In Container Images, you can see the custom image that was pushed to
+* In Container Images, you can see the custom image that was pushed to
     ICP image registry in the previous steps.
 
 > ![](images/media/image52.png)
@@ -681,7 +681,7 @@ Load the custom docker image into IBM Cloud Private docker image repository
 Create and load helm chart into IBM Cloud Private
 -------------------------------------------------
 
-29. The image is now ready for deployment in ICP. Next, we will create a
+* The image is now ready for deployment in ICP. Next, we will create a
     helm chart for deployment of the image. Helm is an application
     package manager that is used for ICP. We will clone a ACE helm
     public GitHub repository which provides standard configuration and
@@ -689,11 +689,11 @@ Create and load helm chart into IBM Cloud Private
 
     `https://github.com/ot4i/ace-helm`
 
-30. Open a terminal window and create directory using the command `mkdir
+* Open a terminal window and create directory using the command `mkdir
     <directory name>`. In this lab we are using `ace-helm-charts` as
     the directory name.
 
-31. Change into the directory 'ace-helm-charts' and clone ACE helm
+* Change into the directory 'ace-helm-charts' and clone ACE helm
     public Github repository. This repository provides pre-built helm
     configuration files with a standard initial customization to package
     the container image for deployment. Review the github repository for
@@ -702,7 +702,7 @@ Create and load helm chart into IBM Cloud Private
 
     `curl -LO https://github.com/ot4i/ace-helm/archive/11.0.0.2a.zip`
 
-![](images/media/image53.png)
+>![](images/media/image53.png)
 
 Unzip the repository file 11.0.0.2a.zip and rename the directory `ace-docker-11.0.0.2a` to `ace-docker` using commands:
 >`unzip 11.0.0.2a.zip`
@@ -710,7 +710,7 @@ Unzip the repository file 11.0.0.2a.zip and rename the directory `ace-docker-11
 
 ![](images/media/image53a.png)
 
-32. The downloaded directory 'ace-helm/ibm-ace' directory which
+* The downloaded directory 'ace-helm/ibm-ace' directory which
     provides pre-configured files to build a helm chart. Change
     directory to 'ace-helm' and make a copy of the directory 'ibm-ace'
     to customize for the container image created in previous steps and
@@ -719,61 +719,61 @@ Unzip the repository file 11.0.0.2a.zip and rename the directory `ace-docker-11
 >`cd ace-helm`
 >`cp -R ibm-ace ace1102app1`
 
-33. Change directory to ace1102app1 and review the configuration yaml
+* Change directory to ace1102app1 and review the configuration yaml
     files . The files Chart.yaml and values.yaml require customizing for
     building a helm chat for container image.
 
-34. To keep customizing to minimum, pre-configuration Chart.yaml and
+* To keep customizing to minimum, pre-configuration Chart.yaml and
     values.yaml are provided for the lab. Copy these files from
     /home/student/labfiles directory and overwrite the existing files in
     ace1102app1 directory.
 
 `cp ~/labfiles/*.yaml .`
 
-35. Review the copied files Chart.yaml and values.yaml and the changes
+* Review the copied files Chart.yaml and values.yaml and the changes
     in the files. In Chart.yaml, the chart name is updated to
     `ace1102app1`. In values.yaml, the license parameter is changed to
     "accept" and the image is updated to container image in the ICP
     image registry which is `default/ace1102app1`.
 
-36. Helm provides the ability to validate the helm chart prior to
+* Helm provides the ability to validate the helm chart prior to
     packaging and deploy. Change directory to one level higher to run
     the helm validation and package commands.
 
     `cd ~/ace-helm-charts/ace-helm`
 
-37. Run the following command to validate the configuration in the
+* Run the following command to validate the configuration in the
     charts.
 
 > `helm lint ace1102app1`
 
 ![](images/media/image54.png)
 
-38. Package the helm chart by running the following command:
+* Package the helm chart by running the following command:
 
 > `helm package ace1102app1`
 
 ![](images/media/image55.png)
 
-39. Next step is to load the helm chat into ICP catalog for deployment.
+* Next step is to load the helm chat into ICP catalog for deployment.
     To load the chart into ICP catalog, first login to ICP using the
     following ICP CLI command:
 
 > `cloudctl login -u admin -p admin -a https://mycluster.icp:8443`
 
-40. Select the default namespace by entering 2 at the prompt as shown
+* Select the default namespace by entering 2 at the prompt as shown
     below:
 
 > ![](images/media/image56.png)
 
-41. Load the helm chart into ICP catalog using the following command:
+* Load the helm chart into ICP catalog using the following command:
 
 > `cloudctl catalog load-chart --archive ace1102app1-1.0.0.tgz --repo
 local-charts`
 
 ![](images/media/image57.png)
 
-42. The helm chart should now be available in ICP Catalog for
+* The helm chart should now be available in ICP Catalog for
     deployment. Switch over to Firefox browser to the ICP Console window
     and click on Catalog. The loaded helm chart will appear in the ICP
     Catalog as shown below:
@@ -783,7 +783,7 @@ local-charts`
 Deploy the helm chart and test the integration application
 ----------------------------------------------------------
 
-43. Next to deploy the helm chart, a image pull secret is required. An
+* Next to deploy the helm chart, a image pull secret is required. An
     **imagePullSecret** is an authorization token, also known as a
     secret, that stores Docker credentials that are used for accessing a
     registry. Create image pull secret 'registrykeyace' using the
@@ -795,12 +795,12 @@ Deploy the helm chart and test the integration application
 
 ![](images/media/image59.png)
 
-44. In the ICP console, in Catalog, click on the helm chart ace1102app1
+* In the ICP console, in Catalog, click on the helm chart ace1102app1
     to open the chart and start deployment.
 
 > ![](images/media/image60.png)
 
-45. Scroll down and browse the chart and you can see the description and
+* Scroll down and browse the chart and you can see the description and
     additional information. Also notice the chart version is 1.0.0. When
     the package is updated due to application changes or fixes the
     version of the helm chart can be updated. Click on Configuration
@@ -808,56 +808,56 @@ Deploy the helm chart and test the integration application
 
 > ![](images/media/image61.png)
 
-46. In Configuration tab, provide Helm release name 'ace1102app1' and in
+* In Configuration tab, provide Helm release name 'ace1102app1' and in
     the Target namespace drop down select 'default'
 
 > ![](images/media/image62.png)
 
-47. Scroll down and click on 'All parameters'
+* Scroll down and click on 'All parameters'
 
-    ![](images/media/image63.png)
+>![](images/media/image63.png)
 
-48. Scroll down to image section and provide the image pull secret
+* Scroll down to image section and provide the image pull secret
     'registrykeyace' created earlier in the pullSecret property
 
-    ![](images/media/image64.png)
+>![](images/media/image64.png)
 
-49. Click on **Install** to start the installation of the chart.
+* Click on **Install** to start the installation of the chart.
 
-50. You will see the below window pop up. Click on View Helm Release
+* You will see the below window pop up. Click on View Helm Release
 
 > ![](images/media/image65.png)
 
-51. You can see the deployment status and details of deployment.
+* You can see the deployment status and details of deployment.
 
 > ![](images/media/image66.png)
 
-52. On the top right **Launch** button, drop down and select **webui**.
+* On the top right **Launch** button, drop down and select **webui**.
 
 > ![](images/media/image67.png)
 
-53. ACE webui will open in a new browser window and will show
+* ACE webui will open in a new browser window and will show
     integration server running one application Customer.
 
 > ![](images/media/image68.png)
 
-54. Switch back to the ICP console window and scroll down to view the
+* Switch back to the ICP console window and scroll down to view the
     deployment information. Scroll down to **Service** section. This
     shows the port mapping as shown below:
 
 > ![](images/media/image69.png)
 
-55. From the above port mapping, get the port mapping for the
+* From the above port mapping, get the port mapping for the
     HTTPListener port 7800. In this case, port 7800 is mapped to
     port 32086.
 
-56. Open a new browser window and test the REST API using the port that
+* Open a new browser window and test the REST API using the port that
     has been identified above. Enter the below url in the brower to
     test. You should see the below response.
 
 > `http://10.0.0.1:32086/customer/v1/123`
 
-![](images/media/image70.png)
+>![](images/media/image70.png)
 
 This completes Part 2 of the lab.
 
