@@ -250,7 +250,7 @@ Build a sample integration application using ACE toolkit
 
 > ![](images/media/image6.png)
 
-5.  Name the REST API **Customer,** and the base path will automatically
+6.  Name the REST API **Customer,** and the base path will automatically
     be generated. Click **Finish** to create the API.
 
 > ![](images/media/image7.png)
@@ -377,12 +377,12 @@ Build a sample integration application using ACE toolkit
 Running a ACE docker image
 --------------------------
 
-28. Now that developing the integration flow is complete, we will test
+1. Now that developing the integration flow is complete, we will test
     the flow locally using ACE for Developers docker image. ACE for
     Developers docker image is available on Docker Hub -
     <https://hub.docker.com/r/ibmcom/ace/>
 
-29. Pull the docker image for ACE from Docker Hub repository using
+2. Pull the docker image for ACE from Docker Hub repository using
     command:
 
 `docker pull ibmcom/ace`
@@ -392,25 +392,25 @@ Running a ACE docker image
 
 ![](images/media/image28.png)
 
-30. See the images available in local repository using command:
+3. See the images available in local repository using command:
 
     `docker images`
 
 ![](images/media/image29.png)
 
-31. For local testing of the integration flow, run the ACE image in a
+4. For local testing of the integration flow, run the ACE image in a
     docker container using command:
 
     `docker run --name myaceserver -p 7600:7600 -p 7800:7800 -p
     7843:7843 --env LICENSE=accept --env ACE_SERVER_NAME=MYACESERVER
     ibmcom/ace:latest`
 
-32. The command will start ACE in a docker container. You should see the
+5. The command will start ACE in a docker container. You should see the
     following messages:
 
 > ![](images/media/image30.png)
 
-33. Leave the terminal window open with the integration server running
+6. Leave the terminal window open with the integration server running
     in docker container. If you interrupt the command it will stop the
     Integration server and terminate the container
 
