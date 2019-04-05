@@ -693,7 +693,7 @@ Create and load helm chart into IBM Cloud Private
     <directory name>`. In this lab we are using `ace-helm-charts` as
     the directory name.
 
-* Change into the directory 'ace-helm-charts' and clone ACE helm
+* Change into the directory `ace-helm-charts` and clone ACE helm
     public Github repository. This repository provides pre-built helm
     configuration files with a standard initial customization to package
     the container image for deployment. Review the github repository for
@@ -710,9 +710,9 @@ Unzip the repository file 11.0.0.2a.zip and rename the directory `ace-docker-11
 
 ![](images/media/image53a.png)
 
-* The downloaded directory 'ace-helm/ibm-ace' directory which
+* The downloaded directory `ace-helm/ibm-ace` directory which
     provides pre-configured files to build a helm chart. Change
-    directory to 'ace-helm' and make a copy of the directory 'ibm-ace'
+    directory to `ace-helm` and make a copy of the directory `ibm-ace`
     to customize for the container image created in previous steps and
     customize for this deployment.
 
@@ -728,7 +728,7 @@ Unzip the repository file 11.0.0.2a.zip and rename the directory `ace-docker-11
     /home/student/labfiles directory and overwrite the existing files in
     ace1102app1 directory.
 
-`cp ~/labfiles/*.yaml .`
+>`cp ~/labfiles/*.yaml .`
 
 * Review the copied files Chart.yaml and values.yaml and the changes
     in the files. In Chart.yaml, the chart name is updated to
@@ -740,7 +740,7 @@ Unzip the repository file 11.0.0.2a.zip and rename the directory `ace-docker-11
     packaging and deploy. Change directory to one level higher to run
     the helm validation and package commands.
 
-    `cd ~/ace-helm-charts/ace-helm`
+>`cd ~/ace-helm-charts/ace-helm`
 
 * Run the following command to validate the configuration in the
     charts.
@@ -790,8 +790,8 @@ Deploy the helm chart and test the integration application
     following command:
 
 > `kubectl create secret docker-registry registrykeyace
-> \--docker-server=mycluster.icp:8500 \--docker-username=admin
-> \--docker-password=admin`
+> --docker-server=mycluster.icp:8500 --docker-username=admin
+> --docker-password=admin`
 
 ![](images/media/image59.png)
 
@@ -809,16 +809,16 @@ Deploy the helm chart and test the integration application
 > ![](images/media/image61.png)
 
 * In Configuration tab, provide Helm release name 'ace1102app1' and in
-    the Target namespace drop down select 'default'
+    the Target namespace drop down select `default`
 
 > ![](images/media/image62.png)
 
-* Scroll down and click on 'All parameters'
+* Scroll down and click on `All parameters`
 
 >![](images/media/image63.png)
 
 * Scroll down to image section and provide the image pull secret
-    'registrykeyace' created earlier in the pullSecret property
+    `registrykeyace` in the pullSecret property
 
 >![](images/media/image64.png)
 
