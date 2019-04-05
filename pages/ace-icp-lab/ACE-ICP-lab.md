@@ -232,32 +232,32 @@ perform the following tasks.
 Build a sample integration application using ACE toolkit
 --------------------------------------------------------
 
-1.  Open a terminal and start ACE toolkit with command `ace tools`
+*   Open a terminal and start ACE toolkit with command `ace tools`
 
 ![](images/media/image3.png)
 
-2.  Enter a workspace directory. You can keep the default directory
+* Enter a workspace directory. You can keep the default directory
     without making any changes
 
 > ![](images/media/image4.png)
 
-3.  The toolkit will appear with the **Welcome** screen shown, dismiss
+*  The toolkit will appear with the **Welcome** screen shown, dismiss
     this by clicking on the **x**:
 
 > ![](images/media/image5.png)
 
-4.  Create a REST API by selecting **New REST API...**
+*  Create a REST API by selecting **New REST API...**
 
 > ![](images/media/image6.png)
 
-6.  Name the REST API **Customer,** and the base path will automatically
+*  Name the REST API **Customer,** and the base path will automatically
     be generated. Click **Finish** to create the API.
 
 > ![](images/media/image7.png)
 
-6.  Click Finish to create the API.
+*  Click Finish to create the API.
 
-7.  The API consists of two parts: the model definitions that describe
+*  The API consists of two parts: the model definitions that describe
     the data structure, and the resources that define the interface to
     access the data. The first step in creating a REST API is to define
     the Model. Within the Model Definition section, overwrite the
@@ -266,16 +266,16 @@ Build a sample integration application using ACE toolkit
 
 ![](images/media/image8.png)
 
-8.  Select the **Customer** entry, and click the **Add Button** to add a
+*  Select the **Customer** entry, and click the **Add Button** to add a
     child element:
 
 ![](images/media/image9.png)
 
-9.  Replace the name **element1** with **ID**:
+*  Replace the name **element1** with **ID**:
 
 > ![](images/media/image10.png)
 
-10. Repeat the process to create the following additional elements:
+* Repeat the process to create the following additional elements:
 
 -   firstName
 
@@ -285,19 +285,19 @@ Build a sample integration application using ACE toolkit
 
 > ![](images/media/image11.png)
 
-11. Now that the model definition has been created, the Resources can be
+* Now that the model definition has been created, the Resources can be
     added, click on the **+** button associated with the **Resources**
     section:
 
 > ![](images/media/image12.png)
 
-12. The Create Resource pop-up with appear, enter **{id}** for Resource
+* The Create Resource pop-up with appear, enter **{id}** for Resource
     path, and check the **GET** operation. Click **OK** to complete the
     Create Resource.
 
 > ![](images/media/image13.png)
 
-13. When resource path was created as **/{id},** **{}** tell the toolkit
+* When resource path was created as **/{id},** **{}** tell the toolkit
     that content is a variable, and therefore the parameter **id** has
     been created. On the far right hand side there is a subflow icon
     ![](images/media/image14.png). This provides access to the
