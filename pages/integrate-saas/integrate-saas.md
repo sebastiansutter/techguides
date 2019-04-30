@@ -15,7 +15,7 @@ This lab is broken up into three parts.  Part one is where you will be importing
 
 ### Lab Prerequisites
 
-1. You must have an IBM Cloud account. The account is free and provides access to everything you need to develop, track, plan, and deploy apps. <a href="https://www.ibm.com/cloud/free/="_blank">Sign up for a Lite Account</a>. The account requires an IBMid. If you don't have an IBMid, you can create one when you register.
+1. You must have an IBM Cloud account. The account is free and provides access to everything you need to develop, track, plan, and deploy apps. [Sign up for an account](https://www.ibm.com/cloud/free/=). The account requires an IBMid. If you don't have an IBMid, you can create one when you register.
 
 2. You must have a Salesforce.com developer account.   You can get one for free from [here](https://developer.salesforce.com/).  This will be your own permanent developer account.  Note - Make sure you have created a developer account and not a trial account.  Trial accounts to do not have access to the Saleforce API, and thus will not work with AppConnect.  For all of the integrations we will be using the base `Salesforce.com` connector
 
@@ -65,7 +65,7 @@ Configure the Flow to do the initial load of SAP Hybris Contacts as Salesforce C
 	* HTTP Method: `POST`
 	* URL: your URL for the exposed API in the previous step e.g. Note your URL will be different. `https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/1234567889009293939399/abcDEF0/token`
 	* Request Headers (Click Edit Mappings to make changes): 
-> {"Content-Type":"application/json","X-IBM-Client-ID":"yourclientidgoeshere"}
+`{"Content-Type":"application/json","X-IBM-Client-ID":"yourclientidgoeshere"}`
 	* Be sure to replace the `X-IBM-Client-ID` with your Client ID from the `oauthtoken` service you created in part 1.
 	* Body: Leave Blank
 6. Next Drop in a `JSON Parser`.  Do this by clicking on the Cross/Plus on the flow timeline and then select the `Toolbox` option.  Select the `JSON Parser` from the list.
@@ -73,13 +73,13 @@ Configure the Flow to do the initial load of SAP Hybris Contacts as Salesforce C
 8. You can copy and paste the above or browse using the "3 bar" icon to the right of the text field and the bring up the drop down menu for the `HTTP Invoke Method` and then select the `Response Body`.
 9. Use the following JSON Sample for the Output Schema
 
->{
-> "access_token": "cb6c155c-5c67-44d3-9aa8-fe93f909ec16",
->  "client_id": "",
->  "expires_in": "1986886",
-> "scope": "basic",
->"token_type": "bearer"
->}
+`{
+ "access_token": "cb6c155c-5c67-44d3-9aa8-fe93f909ec16",
+  "client_id": "",
+  "expires_in": "1986886",
+ "scope": "basic",
+"token_type": "bearer"
+}`
 
 10. Click `Generate Schema` to generate the JSON Schema for the response. Note how it creates a JSON schema using the sample JSON provided.
 11. Add another `HTTP Invoke` after the `JSON Parser`.  This will be the Invoke operation that will retrieve all of the Contacts from SAP Hybris. You will be calling a stubbed API that is running on the IBM Cloud for this exercise. Configure the operation exactly as follows:
@@ -93,7 +93,7 @@ json","X-IBM-Client-ID":"f208e0de-f39a-454d-8065-4eb872540af7","Authorization":"
 12. You can copy and paste this or browse using the "3 bar" icon to the right of the text field and the bring up the drop down menu for the `HTTP Invoke Method 2` and then select the `Response Body`. 
 8. Use the following JSON Sample for the `JSON Parser` #2. use this sample of the output coming from SAP Hybris and copy and paste into the `Example JSON`:
 
->`{
+`{
       "address": {
         "addresses": [
           {
@@ -355,7 +355,7 @@ json","X-IBM-Client-ID":"f208e0de-f39a-454d-8065-4eb872540af7","Authorization":"
         ]
       }
     }`
->
+    
 9. Click `Generate Schema` to generate the JSON Schema for the output.
 10. Add a `ForEach` operation after the previous step. Do this by clicking on the Cross/Plus on the flow timeline and then select the `Toolbox` option.  Select the `ForEach` from the list.  Here we will iterate through each Address record returned back from SAP Hybris.
 11. Configure the `ForEach` by selecting the following variable collection to iterate through:  `$JSONParserParse2.address.addresses`.  You can also manually browse again by selecting the `Addresses` object from the JSON Parser #2
@@ -409,13 +409,13 @@ This section will set up a new Flow that will take contacts we have in Salesforc
 7. Configure the `JSON Parser` by pasting this value into the JSONInput: `$HTTPInvokemethod.responseBody` you can copy and paste this or browse using the "3 bar" icon to the right of the text field and the bring up the drop down menu for the `HTTP Invoke Method` and then select the `Response Body`.
 8. Use the following JSON Sample for the Output Schema    
    
->{
->  "access_token": "cb6c155c-5c67-44d3-9aa8-fe93f909ec16",
->  "client_id": "",
->  "expires_in": "1986886",
->  "scope": "basic",
->  "token_type": "bearer"
->}'
+`{
+  "access_token": "cb6c155c-5c67-44d3-9aa8-fe93f909ec16",
+  "client_id": "",
+  "expires_in": "1986886",
+  "scope": "basic",
+  "token_type": "bearer"
+}`
 
 6. Click `Generate Schema` to generate the JSON Schema for the response.  This will Generate the schema based on the JSON sample data provided earlier.
 7. Add another `HTTP Invoke` to the flow.  This will be the REST call to SAP Hybris to add the new Address based upon the Contact info coming from Salesforce.
@@ -423,20 +423,20 @@ This section will set up a new Flow that will take contacts we have in Salesforc
 	* URL: `https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/9369beb5578108ad97c4d09cad46e060550480ae9c171369fa74976955506891/xhMIrE/hybrisaddress`
 	* Request Headers(Click Edit Mappings to make changes):
 
-     <pre>{"Content-Type":"application/json","Accept":"application/json","X-IBM-Client-ID":"281e72e0-4e8f-428a-8951-1f3a2c07f3aa","Authorization":"Bearer "&$JSONParserParse.access_token&""}</pre>
+     `{"Content-Type":"application/json","Accept":"application/json","X-IBM-Client-ID":"281e72e0-4e8f-428a-8951-1f3a2c07f3aa","Authorization":"Bearer "&$JSONParserParse.access_token&""}`
 
 	* Body:
 
-     <pre>{ "firstName":"{{|$Trigger.FirstName}}","lastName":"{{|$Trigger.LastName}}","titleCode":"mr","line1":"{{|$Trigger.MailingStreet}}","line2":"","town":"{{|$Trigger.MailingCity}}","postalCode":"{{|$Trigger.MailingPostalCode}}",    "country":{        "isocode": "US"    },    "region":{        "isocode":"US-{{|$uppercase($Trigger.MailingState)}}"    }}</pre>
+    `{ "firstName":"{{|$Trigger.FirstName}}","lastName":"{{|$Trigger.LastName}}","titleCode":"mr","line1":"{{|$Trigger.MailingStreet}}","line2":"","town":"{{|$Trigger.MailingCity}}","postalCode":"{{|$Trigger.MailingPostalCode}}",    "country":{        "isocode": "US"    },    "region":{        "isocode":"US-{{|$uppercase($Trigger.MailingState)}}"    }}`
 
 7. Add a `JSON Parser` after the HTTPInvoke.  This will parse the Response in Hybris so we can sync back the created Address record back into Salesforce
 	* Set the `JSONInput` to $HTTPInvokemethod2.responseBody
 	* Set the Sample JSON Response to the following:
 
-      <pre>{
+      `{
         "AddressId": "894566535",
         "Success": true
-      }</pre> 
+      }` 
 
 	* Select `Generate Schema` to generate the Output Schema.
 6. We will now write back the Address ID back into Salesforce.  For the last operation, go ahead add a Salesfore `Update or Create` operation. Point it to the `Contact` Object.  
@@ -454,20 +454,7 @@ This section will set up a new Flow that will take contacts we have in Salesforc
 	* Mailing Postal Code
 	* Mailing Country
 
-{{/roundCircleList}}
-
-{{/template}}
-
-
-
-
-<!-- Add additional tasks as needed. -->
-
-
-
-<!--SUMMARY-->
-
-{{#template name="integrate-saas-summary"}}
+### Conclusion
 
 You have now completed all 3 steps, Congratulations! Even though it was on a smaller scale, you have accomplished what a typical SaaS integration engagement is typically run.  The first step is to always make sure you are able to migrate/load relevant data objects from the existing systems into the SaaS Application.  Once that is complete, set up a synchronization process that will keep the two systems in sync on an ongoing basis.  You did this for the SaaS App going to on-premise, if this was a real life scenario, you would also set up one syncing the on-premise application to the SaaS App on an ongoing basis.
 
@@ -486,38 +473,4 @@ You can find a copy of the YAML solutions for this lab here.
 * Step 2: [FScontactaddress.yaml](https://github.com/ibm-cloudintegration/techguides/blob/master/FScontactaddress.yaml)
 
 * Step 3:[FSSyncContact2](https://github.com/ibm-cloudintegration/techguides/blob/master/FSSyncContact2.yaml)
-
-###Did you enjoy this lab? Write a review on G2Crowd for your chance to receive a $20 Amazon gift card! Click [here](https://www.g2crowd.com/contributor/ibm-app-connect-vs?secure%5Bpage_id%5D=ibm-app-connect-vs&secure%5Brewards%5D=true&secure%5Btoken%5D=0c1d14d547a340427efa7fa9855907b071e866ac833b1d7d71114b079b8f9b56) to write a review.
-
-{{> npsFeedbackQuestion }}
-
-<!--Sample link to another tutorial
-
-<p><img src="images/tutorials/icons/learn.svg" alt_text="Learn icon" height="32px" width="32px" style="border:0px;float:left;">&nbsp;&nbsp; To learn more about toolchains, try the 
-<a href="tutorials/tutorial_toolchain_microservices">Create and use a microservices toolchain tutorial</a>.</p>
-
--->
-
-{{/template}}
-
-
-<!--FEEDBACK QUESTIONS
-
-Select 2 - 3 milestones throughout the tutorial where you would like to receive input from the people taking the tutorial.  Include the feedback questions here and make a note of the step and task where the question should be placed.  Feedback questions look like this:  
-
- 'tutorial-name-end' : {
-         'image' : 'images/tutorials/icons/feedback.svg',
-         'question' : 'How easy or difficult was it to create your toolchain?',
-         'options' : [
-           'Easy',
-           'Neither easy nor difficult',
-       'Difficult',
-           'I couldn\'t create the toolchain',
-         ]
-       }, 
--->
-
-
-
-
 
