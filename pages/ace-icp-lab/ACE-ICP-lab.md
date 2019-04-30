@@ -232,6 +232,8 @@ perform the following tasks.
 Build a sample integration application using ACE toolkit
 --------------------------------------------------------
 
+*   Find the Developer Machine on the Environment Interface, click on it.  Use the Credentials of `Student/Passw0rd!`.
+
 *   Open a terminal and start ACE toolkit with command `ace tools`
 
 ![](images/media/image3.png)
