@@ -719,6 +719,7 @@ Unzip the repository file 11.0.0.2a.zip and rename the directory `ace-docker-11
     customize for this deployment.
 
 >`cd ace-helm`
+
 >`cp -R ibm-ace ace1102app1`
 
 * Change directory to ace1102app1 and review the configuration yaml
