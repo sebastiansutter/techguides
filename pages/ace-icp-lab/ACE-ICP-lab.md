@@ -494,9 +494,11 @@ Build a standard ACE docker image
 
     `curl -LO https://github.com/ot4i/ace-docker/archive/11.0.0.2a.zip`
 
+* Note the above command is an upper case letter "O" and not a zero "0"
+
 ![](images/media/image36.png)
 
-Unzip the repository file `11.0.0.2a.zip` and rename the directory `ace-docker-11.0.0.2a` to `ace-docker` using commands:`unzip 11.0.0.2.zip`
+Unzip the repository file `11.0.0.2a.zip` and rename the directory `ace-docker-11.0.0.2a` to `ace-docker` using commands:`unzip 11.0.0.2a.zip`
 `mv ace-docker-11.0.0.2a ace-docker`
 
 ![](images/media/image36a.png)
