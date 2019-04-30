@@ -366,14 +366,14 @@ json","X-IBM-Client-ID":"f208e0de-f39a-454d-8065-4eb872540af7","Authorization":"
 17. Set the criteria for `Update where all of the following conditions are true:` to be where `ExternalContactID` is equal to the `$Foreachitem.id` value in the ForEach.  To add this, click on `Add Condition` and then enter in the criteria mentioned.  The thought process here is that we want to make sure we are updating any existing contacts that may already be in the system, based upon the `ExternalId` key.  Once this is done, you will have configured what is an `upsert` style operation, a very common method used with Salesforce Integration.  See [here](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_upsert.htm) for more information.
 18. Map the following fields into the Contact object, note that the input is not coming from the JSONParse of the original call to Hybris, rather coming from the `Foreachitem` variable:
 
-   <pre>Last Name -> $Foreachitem.lastName
-   First Name -> $Foreachitem.firstName
-   Mailing Street -> $Foreachitem.line1
-   Mailing City -> $Foreachitem.town
-   Mailing State/Province ->$substringAfter($Foreachitem.region.isocode, "-")
-   Mailing Zip/Postal Code -> $Foreachitem.postalCode
-   Mailing Country -> $substringAfter(Foreachitem.country.isocode, "-")
-   ExternalContactId -> $Foreachitem.id
+   <pre>Last Name -> Foreachitem.lastName
+   First Name -> Foreachitem.firstName
+   Mailing Street -> Foreachitem.line1
+   Mailing City -> Foreachitem.town
+   Mailing State/Province -$substringAfter($Foreachitem.region.isocode, "-")
+   Mailing Zip/Postal Code -> Foreachitem.postalCode
+   Mailing Country -> substringAfter(Foreachitem.country.isocode, "-")
+   ExternalContactId -> Foreachitem.id
    </pre>
 
 19. Lastly, modify the `Response` operation to provide a total count of all the fields loaded.  Set the value of the `Numberofcontactssynced` value to `$count($JSONParserParse2.address.addresses)`.  Use the Browse button to the right of the text bar to browse for the `addresses` object from JSONParse2.  Then you can click on the object added and then add the `count` function.  This will count up all the instances of address that were returned from Hybris and output that number.
