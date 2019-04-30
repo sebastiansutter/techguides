@@ -798,6 +798,8 @@ Deploy the helm chart and test the integration application
 
 ![](images/media/image59.png)
 
+* To access the ICP console, open a new Browser tab to https://10.0.0.1:8443
+
 * In the ICP console, in Catalog, click on the helm chart ace1102app1
     to open the chart and start deployment.
 
