@@ -706,7 +706,7 @@ Create and load helm chart into IBM Cloud Private
 
 >![](images/media/image53.png)
 
-Unzip the repository file 11.0.0.2a.zip and rename the directory `ace-docker-11.0.0.2a` to `ace-docker` using commands:
+Unzip the repository file 11.0.0.2a.zip and rename the directory `ace-helm-11.0.0.2a` to `ace-helm` using commands:
 >`unzip 11.0.0.2a.zip`
 >`mv ace-helm-11.0.0.2a ace-helm`
 
