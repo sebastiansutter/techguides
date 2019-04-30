@@ -482,9 +482,7 @@ perform the following tasks.
 Build a standard ACE docker image
 ---------------------------------
 
-*  Open a terminal window and create directory using the command `mkdir
-    <directory name>`. In this lab we are using `ace1102image` as the
-    directory name.
+*  Open a terminal window and create directory using the command `mkdir <directory name>`. In this lab we are using `ace1102image` as the directory name.
 
 *  Change into the directory and clone ACE docker public Github
     repository. This repository provides pre-built Dockerfile with a
