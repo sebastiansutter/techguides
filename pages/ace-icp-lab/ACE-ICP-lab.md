@@ -706,6 +706,8 @@ Create and load helm chart into IBM Cloud Private
 
 >![](images/media/image53.png)
 
+** Note the `-LO` has a letter "O" and not a number "0"
+
 Unzip the repository file 11.0.0.2a.zip and rename the directory `ace-helm-11.0.0.2a` to `ace-helm` using commands:
 >`unzip 11.0.0.2a.zip`
 >`mv ace-helm-11.0.0.2a ace-helm`
@@ -722,20 +724,20 @@ Unzip the repository file 11.0.0.2a.zip and rename the directory `ace-helm-11.0.
 
 >`cp -R ibm-ace ace1102app1`
 
-* Change directory to ace1102app1 and review the configuration yaml
-    files . The files Chart.yaml and values.yaml require customizing for
+* Change directory to `ace1102app1` and review the configuration yaml
+    files . The files `Chart.yaml` and `values.yaml` require customizing for
     building a helm chat for container image.
 
 * To keep customizing to minimum, pre-configuration Chart.yaml and
     values.yaml are provided for the lab. Copy these files from
-    /home/student/labfiles directory and overwrite the existing files in
-    ace1102app1 directory.
+    `/home/student/labfiles` directory and overwrite the existing files in
+    `ace1102app1` directory.
 
 >`cp ~/labfiles/*.yaml .`
 
 * Review the copied files Chart.yaml and values.yaml and the changes
-    in the files. In Chart.yaml, the chart name is updated to
-    `ace1102app1`. In values.yaml, the license parameter is changed to
+    in the files. In `Chart.yaml`, the chart name is updated to
+    `ace1102app1`. In `values.yaml`, the license parameter is changed to
     "accept" and the image is updated to container image in the ICP
     image registry which is `default/ace1102app1`.
 
