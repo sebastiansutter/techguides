@@ -203,6 +203,7 @@ If you can see the App Connect Enterprise portal, then you are are done with thi
 23. Set the `Helm Release` to `apic-cip`.  
 24. Moving to the right, set the `Target Namespace` from the dropdown to `apic`
 25. Tick the checkbox under `License`
+26. Make sure the `Production` tick box is not checked
 26. Under the `Parameters` heading.  Set the `Registry Secret` to `apickey`.
 27. Set `Storage Class` to `rbd-storage-class` This is your Ceph Storage class name. **NOTE** it is very important that this setting is correct, otherwise the setup of the shared storage volumes will fail.  **Note** you can issue a `kubectl get pvc -n apic` once you kick off the install of your chart to see how the shared space is being used by APIC and if there are any problems e.g. if you see an entry in a `pending` state for an extended period of time.
 28. Set the `Helm TLS Secret` to `helm-tls-secret`
