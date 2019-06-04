@@ -133,7 +133,7 @@ If you can see the App Connect Enterprise portal, then you are are done with thi
 19. In the `Service Type` section, select `Node Port`.
 19. You can leave the other settings as defaults.
 20. Click `Install` to start the process.
-21. You can monitor the installation from Helm Releases in the ICP UI or via the command line using `kubectl get pods -n .  Once you see your pod up and running, you can navigate to the UI via `Workload` ->`Helm releases`.  Find your MQ instance and click on it.  
+21. You can monitor the installation from Helm Releases in the ICP UI or via the command line using `kubectl get pods`.  Once you see your pod up and running, you can navigate to the UI via `Workload` ->`Helm releases`.  Find your MQ instance and click on it.  
 22. Scroll down a bit and Locate the `Service` section.  Click on the  URL that is called `mq-dev-ibm-mq`
 23. Under `Service Details` locate the URL called `console-HTTPs`.  This will start up the MQ Console.  Login with the credentials of `admin/admin`
 23. You can now review your pre-configured MQ instance.
