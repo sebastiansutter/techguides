@@ -55,7 +55,6 @@ Part One: Create and Deploy your CIP Applications
 | VM        | Hostname  | IP Address | # of CPU | RAM    | Disk Space (LOCAL) | Shared Storage | Additional Notes |
 |-----------|-----------|------------|----------|--------|--------------------|----------------|------------------|
 | Master    | master    | 10.0.0.1   | 12       | 32 GB  | 400 GB             | N/A            |                  |
-| Proxy     | proxy     | 10.0.0.5   | 4        | 8 GB   | 20 GB              | N/A            |                  |
 | Worker 1  | worker-1  | 10.0.0.2   | 8        | 16 GB  | 400 GB             | Monitor  | Ceph Master      |
 | Worker 2  | worker-2  | 10.0.0.3   | 8        | 16 GB  | 400 GB             | 			  | 		           |
 | Worker 3  | worker-3  | 10.0.0.4   | 8        | 16 GB  | 400 GB             | 			  | 		            |
@@ -84,9 +83,9 @@ There are times where things may not be going right, so your best bet is to use 
  - `kubectl describe pods <some-pod> -n <some-namespace>` This will provide verbose information about a given pod.  You can use the `describe` command for other objects.
  - `kubectl logs <some-object> -n <some-namespace>` This command will work with other objects as well.  You can also tail the logs by using the `-f` switch at the end.
 
- If you happen to mess up an install of the components, its not difficult to recover.  You can use the ICP UI to remove the release or use the CLI by issuing `helm delete --purge <helm-release-name> --tls`.  Be careful using this though, as this process is not reversable.
+ If you happen to mess up an install of the components, its not difficult to recover.  You can use the ICP UI to remove the release or use the CLI by issuing `helm delete --purge <helm-release-name> --tls`.  Be careful using this though, as this process is not reversable.  Also note that removing API Connect requires additional steps.  These are documented below under the API Connect heading.
  
- Logging is also done inside of ICP using the ELK stack.  You can access the logging inside of ICP and use Elastic Search commands to drill into things.  For example, if you were to bring up Kibana and enter in a search like `kubernetes.namespace:<your namespace>`.  Using this along with the `kubectl` commands gives you a lot of power to dig into root cause.
+Logging is also done inside of ICP using the ELK stack.  You can access the logging inside of ICP and use Elastic Search commands to drill into things.  For example, if you were to bring up Kibana and enter in a search like `kubernetes.namespace:<your namespace>`.  Using this along with the `kubectl` commands gives you a lot of power to dig into root cause.
  
  There are plenty other commands to use, but these are by far the most common the author of these labs has used while setting these up :)
 
@@ -101,9 +100,9 @@ There are times where things may not be going right, so your best bet is to use 
 14. To the right of the `name` field, Select the `ace` namespace from the `Target Namespace` dropdown.
 15. Tick checkbox under `license`
 16. Expand the `All Parameters` twisty
-17. Find the `Image Pull Secret` line.  Set that to `acekey` (This is pre-defined for you, normally, you would need to create this).
-18. For the `Hostname of the ingress proxy to be configured` section. Change the default value provided to `ace.10.0.0.5.nip.io`.  
-18. **IMPORTANT** - Find the `Enable Persistant Storage` Section.  This box must be unticked (disabled).  In order to support persistant storage, Gluster storage must be used (Ceph is not supported with ACE).  Implementing/Using Gluster Storage with CIP beyond the scope of this lab.
+17. Find the `Image Pull Secret` line.  Set that to `sa-ace` (This is pre-defined for you, normally, you would need to create this).
+18. For the `Hostname of the ingress proxy to be configured` section. Leave this as `mycluster.icp`  
+18. **IMPORTANT** - Find the `Enable Persistant Storage` Section.  This box must be unticked (disabled).  In order to support persistant storage, Gluster storage must be used (Ceph is not supported with ACE).  Implementing/Using Gluster Storage with CIP beyond the scope of this lab.  [here](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_3.1.2/manage_cluster/configure_glusterfs_after.html)
 19. Leave the other default values in the chart.  Scroll down and Click `Install` button on lower right portion of the screen.
 20. Once you see the `Installation Started` pop up. You can validate the progress via the `Helm Releases` in the ICP Portal or via the command line.
 21. Return to your command line and  open up a SSH session to your master node on your laptop or desktop.  **Note** Each environment has a Skytap Published Service set up for every node on port 22 so you can SSH to the nodes from your machine.  If you do a `kubectl get pods -n ace` you should see your pod in a running state.
@@ -112,9 +111,7 @@ There are times where things may not be going right, so your best bet is to use 
 
 `export ACE_DASHBOARD_URL=$(kubectl get ingress ace-icip-ibm-ace-dashboard-icip-prod-hostname -o jsonpath="{.spec.rules[0].host}{.spec.rules[0].http.paths[0].path}")`
 
-then `echo "Open your web browser to https://${ACE_DASHBOARD_URL}"`
-
-your output will look something like:  `Open your web browser to https://ace.10.0.0.5.nip.io/ace-ace-icip`
+then `echo "Open your web browser to https://${ACE_DASHBOARD_URL}"``
 
 *Hint* If the first command fails, you might not be in the `ace` namespace.  Quickest way to set your context is just to relogin using `cloudctl login` and then set your namespace to `ace`.  
 
@@ -122,20 +119,21 @@ If you can see the App Connect Enterprise portal, then you are are done with thi
 
 ## MQ
 
+10. Under normal circumstances, you would simply install MQ via the Platform Navigator.  This would setup a plain MQ install with no MQ objects configured.  If you know MQ, you can install via this method, but MQ configuration is beyo
 10. For MQ we will not be using the default chart that is linked to the Platform Navigator.  What comes with the CIP is the production version of the chart that requires the installer to configure everything, which is cumbersome if you are just looking to spin up an environment quickly.  Fortunately, ICP comes with a chart that is designed specifically for developer types that comes with a pre-configured queue manager, queues, server channels and the like.
 11. To access this chart, make sure you are logged into the ICP UI via the Developer Machine (`https:10.0.0.1:8443`). Using the top menu, right hand side, click on `Catalog`
 12. usign the context based search filter - type in `mq`into the filter bar.  Select the `ibm-mqadvanced-server-dev` chart.  You can scroll down a bit to peruse the pre-requisites.  
 12. This will take you to the chart configuration.  If you scroll to the bottom, you can peruse the information about the chart you are about to use to create your instance of MQ.  Click the `Configure` button to configure your chart.  Other than the items listed below, we will be accepting the default values in the chart.
-13. Here you can fil in the information for install of your chart.  Give your helm release a `name`.  Call the release `mq-icip`.
+13. Here you can fil in the information for install of your chart.  Give your helm release a `name`.  Call the release `mq`.
 14. To the right of the `name` field, Select the `acemq` namespace from the `Target Namespace` dropdown.
 15. Tick checkbox under `license`
 16. Expand the `All Parameters` twisty
-18. Under the `Image Pull Secret` section enter in `acemqkey`.
-18. Under `Persistence` untick both `Enable Persistence` and `Use Dynamic Provisioning`.  *Note* failure to untick this will cause your install to fail.
+18. Under the `Image Pull Secret` section enter in `sa-mq`.
+18. Under `Persistence` untick both `Enable Persistence` and `Use Dynamic Provisioning`.  *Note* failure to untick this will cause your install to fail.  Like ACE, MQ requires persistent storage using Gluster if you want to use this feature. As indicated previously, installing Gluster is beyond the scope of this lab.  If you really want to know more about this, it is documented [here](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_3.1.2/manage_cluster/configure_glusterfs_after.html)
 19. In the `Service Type` section, select `Node Port`.
 19. You can leave the other settings as defaults.
 20. Click `Install` to start the process.
-21. You can monitor the installation from Helm Releases in the ICP UI or via the command line using `kubectl get pods -n acemq`.  Once you see your pod up and running, you can navigate to the UI via `Workload` ->`Helm releases`.  Find your MQ instance and click on it.  
+21. You can monitor the installation from Helm Releases in the ICP UI or via the command line using `kubectl get pods -n .  Once you see your pod up and running, you can navigate to the UI via `Workload` ->`Helm releases`.  Find your MQ instance and click on it.  
 22. Scroll down a bit and Locate the `Service` section.  Click on the  URL that is called `mq-dev-ibm-mq`
 23. Under `Service Details` locate the URL called `console-HTTPs`.  This will start up the MQ Console.  Login with the credentials of `admin/admin`
 23. You can now review your pre-configured MQ instance.
@@ -149,14 +147,14 @@ If you can see the App Connect Enterprise portal, then you are are done with thi
 23. Delete the namespace as follows  `kubectl delete namespace eventstreams`.  Deleting the namespace should be fairly quick.
 24. Now lets recreate the namespace.  Do this via `kubectl create namespace eventstreams` 
 22. Change context to this new namespace by issuing `kubectl config set-context mycluster-context --user=admin --namespace=eventstreams`
-23. re-create your pullsecret then by issuing: `kubectl create secret docker-registry eskey --docker-server=mycluster.icp:8500 --docker-username=admin --docker-password=admin --docker-email=admin`
+23. re-create your pullsecret then by issuing: `kubectl create secret docker-registry sa-eventstreams --docker-server=mycluster.icp:8500 --docker-username=admin --docker-password=admin --docker-email=admin`
 24. Return back to the Developer Machine via Skytap.  Bring up the Platform Navigator again.  Locate the panel on the far right for `Messaging` and click on the `add new instance` link and then select `New Event Streams` instance.
 25. Similar to the other instances you have setup, you will have a pop up that gives you some advice on requirements for install.  Click `continue`
 26. Like before Click `Continue` in the lower right hand corner. Here we will configure the chart for install.  Other than the items listed below, we will be accepting the default values in the chart.
 27. Under `Helm Releases` call it `eventstreams-cip`
 28. Set the `Target Namespace` to `eventstreams`
 29. Tick the checkbox under `License`
-30. Moving down, set the `Image Pull Secret` to `eskey`
+30. Moving down, set the `Image Pull Secret` to `sa-eventstreams`
 31. Click the `All Parameters` Twisty
 32. Under the Global Install Parameters heading, untick the `Used in Production` checkbox.
 33. Modify the `Docker Image Registry` entry by removing the last trailing '/' character.  e.g. `mycluster.icp:8500/icip`.  This is a design feature of this initial release, and will be fixed later.
@@ -174,28 +172,28 @@ If you can see the App Connect Enterprise portal, then you are are done with thi
 21. Below is a list of the FQDN's you will be using for this configuration.
 
 ### API Connect Management ###
-**Platform API Endpoint:**   `mgmt.10.0.0.5.nip.io`
+**Platform API Endpoint:**   `mgmt.10.0.0.1.nip.io`
 
-**Consumer API Endpoint:**   `mgmt.10.0.0.5.nip.io`
+**Consumer API Endpoint:**   `mgmt.10.0.0.1.nip.io`
 
-**Cloud Admin UI Endpoint:** `mgmt.10.0.0.5.nip.io`
+**Cloud Admin UI Endpoint:** `mgmt.10.0.0.1.nip.io`
 
-**API Manager UI Endpoint:** `mgmt.10.0.0.5.nip.io`
+**API Manager UI Endpoint:** `mgmt.10.0.0.1.nip.io`
 
 ### API Connect Portal ###
-**Portal Director API Endpoint:** `pd.10.0.0.5.nip.io`
+**Portal Director API Endpoint:** `pd.10.0.0.1.nip.io`
 
-**Portal Web UI Endpoint:**       `pw.10.0.0.5.nip.io`
+**Portal Web UI Endpoint:**       `pw.10.0.0.1.nip.io`
 
 ### API Connect Analytics ###
-**Analytics Ingestion API Endpoint:** `ai.10.0.0.5.nip.io`
+**Analytics Ingestion API Endpoint:** `ai.10.0.0.1.nip.io`
 
-**Analytics Client API Endpoint:**    `ac.10.0.0.5.nip.io`
+**Analytics Client API Endpoint:**    `ac.10.0.0.1.nip.io`
 
 ### API Connect Gateway ###
-**Gateway Service API Endpoint:** aka Management Endpoint `gws.10.0.0.5.nip.io`
+**Gateway Service API Endpoint:** aka Management Endpoint `gws.10.0.0.1.nip.io`
 
-**API Gateway Endpoint:** aka API Invocation Endpoint       `apigw.10.0.0.5.nip.io`
+**API Gateway Endpoint:** aka API Invocation Endpoint       `apigw.10.0.0.1.nip.io`
 
 21. Return to the Developer Machine and bring up the Platform Navigator.  On the left hand side of the screen locate the `API Lifecycle and Secure Access` section.  At the bottom of this section, locate and click on the `add new instance` link.
 21. A pop up will come up, giving you some information about setting up the instance.  Click `Continue`.
@@ -204,7 +202,7 @@ If you can see the App Connect Enterprise portal, then you are are done with thi
 24. Moving to the right, set the `Target Namespace` from the dropdown to `apic`
 25. Tick the checkbox under `License`
 26. Make sure the `Production` tick box is not checked
-26. Under the `Parameters` heading.  Set the `Registry Secret` to `apickey`.
+26. Under the `Parameters` heading.  Set the `Registry Secret` to `sa-apic`.
 27. Set `Storage Class` to `rbd-storage-class` This is your Ceph Storage class name. **NOTE** it is very important that this setting is correct, otherwise the setup of the shared storage volumes will fail.  **Note** you can issue a `kubectl get pvc -n apic` once you kick off the install of your chart to see how the shared space is being used by APIC and if there are any problems e.g. if you see an entry in a `pending` state for an extended period of time.
 28. Set the `Helm TLS Secret` to `helm-tls-secret`
 29. Contuining on, under the `Management` heading.  Here you need to fill in the four different management headings as per the chart in step 2 above.
@@ -214,28 +212,55 @@ If you can see the App Connect Enterprise portal, then you are are done with thi
 33. Scroll down a bit and located the `Cassandra` heading.  Set that value of `Cluster Size` to the value of `1`.
 34. Scroll down some more to the `Gateway` section.  Set the `Replica Count` to the value of `1`.
 35. That completes the chart configuration.  Click the `Install` button to start the process.  The Entire Process to install API Connect takes about 15 minutes to spin up all of the pods.  You can monitor things using the watch command e.g. `watch kubectl get pods -n apic`.
-  
+
+### Certificates
+
+In order to access the API Connect environment, you will need to extract the certificates from the created installation and load the main cluster ca-cert into your browser (make sure you are using chrome).  Do this follow these instructions:
+
+Get the root certificate of an APIC instance in namespace my-apic-namespace:
+
+* `kubectl get secrets -n my-apic-namespace | grep apim-velox-certs`
+* Copy the secret name, e.g. `apim-velox-certs-4934a84f6b17cf16bfb5b702f2e51d13`
+* Then execute `kubectl get secrets apim-velox-certs-4934a84f6b17cf16bfb5b702f2e51d13 -n my-apic-namespace -o json > ~/Desktop/apic-ca-cert.json`.  Note the podname will be different for you, but is included above as a sample.
+* Then you'll need to extract the cluster cert located in the json file and base64 decode it.
+* copy the cluster ca entry into a new file (cluster.txt) and then `base64 -d cluster.txt > cluster-ca.cert`
+* Load the ca cert into chrome via the cert import process.  
+
+Once this is done, you can proceed with the APIC Configuration steps below.
+
+### Troubleshooting
+
+There are a number of ways things might go wrong here.  The good news here is that you can rely on your `kubectl` commands to drill into things.  If, for whatever reason you need to back out an install of API Connect on the platform, these steps *must* be followed:
+
+* `helm delete —purge <yourreleasename> —tls —no-hooks`
+* `helm ls --all --namespace apic --tls <install-namespace>` then `helm delete --purge <release> --tls` 
+* `kubectl delete deployments,pod,sts,ds,sts,job,pvc -n apic --all`
+* `kubectl delete apiconnectclusters --all`
+* `kubectl delete secret -l heritage=apicup`
+
+Once these steps are complete, you can proceed with a reinstallation
 
 ## API Connect Configuration
 
 20. These next steps are the standard setup steps for configuring a provider organization inside of APIC.  
-21. On the Developer Machine, open a new browser tab to `https://mgmt.10.0.0.5.nip.io/admin`.  Once the Admin Portal comes up, you can log in with `admin/7iron-hide`.  You will be logged in and forced to change your password.  Set it to whatever you like, but don't forget it.
+21. On the Developer Machine, open up the platform navigator and you can access the Cloud Manager by clicking the 'cog' icon to the right of your APIC instance name.
+22. Alternatively, you open a new browser tab to `https://mgmt.10.0.0.1.nip.io/admin`.  Once the Admin Portal comes up, you can log in with `admin/8iron-hide`. 
 22. You will now be placed into the Cloud Manager Portal.  Click the link to `Configure Topology`
 23. Click on `Register Service`
 24. Select `Datapower Gateway v5 Compatible`
-25. Under Gateway details - give the gateway a name and then under `Management Endpoint` set that value to `https://gws.10.0.0.5.nip.io`
-26. Set the `API Invocation endpoint` to ` https://apigw.10.0.0.5.nip.io`.  Click `Save`
+25. Under Gateway details - give the gateway a name and then under `Management Endpoint` set that value to `https://gws.10.0.0.1.nip.io`
+26. Set the `API Invocation endpoint` to ` https://apigw.10.0.0.1.nip.io`.  Click `Save`
 28. Once returned back to the Topology screen, click `Register Service` and then select `Analytics`.
-29. Set the Title to whatever you like and then change the `management endpoint` to `https://ac.10.0.0.5.nip.io`.  Click `Save`.
+29. Set the Title to whatever you like and then change the `management endpoint` to `https://ac.10.0.0.1.nip.io`.  Click `Save`.
 30. Once returned back to Topology screen, click `Register Service` then select `Portal`.  *Note* this doesn't create a portal yet - it just registers the service.  We'll add the portal after we create the provider org.
-31. Set the Title to whatever you like then change the `Management Endpoint` to `https://pd.10.0.0.5.nip.io`.  
-32. Change the `Portal Website URL` `https://pw.10.0.0.5.nip.io`.  Click Save.
+31. Set the Title to whatever you like then change the `Management Endpoint` to `https://pd.10.0.0.1.nip.io`.  
+32. Change the `Portal Website URL` `https://pw.10.0.0.1.nip.io`.  Click Save.
 33. You can then associate the analytics service to the gateway service by clicking on the `Associate Analytics` link.
 34. Setup notifications for your APIC Instance.  Go to `Settings` -> `Notifications`
 35. Under Sender & Email Server click `Edit`.
 36. Enter in a `Name` and `Email` for your Admin user, this can be anything.
 37. Down Below, click on the link that says `Configure Email Server`
-38. Set up an email server of your choice, Gmail works fine here, just set it up for port 587 pointing to smtp.gmail.com.  Enter in the credentials for a gmail account.  Its not necessary to go to gmail to get the notification we will need, as once the mail is sent, we will have access to the link we need in API Connect.  Click `Save`
+38. Set up an email server of your choice.  Suggest using something like `mailtrap.io`, but gmail works also but it might take some configuration as google security has been tightened up on using SMTP on Gmail.
 39. From the top left menu - go to `Provider Organizations`.
 40. Click `Add` -> `Invite Organization Owner`.  Enter in a email address, use something different here.
 41. Once you see the activation link, click on it.  Copy the link and paste it to a new browser tab window on the developer machine.
@@ -257,7 +282,7 @@ Part Two: Deploy some Integration Assets
 8. Click on the `All Parameters` twisty to open it up
 7. Paste in the URL given to you above `Content Server URL`
 8. Untick the `Production Usage` checkbox
-9. Set the `Image Pull Secret` to `acekey`
+9. Set the `Image Pull Secret` to `sa-ace`
 10. Untick the `Enable Persistence` and `Use Dynamic Provisioning` checkboxes.
 11. Under the `Service` settings, find the `NodePort IP` change this to `lab.10.0.0.5.nip.io`.  This will be the endpoint for your service running on ACE.
 12. Leave the remaining settings as defaults and then click `Install` at the bottom.  Your chart will now install.  You can view the progress of the install via Helm Releases as prompted or use `kubectl`.
@@ -265,12 +290,12 @@ Part Two: Deploy some Integration Assets
 14. You will now see 3 icons, one for the REST Request API, Application and Shared Library.  Click on the hamburger icon for REST Request_API and then click open
 15. You will then see two URL's that look something (but not exactly) like this:  
 
-	- REST API Base URL `http://lab.10.0.0.5.nip.io:30098/restrequest_api/v1`
-	- OpenAPI document `http://lab.10.0.0.5.nip.io:30098/restrequest_api/v1/Tutorial_swagger.json`
+	- REST API Base URL `http://lab.10.0.0.1.nip.io:30098/restrequest_api/v1`
+	- OpenAPI document `http://lab.10.0.0.1.nip.io:30098/restrequest_api/v1/Tutorial_swagger.json`
 
 Copy and paste the link for the OpenAPI document into a browser window and then save the json file on the local file system.  We will use this inside of API Connect
 
-16. Open up your API Manager Window inside the developer machine - `https://mgmt.10.0.0.5.nip.io/manager`.  The login should happen automatically as it will use your ICP credentials for login.
+16. Open up your API Manager Window inside the developer machine via the Platform Navigator.  The login should happen automatically as it will use your ICP credentials for login.
 2. Click on the `Manage Catalogs`
 3. Click on `Sandbox`
 4. Click on `Settings` from left menu
