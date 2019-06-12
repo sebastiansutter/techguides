@@ -1,5 +1,5 @@
 ---
-title: FastStart 2019 Lab - CIP 
+title: FastStart 2019 Lab - CIP
 toc: false
 sidebar: labs_sidebar
 folder: pots/cipdemo
@@ -17,7 +17,7 @@ During the CIP Bootcamp, you had the opportunity to get some hands on with the C
 
 This lab guide will lay out the scenario for you, along with the requirements of what you are to complete.  This guide is different than other labs, such that it will (for the most part) not be a step by step walkthrough of what to complete, rather will give you a list of requirements to complete, and it is up to you and your team to deliver on those.
 
-This lab will be a team effort.  It is highly suggested that you form your teams of folks who can cover the entire I&D Portfolio - especially: App Connect Enterprise (using Toolkit), API Connect, Messaging (MQ and ES).  Its helpful also to have someone who knows `kubectl` and `docker` commands and has some background with ICP. 
+This lab will be a team effort, although mainly Hugh Everett.  It is highly suggested that you form your teams of folks who can cover the entire I&D Portfolio - especially: App Connect Enterprise (using Toolkit), API Connect, Messaging (MQ and ES).  Its helpful also to have someone who knows `kubectl` and `docker` commands and has some background with ICP.
 
 Lab Overview
 -------------------------------------------
@@ -32,7 +32,7 @@ You will be building a demo environment that supports the "AcmeMart" demo scenar
 All assets created are to be implemented on the given CIP environment provided for you.  All pre-requisites and utilities should be on the environments provided.  If there are other utilities and tools you would like to use to support you during this exercise, you may do so at your own risk.
 
 
-Lab Environment Overview 
+Lab Environment Overview
 -------------------------------------------
 
 You have been provided a pre-installed environment of the Cloud Integration Platform with the base charts for CIP already deployed and configured.  This includes specifically:
@@ -49,15 +49,15 @@ You should be able to access all portals from the Platform Navigator, but if you
 
 **Note**: there are some known certificate issues with the various portals on this environment. These are fairly easy to workaround, and will be fixed in a later release of this demo environment.
 
-2. The environment you are using is the same environment used with the CIP Bootcamp.  It consists of 9 different nodes.  8 of which are ICP Nodes and one is a developer image that you will be using to access the ICP User Interfaces.  You can access this VM directly using the Skytap interface to use the X-Windows based components. The biggest difference with this environment vs what you used at the bootcamp is that all of the base CIP Charts are already installed and configured. 
+2. The environment you are using is the same environment used with the CIP Bootcamp.  It consists of 9 different nodes.  8 of which are ICP Nodes and one is a developer image that you will be using to access the ICP User Interfaces.  You can access this VM directly using the Skytap interface to use the X-Windows based components. The biggest difference with this environment vs what you used at the bootcamp is that all of the base CIP Charts are already installed and configured.
 
-3. **VERY IMPORTANT** It is very important you do not suspend your lab environment.  We have seen cases when the environment goes into suspend mode, the Rook-Ceph shared storage gets corrupted.  Also it is a good practice that you shut down ICP before powering down your enviroment.  A script has been included to handle that for you that will be explained in the coming sections.  When you power down your environment, you can safely use the `power off` option as the shared storage can interfere with the normal graceful shutdown method.  So far using power off hasn't caused any problems that we are aware of.  If you find that your API Connect environments are not coming up properly, it suggested that you run the `./icpStopStart.sh stop` script (you may need to run it more than once).  When it stops, go ahead and run the `./icpStopStart.sh start`.  As indicated previously, this may take ~30 minutes or so to come up.  
+3. **VERY IMPORTANT** It is very important you do not suspend your lab environment.  We have seen cases when the environment goes into suspend mode, the Rook-Ceph shared storage gets corrupted.  Also it is a good practice that you shut down ICP before powering down your enviroment.  A script has been included to handle that for you that will be explained in the coming sections.  When you power down your environment, you can safely use the `power off` option as the shared storage can interfere with the normal graceful shutdown method.  So far using power off hasn't caused any problems that we are aware of.  If you find that your API Connect environments are not coming up properly, it suggested that you run the `./icpStopStart.sh stop` script (you may need to run it more than once).  When it stops, go ahead and run the `./icpStopStart.sh start`.  As indicated previously, this may take ~30 minutes or so to come up.
 
-3. You are also able to SSH into your environment.  You can find out the exact address to SSH to in your Skytap Environment window under `networking` and `published services`.  The Published Services set up for you will be for the SSH Port (22) under the `CIP Master` node.  The published service will look something like `services-uscentral.skytap.com:10000`.  Your environment will have a different port on it.  You can then SSH to to the machine from your local machine.  
+3. You are also able to SSH into your environment.  You can find out the exact address to SSH to in your Skytap Environment window under `networking` and `published services`.  The Published Services set up for you will be for the SSH Port (22) under the `CIP Master` node.  The published service will look something like `services-uscentral.skytap.com:10000`.  Your environment will have a different port on it.  You can then SSH to to the machine from your local machine.
 
-4. Additionally, you can access the machine direct via the Skytap UI.  This is functional, but can be cumbersome to work with as its not easy to copy and paste into and out of Skytap, especially for the non X-Windows based environments. 
- 
-5. Password-less SSH has also been enabled between the Master node and the other nodes in the environment.  **note** a table with the environment configuration is provided below.  Credentials for each machine are `root`/`Passw0rd!`.   
+4. Additionally, you can access the machine direct via the Skytap UI.  This is functional, but can be cumbersome to work with as its not easy to copy and paste into and out of Skytap, especially for the non X-Windows based environments.
+
+5. Password-less SSH has also been enabled between the Master node and the other nodes in the environment.  **note** a table with the environment configuration is provided below.  Credentials for each machine are `root`/`Passw0rd!`.
 
 | VM        | Hostname  | IP Address | # of CPU | RAM    | Disk Space (LOCAL) | Shared Storage | Additional Notes |
 |-----------|-----------|------------|----------|--------|--------------------|----------------|------------------|
@@ -72,15 +72,15 @@ You should be able to access all portals from the Platform Navigator, but if you
 | Developer | developer | 10.0.0.6   |          |        |                    |                |                  |
 
 
-6. If it is not done already, power up your Environment.  It could take about 5 minutes for all nodes to start up.  The master node takes the longest to come up, so if you can see the login prompt from the Skytap UI on the master node, then you are good to go. 
+6. If it is not done already, power up your Environment.  It could take about 5 minutes for all nodes to start up.  The master node takes the longest to come up, so if you can see the login prompt from the Skytap UI on the master node, then you are good to go.
 
 7. SSH into the Master Node or use the Skytap UI.  In the home directory of root (`/root`) there is a script called `icpStopStart.sh`.  Run this script by typing in `./icpStopStart.sh start` Note that it takes around 30 minutes for the ICP Services to come up completely.
 
 8. You can tell if the start of ICP is complete by checking using one of these two methods:
-	- Click on the Developer Machine, and it will take you directly to the Developer Machine running X-Windows.  Should you need to Authenticate, you can use the credentials of `student`/`Passw0rd!`. Bring up the Firefox browser.  Navigate to the main ICP UI by going to `https://10.0.0.1:8443`.  The credentials again are `admin/admin`.  If you can log in and see the main ICP Dashboard, you are good to go.  
+	- Click on the Developer Machine, and it will take you directly to the Developer Machine running X-Windows.  Should you need to Authenticate, you can use the credentials of `student`/`Passw0rd!`. Bring up the Firefox browser.  Navigate to the main ICP UI by going to `https://10.0.0.1:8443`.  The credentials again are `admin/admin`.  If you can log in and see the main ICP Dashboard, you are good to go.
 	- Alternatively, you can SSH to the Master node.  Execute a `cloudctl login` from the command line.  If all there services are up, it will prompt you for credentials (use `admin`/`admin`) and setup your kubernetes environment.
-8. The best place to do your Kubernetes CLI work is from the Master node.  Again, Before you can execute any of the `kubectl` commands you will need to execute a `cloudctl login`. 
-9. Next step is to find The Platform Navigator UI can be use to create and manage instances of all of the components that make up the Cloud Integration Platform. 
+8. The best place to do your Kubernetes CLI work is from the Master node.  Again, Before you can execute any of the `kubectl` commands you will need to execute a `cloudctl login`.
+9. Next step is to find The Platform Navigator UI can be use to create and manage instances of all of the components that make up the Cloud Integration Platform.
 10. You can access the Platform Navigator using the browser on the developer machine.  The URL for the navigator was set up in this environment as: `https://10.0.0.5/icip1-navigator1`.  You might be asked to authenticate into ICP again, but once you do that you should now see the Platform Navigator page.
 11. The Platform Navigator is designed for you to easily keep track of your integration toolset.  Here you can see all of the various APIC, Event Streams, MQ and ACE instances you have running.  You can also add new instances using the Platform Navigator.
 
@@ -92,16 +92,16 @@ There are times where things may not be going right, so your best bet is to use 
  - `kubectl get pods -n <some-namespace>` This command shows all of the pods in a given name space.  Here you will see if any pods are up, down, errored or otherwise in transition.
  - `kubectl describe pods <some-pod> -n <some-namespace>` This will provide verbose information about a given pod.  You can use the `describe` command for other objects.
  - `kubectl logs <some-object> -n <some-namespace>` This command will work with other objects as well.  You can also tail the logs by using the `-f` switch at the end.
- 
- Logging is also done inside of ICP using the ELK stack.  You can access the logging inside of ICP and use Elastic Search commands to drill into things.  For example, if you were to bring up Kibana and enter in a search like `kubernetes.namespace:<your namespace>`.  Using this along with the `kubectl` commands gives you a lot of power to dig into root cause.
- 
 
-Lab Requirements 
+ Logging is also done inside of ICP using the ELK stack.  You can access the logging inside of ICP and use Elastic Search commands to drill into things.  For example, if you were to bring up Kibana and enter in a search like `kubernetes.namespace:<your namespace>`.  Using this along with the `kubectl` commands gives you a lot of power to dig into root cause.
+
+
+Lab Requirements
 -------------------------------------------
 
-## ACE Integration Assets 
+## ACE Integration Assets
 
-1. Your integration assets are found in this repository: `https://github.com/ibm-cloudintegration/techguides`.  You can find the specific files you need in the `/techguides/pages/cipdemo` directory.  
+1. Your integration assets are found in this repository: `https://github.com/ibm-cloudintegration/techguides`.  You can find the specific files you need in the `/techguides/pages/cipdemo` directory.
     >**hint:** clone this on your Developer machine so you don't have to copy the files over.
 2. Below is a description of each of the files in archive that you should take note of (disregard the others).
 
@@ -111,20 +111,20 @@ Lab Requirements
 | inventoryproject.generated.bar | generated bar file for the Inventory API.  You will be deploying this as is into the environment|
 | orderproject.generated.bar     | original bar file for order API. Disregard this, you will be generating a new bar file to deploy|
 
-  >keep the project interchange zip file handy, you will be loading that up into the toolkit in a later section. 
+  >keep the project interchange zip file handy, you will be loading that up into the toolkit in a later section.
 
 
 ## AcmeMart Microservices
 
-You will need to download the AcmeMart microservices and deploy the containers on ICP.  
+You will need to download the AcmeMart microservices and deploy the containers on ICP.
 
 
 1. Access the `master` node via SSH session.  Make a new directory in the root home directory, call it whatever you like.  Change directories into that.
 2. Once in that new directory, clone this repository here on the `master` node:  `https://github.com/asimX/FS-CIP-Microservices`.  The reason we do this on the master node because we need to load the docker images into ICP.  You might need to authenticate using your github.com account.  If you don't have one, you can sign up for your free one here at `github.com`
 3. Go into the FS-CIP-Microservices directory.  Also, now is a good time to make sure you are logged into your ICP environment - execute a `cloudctl login` using the `admin`/`admin` credentials.  Make sure you are in the `default` name space.
 4. Execute docker login into the ICP.
-   >`docker login mycluster.icp:8500`  
-   >**username:** admin  
+   >`docker login mycluster.icp:8500`
+   >**username:** admin
    >**password:** admin
 5. Run this command:  `docker build . -t acmemartutilityapi`.  The image and its dependencies will be downloaded.
 6. In the ICP UI, starting from the top left hamburger icon select `Manage` -> `Namespaces`.  Create a new namespace and call it `acmemartapi`.  Using the `ibm-anyuid-hostpath-psp` security policy is fine for this one.
@@ -142,11 +142,11 @@ You will need to download the AcmeMart microservices and deploy the containers o
 	- TCP - 9093
 	- TCP - 443
 
-13. Click `Create`.  The new pod should be created very quickly.  You click on your release and view the results in the UI. 
+13. Click `Create`.  The new pod should be created very quickly.  You click on your release and view the results in the UI.
     >**Note** you will not see a `Launch` button like you see in the screenshot until you complete the Service in the next section.
 
 	![](./images/cipdemo/deployment_done.gif)
-	
+
 14. Once you see the Pod up, the next step is to bind a Network service that can be associated with the Pod.
 15. From the Hamburger menu on top left go to `Network Services` -> `Services`.
 16. Create a New Service.  Call it `acmemartapp`.
@@ -170,12 +170,12 @@ You will need to download the AcmeMart microservices and deploy the containers o
 	![](./images/cipdemo/serviceports.gif)
 
 22. Under the `Selectors` tab.  Set the `Selector` to `app` and the Value to `acmemart`.
-23. Click Create and the service should create quickly. 
-24. You will know the Service was generated properly when you return back to your deployment, and you see the `Launch` button in the upper right hand corner.  
+23. Click Create and the service should create quickly.
+24. You will know the Service was generated properly when you return back to your deployment, and you see the `Launch` button in the upper right hand corner.
 
 	![](./images/cipdemo/service_deployment_done_launch.gif)
 
-25. Click the Launch button and from the dropdown, select the `app` button and it should launch the main portal for the AcmeMartUtils. If so, then your microservices for the demo has deployed successfully. 
+25. Click the Launch button and from the dropdown, select the `app` button and it should launch the main portal for the AcmeMartUtils. If so, then your microservices for the demo has deployed successfully.
 26. The AcmeMart microservices comes with its own swagger based developer documentation.  From the main App screen, click on the `Developer Docs`.
 
 	![](./images/cipdemo/acmemart.gif)
@@ -189,46 +189,46 @@ You will need to download the AcmeMart microservices and deploy the containers o
 
 Import the project interchange provided in the `faststartflows.zip` file.  You can find this file in the `/home/student/techguides/pages/cipdemo` folder
 
-You can start up the Ace toolkit using `sudo`. e.g. `sudo ./ace toolkit` 
+You can start up the Ace toolkit using `sudo`. e.g. `sudo ./ace toolkit`
 
-Modify the `Order` flow by adding the following additional operations. 
+Modify the `Order` flow by adding the following additional operations.
 
-After the App Connect REST operation you will be adding three operations.  One that will strip the HTTP Headers, another that will put to a MQ queue, and third that will put to a Queue that will be transfered to EventStreams (simulated).    
+After the App Connect REST operation you will be adding three operations.  One that will strip the HTTP Headers, another that will put to a MQ queue, and third that will put to a Queue that will be transfered to EventStreams (simulated).
 
 Here is what the flow will look like.  Instructions to follow
- 
+
  ![](./images/cipdemo/ace1.png)
 
 1. Add `Http Header` operation from the ACE palette and then under properties set it to Delete http header.
 
  ![](./images/cipdemo/ace2.png)
-   
-2. Add 2 `MQ Output` nodes. 
+
+2. Add 2 `MQ Output` nodes.
 3. At the first `MQ Output`, go to Basic and type the queue name: `NEWORDER.ES` (case sensitive). The messages will sent to Event Streams (simulated).
-4. Click on MQ Connection and select MQ client connection properties 
+4. Click on MQ Connection and select MQ client connection properties
 	- Type Destination queue manager name: `QMGR.DEV` (case sensitive)
 	- Type Queue Manager host name: `10.0.0.1`
-	- Type channel name: `ACE.TO.ES`	
+	- Type channel name: `ACE.TO.ES`
 	- Type Listener: `31200`
 	>**Note** You check the listener port, on Helm Repositores -->  mq `console-https`
 
   ![](./images/cipdemo/ace2-2.png)
 
  MQ Node (NEWORDER.ES):
-	 
+
   ![](./images/cipdemo/ace2-3.png)
 
-5. For the second `MQ Output` click `MQ Connection` and select `Local queue manager` (ACE Server will create a local queue manager for you). 
+5. For the second `MQ Output` click `MQ Connection` and select `Local queue manager` (ACE Server will create a local queue manager for you).
 6. Type Destination queue manager name: `acemqserver` (case sensitive).
 
   ![](./images/cipdemo/ace3.png)
 
-7. Click `Basic`. Type Queue name: `NEWORDER.MQ`. 
+7. Click `Basic`. Type Queue name: `NEWORDER.MQ`.
 8. `Save your flow`.
 9. Create a BAR (Broker Archive) file. Give it the Name: `orders` and click `Finish`.
 
 ## Connecting ACE to a remote MQ on ICP
- 
+
 1. Open MQ Console on `mq` Helm Repositories
 2. Click `mq-console-https 31694/TCP`
 3. Click Queue Manager name: `QMGR.DEV`
@@ -240,15 +240,15 @@ Here is what the flow will look like.  Instructions to follow
 6. Click Add Widget
 	- Select Queues to add on MQ Console
 	- Click on sign (+) to Create a local Queue: `NEWORDER.ES`
-7. Add a new Widget 
+7. Add a new Widget
 	- Select `Channel` to add on MQ Console
 	- Create a channel using `Server Connection` on channels window: `ACE.TO.ES`
 
   ![](./images/cipdemo/ace3-3.png)
- 
+
   ![](./images/cipdemo/ace3-4.png)
 
-## Work with MQ authorization 
+## Work with MQ authorization
 
 1. Open a terminal window on Developer machine.
 
@@ -258,9 +258,9 @@ Here is what the flow will look like.  Instructions to follow
 	- Type user: `admin` and password: `admin`
 	- Execute `kubectl get pods`
 	- Find mq pod
-	- Execute `kubectl exec -it mq-ibm-mq-0 -- /bin/bash`. You will be root user on mq server on ICP . 
-	
-2. You need to configure security in order to allow ACE send a message to QMGR.DEV (remote MQ) . 
+	- Execute `kubectl exec -it mq-ibm-mq-0 -- /bin/bash`. You will be root user on mq server on ICP .
+
+2. You need to configure security in order to allow ACE send a message to QMGR.DEV (remote MQ) .
 
 	- Insert aceuser as part of mqm group
 	- `sudo useradd -m aceuser`
@@ -270,7 +270,7 @@ Here is what the flow will look like.  Instructions to follow
 	- Type `ALTER AUTHINFO(SYSTEM.DEFAULT.AUTHINFO.IDPWOS) AUTHTYPE(IDPWOS) CHCKCLNT(OPTIONAL)`
 	- Type `ALTER QMGR CHLAUTH(DISABLED)`
 	- Type `Refresh Security`
-	- Type exit 
+	- Type exit
 
 
 ## Deploy the bar files
@@ -285,15 +285,15 @@ Deploy the `inventoryproject.generated.bar` as provided to the CIP environment.
 	- For the Queue manager settings (**Warning** these are case sensitive)
 queue manager name is `acemqserver`
 	- Under the heading `MQSC file for Queue Manager:`
-	
+
 ```
    DEFINE QL(NEWORDER.MQ)
-```   
+```
 
-4. Leave the remaining settings as defaults and then click `Install` at the bottom. 
+4. Leave the remaining settings as defaults and then click `Install` at the bottom.
 5. Your chart will now install. You can view the progress of the install via Helm Releases as prompted or use kubectl. You can reciew the changes inside the ACE Management UI.
-6. Be sure to test using cURL for each flow before moving on.  
-7. Use the following value as input for the inventory API `key` query parameter : `AJ1-05.jpg` 
+6. Be sure to test using cURL for each flow before moving on.
+7. Use the following value as input for the inventory API `key` query parameter : `AJ1-05.jpg`
 8. Once you have confirmed the functionality for both `order` and `inventory` message flows, export the swagger for each from the ACE Management Portal.  Save it to the file system on the developer machine, you will be using this in the next section
 9. Once Deployed, your ACE Management UI should display both `inventory` and `order` APIs running
 
@@ -307,7 +307,7 @@ queue manager name is `acemqserver`
 
  ![](./images/cipdemo/appconn_inventory_api.gif)
 
-12. Test both APIs using `cURL`.  The input for the `orders` flow is the `order.json` file that was pulled down from the `techguides` github pull. 
+12. Test both APIs using `cURL`.  The input for the `orders` flow is the `order.json` file that was pulled down from the `techguides` github pull.
 
 If you want to review that the MQ portions are working properly, execute the following:
 
@@ -317,7 +317,7 @@ Open a Terminal Window on Developer Machine:
 - Type userid: `admin` / password: `admin`
 - Set the namespace context to `acemq`
 - Execute `kubectl get pods`
-- Find the acemqserver pod and copy the full name to the clipboard ( **Note** - ACE created a Queue Manager and there is no MQ Console available ) 
+- Find the acemqserver pod and copy the full name to the clipboard ( **Note** - ACE created a Queue Manager and there is no MQ Console available )
 - Execute `kubectl exec (use your actual pod name here) acemqserver-ib-92e8-01 dspmq` .You will see acemqserver (Queue Manager running)
 - To Browse a message in a queue: `kubectl exec -it acemqserver-ib-92e8-0 /opt/mqm/samp/bin/amqsbcg NEWORDER.MQ`
 
@@ -325,7 +325,7 @@ You can use MQ Console to check if the message is in NEWORDER.ES queue, using:
 
 - Open MQ Console on `mq` Helm Repositories
 - Click  `mq-console-https 31694/TCP`
-- Check the message in `NEWORDER.ES` queue on `Queues on QMGR.DEV'. 
+- Check the message in `NEWORDER.ES` queue on `Queues on QMGR.DEV'.
 
 ## Create API Facades
 
@@ -333,17 +333,17 @@ You can use MQ Console to check if the message is in NEWORDER.ES queue, using:
 
 1. Open the main Admin console for APIC by opening a new browser tab on the Developer machine to `https://mgmt.10.0.0.5.nip.io/admin`
 2. login with the credentials of `admin`/`7Ir0n-hide`.  T
-3. 
+3.
 
 Create APIs for each of the inventory, order and AcmeMart APIs.
 
 >**Note** the Swagger for the two ACE flows can be imported as APIs using the `From Existing Open API Service` option in API Connect.  The AcmeMart swagger can be downloaded from the main developer page and then imported, but use the `New Open API` option instead.
 
-**For the AcmeMartUtilityAPI** you will need to modify your invoke URL to look like the following:  
+**For the AcmeMartUtilityAPI** you will need to modify your invoke URL to look like the following:
 
 `http://(yourapp ip):(your port)$(request.path)$(request.search)`
 
-Where `yourapp ip` and `your port` is the port that ICP has put your Utility App. 
+Where `yourapp ip` and `your port` is the port that ICP has put your Utility App.
 
 ![](./images/cipdemo/invoke.gif)
 
@@ -454,7 +454,7 @@ Example Output:
 ```
 
 ### Conclusion
-You have put together the main building blocks for the combined CIP Demonstration.  The only things left are to plug in the mobile app to make these api calls, and make a minor change to the microservices to use the on-premises based event streams versus the cloud.  There is also a Watson Assistant (aka Conversations) bit that will be added as well. Keep an eye out for further sessions, as all of these items will be covered in a forthcoming remote enablement session later in this quarter. 
+You have put together the main building blocks for the combined CIP Demonstration.  The only things left are to plug in the mobile app to make these api calls, and make a minor change to the microservices to use the on-premises based event streams versus the cloud.  There is also a Watson Assistant (aka Conversations) bit that will be added as well. Keep an eye out for further sessions, as all of these items will be covered in a forthcoming remote enablement session later in this quarter.
 
- 
+
 **End of Lab**
