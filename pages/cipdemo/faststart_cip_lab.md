@@ -17,7 +17,7 @@ During the CIP Bootcamp, you had the opportunity to get some hands on with the C
 
 This lab guide will lay out the scenario for you, along with the requirements of what you are to complete.  This guide is different than other labs, such that it will (for the most part) not be a step by step walkthrough of what to complete, rather will give you a list of requirements to complete, and it is up to you and your team to deliver on those.
 
-This lab will be a team effort, although mainly Hugh Everett.  It is highly suggested that you form your teams of folks who can cover the entire I&D Portfolio - especially: App Connect Enterprise (using Toolkit), API Connect, Messaging (MQ and ES).  Its helpful also to have someone who knows `kubectl` and `docker` commands and has some background with ICP.
+This lab will be a team effort.  It is highly suggested that you form your teams of folks who can cover the entire I&D Portfolio - especially: App Connect Enterprise (using Toolkit), API Connect, Messaging (MQ and ES).  Its helpful also to have someone who knows `kubectl` and `docker` commands and has some background with ICP.
 
 Lab Overview
 -------------------------------------------
