@@ -37,7 +37,7 @@ Lab Environment Overview
 
 You have been provided a pre-installed environment of the Cloud Integration Platform with the base charts for CIP already deployed and configured.  This includes specifically:
 
-* ICP Main Portal running on `https://10.0.0.1:8443`
+* ICP Main Portal running on `https://mycluster.icp:8443`
 * CIP Platform Navigator running on: `https://10.0.0.5/icip1-navigator1`
 
 You should be able to access all portals from the Platform Navigator, but if you need to access the URL directly, they are provided below:
@@ -51,7 +51,7 @@ You should be able to access all portals from the Platform Navigator, but if you
 
 2. The environment you are using is the same environment used with the CIP Bootcamp.  It consists of 9 different nodes.  8 of which are ICP Nodes and one is a developer image that you will be using to access the ICP User Interfaces.  You can access this VM directly using the Skytap interface to use the X-Windows based components. The biggest difference with this environment vs what you used at the bootcamp is that all of the base CIP Charts are already installed and configured.
 
-3. **VERY IMPORTANT** It is very important you do not suspend your lab environment.  We have seen cases when the environment goes into suspend mode, the Rook-Ceph shared storage gets corrupted.  Also it is a good practice that you shut down ICP before powering down your enviroment.  A script has been included to handle that for you that will be explained in the coming sections.  When you power down your environment, you can safely use the `power off` option as the shared storage can interfere with the normal graceful shutdown method.  So far using power off hasn't caused any problems that we are aware of.  If you find that your API Connect environments are not coming up properly, it suggested that you run the `./icpStopStart.sh stop` script (you may need to run it more than once).  When it stops, go ahead and run the `./icpStopStart.sh start`.  As indicated previously, this may take ~30 minutes or so to come up.
+3. **VERY IMPORTANT** It is very important you do not suspend your lab environment.  We have seen cases when the environment goes into suspend mode, the Rook-Ceph shared storage gets corrupted.  Also it is a good practice that you shut down ICP before powering down your enviroment.  A script has been included to handle that for you that will be explained in the coming sections.  When you power down your environment, you can safely use the `power off` option as the shared storage can interfere with the normal graceful shutdown method.  So far using power off hasn't caused any problems that we are aware of.  If you find that your API Connect environments are not coming up properly, it suggested that you execute the `./icpStopStart.sh stop` script (you may need to execute it more than once).  When it stops, go ahead and execute the `./icpStopStart.sh start`.  As indicated previously, this may take ~30 minutes or so to come up.
 
 3. You are also able to SSH into your environment.  You can find out the exact address to SSH to in your Skytap Environment window under `networking` and `published services`.  The Published Services set up for you will be for the SSH Port (22) under the `CIP Master` node.  The published service will look something like `services-uscentral.skytap.com:10000`.  Your environment will have a different port on it.  You can then SSH to to the machine from your local machine.
 
@@ -61,7 +61,7 @@ You should be able to access all portals from the Platform Navigator, but if you
 
 | VM        | Hostname  | IP Address | # of CPU | RAM    | Disk Space (LOCAL) | Shared Storage | Additional Notes |
 |-----------|-----------|------------|----------|--------|--------------------|----------------|------------------|
-| Master    | master    | 10.0.0.1   | 12       | 32 GB  | 400 GB             | N/A            |                  |
+| Master    | master    | 10.0.0.1   | 12       | 32 GB  | 400 GB             | N/A            |hostname mycluster.icp|
 | Proxy     | proxy     | 10.0.0.5   | 4        | 8 GB   | 20 GB              | N/A            |                  |
 | Worker 1  | worker-1  | 10.0.0.2   | 8        | 16 GB  | 400 GB             | Monitor  | Ceph Master      |
 | Worker 2  | worker-2  | 10.0.0.3   | 8        | 16 GB  | 400 GB             | 			  | 		           |
@@ -74,10 +74,10 @@ You should be able to access all portals from the Platform Navigator, but if you
 
 6. If it is not done already, power up your Environment.  It could take about 5 minutes for all nodes to start up.  The master node takes the longest to come up, so if you can see the login prompt from the Skytap UI on the master node, then you are good to go.
 
-7. SSH into the Master Node or use the Skytap UI.  In the home directory of root (`/root`) there is a script called `icpStopStart.sh`.  Run this script by typing in `./icpStopStart.sh start` Note that it takes around 30 minutes for the ICP Services to come up completely.
+7. SSH into the Master Node or use the Skytap UI.  In the home directory of root (`/root`) there is a script called `icpStopStart.sh`.  Run this script by executing `./icpStopStart.sh start` Note that it takes around 30 minutes for the ICP Services to come up completely.
 
 8. You can tell if the start of ICP is complete by checking using one of these two methods:
-	- Click on the Developer Machine, and it will take you directly to the Developer Machine running X-Windows.  Should you need to Authenticate, you can use the credentials of `student`/`Passw0rd!`. Bring up the Firefox browser.  Navigate to the main ICP UI by going to `https://10.0.0.1:8443`.  The credentials again are `admin/admin`.  If you can log in and see the main ICP Dashboard, you are good to go.
+	- Click on the Developer Machine, and it will take you directly to the Developer Machine running X-Windows.  Should you need to Authenticate, you can use the credentials of `student`/`Passw0rd!`. Bring up the Firefox browser.  Navigate to the main ICP UI by going to `https://mycluster.icp:8443`.  The credentials again are `admin/admin`.  If you can log in and see the main ICP Dashboard, you are good to go.
 	- Alternatively, you can SSH to the Master node.  Execute a `cloudctl login` from the command line.  If all there services are up, it will prompt you for credentials (use `admin`/`admin`) and setup your kubernetes environment.
 8. The best place to do your Kubernetes CLI work is from the Master node.  Again, Before you can execute any of the `kubectl` commands you will need to execute a `cloudctl login`.
 9. Next step is to find The Platform Navigator UI can be use to create and manage instances of all of the components that make up the Cloud Integration Platform.
@@ -110,8 +110,12 @@ Lab Requirements
 | faststartflows.zip             | ACE Project Interchange export of integration flows|
 | inventoryproject.generated.bar | generated bar file for the Inventory API.  You will be deploying this as is into the environment|
 | orderproject.generated.bar     | original bar file for order API. Disregard this, you will be generating a new bar file to deploy|
+| generateSecret.sh     | a script file that generates an ICP Secret, for use when deploying BAR files|
+| serverconf.yaml     | skeleton file, used by generateSecret.sh|
+| setdbparms.txt     | parameter file, used by generateSecret.sh|
+| truststorePassword.txt     | parameter file, used by generateSecret.sh|
 
-  >keep the project interchange zip file handy, you will be loading that up into the toolkit in a later section.
+  >Keep the project interchange zip file handy, you will be loading that up into the toolkit in a later section.
 
 
 ## AcmeMart Microservices
@@ -121,14 +125,22 @@ You will need to download the AcmeMart microservices and deploy the containers o
 
 1. Access the `master` node via SSH session.  Make a new directory in the root home directory, call it whatever you like.  Change directories into that.
 2. Once in that new directory, clone this repository here on the `master` node:  `https://github.com/asimX/FS-CIP-Microservices`.  The reason we do this on the master node because we need to load the docker images into ICP.  You might need to authenticate using your github.com account.  If you don't have one, you can sign up for your free one here at `github.com`
-3. Go into the FS-CIP-Microservices directory.  Also, now is a good time to make sure you are logged into your ICP environment - execute a `cloudctl login` using the `admin`/`admin` credentials.  Make sure you are in the `default` name space.
+3. Go into the FS-CIP-Microservices directory.
+3. Also, now is a good time to make sure you are logged into your ICP environment, thus:
+  - Execute `sudo cloudctl login`.
+  - Provide the password for student: **Passw0rd!**.
+  - Ensure that the API Endpoint **https://mycluster.icp:8443** is specified. If a different one is specified, execute `sudo cloudctl logout` and try again.
+  - Provide the CIP userid: **admin** with  password **admin**
+  - Set the namespace context to **default**.
+
 4. Execute docker login into the ICP.
    >`docker login mycluster.icp:8500`
    >**username:** admin
    >**password:** admin
-5. Run this command:  `docker build . -t acmemartutilityapi`.  The image and its dependencies will be downloaded.
+
+5. Execute this command:  `docker build . -t acmemartutilityapi`.  The image and its dependencies will be downloaded.
 6. In the ICP UI, starting from the top left hamburger icon select `Manage` -> `Namespaces`.  Create a new namespace and call it `acmemartapi`.  Using the `ibm-anyuid-hostpath-psp` security policy is fine for this one.
-7. Tag your new image by running this command:  `docker tag acmemartutilityapi mycluster.icp:8500/acmemartapi/acmemartutilityapi:v1.0.0`
+7. Tag your new image by executing this command:  `docker tag acmemartutilityapi mycluster.icp:8500/acmemartapi/acmemartutilityapi:v1.0.0`
 8. Push the docker image out to your ICP instance by issuing this command `docker push mycluster.icp:8500/acmemartapi/acmemartutilityapi:v1.0.0`.
 10. Next step is to deploy the microservices into ICP.  Create a new Deployment in ICP using the UI via Hamburger Icon in top left. Go to `Workloads -> Deployments`.  Click `+Create Deployment`.
 11. In the `General` tab.  Give it a name of `acmemart`.  Select the new namespace created previous via the dropdown (`acmemartapi`). Leave Replicas at `1`.
@@ -187,31 +199,99 @@ You will need to download the AcmeMart microservices and deploy the containers o
 
 ## Prepare Event Streams Details
 
+In this section you will prepare for the integration of Event Streams and ACE.
+
+Start by working with Event Streams, to create a topic and to define and capture connection information:
+1. Navigate to the Event Streams dashboard:
+  - Open a browser session to the Cloud Integration Platform home: `https://mycluster.icp/integration/`
+  - Under `Messaging`, select the `es` link, to open the Event Streams Dashboard.
+  - (If you see an error screen similar to that shown below, then simply select the `Open es` link in the middle.)
+
+		![](./images/cipdemo/Open-ES-error.JPG)
+
+  - Provide or accept the credentials (Username **admin** Password **admin**) , then `Log In`.
+1. Select the `Topics` tab.
+1. Select `Create Topic`, to start creating a new topic:
+  - For the `Topic name`, we recommend **NewOrder**. This is the topic to which, in this lab, a message will be published by ACE, each time a new order is created. If any application wants to subscribe to this message then they must be told what this value is.
+  - Leave the `Partitions` as **1**. (For scalability in Production, you might specify **3** or more.)
+  - You can specify whatever `Message Retention` you like; we recommend leaving it as **A week**.
+  - The `Replicas` setting is used for High Availability; we recommend you leave it to default.
+1. Select `Connect to this cluster`, to pull in the window that allows you to create and copy configuration information.
+1. Make a note of the value of the `bootstrap server`. Make sure you note it correctly, because you must specify this exactly in the ACE configuration later.
+1. Use the correct button to download the `PEM Certificate`. Store it in `/home/student/Downloads`.
+1. Use the section on the right to create an API key:
+  - Choose an application name. This is used, within Event Streams, to report connections and activity - but it is not used further in this Lab session. You could specify **ACE-Connection**, or **ordersFlow**, for example.
+  - Specify `Produce, consume and create topics`. Although in this lab session we ask you only to produce messages, specifying this allows you to extend the lab and do more later, if you want. In a Production system you could use this to restrict access.
+  - Select the slider, to specify `All topics`. Although in this lab session we ask you only to use the topic you created above,  specifying `All topics` allows you to extend the lab and do more later, if you want. In a Production system you could use this to restrict access.
+  - Ensure that the slider specifying `All` consumer groups is enabled. In a Production system you could use this to restrict access.
+  - After selecting `Generate API key`, make sure you copy and/or download the API key.
+  - Don't forget to select `Create a new API key`, to make it all happen.
+
+
+You will now use the connection information to prepare the ACE Integration Server for deployment.
+
+Firstly, you will generate a "Secret" object. This is a Kubernetes construct that lets you store and manage sensitive information, such as passwords and certificates. In this lab, a Secret is used to store connectivity information for connecting securely to Event Streams, within an ACE Helm Release (aka Integration Server).
+
+(More information on Secrets can be seen here:
+https://kubernetes.io/docs/concepts/configuration/secret/ )
+1. Copy the PEM file you downloaded earlier to the correct directory.
+  - On the Developer Machine, open a "Files" session.
+  - Navigate to _/home/student/Downloads_.
+  - Copy the PEM certificate file that you downloaded from Event Streams earlier (probably called **es-cert.pem**) to _/home/student/generateScript_.
+  - Rename this PEM certificate file to the following: **truststore-escert.crt** (yes, this means that it will no longer be a PEM file). Note: that this name structure must be of the form **truststore-ALIASNAME.crt**, where ALIASNAME will be generated as the alias for the certificate. Note down the ALIASNAME **escert**, because you will need to specify this later when deploying a BAR file.
+1. Edit the configuration files:
+  - On the Developer Machine, open a "Terminal" session. Note that you will be signed in as _student_.
+  - Navigate to _/home/student/generateScript_. This directory is already populated with the _generateSecret.sh_ tool that will generate the secret, and with the text files that form the input into that tool. This directory now also has your renamed PEM file (**truststore-ALIASNAME.crt**) in it, which also forms input into the tool.
+  - Use either `gedit setdbparms.txt` or `vi setdbparms.txt` to edit the _setdbparms.txt_ file.
+  - Replace the characters `<over-write with API Key>` with the API key that you saved or downloaded from Event Streams  earlier. Note that this must be done accurately, otherwise the connection from ACE to Event Streams will not work.
+  - `Save` your changes and exit the editor.
+1. Sign into the CIP namespace and run the tool to generate the Secret.
+  - In the Terminal session, execute `sudo cloudctl login`.
+  - Provide the password for student: **Passw0rd!**.
+  - Ensure that the API Endpoint **https://mycluster.icp:8443** is specified. If a different one is specified, execute `sudo cloudctl logout` and try again.
+  - Provide the CIP userid: **admin** with  password **admin**
+  - Set the namespace context to **ace**. (We must set this now, because the Secret we are about to generate must be in namespace **ace**.)
+  - Execute `./generateSecret.sh orders-secret`. This script takes in the various configuration files (including the PEM certificate and the API key) and then uses _kubectl_ to generate the Secret with name **orders-secret**. You should see a success message `secret/orders-secret created`.
+1. Check that the secret has been created, using the UI.
+  - In a browser session, navigate to the ICP Portal: https://mycluster.icp:8443.
+	- Using the hamburger menu, navigate to `Configuration` -> `Secrets`.
+	- Confirm that Secret **orders-secret** has been created, and click it to open and check that it is is namespace **ace**.
+
+
+## Make changes within ACE and deploy the flows
+
+
 >> Hugh: to be completed.
 
 ## Modify the Order ACE Flow
 
-Import the project interchange provided in the `faststartflows.zip` file.  You can find this file in the `/home/student/techguides/pages/cipdemo` folder
+1. Import the project interchange provided in the `faststartflows.zip` file.  You can find this file in the `/home/student/techguides/pages/cipdemo` folder
+>> Hugh: will we need to import this file ? Will they not already exist ?
 
-You can start up the Ace toolkit using `sudo`. e.g. `sudo ./ace toolkit`
+1. On the Developer Machine, open a "Terminal" session. Note that you will be signed in as _student_, and placed in directory _/home/student_.
+1. Start the Ace Toolkit by executing `./ace-v11.0.0.3/ace toolkit`.
+Note that the ACE Toolkit may start as a tiny window on the screen. Use the cursor to grab the corner of this screen and expand it.
 
-Modify the `Order` flow by adding the following additional operations.
+ ![](./images/cipdemo/odd-toolkit-start.JPG)
 
-After the App Connect REST operation you will be adding three operations.  One that will strip the HTTP Headers, another that will put to a MQ queue, and a third that will publish the message to a topic in EventStreams.
+1. Drill down `orders` -> `Resources` -> `Subflows` and open `New_Order.subflow`. This subflow forms the body of the work that ACE will do when a new order is created and the orders API is called.
+
+You will now modify this subflow, by adding three operations (nodes) following  the App Connect REST operation. The first  will strip the HTTP Headers, the second  will put to an MQ queue, and the third  will publish the message to a topic in EventStreams.
 
 Here is what the flow will look like. Detailed instructions follow.
 
  ![](./images/cipdemo/ace1.png)
 
-1. From the ACE palette, drag and drop an `Http Header` node.
-  - Under properties set it to **Delete HTTP Header**. This is because before we do any further work with this message, we must remove this header.
+1. From the ACE palette, drag and drop an `HTTPHeader` node, a `KafkaProducer` node and an `MQOutput` node. Position them and wire them up as shown in the screenshot above.
+1. Select the `Http Header` node. Configure its properties thus:
+  - On the `HTTPInputHeader`, set it to **Delete HTTP Header**. This is because before we do any further work with this message, we must remove this header.
 
  ![](./images/cipdemo/ace2.png)
 
-2. From the ACE palette, drag and drop a `KafkaProducer` node. Configure its properties thus:
-  - Enter a topic name of your choice; we recommend **NewOrder**. This is the topic to which the message will be published; if any application wants to subscribe to this message then they must be told what this value is. Note: in this instance we are hard-coding this topic name; typically it will be parameterised (for ACE specialists: this uses _LocalEnvironment.Destination.Kafka.Output.topicName_).
+2. Select the `KafkaProducer` node. Configure its properties thus:
+  - Enter the topic name, matching what you defined within the Event Streams configuration earlier - we recommended **NewOrder**. Note: in this instance you are hard-coding this topic name; typically it will be parameterised (for ACE specialists: the parameterisation uses _LocalEnvironment.Destination.Kafka.Output.topicName_).
   - Leave Acks as **0**. This specifies the number of acknowledgements to request from the server before the publication request is sent. **0** is equivalent to similar to 'fire and forget'; **1** waits for a single acknowledgement; **All** waits for acknowledgements from all replicas of the topic (providing the strongest available guarantee that the message was received).
-  - change the Timeout to 5 secs (so that if it fails, you will only have to wait 5 seconds before you see the failure)
+  - Change the Timeout to 5 secs (so that if it fails, you will only have to wait 5 seconds before you see the failure)
   - For Security Protocol specify **SASL_SSL**. This is because Event Streams requires this.
   - For SSL protocol specify **TLSv1.2**. This is because Event Streams requires this.
 
@@ -221,15 +301,18 @@ Here is what the flow will look like. Detailed instructions follow.
 
   ![](./images/cipdemo/ace2-3.png)
 
-5. From the ACE palette, drag and drop an `MQ Output` node. Configure its properties thus:
+5. Select the `MQOutput` node. Configure its properties thus:
   - For Connection select `Local queue manager`. This is because the container running ACE will also include a Queue Manager, to which we will connect locally.
   - For Destination queue manager name specify **acemqserver** (case sensitive). This is the name of the local Queue Manager. Note: in this instance we are hard-coding this Queue Manager name; typically it will be parameterised (using an MQ Policy).
 
   ![](./images/cipdemo/ace3.png)
 
-  - For Queue Name specify **NEWORDER.MQ**. This is the queue onto which the message will be put. Note: in this instance we are hard-coding this queue name; typically it will be parameterised (for ACE specialists: this uses _LocalEnvironment.Destination.MQ.DestinationData.queueName_).
+  - For Queue Name specify **NEWORDER.MQ**. This is the queue onto which the message will be put. Note: in this instance we are hard-coding this queue name; typically it will be parameterised (for ACE specialists: this parameterisation uses _LocalEnvironment.Destination.MQ.DestinationData.queueName_).
 8. `Save` your flow.
-9. Create a BAR (Broker Archive) file. Give it the Name: `orders` and click `Finish`.
+9. Create a BAR (Broker Archive) file.
+  - Call it **orders**.
+	- In the `Prepare` tab, ensure that the REST API called **orders**  is selected.
+	- Select `Build and Save`.
 
 ## Connecting ACE to a remote MQ on ICP
 >> Comment from Hugh: I think we do not need to do this section. It was in the original lab because connection to ES was going to be via MQ. But in our lab, connection to ES doesn't use MQ. So no need to define this connection to a remote QMgr.
@@ -257,37 +340,40 @@ Here is what the flow will look like. Detailed instructions follow.
 >> Comment from Hugh: I think we do not need to do this section. It was in the original lab because connection to ES was going to be via MQ. But in our lab, connection to ES doesn't use MQ. So no need to define this security/authorisation for the remote QMgr.
 
 1. Open a terminal window on Developer machine.
+1. Sign into the relevant ICP namespace:
+  - In the Terminal session, execute `sudo cloudctl login`.
+  - Provide the password for student: **Passw0rd!**.
+  - Ensure that the API Endpoint **https://mycluster.icp:8443** is specified. If a different one is specified, execute `sudo cloudctl logout` and try again.
+  - Provide the CIP userid: **admin** with  password **admin**
+  - Set the namespace context to **acemq**. (You must choose this namespace, because the kubectl work you are about to do is for this namespace.)
+1. Start a bash shell to the mq pod:
+  - Execute `kubectl get pods`
+  - Find mq pod
+  - Execute `kubectl exec -it mq-ibm-mq-0 -- /bin/bash`. You will be root user on mq server on ICP .
 
-	- Execute `sudo cloudctl login`
-	- Type root password = `Passw0rd!`
-	- Select `acemq` nameserver
-	- Type user: `admin` and password: `admin`
-	- Execute `kubectl get pods`
-	- Find mq pod
-	- Execute `kubectl exec -it mq-ibm-mq-0 -- /bin/bash`. You will be root user on mq server on ICP .
+2. Configure security in order to allow ACE send a message to QMGR.DEV (remote MQ) .
+	- Within the bash shell, create **aceuser** as part of the **mqm** group:
+ 	- `sudo useradd -m aceuser`
+ 	- `sudo usermod -a -G mqm aceuser`
+	- Execute `runmqsc QMGR.DEV` to open the interactive MQ Commandline environment.
+ 	- Type `SET CHLAUTH(ACE.TO.ES) TYPE(BLOCKUSER) ACTION(REPLACE) USERLIST('nobody') `
+ 	- Type `ALTER AUTHINFO(SYSTEM.DEFAULT.AUTHINFO.IDPWOS) AUTHTYPE(IDPWOS) CHCKCLNT(OPTIONAL)`
+ 	- Type `ALTER QMGR CHLAUTH(DISABLED)`
+ 	- Type `Refresh Security`
+ 	- Type `end` to exit from runmqsc.
 
-2. You need to configure security in order to allow ACE send a message to QMGR.DEV (remote MQ) .
-
-	- Insert aceuser as part of mqm group
-	- `sudo useradd -m aceuser`
-	- `sudo usermod -a -G mqm aceuser`
-	- Execute `runmqsc QMGR.DEV` to open MQ Configuration
-	- Type `SET CHLAUTH(ACE.TO.ES) TYPE(BLOCKUSER) ACTION(REPLACE) USERLIST('nobody') `
-	- Type `ALTER AUTHINFO(SYSTEM.DEFAULT.AUTHINFO.IDPWOS) AUTHTYPE(IDPWOS) CHCKCLNT(OPTIONAL)`
-	- Type `ALTER QMGR CHLAUTH(DISABLED)`
-	- Type `Refresh Security`
-	- Type exit
+	1. Execute `exit` to terminate the bash shell.
 
 
 ## Deploy the bar files
 
-Deploy the BAR Files to the CIP environment. You will deploy each one separately, and each will create an IntegrationServer in the ACE environment.
+In this section you will deploy the BAR Files to the CIP environment. You will deploy each one separately, and each will create an IntegrationServer in the ACE environment.
 
 >_**Note:**_ When deploying, you will create a unique hostname for each BAR file; this is referred to as the `NodePort IP` setting when configuring the Helm Release. For example: **orders.10.0.0.5.nip.io** and **inventory.10.0.0.5.nip.io**. . The **10.0.0.5.nip.io** portion means WHAT ??? . The whole value of `NodePort` must be unique; it points to the HTTP listener for the specific Integration Server.
 
 1. The typical way to deploy a BAR File is from the ACE Dashboard. Use one of the following methods to get to the ACE Dashboard.
-  - Go directly by opening a browser session to https://ace.10.0.0.5.nip.io/ace-ace
-  - Start with the ICP Portal https://10.0.0.1:8443. Choose `Workloads` -> `Helm Releases`. Find `ace-ace` release and launch the `webui` from there.
+  - Go directly by opening a browser session to https://mycluster.icp/ace-ace1
+  - Start with the ICP Portal https://mycluster.icp:8443. Choose `Workloads` -> `Helm Releases`. Find the `ace-ace` release and launch the `webui` from there.
   - Start with the Platform Navigator: https://10.0.0.5/icip1-navigator1, and select `ace1`. Note: occasionally this appears to fail; if it does then simply select `ace` on the failure screen and it should work.
 2. On the ACE Dashboard, make sure you are on the Servers tab.
 
@@ -320,7 +406,7 @@ Deploy the BAR Files to the CIP environment. You will deploy each one separately
   - As before, paste into the `Content Server URL` field.
   - As before, the `Image pull secret` is  **sa-ace**.
   - For the `NodePort`, we recommend **orders.10.0.0.5.nip.io**.
-  - For the `Secret name` specify **WHAT ???** as prepared earlier. The Secret adds extra configuration information to this Integration Server, so that it can communicate with Event Streams.
+  - For the `Secret name` specify **orders-secret** as prepared earlier. This Secret adds sensitive configuration information (such as API key and a certificate) to this Integration Server, so that it can communicate with Event Streams.
   - For the `Certificate alias name`, specify **escert**. This is used by the Integration Server when it connects to Event Streams. You defined the value **escert** earlier, when you created the Secret.
   - For the `Queue manager settings` (**_Warning_**: these are case-sensitive):
     - `Queue manager name` is **acemqserver**. This must match the name that ICP gave by default to the associated queue manager (we could have changed it, but have not done so).
@@ -350,13 +436,16 @@ Deploy the BAR Files to the CIP environment. You will deploy each one separately
 To review that the MQ portion is working properly, perform  the following inside a Terminal Window on Developer Machine (signed in as student).
 
 **Note:** ACE created the Queue Manager and there is no MQ Console available.
-1. Run `sudo cloudctl login`
-1. Provide the credentials for student: userid: **admin** and password **admin**
-1. Set the namespace context to `acemq`.
-1. Run  `kubectl get pods`
+1. Sign into the relevant ICP namespace:
+  - In the Terminal session, execute `sudo cloudctl login`.
+  - Provide the password for student: **Passw0rd!**.
+  - Ensure that the API Endpoint **https://mycluster.icp:8443** is specified. If a different one is specified, execute `sudo cloudctl logout` and try again.
+  - Provide the CIP userid: **admin** with  password **admin**
+  - Set the namespace context to **acemq**. (You must choose this namespace, because the kubectl work you are about to do is for this namespace.)
+1. Execute  `kubectl get pods`
 1. Find the **acemqserver** pod and copy the full name to the clipboard
-1. Run  `kubectl exec <copied-podname> dspmq` . You will see **acemqserver** (the Queue Manager) running.
-1. To Browse a message on theNEWORDER.MQ queue that you defined earlier, run: `kubectl exec -it <copied-podname> /opt/mqm/samp/bin/amqsbcg NEWORDER.MQ`
+1. Execute  `kubectl exec <copied-podname> dspmq` . You will see **acemqserver** (the Queue Manager) running.
+1. To Browse a message on theNEWORDER.MQ queue that you defined earlier, execute `kubectl exec -it <copied-podname> /opt/mqm/samp/bin/amqsbcg NEWORDER.MQ`
 
 ## Review Event Streams portion
 
@@ -376,15 +465,15 @@ Create APIs for each of the inventory, order and AcmeMart APIs.
 
 >**Note** the Swagger for the two ACE flows can be imported as APIs using the `From Existing Open API Service` option in API Connect.  The AcmeMart swagger can be downloaded from the main developer page and then imported, but use the `New Open API` option instead.
 
-**For the AcmeMartUtilityAPI** you will need to modify your invoke URL to look like the following:  
+**For the AcmeMartUtilityAPI** you will need to modify your invoke URL to look like the following:
 
 `http://(yourapp ip):(your port)$(request.path)$(request.search)`
 
-Where `yourapp ip` and `your port` is the port that ICP has put your Utility App. 
+Where `yourapp ip` and `your port` is the port that ICP has put your Utility App.
 
 ![](./images/cipdemo/invoke.gif)
 
-Test your APIs in the test tool inside of API Connect.  
+Test your APIs in the test tool inside of API Connect.
 
 ![](./images/cipdemo/test_api.gif)
 
@@ -486,7 +575,7 @@ Example Output:
 
 
 
-## Analyze API consumption 
+## Analyze API consumption
 
 ### Launch the API Manager and navigate to Analytics
 
@@ -502,14 +591,14 @@ Example Output:
 
 ### Explore the Analytics
 
-1. After clicking the `Analytics` tab, you are presented with a list of dashboards.  
+1. After clicking the `Analytics` tab, you are presented with a list of dashboards.
 
     Those tagged with `Admin` are pre-defined by IBM. You can clone (copy) a dashboard and then edit it - instructions for doing this are provided later below. You can add your own dashboards from scratch, and you can import dashboards that have been exported from another API Manager.
 
 2. Click on the `API Default` dashboard.
 
 3. This default dashboard gives some general information about Errors, Status Codes, Response Times and number of API Calls.
-    
+
     Take a while to explore this dashboard and its visualisations. Note, and experiment with, the following:
     1. Use your browser's zoom capability to zoom in or out, until the screen size is comfortable for you.
     2. At the top right of the screen, click the time range (the default is `Last 15 minutes`) to examine the Time Range options. (Notice that when you are choosing the Time Range, you can also set the autorefresh time by clicking `Auto-refresh`.)
@@ -520,7 +609,7 @@ Example Output:
 
 4. When you have finished exploring the `API Default` dashboard, click `Clone` at the top to make a copy of this dashboard. Give the cloned dashboard your own unique name (eg "My Clone of API Default") and confirm it.
 5. Notice now that the dashboard name along the top has changed, and you also have an `Edit` button along the top. Click this `Edit` button.
-6. You are now able to edit the look and feel of the dashboard as a whole - these changes should then be saved for you under its new name.  
+6. You are now able to edit the look and feel of the dashboard as a whole - these changes should then be saved for you under its new name.
 
     Explore the following options:
     1. Use the `Add` button to add a visualisation or a Saved Search.
@@ -528,7 +617,7 @@ Example Output:
     3.  Use the cross icon to remove a visualisation.
     4.  Drag the bottom-right corner of a visualisation to resize it.
     5.  Explore other options.
-    
+
 7. Once you have finished editing your dashboard, click `Save` to save it, and confirm.
 8.  Click `Dashboard` in the dashboard breadcrumb trail at the top, to go back to the list of dashboards.
 
