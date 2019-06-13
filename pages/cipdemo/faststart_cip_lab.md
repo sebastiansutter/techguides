@@ -185,6 +185,10 @@ You will need to download the AcmeMart microservices and deploy the containers o
 
 	![](./images/cipdemo/pingtest.gif)
 
+## Prepare Event Streams Details
+
+>> Hugh: to be completed.
+
 ## Modify the Order ACE Flow
 
 Import the project interchange provided in the `faststartflows.zip` file.  You can find this file in the `/home/student/techguides/pages/cipdemo` folder
@@ -200,7 +204,7 @@ Here is what the flow will look like. Detailed instructions follow.
  ![](./images/cipdemo/ace1.png)
 
 1. From the ACE palette, drag and drop an `Http Header` node.
-  - Under properties set it to **Delete HTTP Header**.
+  - Under properties set it to **Delete HTTP Header**. This is because before we do any further work with this message, we must remove this header.
 
  ![](./images/cipdemo/ace2.png)
 
@@ -277,33 +281,58 @@ Here is what the flow will look like. Detailed instructions follow.
 
 ## Deploy the bar files
 
-Deploy the BAR Files to the CIP environment. You will deploy each one separately, and each will create an IntegrationServer in the ACE environment. `inventoryproject.generated.bar` as provided to the CIP environment.
+Deploy the BAR Files to the CIP environment. You will deploy each one separately, and each will create an IntegrationServer in the ACE environment.
 
->**Hint** When deploying, you should create a unique hostname for each BAR file. This uses the `NodePort IP` setting when configuring the Helm Release. For example **orders.10.0.0.5.nip.io** and **inventory.10.0.0.5.nip.io**.
+>_**Note:**_ When deploying, you will create a unique hostname for each BAR file; this is referred to as the `NodePort IP` setting when configuring the Helm Release. For example: **orders.10.0.0.5.nip.io** and **inventory.10.0.0.5.nip.io**. . The **10.0.0.5.nip.io** portion means WHAT ??? . The whole value of `NodePort` must be unique; it points to the HTTP listener for the specific Integration Server.
 
 1. The typical way to deploy a BAR File is from the ACE Dashboard. Use one of the following methods to get to the ACE Dashboard.
   - Go directly by opening a browser session to https://ace.10.0.0.5.nip.io/ace-ace
   - Start with the ICP Portal https://10.0.0.1:8443. Choose `Workloads` -> `Helm Releases`. Find `ace-ace` release and launch the `webui` from there.
-  - Start with the Platform Navigator: https://10.0.0.5/icip1-navigator1, and click `ace1`. Note: occasionally this appears to fail; if it does then simply click `ace` on the failure screena nd it should work.
-2. On the ACE Dashboard, make sure you are on the Servers tab, and then select `Create` to start the process.
+  - Start with the Platform Navigator: https://10.0.0.5/icip1-navigator1, and select `ace1`. Note: occasionally this appears to fail; if it does then simply select `ace` on the failure screen and it should work.
+2. On the ACE Dashboard, make sure you are on the Servers tab.
 
->> 10:00 BST Thu 13th June Hugh is in the middle of this - several changes to the ACE deployment process because of Event Streams.
+3. First, deploy the `inventory` flow - which you have not changed.
+  - From the ACE Dashboard, select `Create` to start the process.
+  - Select the BAR file `inventoryproject.generated.bar` and continue.
+  - You will be presented by the `Content URL`, and the `namespace` **ace**.  The `Content URL` defines the location, in ICP terms, of where the BAR file is.
+	 - The namespace is being proposed by ACE; you should make a mental note of it.
+	 - Copy the contents of the `Content URL`, because you will need it shortly.
+    - Select `Configure` to continue.
+  - ACE now selects the correct Helm Chart from the Catalog, and opens the ICP configuration pages. At the bottom, select `Configure` to continue.
+  - For the Helm Chart name, we recommend **inventory**. This name will be used in many of the ICP artefacts, so a meaningful name is good. This name will also be used as the default for some of the later properties (for example the name of the Integration Server).
+  - For the `namespace`, select **ace**, which you made a mental note of earlier.
+  - Ignore the `NodePort` and select `Advanced`. (You will complete the `NodePort` shortly.)
+  - Into the `Content Server URL` field, paste the contents of the `Content URL` that you copied earlier. This vital piece links the BAR file to this Helm Chart.
+  - For the `Image pull secret` specify **sa-ace**. WHY ???
+  - For the `NodePort`, we recommend **inventory.10.0.0.5.nip.io**. We recommend that the first part (**inventory** in this case) is identical to the `Integration Server name`, because there is a 1 to 1 relationship here.
+  - Lower down, you could also specify the `Integration Server name`. However, we recommend that you leave this blank, so that the Helm Chart name (**inventory** in this case) is used.
+  - Leave the remaining settings as defaults and then click `Install` at the bottom.
+  - Your Helm Chart will now install. You can view the progress of the install via `Helm Releases` (as prompted on the screen) or via _kubectl_ on a command line.
 
-3. Next, Deploy the new `Order` Flow.  The process to deploy this is similar to `Inventory` but you need to add in the MQ Settings.  Some guidance is provided below:
-	- For the Queue manager settings (**Warning** these are case sensitive)
-queue manager name is `acemqserver`
-	- Under the heading `MQSC file for Queue Manager:`
+3. You should now return to the ACE Dashboard and confirm that the Integration Server has been correctly deployed. (You should wait a few seconds to a minute, for the deployment to succeed fully.)
 
-```
-   DEFINE QL(NEWORDER.MQ)
-```
+3. Next, deploy the new `orders` flow, which you have changed. The process to deploy this is the same as `Inventory`, with some extra configuration.
+  - From the ACE Dashboard, select `Create` to start the process.
+  - This time use the BAR file `orders.bar`.
+  - Remember to copy the contents of the `Content URL`.
+  - For this Helm Chart name, we recommend **orders**.
+  - As before, ignore the `NodePort` and select `Advanced`.
+  - As before, paste into the `Content Server URL` field.
+  - As before, the `Image pull secret` is  **sa-ace**.
+  - For the `NodePort`, we recommend **orders.10.0.0.5.nip.io**.
+  - For the `Secret name` specify **WHAT ???** as prepared earlier. The Secret adds extra configuration information to this Integration Server, so that it can communicate with Event Streams.
+  - For the `Certificate alias name`, specify **escert**. This is used by the Integration Server when it connects to Event Streams. You defined the value **escert** earlier, when you created the Secret.
+  - For the `Queue manager settings` (**_Warning_**: these are case-sensitive):
+    - `Queue manager name` is **acemqserver**. This must match the name that ICP gave by default to the associated queue manager (we could have changed it, but have not done so).
+    - Under the heading `MQSC file for Queue Manager:`, enter **DEFINE QLOCAL(NEWORDER.MQ)**. This will create the specified MQ queue, using all defaults.
 
-4. Leave the remaining settings as defaults and then click `Install` at the bottom.
-5. Your chart will now install. You can view the progress of the install via Helm Releases as prompted or use kubectl. You can reciew the changes inside the ACE Management UI.
+  - Leave the remaining settings as defaults and then click `Install` at the bottom.
+
+4. You should now return to the ACE Dashboard and confirm that the Integration Server has been correctly deployed. (You should wait a few seconds to a minute, for the deployment to succeed fully.)
 6. Be sure to test using cURL for each flow before moving on.
 7. Use the following value as input for the inventory API `key` query parameter : `AJ1-05.jpg`
 8. Once you have confirmed the functionality for both `order` and `inventory` message flows, export the swagger for each from the ACE Management Portal.  Save it to the file system on the developer machine, you will be using this in the next section
-9. Once Deployed, your ACE Management UI should display both `inventory` and `order` APIs running
+9. Once deployed, your ACE Management UI should display both `inventory` and `order` APIs running
 
  ![](./images/cipdemo/appconnect.gif)
 
@@ -317,23 +346,24 @@ queue manager name is `acemqserver`
 
 12. Test both APIs using `cURL`.  The input for the `orders` flow is the `order.json` file that was pulled down from the `techguides` github pull.
 
-If you want to review that the MQ portions are working properly, execute the following:
+## Review MQ Portion
+To review that the MQ portion is working properly, perform  the following inside a Terminal Window on Developer Machine (signed in as student).
 
-Open a Terminal Window on Developer Machine:
+**Note:** ACE created the Queue Manager and there is no MQ Console available.
+1. Run `sudo cloudctl login`
+1. Provide the credentials for student: userid: **admin** and password **admin**
+1. Set the namespace context to `acemq`.
+1. Run  `kubectl get pods`
+1. Find the **acemqserver** pod and copy the full name to the clipboard
+1. Run  `kubectl exec <copied-podname> dspmq` . You will see **acemqserver** (the Queue Manager) running.
+1. To Browse a message on theNEWORDER.MQ queue that you defined earlier, run: `kubectl exec -it <copied-podname> /opt/mqm/samp/bin/amqsbcg NEWORDER.MQ`
 
-- Execute `sudo cloudctl login`
-- Type userid: `admin` / password: `admin`
-- Set the namespace context to `acemq`
-- Execute `kubectl get pods`
-- Find the acemqserver pod and copy the full name to the clipboard ( **Note** - ACE created a Queue Manager and there is no MQ Console available )
-- Execute `kubectl exec (use your actual pod name here) acemqserver-ib-92e8-01 dspmq` .You will see acemqserver (Queue Manager running)
-- To Browse a message in a queue: `kubectl exec -it acemqserver-ib-92e8-0 /opt/mqm/samp/bin/amqsbcg NEWORDER.MQ`
+## Review Event Streams portion
 
-You can use MQ Console to check if the message is in NEWORDER.ES queue, using:
+To review that the message has been correctly published to Event Streams, do the following:
 
-- Open MQ Console on `mq` Helm Repositories
-- Click  `mq-console-https 31694/TCP`
-- Check the message in `NEWORDER.ES` queue on `Queues on QMGR.DEV'.
+>> Hugh: to be completed.
+
 
 ## Create API Facades
 
