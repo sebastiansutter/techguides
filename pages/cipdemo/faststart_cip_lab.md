@@ -193,41 +193,42 @@ You can start up the Ace toolkit using `sudo`. e.g. `sudo ./ace toolkit`
 
 Modify the `Order` flow by adding the following additional operations.
 
-After the App Connect REST operation you will be adding three operations.  One that will strip the HTTP Headers, another that will put to a MQ queue, and third that will put to a Queue that will be transfered to EventStreams (simulated).
+After the App Connect REST operation you will be adding three operations.  One that will strip the HTTP Headers, another that will put to a MQ queue, and a third that will publish the message to a topic in EventStreams.
 
-Here is what the flow will look like.  Instructions to follow
+Here is what the flow will look like. Detailed instructions follow.
 
  ![](./images/cipdemo/ace1.png)
 
-1. Add `Http Header` operation from the ACE palette and then under properties set it to Delete http header.
+1. From the ACE palette, drag and drop an `Http Header` node.
+  - Under properties set it to **Delete HTTP Header**.
 
  ![](./images/cipdemo/ace2.png)
 
-2. Add 2 `MQ Output` nodes.
-3. At the first `MQ Output`, go to Basic and type the queue name: `NEWORDER.ES` (case sensitive). The messages will sent to Event Streams (simulated).
-4. Click on MQ Connection and select MQ client connection properties
-	- Type Destination queue manager name: `QMGR.DEV` (case sensitive)
-	- Type Queue Manager host name: `10.0.0.1`
-	- Type channel name: `ACE.TO.ES`
-	- Type Listener: `31200`
-	>**Note** You check the listener port, on Helm Repositores -->  mq `console-https`
+2. From the ACE palette, drag and drop a `KafkaProducer` node. Configure its properties thus:
+  - Enter a topic name of your choice; we recommend **NewOrder**. This is the topic to which the message will be published; if any application wants to subscribe to this message then they must be told what this value is. Note: in this instance we are hard-coding this topic name; typically it will be parameterised (for ACE specialists: this uses _LocalEnvironment.Destination.Kafka.Output.topicName_).
+  - Leave Acks as **0**. This specifies the number of acknowledgements to request from the server before the publication request is sent. **0** is equivalent to similar to 'fire and forget'; **1** waits for a single acknowledgement; **All** waits for acknowledgements from all replicas of the topic (providing the strongest available guarantee that the message was received).
+  - change the Timeout to 5 secs (so that if it fails, you will only have to wait 5 seconds before you see the failure)
+  - For Security Protocol specify **SASL_SSL**. This is because Event Streams requires this.
+  - For SSL protocol specify **TLSv1.2**. This is because Event Streams requires this.
+
 
   ![](./images/cipdemo/ace2-2.png)
 
- MQ Node (NEWORDER.ES):
 
   ![](./images/cipdemo/ace2-3.png)
 
-5. For the second `MQ Output` click `MQ Connection` and select `Local queue manager` (ACE Server will create a local queue manager for you).
-6. Type Destination queue manager name: `acemqserver` (case sensitive).
+5. From the ACE palette, drag and drop an `MQ Output` node. Configure its properties thus:
+  - For Connection select `Local queue manager`. This is because the container running ACE will also include a Queue Manager, to which we will connect locally.
+  - For Destination queue manager name specify **acemqserver** (case sensitive). This is the name of the local Queue Manager. Note: in this instance we are hard-coding this Queue Manager name; typically it will be parameterised (using an MQ Policy).
 
   ![](./images/cipdemo/ace3.png)
 
-7. Click `Basic`. Type Queue name: `NEWORDER.MQ`.
-8. `Save your flow`.
+  - For Queue Name specify **NEWORDER.MQ**. This is the queue onto which the message will be put. Note: in this instance we are hard-coding this queue name; typically it will be parameterised (for ACE specialists: this uses _LocalEnvironment.Destination.MQ.DestinationData.queueName_).
+8. `Save` your flow.
 9. Create a BAR (Broker Archive) file. Give it the Name: `orders` and click `Finish`.
 
 ## Connecting ACE to a remote MQ on ICP
+>> Comment from Hugh: I think we do not need to do this section. It was in the original lab because connection to ES was going to be via MQ. But in our lab, connection to ES doesn't use MQ. So no need to define this connection to a remote QMgr.
 
 1. Open MQ Console on `mq` Helm Repositories
 2. Click `mq-console-https 31694/TCP`
@@ -249,6 +250,7 @@ Here is what the flow will look like.  Instructions to follow
   ![](./images/cipdemo/ace3-4.png)
 
 ## Work with MQ authorization
+>> Comment from Hugh: I think we do not need to do this section. It was in the original lab because connection to ES was going to be via MQ. But in our lab, connection to ES doesn't use MQ. So no need to define this security/authorisation for the remote QMgr.
 
 1. Open a terminal window on Developer machine.
 
@@ -275,12 +277,18 @@ Here is what the flow will look like.  Instructions to follow
 
 ## Deploy the bar files
 
-Deploy the `inventoryproject.generated.bar` as provided to the CIP environment.
+Deploy the BAR Files to the CIP environment. You will deploy each one separately, and each will create an IntegrationServer in the ACE environment. `inventoryproject.generated.bar` as provided to the CIP environment.
 
->**Hint** each will need to be done separately.  Also create unique hostnames for each flow in the `NodePort IP` setting when configuring the Helm Release. e.g. `orders.10.0.0.5.nip.io` and `inventory.10.0.0.5.nip.io`
+>**Hint** When deploying, you should create a unique hostname for each BAR file. This uses the `NodePort IP` setting when configuring the Helm Release. For example **orders.10.0.0.5.nip.io** and **inventory.10.0.0.5.nip.io**.
 
-1. Access the ACE Dashboard via `Workloads` -> `Helm Releases`  find the `ace-ace` release and launch from there.  You can also access it via the Platform Navigator.
-2. Via the ACE Dashboard you can load your bar files and deploy your integration servers from there.
+1. The typical way to deploy a BAR File is from the ACE Dashboard. Use one of the following methods to get to the ACE Dashboard.
+  - Go directly by opening a browser session to https://ace.10.0.0.5.nip.io/ace-ace
+  - Start with the ICP Portal https://10.0.0.1:8443. Choose `Workloads` -> `Helm Releases`. Find `ace-ace` release and launch the `webui` from there.
+  - Start with the Platform Navigator: https://10.0.0.5/icip1-navigator1, and click `ace1`. Note: occasionally this appears to fail; if it does then simply click `ace` on the failure screena nd it should work.
+2. On the ACE Dashboard, make sure you are on the Servers tab, and then select `Create` to start the process.
+
+>> 10:00 BST Thu 13th June Hugh is in the middle of this - several changes to the ACE deployment process because of Event Streams.
+
 3. Next, Deploy the new `Order` Flow.  The process to deploy this is similar to `Inventory` but you need to add in the MQ Settings.  Some guidance is provided below:
 	- For the Queue manager settings (**Warning** these are case sensitive)
 queue manager name is `acemqserver`
