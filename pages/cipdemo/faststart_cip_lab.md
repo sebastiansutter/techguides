@@ -280,7 +280,7 @@ You will now modify this subflow, by adding three operations (nodes) following  
 
 Here is what the flow will look like. Detailed instructions follow.
 
- ![](./images/cipdemo/ace1.png)
+ ![](./images/cipdemo/Orders_subflow_canvas.JPG)
 
 1. From the ACE palette, drag and drop an `HTTPHeader` node, a `KafkaProducer` node and an `MQOutput` node. Position them and wire them up as shown in the screenshot above.
 1. Select the `Http Header` node. Configure its properties thus:
