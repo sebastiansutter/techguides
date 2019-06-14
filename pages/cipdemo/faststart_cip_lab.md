@@ -398,7 +398,7 @@ Deployment of a BAR file includes the creation of the Integration Server in whic
 
  - Select the BAR file `inventoryproject.generated.bar` and continue.
  - You will be presented by the `Content URL`, and the `namespace` **ace**.  The `Content URL` defines the location, in ICP terms, of where the BAR file is.
-	  ![](./images/cipdemo/ace_deploy_1 )
+	  ![](./images/cipdemo/ace_deploy_1.png)
     - Use the button to copy the contents of the `Content URL` to the clipboard, because you will need it shortly.
     - The namespace is being proposed by ACE; you should make a mental note of it.
     - Select `Configure` to continue.
