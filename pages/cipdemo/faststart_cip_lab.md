@@ -410,6 +410,10 @@ Deployment of a BAR file includes the creation of the Integration Server in whic
  - For the `Image pull secret` specify **sa-ace**. This Secret was created when the Cloud Pack for Integration was installed, and it contains the credentials for ICP to access its private docker repository.
  - For the `NodePort`, we recommend **inventory.10.0.0.5.nip.io**. We recommend that the first part (**inventory** in this case) is identical to the `Integration Server name`, because there is a 1 to 1 relationship here.
  - Lower down, you could also specify the `Integration Server name`. However, we recommend that you leave this blank, so that the Helm Chart name (**inventory** in this case) is used.
+ ![](./images/cipdemo/ace_hc_1.png)
+ ![](./images/cipdemo/ace_hc_2.png)
+ ![](./images/cipdemo/ace_hc_3.png)
+ ![](./images/cipdemo/ace_hc_4.png)
  - Leave the remaining settings as defaults and then click `Install` at the bottom.
  - Your Helm Chart will now install. You can view the progress of the install via `Helm Releases` (as prompted on the screen) or via _kubectl_ on a command line.
 
@@ -429,6 +433,8 @@ Deployment of a BAR file includes the creation of the Integration Server in whic
  - For the `Queue manager settings` (**_Warning_**: these are case-sensitive):
     - `Queue manager name` is **acemqserver**. This must match the name that ICP gave by default to the associated queue manager (we could have changed it, but have not done so).
     - Under the heading `MQSC file for Queue Manager:`, enter **DEFINE QLOCAL(NEWORDER.MQ)**. This will create the specified MQ queue, using all defaults.
+		![](./images/cipdemo/ace-helm-chart-1)
+		![](./images/cipdemo/ace-helm-chart-2)
 
  - Leave the remaining settings as defaults and then click `Install` at the bottom.
 
