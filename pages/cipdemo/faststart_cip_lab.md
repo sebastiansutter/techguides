@@ -207,7 +207,7 @@ Start by working with Event Streams, to create a topic and to define and capture
   - Under `Messaging`, select the `es` link, to open the Event Streams Dashboard.
   - (If you see an error screen similar to that shown below, then simply select the `Open es` link in the middle.)
 
-		![](./images/cipdemo/open_es_error.JPG)
+		![](./images/cipdemo/open_es_error.jpeg)
 
   - Provide or accept the credentials (Username **admin** Password **admin**) , then `Log In`.
 1. Select the `Topics` tab.
@@ -263,34 +263,34 @@ https://kubernetes.io/docs/concepts/configuration/secret/ )
 
 >> Hugh: to be completed.
 
-## Modify the Order ACE Flow
+## Modify the orders API within ACE
 
 1. Import the project interchange provided in the `faststartflows.zip` file.  You can find this file in the `/home/student/techguides/pages/cipdemo` folder
 >> Hugh: will we need to import this file ? Will they not already exist ?
 
-1. On the Developer Machine, open a "Terminal" session. Note that you will be signed in as _student_, and placed in directory _/home/student_.
+1. On the Developer Machine, open a Terminal session. Note that you will be signed in as _student_, and placed in directory _/home/student_.
 1. Start the Ace Toolkit by executing `./ace-v11.0.0.3/ace toolkit`.
 Note that the ACE Toolkit may start as a tiny window on the screen. Use the cursor to grab the corner of this screen and expand it.
 
- ![](./images/cipdemo/odd-toolkit-start.JPG)
+ ![](./images/cipdemo/odd_toolkit_start.jpeg)
 
 1. Drill down `orders` -> `Resources` -> `Subflows` and open `New_Order.subflow`. This subflow forms the body of the work that ACE will do when a new order is created and the orders API is called.
 
-You will now modify this subflow, by adding three operations (nodes) following  the App Connect REST operation. The first  will strip the HTTP Headers, the second  will put to an MQ queue, and the third  will publish the message to a topic in EventStreams.
+You will now modify this subflow, by adding three operations (nodes) following  the App Connect REST operation. The first node will strip the HTTP Headers, the second will put to an MQ queue, and the third  will publish the message to a topic in EventStreams.
 
 Here is what the flow will look like. Detailed instructions follow.
 
- ![](./images/cipdemo/orders_subflow_canvas.JPG)
+ ![](./images/cipdemo/orders_subflow_canvas.jpeg)
 
-1. From the ACE palette, drag and drop an `HTTPHeader` node, a `KafkaProducer` node and an `MQOutput` node. Position them and wire them up as shown in the screenshot above.
+1. From the ACE palette, drag and drop an `HTTPHeader` node, a `KafkaProducer` node and an `MQOutput` node. Position them and connect them as shown in the screenshot above.
 1. Select the `Http Header` node. Configure its properties thus:
-  - On the `HTTPInputHeader`, set it to **Delete HTTP Header**. This is because before we do any further work with this message, we must remove this header.
+  - On the `HTTPInputHeader`, select **Delete HTTP Header**. This is because before we do any further work with this message, we must remove this header.
 
  ![](./images/cipdemo/ace2.png)
 
 2. Select the `KafkaProducer` node. Configure its properties thus:
-  - Enter the topic name, matching what you defined within the Event Streams configuration earlier - we recommended **NewOrder**. Note: in this instance you are hard-coding this topic name; typically it will be parameterised (for ACE specialists: the parameterisation uses _LocalEnvironment.Destination.Kafka.Output.topicName_).
-  - Leave Acks as **0**. This specifies the number of acknowledgements to request from the server before the publication request is sent. **0** is equivalent to similar to 'fire and forget'; **1** waits for a single acknowledgement; **All** waits for acknowledgements from all replicas of the topic (providing the strongest available guarantee that the message was received).
+  - Enter the `Topic name`, matching what you defined within the Event Streams configuration earlier - we recommended **NewOrder**. Note: in this instance you are hard-coding this topic name; typically it will be parameterised (for ACE specialists: the parameterisation uses _LocalEnvironment.Destination.Kafka.Output.topicName_).
+  - For Acks specify **All**. This defines the number of acknowledgements to request from the Event Streams server before the publication request is sent. **0** is equivalent to similar to 'fire and forget'; **1** waits for a single acknowledgement; **All** waits for acknowledgements from all replicas of the topic (providing the strongest available guarantee that the message was received).
   - Change the Timeout to 5 secs (so that if it fails, you will only have to wait 5 seconds before you see the failure)
   - For Security Protocol specify **SASL_SSL**. This is because Event Streams requires this.
   - For SSL protocol specify **TLSv1.2**. This is because Event Streams requires this.
@@ -302,17 +302,20 @@ Here is what the flow will look like. Detailed instructions follow.
   ![](./images/cipdemo/ace2-3.png)
 
 5. Select the `MQOutput` node. Configure its properties thus:
-  - For Connection select `Local queue manager`. This is because the container running ACE will also include a Queue Manager, to which we will connect locally.
-  - For Destination queue manager name specify **acemqserver** (case sensitive). This is the name of the local Queue Manager. Note: in this instance we are hard-coding this Queue Manager name; typically it will be parameterised (using an MQ Policy).
+  - For `Queue Name` specify **NEWORDER.MQ**. This is the queue onto which the message will be put. Note: in this instance we are hard-coding this queue name; typically it will be parameterised (for ACE specialists: this parameterisation uses _LocalEnvironment.Destination.MQ.DestinationData.queueName_).
+  - For `Connection` select `Local queue manager`. This is because the container running ACE will also include a Queue Manager, to which we will connect locally.
+  - For `Destination queue manager` name specify **acemqserver** (case sensitive). This is the name of the local Queue Manager. Note: in this instance we are hard-coding this Queue Manager name; typically it will be parameterised (using an MQ Policy).
 
   ![](./images/cipdemo/ace3.png)
 
-  - For Queue Name specify **NEWORDER.MQ**. This is the queue onto which the message will be put. Note: in this instance we are hard-coding this queue name; typically it will be parameterised (for ACE specialists: this parameterisation uses _LocalEnvironment.Destination.MQ.DestinationData.queueName_).
+
 8. `Save` your flow.
 9. Create a BAR (Broker Archive) file.
   - Call it **orders**.
 	- In the `Prepare` tab, ensure that the REST API called **orders**  is selected.
 	- Select `Build and Save`.
+
+The BAR file containing the `orders` API is now ready for deployment.
 
 ## Connecting ACE to a remote MQ on ICP
 >> Comment from Hugh: I think we do not need to do this section. It was in the original lab because connection to ES was going to be via MQ. But in our lab, connection to ES doesn't use MQ. So no need to define this connection to a remote QMgr.
@@ -376,7 +379,7 @@ Deployment of a BAR file includes the creation of the Integration Server in whic
 1. Use one of the following methods to get to the ACE Dashboard.
   - Either go directly by opening a browser session to **https://mycluster.icp/ace-ace1**
   - Or start with the ICP Portal **https://mycluster.icp:8443**. Choose `Workloads` -> `Helm Releases`. Find the `ace-ace` release and launch the `webui` from there.
-  - Or start with the Platform Navigator: **https://10.0.0.5/icip1-navigator1**, and select `ace1`. Note: if this appears to fail as shown in the following screenshot, simply select `ace` on the failure screen and it should work.
+  - Or start with the Platform Navigator: **https://10.0.0.5/icip1-navigator1**, and select `ace1`. Note: if this appears to fail as shown in the following screenshot, simply select `Open ace1` on the failure screen and it should work.
 
 	  ![](./images/cipdemo/open_ace_error.jpeg)
 
