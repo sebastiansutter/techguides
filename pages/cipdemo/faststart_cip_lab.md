@@ -369,27 +369,34 @@ Here is what the flow will look like. Detailed instructions follow.
 
 In this section you will deploy the BAR Files to the CIP environment. You will deploy each one separately, and each will create an IntegrationServer in the ACE environment.
 
->_**Note:**_ When deploying, you will create a unique hostname for each BAR file; this is referred to as the `NodePort IP` setting when configuring the Helm Release. For example: **orders.10.0.0.5.nip.io** and **inventory.10.0.0.5.nip.io**. . The **10.0.0.5.nip.io** portion means WHAT ??? . The whole value of `NodePort` must be unique; it points to the HTTP listener for the specific Integration Server.
+Deployment of a BAR file includes the creation of the Integration Server in which it will run, and is achieved by creating a Helm Chart. This Helm Chart includes all the details of the Integration Server, as well as the BAR file itself. In a DevOps environment, this is deployed programmatically. In a Development environment, such as this, the typical way to deploy a BAR File (and create the Integration Server) is from the ACE Dashboard.
 
-1. The typical way to deploy a BAR File is from the ACE Dashboard. Use one of the following methods to get to the ACE Dashboard.
-  - Go directly by opening a browser session to https://mycluster.icp/ace-ace1
-  - Start with the ICP Portal https://mycluster.icp:8443. Choose `Workloads` -> `Helm Releases`. Find the `ace-ace` release and launch the `webui` from there.
-  - Start with the Platform Navigator: https://10.0.0.5/icip1-navigator1, and select `ace1`. Note: occasionally this appears to fail; if it does then simply select `ace` on the failure screen and it should work.
+>_**Note:**_ When deploying, you will create a unique hostname for each BAR file; this is referred to as the `NodePort IP` setting when configuring the Helm Release. For example: **orders.10.0.0.5.nip.io** and **inventory.10.0.0.5.nip.io**. The **10.0.0.5.nip.io** portion specifies that an on-demand service (**nip.io**) is used to route to **10.0.0.5** (the IP address of the ICP proxy node). The whole value of `NodePort` must be unique; it points to the HTTP listener for the specific Integration Server.
+
+1. Use one of the following methods to get to the ACE Dashboard.
+  - Either go directly by opening a browser session to https://mycluster.icp/ace-ace1
+  - Or start with the ICP Portal https://mycluster.icp:8443. Choose `Workloads` -> `Helm Releases`. Find the `ace-ace` release and launch the `webui` from there.
+  - Or start with the Platform Navigator: https://10.0.0.5/icip1-navigator1, and select `ace1`. Note: if this appears to fail as shown in the following screenshot, simply select `ace` on the failure screen and it should work.
+
+	  ![](./images/cipdemo/Open-ACE-error.jpeg)
+
+
 2. On the ACE Dashboard, make sure you are on the Servers tab.
 
 3. First, deploy the `inventory` flow - which you have not changed.
   - From the ACE Dashboard, select `Create` to start the process.
+
   - Select the BAR file `inventoryproject.generated.bar` and continue.
   - You will be presented by the `Content URL`, and the `namespace` **ace**.  The `Content URL` defines the location, in ICP terms, of where the BAR file is.
+	 - Copy the contents of the `Content URL` to the clipboard, because you will need it shortly.
 	 - The namespace is being proposed by ACE; you should make a mental note of it.
-	 - Copy the contents of the `Content URL`, because you will need it shortly.
     - Select `Configure` to continue.
   - ACE now selects the correct Helm Chart from the Catalog, and opens the ICP configuration pages. At the bottom, select `Configure` to continue.
-  - For the Helm Chart name, we recommend **inventory**. This name will be used in many of the ICP artefacts, so a meaningful name is good. This name will also be used as the default for some of the later properties (for example the name of the Integration Server).
+  - For the `Helm Chart name`, we recommend **inventory**. This name will be used in many of the ICP artefacts, so a meaningful name is good. This name will also be used as the default for some of the later properties (for example the name of the Integration Server).
   - For the `namespace`, select **ace**, which you made a mental note of earlier.
   - Ignore the `NodePort` and select `Advanced`. (You will complete the `NodePort` shortly.)
-  - Into the `Content Server URL` field, paste the contents of the `Content URL` that you copied earlier. This vital piece links the BAR file to this Helm Chart.
-  - For the `Image pull secret` specify **sa-ace**. WHY ???
+  - Into the `Content Server URL` field, paste the contents of the `Content URL` from the clipboard. This vital piece links the BAR file to this Helm Chart.
+  - For the `Image pull secret` specify **sa-ace**. This Secret was created when the Cloud Pack for Integration was installed, and it contains the credentials for ICP to access its private docker repository.
   - For the `NodePort`, we recommend **inventory.10.0.0.5.nip.io**. We recommend that the first part (**inventory** in this case) is identical to the `Integration Server name`, because there is a 1 to 1 relationship here.
   - Lower down, you could also specify the `Integration Server name`. However, we recommend that you leave this blank, so that the Helm Chart name (**inventory** in this case) is used.
   - Leave the remaining settings as defaults and then click `Install` at the bottom.
@@ -401,7 +408,7 @@ In this section you will deploy the BAR Files to the CIP environment. You will d
   - From the ACE Dashboard, select `Create` to start the process.
   - This time use the BAR file `orders.bar`.
   - Remember to copy the contents of the `Content URL`.
-  - For this Helm Chart name, we recommend **orders**.
+  - For this `Helm Chart name`, we recommend **orders**.
   - As before, ignore the `NodePort` and select `Advanced`.
   - As before, paste into the `Content Server URL` field.
   - As before, the `Image pull secret` is  **sa-ace**.
@@ -415,8 +422,10 @@ In this section you will deploy the BAR Files to the CIP environment. You will d
   - Leave the remaining settings as defaults and then click `Install` at the bottom.
 
 4. You should now return to the ACE Dashboard and confirm that the Integration Server has been correctly deployed. (You should wait a few seconds to a minute, for the deployment to succeed fully.)
-6. Be sure to test using cURL for each flow before moving on.
-7. Use the following value as input for the inventory API `key` query parameter : `AJ1-05.jpg`
+
+Now test each flow, using cURL,  before moving on.
+
+1. Use the following value as input for the inventory API `key` query parameter : `AJ1-05.jpg`
 8. Once you have confirmed the functionality for both `order` and `inventory` message flows, export the swagger for each from the ACE Management Portal.  Save it to the file system on the developer machine, you will be using this in the next section
 9. Once deployed, your ACE Management UI should display both `inventory` and `order` APIs running
 
