@@ -316,14 +316,13 @@ Here is what the flow will look like. Detailed instructions follow.
 
    ![](./images/cipdemo/ace_kafka_producer.png)
 
-
 8. `Save` your flow.
-9. Create a BAR (Broker Archive) file.
+9. Create a BAR (Broker Archive) file in a project called **Barfiles**.
  - Call it **orders**.
-	- In the `Prepare` tab, ensure that the REST API called **orders**  is selected.
-	- Select `Build and Save`.
+  - In the `Prepare` tab, ensure that the REST API called **orders**  is selected.
+  - Select `Build and Save`.
 
-The BAR file containing the changed `orders` API is now ready for deployment.
+The BAR file containing the changed `orders` API is now ready for deployment. It is called **orders.bar**, and resides in the ACE workspace, which is _/home/student/IBM/workspace/BARfiles_.
 
 ## Connecting ACE to a remote MQ on ICP
 >> Comment from Hugh: I think we do not need to do this section. It was in the original lab because connection to ES was going to be via MQ. But in our lab, connection to ES doesn't use MQ. So no need to define this connection to a remote QMgr.
@@ -396,7 +395,7 @@ Deployment of a BAR file includes the creation of the Integration Server in whic
 3. First, deploy the `inventory` flow - which you have not changed.
  - From the ACE Dashboard, select `Create` to start the process.
 
- - Select the BAR file `inventoryproject.generated.bar` and continue.
+ - Browse to _/home/student/IBM/workspace/GeneratedBARFiles_, and select the BAR file `inventoryproject.generated.bar` and continue.
  - You will be presented by the `Content URL`, and the `namespace` **ace**.  The `Content URL` defines the location, in ICP terms, of where the BAR file is.
 
 	  ![](./images/cipdemo/ace_deploy_1.png)
@@ -421,28 +420,33 @@ Deployment of a BAR file includes the creation of the Integration Server in whic
  - Leave the remaining settings as defaults and then click `Install` at the bottom.
  - Your Helm Chart will now install. You can view the progress of the install via `Helm Releases` (as prompted on the screen) or via _kubectl_ on a command line.
 
-3. You should now return to the ACE Dashboard and confirm that the Integration Server has been correctly deployed. (You should wait a few seconds to a minute, for the deployment to succeed fully.)
+3. You should now return to the ACE Dashboard and confirm that the Integration Server has been correctly deployed. You should wait a few seconds to a minute, for the deployment to succeed fully. Use the `Refresh` button.
 
 3. Next, deploy the new `orders` flow, which you have changed. The process to deploy this is the same as `Inventory`, with some extra configuration.
  - From the ACE Dashboard, select `Create` to start the process.
- - This time use the BAR file `orders.bar`.
+ - Browse to _/home/student/IBM/workspace/BARfiles_, and select the BAR file `orders.bar`,
  - Remember to copy the contents of the `Content URL`.
  - For this `Helm Chart name`, we recommend **orders**.
  - As before, ignore the `NodePort` and select `Advanced`.
  - As before, paste into the `Content Server URL` field.
+ - For the `Secret name` specify **orders-secret** as prepared earlier. This Secret adds sensitive configuration information (such as API key and a certificate) to this Integration Server, so that it can communicate with Event Streams.
  - As before, the `Image pull secret` is  **sa-ace**.
  - For the `NodePort`, we recommend **orders.10.0.0.5.nip.io**.
- - For the `Secret name` specify **orders-secret** as prepared earlier. This Secret adds sensitive configuration information (such as API key and a certificate) to this Integration Server, so that it can communicate with Event Streams.
- - For the `Certificate alias name`, specify **escert**. This is used by the Integration Server when it connects to Event Streams. You defined the value **escert** earlier, when you created the Secret.
+
  - For the `Queue manager settings` (**_Warning_**: these are case-sensitive):
     - `Queue manager name` is **acemqserver**. This must match the name that ICP gave by default to the associated queue manager (we could have changed it, but have not done so).
     - Under the heading `MQSC file for Queue Manager:`, enter **DEFINE QLOCAL(NEWORDER.MQ)**. This will create the specified MQ queue, using all defaults.
-		![](./images/cipdemo/ace-helm-chart-1)
-		![](./images/cipdemo/ace-helm-chart-2)
+ - For the `Certificate alias name`, specify **escert**. This is used by the Integration Server when it connects to Event Streams. You defined the value **escert** earlier, when you created the Secret.
+		 ![](./images/cipdemo/ace_hc_5.png)
+		 ![](./images/cipdemo/ace_hc_6.png)
+		 ![](./images/cipdemo/ace_hc_7.png)
+		 ![](./images/cipdemo/ace_hc_8.png)
+		 ![](./images/cipdemo/ace_hc_9.png)
+		 ![](./images/cipdemo/ace_hc_10.png)
 
  - Leave the remaining settings as defaults and then click `Install` at the bottom.
 
-4. You should now return to the ACE Dashboard and confirm that the Integration Server has been correctly deployed. (You should wait a few seconds to a minute, for the deployment to succeed fully.)
+4. You should now return to the ACE Dashboard and confirm that the Integration Server has been correctly deployed. You should wait a few seconds to a minute, for the deployment to succeed fully. Use the `Refresh` button.
 
 Now test each flow, using cURL,  before moving on.
 
