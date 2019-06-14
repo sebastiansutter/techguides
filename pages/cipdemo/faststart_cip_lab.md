@@ -398,7 +398,9 @@ Deployment of a BAR file includes the creation of the Integration Server in whic
 
  - Select the BAR file `inventoryproject.generated.bar` and continue.
  - You will be presented by the `Content URL`, and the `namespace` **ace**.  The `Content URL` defines the location, in ICP terms, of where the BAR file is.
+
 	  ![](./images/cipdemo/ace_deploy_1.png)
+
     - Use the button to copy the contents of the `Content URL` to the clipboard, because you will need it shortly.
     - The namespace is being proposed by ACE; you should make a mental note of it.
     - Select `Configure` to continue.
@@ -410,10 +412,12 @@ Deployment of a BAR file includes the creation of the Integration Server in whic
  - For the `Image pull secret` specify **sa-ace**. This Secret was created when the Cloud Pack for Integration was installed, and it contains the credentials for ICP to access its private docker repository.
  - For the `NodePort`, we recommend **inventory.10.0.0.5.nip.io**. We recommend that the first part (**inventory** in this case) is identical to the `Integration Server name`, because there is a 1 to 1 relationship here.
  - Lower down, you could also specify the `Integration Server name`. However, we recommend that you leave this blank, so that the Helm Chart name (**inventory** in this case) is used.
+
  ![](./images/cipdemo/ace_hc_1.png)
  ![](./images/cipdemo/ace_hc_2.png)
  ![](./images/cipdemo/ace_hc_3.png)
  ![](./images/cipdemo/ace_hc_4.png)
+
  - Leave the remaining settings as defaults and then click `Install` at the bottom.
  - Your Helm Chart will now install. You can view the progress of the install via `Helm Releases` (as prompted on the screen) or via _kubectl_ on a command line.
 
