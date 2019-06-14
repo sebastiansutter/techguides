@@ -207,7 +207,7 @@ Start by working with Event Streams, to create a topic and to define and capture
   - Under `Messaging`, select the `es` link, to open the Event Streams Dashboard.
   - (If you see an error screen similar to that shown below, then simply select the `Open es` link in the middle.)
 
-		![](./images/cipdemo/Open-ES-error.JPG)
+		![](./images/cipdemo/open_es_error.JPG)
 
   - Provide or accept the credentials (Username **admin** Password **admin**) , then `Log In`.
 1. Select the `Topics` tab.
@@ -280,7 +280,7 @@ You will now modify this subflow, by adding three operations (nodes) following  
 
 Here is what the flow will look like. Detailed instructions follow.
 
- ![](./images/cipdemo/Orders_subflow_canvas.JPG)
+ ![](./images/cipdemo/orders_subflow_canvas.JPG)
 
 1. From the ACE palette, drag and drop an `HTTPHeader` node, a `KafkaProducer` node and an `MQOutput` node. Position them and wire them up as shown in the screenshot above.
 1. Select the `Http Header` node. Configure its properties thus:
@@ -374,11 +374,11 @@ Deployment of a BAR file includes the creation of the Integration Server in whic
 >_**Note:**_ When deploying, you will create a unique hostname for each BAR file; this is referred to as the `NodePort IP` setting when configuring the Helm Release. For example: **orders.10.0.0.5.nip.io** and **inventory.10.0.0.5.nip.io**. The **10.0.0.5.nip.io** portion specifies that an on-demand service (**nip.io**) is used to route to **10.0.0.5** (the IP address of the ICP proxy node). The whole value of `NodePort` must be unique; it points to the HTTP listener for the specific Integration Server.
 
 1. Use one of the following methods to get to the ACE Dashboard.
-  - Either go directly by opening a browser session to https://mycluster.icp/ace-ace1
-  - Or start with the ICP Portal https://mycluster.icp:8443. Choose `Workloads` -> `Helm Releases`. Find the `ace-ace` release and launch the `webui` from there.
-  - Or start with the Platform Navigator: https://10.0.0.5/icip1-navigator1, and select `ace1`. Note: if this appears to fail as shown in the following screenshot, simply select `ace` on the failure screen and it should work.
+  - Either go directly by opening a browser session to **https://mycluster.icp/ace-ace1**
+  - Or start with the ICP Portal **https://mycluster.icp:8443**. Choose `Workloads` -> `Helm Releases`. Find the `ace-ace` release and launch the `webui` from there.
+  - Or start with the Platform Navigator: **https://10.0.0.5/icip1-navigator1**, and select `ace1`. Note: if this appears to fail as shown in the following screenshot, simply select `ace` on the failure screen and it should work.
 
-	  ![](./images/cipdemo/Open-ACE-error.jpeg)
+	  ![](./images/cipdemo/open_ace_error.jpeg)
 
 
 2. On the ACE Dashboard, make sure you are on the Servers tab.
