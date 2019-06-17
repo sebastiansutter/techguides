@@ -506,7 +506,7 @@ Where `yourapp ip` and `your port` is the port that ICP has put your Utility App
 
 Test your APIs in the test tool inside of API Connect.
 
-![](./images/cipdemo/test_api.gif.jpeg)
+![](./images/cipdemo/test_api.gif)
 
 For the `AcmeMartUtilityAPI`, the quickest way to do this is open up the Assembly view of the AcmeMart and select the `/Utilities/Ping` API.  It requires no arguments.
 
