@@ -496,6 +496,20 @@ Create APIs for each of the inventory, order and AcmeMart APIs.
 
 >**Note** the Swagger for the two ACE flows can be imported as APIs using the `From Existing Open API Service` option in API Connect.  The AcmeMart swagger can be downloaded from the main developer page and then imported, but use the `New Open API` option instead.
 
+1.  Open up your API Manager Window inside the developer machine - `https://mgmt.10.0.0.1.nip.io/manager`. The login should happen automatically as it will use your ICP credentials for login.
+2.  Click on the `Manage Catalogs`
+3.  Click on `Sandbox`
+4.  Click on `Settings` from left menu
+5.  Click on `Gateway Services`
+6.  Click `Edit` and choose the `Gateway` service you configured previously and click on `Save`.
+7.  From the API Manager homescreen, use the menu on the left to navigate to `Develop`.
+8.  On the APIs and Products screen click `Add` -> `Api`
+9.  Select the `From Existing OpenAPI Service` radio button option. Click `Next`.
+10.  Click the `browse` button to navigate to the `Tutorial_swagger.json` file on your file system you had saved previously.
+11.  Click `Next`
+12.  Review the settings then click `Next` twice (do not activate the API yet).
+13.  Review the summary to ensure the API was created properly, and then click the `Edit API` button.
+
 **For the AcmeMartUtilityAPI** you will need to modify your invoke URL to look like the following:
 
 `http://(yourapp ip):(your port)$(request.path)$(request.search)`
@@ -503,6 +517,9 @@ Create APIs for each of the inventory, order and AcmeMart APIs.
 Where `yourapp ip` and `your port` is the port that ICP has put your Utility App.
 
 ![](./images/cipdemo/invoke.gif)
+
+14.  Click the `Assemble` tab to bring up the Assembly editor.
+
 
 Test your APIs in the test tool inside of API Connect.
 
