@@ -620,8 +620,6 @@ Example Output:
 
 ![](./images/cipdemo/analytics_tab.jpeg)
 
-![](./images/cipdemo/portal.png)
-
 ### Explore the Analytics
 
 1. After clicking the `Analytics` tab, you are presented with a list of dashboards.
