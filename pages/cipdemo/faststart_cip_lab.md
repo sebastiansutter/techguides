@@ -8,23 +8,24 @@ summary: Deeper dive into the Cloud Integration Platform
 applies_to: [developer,administrator,consumer]
 ---
 
-# Mastering the Cloud Integration Platform
+# Explore the Cloud Integration Platform
 ===============
 
 ## Overview
 
-During the CIP Bootcamp, you had the opportunity to get some hands on with the CIP Platform.  This exercise here is to provide you some more hands on with the platform and build your skills with the platform with the goal of creating a demo environment everyone is able to build and use on their own.
+The goal of this exercise is to provide you some hands on with the platform and build your skills with the platform with the superior goal of creating a demo environment everyone is able to build and use on their own.
 
-This lab guide will lay out the scenario for you, along with the requirements of what you are to complete.  This guide is different than other labs, such that it will (for the most part) not be a step by step walkthrough of what to complete, rather will give you a list of requirements to complete, and it is up to you and your team to deliver on those.
+This lab guide will lay out the scenario for you, along with the requirements of what you are to complete.  This guide is a bit different than other labs, such that it will (for the most part) not be a step by step walkthrough of what to complete, rather will give you a list of requirements to complete, and it is up to you and your team to deliver on those.
 
-This lab will be a team effort.  It is highly suggested that you form your teams of folks who can cover the entire I&D Portfolio - especially: App Connect Enterprise (using Toolkit), API Connect, Messaging (MQ and ES).  Its helpful also to have someone who knows `kubectl` and `docker` commands and has some background with ICP.
+This lab will be a team effort.  It is highly suggested that you form your teams of folks who can cover the entire I&D Portfolio - especially: App Connect Enterprise (using Toolkit), API Connect, Messaging (MQ and ES).  Its helpful also to have someone who knows `kubectl` and `docker` commands and has some background with ICP or Kubernetes.
+
 
 Lab Overview
 -------------------------------------------
 
 You will be building a demo environment that supports the "AcmeMart" demo scenario.  There are several components that make up this demo, but the key areas in scope for this lab are as follows:
 
-* 	Two App Connect Enterprise flows that interact with IBM Cloud based APIs
+*  Two App Connect Enterprise flows that interact with IBM Cloud based APIs
 *  AcmeMart Node.js based APIs
 *  On-premises based MQ and ES based assets
 *  API Facades for RESTful assets to be created in API Connect
@@ -34,22 +35,19 @@ All assets created are to be implemented on the given CIP environment provided f
 
 Lab Environment Overview
 -------------------------------------------
-
 You have been provided a pre-installed environment of the Cloud Integration Platform with the base charts for CIP already deployed and configured.  This includes specifically:
 
 * ICP Main Portal running on `https://mycluster.icp:8443`
-* CIP Platform Navigator running on: `https://10.0.0.5/icip1-navigator1`
+* CIP Platform Navigator running on: `https://mycluster.icp/integration`
 
 You should be able to access all portals from the Platform Navigator, but if you need to access the URL directly, they are provided below:
 
-* App Connect Enterprise Manager Portal running on `https://ace.10.0.0.5.nip.io/ace-ace`
-* API Connect API Manager Portal on `https://mgmt.10.0.0.5.nip.io/manager`
-* MQ Portal on `https://10.0.0.5:31694/ibmmq/console/`
-* Event Streams on `https://10.0.0.5:32208/gettingstarted?integration=1.0.0`
+* App Connect Enterprise Manager Portal running on `https://mycluster.icp/integration/instance/ace1`
+* API Connect API Manager Portal on `https://mgmt.10.0.0.1.nip.io/manager`
+* MQ Portal on `https://10.0.0.1:31681/ibmmq/console/`
+* Event Streams on `https://mycluster.icp/integration/instance/es`
 
-**Note**: there are some known certificate issues with the various portals on this environment. These are fairly easy to workaround, and will be fixed in a later release of this demo environment.
-
-2. The environment you are using is the same environment used with the CIP Bootcamp.  It consists of 9 different nodes.  8 of which are ICP Nodes and one is a developer image that you will be using to access the ICP User Interfaces.  You can access this VM directly using the Skytap interface to use the X-Windows based components. The biggest difference with this environment vs what you used at the bootcamp is that all of the base CIP Charts are already installed and configured.
+2. The environment you are using consists of 6 different nodes.  5 of which are ICP Nodes and one is a developer image that you will be using to access the ICP User Interfaces.  You can access this VM directly using the Skytap interface to use the X-Windows based components. All of the base CIP Charts are already installed and configured.
 
 3. **VERY IMPORTANT** It is very important you do not suspend your lab environment.  We have seen cases when the environment goes into suspend mode, the Rook-Ceph shared storage gets corrupted.  Also it is a good practice that you shut down ICP before powering down your enviroment.  A script has been included to handle that for you that will be explained in the coming sections.  When you power down your environment, you can safely use the `power off` option as the shared storage can interfere with the normal graceful shutdown method.  So far using power off hasn't caused any problems that we are aware of.  If you find that your API Connect environments are not coming up properly, it suggested that you execute the `./icpStopStart.sh stop` script (you may need to execute it more than once).  When it stops, go ahead and execute the `./icpStopStart.sh start`.  As indicated previously, this may take ~30 minutes or so to come up.
 
@@ -59,17 +57,14 @@ You should be able to access all portals from the Platform Navigator, but if you
 
 5. Password-less SSH has also been enabled between the Master node and the other nodes in the environment.  **note** a table with the environment configuration is provided below.  Credentials for each machine are `root`/`Passw0rd!`.
 
-| VM        | Hostname  | IP Address | # of CPU | RAM    | Disk Space (LOCAL) | Shared Storage | Additional Notes |
-|-----------|-----------|------------|----------|--------|--------------------|----------------|------------------|
-| Master    | master    | 10.0.0.1   | 12       | 32 GB  | 400 GB             | N/A            |hostname mycluster.icp|
-| Proxy     | proxy     | 10.0.0.5   | 4        | 8 GB   | 20 GB              | N/A            |                  |
-| Worker 1  | worker-1  | 10.0.0.2   | 8        | 16 GB  | 400 GB             | Monitor  | Ceph Master      |
-| Worker 2  | worker-2  | 10.0.0.3   | 8        | 16 GB  | 400 GB             | 			  | 		           |
-| Worker 3  | worker-3  | 10.0.0.4   | 8        | 16 GB  | 400 GB             | 			  | 		            |
-| Worker 4  | worker-4  | 10.0.0.7   | 8        | 16 GB  | 400 GB             |                |                  |
-| Worker 5  | worker-5  | 10.0.0.8   | 8        | 16 GB  | 400 GB             | Ceph OSD1               |                  |
-| Worker 6  | worker-6  | 10.0.0.9   | 8        | 16 GB  | 400 GB             | Ceph OSD2               |                  |
-| Developer | developer | 10.0.0.6   |          |        |                    |                |                  |
+| VM        | Hostname  | IP Address | # of CPU | RAM    | Disk Space (LOCAL) | Additional Notes |
+|-----------|-----------|------------|----------|--------|--------------------|------------------|
+| Master    | master    | 10.0.0.1   | 24       | 39 GB  | 425 GB             | hostname mycluster.icp|
+| Worker 2  | worker-2  | 10.0.0.3   | 12        | 47 GB  | 600 GB             |       |
+| Worker 3  | worker-3  | 10.0.0.4   | 12        | 47 GB  | 600 GB            		  | 		           |
+| Worker 4  | worker-4  | 10.0.0.5   | 12        | 47 GB  | 600 GB             		  | 		            |
+| Worker 5  | worker-5  | 10.0.0.6   | 12        | 47 GB  | 500 GB                            |                  |
+| Developer | developer | 10.0.0.9   |          |        |                                  |                  |
 
 
 6. If it is not done already, power up your Environment.  It could take about 5 minutes for all nodes to start up.  The master node takes the longest to come up, so if you can see the login prompt from the Skytap UI on the master node, then you are good to go.
@@ -81,13 +76,13 @@ You should be able to access all portals from the Platform Navigator, but if you
 	- Alternatively, you can SSH to the Master node.  Execute a `cloudctl login` from the command line.  If all there services are up, it will prompt you for credentials (use `admin`/`admin`) and setup your kubernetes environment.
 8. The best place to do your Kubernetes CLI work is from the Master node.  Again, Before you can execute any of the `kubectl` commands you will need to execute a `cloudctl login`.
 9. Next step is to find The Platform Navigator UI can be use to create and manage instances of all of the components that make up the Cloud Integration Platform.
-10. You can access the Platform Navigator using the browser on the developer machine.  The URL for the navigator was set up in this environment as: `https://10.0.0.5/icip1-navigator1`.  You might be asked to authenticate into ICP again, but once you do that you should now see the Platform Navigator page.
+10. You can access the Platform Navigator using the browser on the developer machine.  The URL for the navigator was set up in this environment as: `https://mycluster.icp/integration`.  You might be asked to authenticate into ICP again, but once you do that you should now see the Platform Navigator page.
 11. The Platform Navigator is designed for you to easily keep track of your integration toolset.  Here you can see all of the various APIC, Event Streams, MQ and ACE instances you have running.  You can also add new instances using the Platform Navigator.
 
 
 ### Key Concepts - Troubleshooting / Recovery
 
-There are times where things may not be going right, so your best bet is to use `kubectl` commands to uncover more information about what is going on.  If you post queries in Slack about trouble with the lab, we will be asking you to execute a series of these, depending upon what you were doing, and what error occured.  A list of useful commands are provided below:
+There are times where things may not be going right, so your best bet is to use `kubectl` commands to uncover more information about what is going on. A list of useful commands are provided below:
 
  - `kubectl get pods -n <some-namespace>` This command shows all of the pods in a given name space.  Here you will see if any pods are up, down, errored or otherwise in transition.
  - `kubectl describe pods <some-pod> -n <some-namespace>` This will provide verbose information about a given pod.  You can use the `describe` command for other objects.
@@ -108,7 +103,7 @@ Lab Requirements
 | File                           | Description                                                                                      |
 |--------------------------------|--------------------------------------------------------------------------------------------------|
 | faststartflows.zip             | ACE Project Interchange export of integration flows|
-| inventoryproject.generated.bar | generated bar file for the Inventory API.  You will be deploying this as is into the environment|
+| storeinventoryproject.generated.bar | generated bar file for the Inventory API.  You will be deploying this as is into the environment|
 | orderproject.generated.bar     | original bar file for order API. Disregard this, you will be generating a new bar file to deploy|
 | generateSecret.sh     | a script file that generates an ICP Secret, for use when deploying BAR files|
 | serverconf.yaml     | skeleton file, used by generateSecret.sh|
@@ -138,10 +133,11 @@ You will need to download the AcmeMart microservices and deploy the containers o
    >**username:** admin
    >**password:** admin
 
-5. Execute this command:  `docker build . -t acmemartutilityapi`.  The image and its dependencies will be downloaded.
-6. In the ICP UI, starting from the top left hamburger icon select `Manage` -> `Namespaces`.  Create a new namespace and call it `acmemartapi`.  Using the `ibm-anyuid-hostpath-psp` security policy is fine for this one.
-7. Tag your new image by executing this command:  `docker tag acmemartutilityapi mycluster.icp:8500/acmemartapi/acmemartutilityapi:v1.0.0`
-8. Push the docker image out to your ICP instance by issuing this command `docker push mycluster.icp:8500/acmemartapi/acmemartutilityapi:v1.0.0`.
+5. The AcmeMart Microservice is already pre-configured, but we highly recommend to run the configuration yourself, if possible. Execute this command to delete the existing configuration: `kubectl delete namespace acmemartapi`
+6. Execute this command:  `docker build . -t acmemartutilityapi`.  The image and its dependencies will be downloaded.
+7. In the ICP UI, starting from the top left hamburger icon select `Manage` -> `Namespaces`.  Create a new namespace and call it `acmemartapi`.  Using the `ibm-anyuid-hostpath-psp` security policy is fine for this one.
+8. Tag your new image by executing this command:  `docker tag acmemartutilityapi mycluster.icp:8500/acmemartapi/acmemartutilityapi:v1.0.0`
+9. Push the docker image out to your ICP instance by issuing this command `docker push mycluster.icp:8500/acmemartapi/acmemartutilityapi:v1.0.0`.
 10. Next step is to deploy the microservices into ICP.  Create a new Deployment in ICP using the UI via Hamburger Icon in top left. Go to `Workloads -> Deployments`.  Click `+Create Deployment`.
 11. In the `General` tab.  Give it a name of `acmemart`.  Select the new namespace created previous via the dropdown (`acmemartapi`). Leave Replicas at `1`.
 12. Go to `Container Settings`.  Set the name to `acmemartutility`.  Set the `Image` value to `mycluster.icp:8500/acmemartapi/acmemartutilityapi:v1.0.0`
@@ -196,6 +192,7 @@ You will need to download the AcmeMart microservices and deploy the containers o
 28. Find the `try it out` button.  Click it.  It should return back the date/time.
 
 	![](./images/cipdemo/pingtest.gif)
+	
 
 ## Prepare Event Streams Details
 
