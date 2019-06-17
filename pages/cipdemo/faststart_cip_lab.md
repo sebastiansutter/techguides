@@ -618,7 +618,7 @@ Example Output:
 
 4.  From the catalog configuration screen, hover over the icons on the left, and click on the `Analytics` tab.
 
-![](./images/cipdemo/analytics_tab.gif)
+![](./images/cipdemo/analytics_tab.jpeg)
 
 ### Explore the Analytics
 
