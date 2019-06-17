@@ -192,7 +192,7 @@ You will need to download the AcmeMart microservices and deploy the containers o
 28. Find the `try it out` button.  Click it.  It should return back the date/time.
 
 	![](./images/cipdemo/pingtest.gif)
-	
+
 
 ## Prepare Event Streams Details
 
@@ -224,7 +224,7 @@ Now you will create and extract Event Streams connection information, for use la
  - Specify `Produce, consume and create topics`. Although in this lab session we ask you only to produce messages, specifying this allows you to extend the lab and do more later, if you want. In a Production system you could use this to restrict access.
  - Select the slider, to specify `All topics`. Although in this lab session we ask you to use only the topic you created above,  specifying `All topics` allows you to extend the lab and do more later, if you want. In a Production system you could use this to restrict access.
  - Ensure that the slider specifying `All` consumer groups is enabled. In a Production system you could use this to restrict access.
- - After selecting `Generate API key`, make sure you copy it to a temporary file, or download the API key (a JSON file) to _/home/student/Downloads_.
+ - After selecting `Generate API key`, make sure you download the API key (a JSON file called **es-api-key.json**) to _/home/student/Downloads_.
  - Don't forget to select `Create a new API key`, to make it all happen.
 
 
@@ -234,17 +234,17 @@ Firstly, you will generate a "Secret" object. This is a Kubernetes construct tha
 
 (More information on Secrets can be seen here:
 https://kubernetes.io/docs/concepts/configuration/secret/ )
-1. Copy the PEM file you downloaded earlier to the correct directory.
+1. Prepare the PEM file you downloaded earlier.
  - On the Developer Machine, open a "Files" session.
- - Navigate to _/home/student/Downloads_.
- - Copy the PEM certificate file that you downloaded from Event Streams earlier (probably called **es-cert.pem**) to _/home/student/generateScript_.
- - Rename this PEM certificate file to the following: **truststore-escert.crt** (yes, this means that it will no longer be a PEM file). Note: that this name structure must be of the form **truststore-ALIASNAME.crt**, where ALIASNAME will be generated as the alias for the certificate. Note down the ALIASNAME **escert**, because you will need to specify this later when deploying a BAR file.
-1. At this point, if you downloaded the JSON file with the API key in it, you should copy this file to _/home/student/generateScript_.
+ - Move the PEM certificate file that you downloaded from Event Streams earlier (probably called **es-cert.pem**) from _/home/student/Downloads_ to _/home/student/generateScript_.
+ - Rename this PEM certificate file in _/home/student/generateScript_ to the following: **truststore-escert.crt** (yes, this means that it will no longer be a PEM file). Note: that this name structure must be of the form **truststore-ALIASNAME.crt**, where ALIASNAME will be generated as the alias for the certificate. Note down the ALIASNAME **escert**, because you will need to specify this later when deploying a BAR file.
+1. Go back to _/home/student/Downloads_, open the downloaded JSON file **es-api-key.json** in your favourite editor and copy the API key to the clipboard. Note: copy only the API Key, not the quotes around it.
+![](./images/cipdemo/ace-copy-api-key.jpg)
 1. Edit the configuration files:
  - On the Developer Machine, open a Terminal session. Note that you will be signed in as _student_.
  - Navigate to _/home/student/generateScript_. This directory is already populated with the _generateSecret.sh_ tool that will generate the secret, and with the text files that form the input into that tool. This directory now also has your renamed PEM file (**truststore-ALIASNAME.crt**) in it, which also forms input into the tool.
  - Use either `gedit setdbparms.txt` or `vi setdbparms.txt` to edit the _setdbparms.txt_ file.
-    - Replace the characters `<over-write with API Key>` with the API key that you saved or downloaded from Event Streams  earlier. Note that this must be done accurately, otherwise the connection from ACE to Event Streams will not work. The content of the file should look like this:
+    - Replace the characters `<over-write with API Key>` with the API key that you copied to the clipboard a moment ago. Note that this must be done accurately, otherwise the connection from ACE to Event Streams will not work. The content of the file should look like this:
  ```
  kafka::KAFKA token yNsbjWGxFIxGR_byZNzsEEzVpNyUd6S7XpGFMvlH3x8F
  IntSvr::truststorePass thisispwdfortruststore password
@@ -253,7 +253,7 @@ https://kubernetes.io/docs/concepts/configuration/secret/ )
 1. Sign into the CIP namespace and run the tool to generate the Secret.
  - In the Terminal session, execute `sudo cloudctl login`.
  - Provide the password for student: **Passw0rd!**.
- - Ensure that the API Endpoint **https://mycluster.icp:8443** is specified. If a different one is specified, execute `sudo cloudctl logout` and try again.
+ - Ensure that the API Endpoint **https://mycluster.icp:8443** (or **https://10.0.0.1:8443**) is specified. If a different one is specified, execute `sudo cloudctl logout` and try again.
  - Provide the CIP userid: **admin** with  password **admin**
  - Set the namespace context to **ace**. (This is because the Secret we are about to generate must be in namespace **ace**.)
  - Execute `./generateSecret.sh orders-secret`. This script takes in the various configuration files (including the PEM certificate and the API key) and then uses _kubectl_ to generate the Secret with name **orders-secret**. You should see a success message `secret/orders-secret created`.
@@ -277,7 +277,7 @@ The REST APIs within ACE, that form part of the overall solution, are mostly alr
 1. On the Developer Machine, open a Terminal session. Note that you will be signed in as _student_, and placed in directory _/home/student_.
 1. Start the Ace Toolkit by executing `./ace-v11.0.0.3/ace toolkit`.
 Note that the ACE Toolkit may start as a tiny window on the screen. Use the cursor to grab the corner of this screen and expand it.
- ![](./images/cipdemo/odd_toolkit_start.jpeg)
+ ![](./images/cipdemo/ace-tiny-toolkit-start.jpg)
 1. You will see, in the Application Development window on the lefthand side, three REST APIs and their artefacts:
  - **Customer**, which this lab does not use
  - **orders**, which you are about to change and then deploy
@@ -426,13 +426,11 @@ Deployment of a BAR file includes the creation of the Integration Server in whic
  - For this `Helm Chart name`, we recommend **orders**.
  - As before, ignore the `NodePort` and select `Advanced`.
  - As before, paste into the `Content Server URL` field.
+ - This time, make sure you tick the `Local default Queue Manager` button. This is because this deployment will use a local queue manager.
  - For the `Secret name` specify **orders-secret** as prepared earlier. This Secret adds sensitive configuration information (such as API key and a certificate) to this Integration Server, so that it can communicate with Event Streams.
  - As before, the `Image pull secret` is  **sa-ace**.
  - For the `NodePort`, we recommend **orders.10.0.0.5.nip.io**.
-
- - For the `Queue manager settings` (**_Warning_**: these are case-sensitive):
-    - `Queue manager name` is **acemqserver**. This must match the name that ICP gave by default to the associated queue manager (we could have changed it, but have not done so).
-    - Under the heading `MQSC file for Queue Manager:`, enter **DEFINE QLOCAL(NEWORDER.MQ)**. This will create the specified MQ queue, using all defaults.
+ - For the `Queue manager name`, specify **acemqserver**. This defines the name that ICP will give to the associated local queue manager (which matches what we specified in the `MQOutput` node earlier).
  - For the `Certificate alias name`, specify **escert**. This is used by the Integration Server when it connects to Event Streams. You defined the value **escert** earlier, when you created the Secret.
 		 ![](./images/cipdemo/ace_hc_5.png)
 		 ![](./images/cipdemo/ace_hc_6b.png)
@@ -472,18 +470,31 @@ To review that the MQ portion is working properly, perform  the following inside
  - Provide the password for student: **Passw0rd!**.
  - Ensure that the API Endpoint **https://mycluster.icp:8443** is specified. If a different one is specified, execute `sudo cloudctl logout` and try again.
  - Provide the CIP userid: **admin** with  password **admin**
- - Set the namespace context to **acemq**. (You must choose this namespace, because the kubectl work you are about to do is for this namespace.)
+ - Set the namespace context to **ace**. (You must choose this namespace, because the kubectl work you are about to do is for this namespace.)
 1. Execute  `kubectl get pods`
-1. Find the **acemqserver** pod and copy the full name to the clipboard
+1. Find the **orders-ib-xxxx-x** pod and copy the full name to the clipboard
 1. Execute  `kubectl exec <copied-podname> dspmq` . You will see **acemqserver** (the Queue Manager) running.
-1. To Browse a message on theNEWORDER.MQ queue that you defined earlier, execute `kubectl exec -it <copied-podname> /opt/mqm/samp/bin/amqsbcg NEWORDER.MQ`
+1. Browse message on the NEWORDER.MQ queue that you defined earlier, execute `kubectl exec -it <copied-podname> /opt/mqm/samp/bin/amqsbcg NEWORDER.MQ`
+1. (Note: experienced MQ and Linux users could also start a bash shell to the relevant pod as follows: `kubectl exec -it <copied-podname> -- /bin/bash` and use your own methods for examining MQ.)
 
 ## Review Event Streams portion
 
-To review that the message has been correctly published to Event Streams, do the following:
+To review that the message has been correctly published to Event Streams, use the Event Streams dashboard as follows.
+1. Switch back to the Event Streams dashboard. Or navigate to the Event Streams dashboard as follows:
+ - Open a browser session to the Cloud Integration Platform home: `https://mycluster.icp/integration/`
+ - Under `Messaging`, select the `es` link, to open the Event Streams Dashboard.
+ - (If you see an error screen similar to that shown below, then simply select the `Open es` link in the middle.)
+		![](./images/cipdemo/open_es_error.jpeg)
+ - Provide or accept the credentials (Username **admin** Password **admin**) , then `Log In`.
+1. Select the `Topics` tab.
+1. Click on the name of the only topic you should see there: `NewOrders`, to open that topic.
+1. Click on the `Messages` tab, to see all messages.
+1. Click on a message, and you will see a screen similar to the following:
+	  ![](./images/cipdemo/es-show-message.jpg)
 
->> Hugh: to be completed.
+At this point, you have shown the message generated by New Orders has been successfully published to an Event Streams topic. Other applications or flows could be written to retrieve that message and take further actions.
 
+You have shown that Event Streams can be used as a mechanism for transmitting message information asynchronously in a publish-subscribe paradigm, to enable loose coupling between applications.
 
 ## Create API Facades
 
@@ -585,23 +596,6 @@ Example Output:
 {"accountid":"A-10000","orderid":"6981359"}
 ```
 
-
-5. Check events - Use the order ID from the previous call
-
-
-Currently for this lab, events are being written to both Event Streams on your ICP and in the Cloud.  We're still working through some of the challenges with the ES on-premesis but we can still show events for the demo that are running on the IBM Cloud.  Execute this command to get a feel for what those look like.
-
-```
-curl -X GET \
-  'https://am-utilityapi.eu-gb.mybluemix.net/api/Events/findOne?filter=%7B%22where%22%3A%20%7B%22purchaseOrder%22%3A%20%225688471%22%7D%7D' \
-  -H 'cache-control: no-cache' \
-  -H 'x-ibm-client-id: af0a85e4-92fe-4b87-8545-f536fbf811a3' \
-  -H 'x-ibm-client-secret: M6hQ5nR0kT2jO6mU5gA3dS3yN7uT8vY7eG3jH4xN1pS7vM7hN3'
-```
-Example Output:
-```
-{"id":"f58d732c494dc8ce9c1d2dbdba8817dd","purchaseOrder":"5688471","shipTo":{"name":"Test Account","street":"1060 West Addison","city":"Chicago","state":"IL","zip":"60680"},"billTo":{"name":"Test Account","street":"1060 West Addison","city":"Chicago","state":"IL","zip":"60680"},"item":{"partNum":"AJ1-03","productName":"Red, Black & Green","quantity":"1","price":"103.99","shipDate":"2019-01-08T19:46:28.314Z"},"status_code":500,"last_update":"2019-01-08T19:56:01.479Z","history":[{"type":"initial","timestamp":"2019-01-08T19:46:29.350Z","topic":"kafka-nodejs-console-sample-topic","partition":0,"offset":334,"key":null},{"type":"update","timestamp":"2019-01-08T19:48:03.328Z","topic":"acmemart_update_order","partition":0,"offset":151,"key":[75,101,121]},{"type":"update","timestamp":"2019-01-08T19:50:01.362Z","topic":"acmemart_update_order","partition":0,"offset":153,"key":[75,101,121]},{"type":"update","timestamp":"2019-01-08T19:52:01.403Z","topic":"acmemart_update_order","partition":0,"offset":155,"key":[75,101,121]},{"type":"update","timestamp":"2019-01-08T19:54:01.438Z","topic":"acmemart_update_order","partition":0,"offset":157,"key":[75,101,121]},{"type":"update","timestamp":"2019-01-08T19:56:01.479Z","topic":"acmemart_update_order","partition":0,"offset":159,"key":[75,101,121]}]}
-```
 
 
 
