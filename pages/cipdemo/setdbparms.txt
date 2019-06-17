@@ -1,0 +1,2 @@
+kafka::KAFKA token <over-write with API Key>
+IntSvr::truststorePass thisispwdfortruststore password

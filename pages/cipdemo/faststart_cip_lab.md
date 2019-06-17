@@ -96,8 +96,8 @@ Lab Requirements
 
 ## ACE Integration Assets
 
-1. Your integration assets are found in this repository: `https://github.com/ibm-cloudintegration/techguides`.  You can find the specific files you need in the `/techguides/pages/cipdemo` directory.
-    >**hint:** clone this on your Developer machine so you don't have to copy the files over.
+1. Your integration assets are already loaded into the Developer machine.
+1. For reference, they can also be found in this repository: `https://github.com/ibm-cloudintegration/techguides`.  You can find the specific files you need in the `/techguides/pages/cipdemo` directory.
 2. Below is a description of each of the files in archive that you should take note of (disregard the others).
 
 | File                           | Description                                                                                      |
@@ -105,12 +105,11 @@ Lab Requirements
 | faststartflows.zip             | ACE Project Interchange export of integration flows|
 | storeinventoryproject.generated.bar | generated bar file for the Inventory API.  You will be deploying this as is into the environment|
 | orderproject.generated.bar     | original bar file for order API. Disregard this, you will be generating a new bar file to deploy|
-| generateSecret.sh     | a script file that generates an ICP Secret, for use when deploying BAR files|
+| generateSecret.sh     | a script file that generates an ICP Secret, for use when deploying BAR files (Helm Charts) into ICP|
 | serverconf.yaml     | skeleton file, used by generateSecret.sh|
 | setdbparms.txt     | parameter file, used by generateSecret.sh|
 | truststorePassword.txt     | parameter file, used by generateSecret.sh|
 
-  >Keep the project interchange zip file handy, you will be loading that up into the toolkit in a later section.
 
 
 ## AcmeMart Microservices
@@ -227,17 +226,18 @@ Now you will create and extract Event Streams connection information, for use la
  - After selecting `Generate API key`, make sure you download the API key (a JSON file called **es-api-key.json**) to _/home/student/Downloads_.
  - Don't forget to select `Create a new API key`, to make it all happen.
 
+&nbsp;
 
 You will now use the connection information to prepare the ACE Integration Server for deployment.
 
-Firstly, you will generate a "Secret" object. This is a Kubernetes construct that lets you store and manage sensitive information, such as passwords and certificates. In this lab, a Secret is used to store connectivity information for connecting securely to Event Streams, within an ACE Helm Release (aka Integration Server).
+Firstly, you will generate a "Secret" object. This is a Kubernetes construct that lets you store and manage sensitive information, such as passwords and certificates. In this lab, a Secret is used to store connectivity information for connecting securely from an ACE Helm Release (aka Integration Server) to your instance of Event Streams.
 
 (More information on Secrets can be seen here:
 https://kubernetes.io/docs/concepts/configuration/secret/ )
 1. Prepare the PEM file you downloaded earlier.
  - On the Developer Machine, open a "Files" session.
  - Move the PEM certificate file that you downloaded from Event Streams earlier (probably called **es-cert.pem**) from _/home/student/Downloads_ to _/home/student/generateScript_.
- - Rename this PEM certificate file in _/home/student/generateScript_ to the following: **truststore-escert.crt** (yes, this means that it will no longer be a PEM file). Note: that this name structure must be of the form **truststore-ALIASNAME.crt**, where ALIASNAME will be generated as the alias for the certificate. Note down the ALIASNAME **escert**, because you will need to specify this later when deploying a BAR file.
+ - Rename this PEM certificate file in _/home/student/generateScript_ to the following: **truststore-escert.crt** (yes, this means that it will no longer be a PEM file). Note: that this name structure must be of the form **truststore-ALIASNAME.crt**, where ALIASNAME will be generated as the alias for the certificate. Note down your specific  ALIASNAME (**escert**), because you will need to specify this later when deploying a BAR file.
 1. Go back to _/home/student/Downloads_, open the downloaded JSON file **es-api-key.json** in your favourite editor and copy the API key to the clipboard. Note: copy only the API Key, not the quotes around it.
 ![](./images/cipdemo/ace-copy-api-key.jpg)
 1. Edit the configuration files:
@@ -246,9 +246,11 @@ https://kubernetes.io/docs/concepts/configuration/secret/ )
  - Use either `gedit setdbparms.txt` or `vi setdbparms.txt` to edit the _setdbparms.txt_ file.
     - Replace the characters `<over-write with API Key>` with the API key that you copied to the clipboard a moment ago. Note that this must be done accurately, otherwise the connection from ACE to Event Streams will not work. The content of the file should look like this:
  ```
- kafka::KAFKA token yNsbjWGxFIxGR_byZNzsEEzVpNyUd6S7XpGFMvlH3x8F
+ kafka::KAFKA token TYu9y5iTqBxKeCDuko-BBCnaMpDn2zIZYJp7uYUzGFWh
  IntSvr::truststorePass thisispwdfortruststore password
  ```
+    - The first line means "when ACE uses its Kafka client to connect, use this API key as the password". (**token** is an unused id.)
+    - The second line means "when ACE refers to the identity _IntSvr::truststorePass_, it will use the password **password**. (**thisispwdfortruststore** is an unused id.) (Note that in the set of configuration files, **truststorePassword.txt** has already been defined, containing the matching value **password**.)
     - `Save` your changes and exit the editor.
 1. Sign into the CIP namespace and run the tool to generate the Secret.
  - In the Terminal session, execute `sudo cloudctl login`.
@@ -270,9 +272,6 @@ You have now finished preparing Event Streams, and you have created the artefact
 The REST APIs within ACE, that form part of the overall solution, are mostly already written for you. You will now make changes to one of those REST APIs (to let it connect to Event Streams).
 
 ## Modify the orders API within ACE
-
-1. Import the project interchange provided in the `faststartflows.zip` file.  You can find this file in the `/home/student/techguides/pages/cipdemo` folder
->> Hugh: will we need to import this file ? Will they not already exist ?
 
 1. On the Developer Machine, open a Terminal session. Note that you will be signed in as _student_, and placed in directory _/home/student_.
 1. Start the Ace Toolkit by executing `./ace-v11.0.0.3/ace toolkit`.
@@ -303,7 +302,8 @@ Here is what the flow will look like. Detailed instructions follow.
  - For `Connection` select `Local queue manager`. This is because the container running ACE will also include a Queue Manager, to which we will connect locally.
  - For `Destination queue manager` name specify **acemqserver** (case sensitive). This is the name of the local Queue Manager. Note: in this instance we are hard-coding this Queue Manager name; typically it will be parameterised (using an MQ Policy).
 
-  ![](./images/cipdemo/ace_mq_output.png)
+ ![](./images/cipdemo/ace_mqoutput 1.png)
+ ![](./images/cipdemo/ace_mqoutput 2.jpg)
 2. Select the `KafkaProducer` node. Configure its properties thus:
  - Enter the `Topic name`, matching what you defined within the Event Streams configuration earlier - we recommended **NewOrder**. Note: in this instance you are hard-coding this topic name; typically it will be parameterised (for ACE specialists: the parameterisation uses _LocalEnvironment.Destination.Kafka.Output.topicName_).
  - For Acks specify **All**. This defines the number of acknowledgements to request from the Event Streams server before the publication request is sent. **0** is equivalent to similar to 'fire and forget'; **1** waits for a single acknowledgement; **All** waits for acknowledgements from all replicas of the topic (providing the strongest available guarantee that the message was received).
