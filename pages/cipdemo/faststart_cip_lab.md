@@ -43,8 +43,8 @@ You have been provided a pre-installed environment of the Cloud Integration Plat
 You should be able to access all portals from the Platform Navigator, but if you need to access the URL directly, they are provided below:
 
 * App Connect Enterprise Manager Portal running on `https://mycluster.icp/integration/instance/ace1`
-* API Connect API Manager Portal on `https://mgmt.10.0.0.1.nip.io/manager`
-* MQ Portal on `https://10.0.0.1:31681/ibmmq/console/`
+* API Connect API Manager Portal on `https://mgmt.mycluster.icp.nip.io/manager`
+* MQ Portal on `https://mycluster.icp:31681/ibmmq/console/`
 * Event Streams on `https://mycluster.icp/integration/instance/es`
 
 2. The environment you are using consists of 6 different nodes.  5 of which are ICP Nodes and one is a developer image that you will be using to access the ICP User Interfaces.  You can access this VM directly using the Skytap interface to use the X-Windows based components. All of the base CIP Charts are already installed and configured.
@@ -96,14 +96,13 @@ Lab Requirements
 
 ## ACE Integration Assets
 
-1. Your integration assets are already loaded into the Developer machine.
-1. For reference, they can also be found in this repository: `https://github.com/ibm-cloudintegration/techguides`.  You can find the specific files you need in the `/techguides/pages/cipdemo` directory.
-2. Below is a description of each of the files in archive that you should take note of (disregard the others).
+1. The integration assets can  be found in this repository: `https://github.com/ibm-cloudintegration/techguides`.  You can find the specific files you need in the `/techguides/pages/cipdemo` directory.
+2. Below is a description of each of the files that you need to import/clone into your environment.
 
 | File                           | Description                                                                                      |
 |--------------------------------|--------------------------------------------------------------------------------------------------|
-| faststartflows.zip             | ACE Project Interchange export of integration flows|
-| storeinventoryproject.generated.bar | generated bar file for the Inventory API.  You will be deploying this as is into the environment|
+| faststartflows.zip             | ACE Project Interchange export of integration flows - will not need to be imported|
+| storeinventoryproject.generated.bar | generated bar file for the Inventory API - you will be deploying this as is into the environment|
 | orderproject.generated.bar     | original bar file for order API. Disregard this, you will be generating a new bar file to deploy|
 | generateSecret.sh     | a script file that generates an ICP Secret, for use when deploying BAR files (Helm Charts) into ICP|
 | serverconf.yaml     | skeleton file, used by generateSecret.sh|
@@ -234,6 +233,24 @@ Firstly, you will generate a "Secret" object. This is a Kubernetes construct tha
 
 (More information on Secrets can be seen here:
 https://kubernetes.io/docs/concepts/configuration/secret/ )
+
+Before configuring the information you need, you need to clone some files from the Git repository. Do this as follows:
+1. On the developer Machine, open a Terminal session.  Note that you will be signed in as _student_, and be in directory _/home/student/_.
+1. Execute `mkdir generateScript` to create that directory, and `cd generateScript` to jump down to it.
+1. Execute `git clone https://github.com/ibm-cloudintegration/techguides/pages/cipdemo` to clone the files into this directory. You are specifically interested in these files:
+| File                           | Description                                                                                      |
+|--------------------------------|--------------------------------------------------------------------------------------------------|
+| storeinventoryproject.generated.bar | BAR file for the Inventory API - you will be deploying this as is into the environment|
+| generateSecret.sh     | a script file that generates an ICP Secret used when deploying BAR files (Helm Charts) into ICP|
+| serverconf.yaml     | skeleton file, used by generateSecret.sh|
+| setdbparms.txt     | parameter file, used by generateSecret.sh|
+| truststorePassword.txt     | parameter file, used by generateSecret.sh|
+>>> Hugh: That `git clone` command needs checking
+
+1. Use the Files icon, or the `mv` command, to move the **storeinventoryproject.generated.bar** file from _/home/student/generateScript_ to _/home/student_.
+
+Now you will use the information specific to your environment.
+
 1. Prepare the PEM file you downloaded earlier.
  - On the Developer Machine, open a "Files" session.
  - Move the PEM certificate file that you downloaded from Event Streams earlier (probably called **es-cert.pem**) from _/home/student/Downloads_ to _/home/student/generateScript_.
@@ -241,8 +258,7 @@ https://kubernetes.io/docs/concepts/configuration/secret/ )
 1. Go back to _/home/student/Downloads_, open the downloaded JSON file **es-api-key.json** in your favourite editor and copy the API key to the clipboard. Note: copy only the API Key, not the quotes around it.
 ![](./images/cipdemo/ace-copy-api-key.jpg)
 1. Edit the configuration files:
- - On the Developer Machine, open a Terminal session. Note that you will be signed in as _student_.
- - Navigate to _/home/student/generateScript_. This directory is already populated with the _generateSecret.sh_ tool that will generate the secret, and with the text files that form the input into that tool. This directory now also has your renamed PEM file (**truststore-ALIASNAME.crt**) in it, which also forms input into the tool.
+ - On the Developer Machine, go back to the Terminal session. You should be in directory _/home/student/generateScript_. You have already put into this directory the _generateSecret.sh_ tool that will generate the secret, and some of the text files that form the input into that tool. This directory now also has your renamed PEM file (**truststore-ALIASNAME.crt**) in it, which also forms input into the tool.
  - Use either `gedit setdbparms.txt` or `vi setdbparms.txt` to edit the _setdbparms.txt_ file.
     - Replace the characters `<over-write with API Key>` with the API key that you copied to the clipboard a moment ago. Note that this must be done accurately, otherwise the connection from ACE to Event Streams will not work. The content of the file should look like this:
  ```
@@ -255,7 +271,7 @@ https://kubernetes.io/docs/concepts/configuration/secret/ )
 1. Sign into the CIP namespace and run the tool to generate the Secret.
  - In the Terminal session, execute `sudo cloudctl login`.
  - Provide the password for student: **Passw0rd!**.
- - Ensure that the API Endpoint **https://mycluster.icp:8443** (or **https://10.0.0.1:8443**) is specified. If a different one is specified, execute `sudo cloudctl logout` and try again.
+ - Ensure that the API Endpoint **https://mycluster.icp:8443** is specified. If a different one is specified, execute `sudo cloudctl logout` and try again.
  - Provide the CIP userid: **admin** with  password **admin**
  - Set the namespace context to **ace**. (This is because the Secret we are about to generate must be in namespace **ace**.)
  - Execute `./generateSecret.sh orders-secret`. This script takes in the various configuration files (including the PEM certificate and the API key) and then uses _kubectl_ to generate the Secret with name **orders-secret**. You should see a success message `secret/orders-secret created`.
@@ -273,7 +289,7 @@ The REST APIs within ACE, that form part of the overall solution, are mostly alr
 
 ## Modify the orders API within ACE
 
-1. On the Developer Machine, open a Terminal session. Note that you will be signed in as _student_, and placed in directory _/home/student_.
+1. On the Developer Machine, go back to the Terminal session and navigate to directory _/home/student_.
 1. Start the Ace Toolkit by executing `./ace-v11.0.0.3/ace toolkit`.
 Note that the ACE Toolkit may start as a tiny window on the screen. Use the cursor to grab the corner of this screen and expand it.
  ![](./images/cipdemo/ace-tiny-toolkit-start.jpg)
@@ -369,7 +385,7 @@ The BAR file containing the changed `orders` API is now ready for deployment. It
  	- Type `Refresh Security`
  	- Type `end` to exit from runmqsc.
 
-	1. Execute `exit` to terminate the bash shell.
+	- Execute `exit` to terminate the bash shell.
 
 
 ## Deploy the bar files
@@ -392,7 +408,7 @@ Deployment of a BAR file includes the creation of the Integration Server in whic
 3. First, deploy the `inventory` flow - which you have not changed.
  - From the ACE Dashboard, select `Create` to start the process.
 
- - Browse to _/home/student/IBM/workspace/GeneratedBARFiles_, and select the BAR file `inventoryproject.generated.bar` and continue.
+ - Browse to _/home/student_,  select the BAR file `inventoryproject.generated.bar` and continue.
  - You will be presented by the `Content URL`, and the `namespace` **ace**.  The `Content URL` defines the location, in ICP terms, of where the BAR file is.
 
 	  ![](./images/cipdemo/ace_deploy_1.png)
@@ -443,44 +459,54 @@ Deployment of a BAR file includes the creation of the Integration Server in whic
 
 4. You should now return to the ACE Dashboard and confirm that the Integration Server has been correctly deployed. You should wait a few seconds to a minute, for the deployment to succeed fully. Use the `Refresh` button.
 
-Now test each flow, using cURL, before moving on.
+### Test the deployed ACE APIs
+Now you will test each API, using cURL, before moving on.
 
-1. Use the following value as input for the inventory API `key` query parameter : `AJ1-05.jpg`
-8. Once you have confirmed the functionality for both `order` and `inventory` message flows, export the swagger for each from the ACE Management Portal.  Save it to the file system on the developer machine, you will be using this in the next section
-9. Once deployed, your ACE Management UI should display both `inventory` and `order` APIs running
-
+1. Once deployed, your ACE Management UI should display both the `inventory` and `order` APIs, as shown:
  ![](./images/cipdemo/appconnect.gif)
-
-10. If you Drill into the `order` API you should see something that resembles the following (yours will be a little different)
-
+1. First test the `orders` API.
+  - In the ACE Management UI, click into the `orders` API. You will see something that resembles the following. Write down or copy to the clipboard the unique value for `REST API Base URL` in your environment (eg **orders.10.0.0.5.nip.io:3xxxx**).
  ![](./images/cipdemo/appconn_order_api.gif)
+   - Back in the Terminal session, navigate to _/home/student_ and test the `orders` flow, by using cURL to POST the contents of the `order.json` file, thus:
+```
+curl -k -X POST http://orders.10.0.0.5.nip.io:3xxxx/orders/v1/create -d @order.json
+```
 
-11. And here is `inventory`:
-
+1. Now test the `inventory` API.
+  - Back in the ACE Management UI, click into the `inventory` API and write down or copy to the clipboard the unique value for `REST API Base URL` in your environment (eg **inventory.10.0.0.5.nip.io:3xxxx**).:
  ![](./images/cipdemo/appconn_inventory_api.gif)
+  - Back in the Terminal session, test the `inventory` flow, by using cURL to GET the information, thus:
+ ```
+ curl -k -X GET http://inventory.10.0.0.5.nip.io:3xxxx/orders/v1/retrieve
+ ```
 
-12. Test both APIs using `cURL`.  The input for the `orders` flow is the `order.json` file that was pulled down from the `techguides` github pull.
+Once you have confirmed the functionality for both `order` and `inventory` message flows, export the swagger for each from the ACE Management Portal into _/home/student_. You will be using these in the next section.
 
-## Review MQ Portion
-To review that the MQ portion is working properly, perform  the following inside a Terminal Window on Developer Machine (signed in as student).
+### Review MQ Portion
+To check that the `orders` flow has correctly put messages onto the relevant MQ queue, perform the following inside a Terminal Window on Developer Machine (signed in as _student_),
 
-**Note:** ACE created the Queue Manager and there is no MQ Console available.
+**Note:** when you deployed the `orders` BAR file, you specified that ACE create a Queue Manager called **acemqserver** in the same pod as the Integration Server. For this queue manager there is no MQ Console available, so we recommend you use command line tools to check messages, thus:
 1. Sign into the relevant ICP namespace:
  - In the Terminal session, execute `sudo cloudctl login`.
- - Provide the password for student: **Passw0rd!**.
+ - Provide the password for student: **Passw0rd!**
  - Ensure that the API Endpoint **https://mycluster.icp:8443** is specified. If a different one is specified, execute `sudo cloudctl logout` and try again.
  - Provide the CIP userid: **admin** with  password **admin**
  - Set the namespace context to **ace**. (You must choose this namespace, because the kubectl work you are about to do is for this namespace.)
 1. Execute  `kubectl get pods`
 1. Find the **orders-ib-xxxx-x** pod and copy the full name to the clipboard
 1. Execute  `kubectl exec <copied-podname> dspmq` . You will see **acemqserver** (the Queue Manager) running.
-1. Browse message on the NEWORDER.MQ queue that you defined earlier, execute `kubectl exec -it <copied-podname> /opt/mqm/samp/bin/amqsbcg NEWORDER.MQ`
+1. Browse messages on the NEWORDER.MQ queue that you defined earlier, by executing `kubectl exec -it <copied-podname> /opt/mqm/samp/bin/amqsbcg NEWORDER.MQ`
 1. (Note: experienced MQ and Linux users could also start a bash shell to the relevant pod as follows: `kubectl exec -it <copied-podname> -- /bin/bash` and use your own methods for examining MQ.)
 
-## Review Event Streams portion
+At this point, you have shown the message generated by New Orders has been successfully put a message to the relevant queue. It is expected that a follow-on applications (or flow) will be written to get that message and take further actions.
 
-To review that the message has been correctly published to Event Streams, use the Event Streams dashboard as follows.
-1. Switch back to the Event Streams dashboard. Or navigate to the Event Streams dashboard as follows:
+You have shown that Event Streams can be used as a mechanism for transmitting message information asynchronously in a point-to-point paradigm, to enable integration between applications.
+
+### Review Event Streams portion
+
+To check that the `orders` flow has correctly published messages to the relevant Event Streams topic, use the Event Streams dashboard as follows:
+
+1. In your browser session (if still open), switch back to the Event Streams dashboard. Or navigate to the Event Streams dashboard as follows:
  - Open a browser session to the Cloud Integration Platform home: `https://mycluster.icp/integration/`
  - Under `Messaging`, select the `es` link, to open the Event Streams Dashboard.
  - (If you see an error screen similar to that shown below, then simply select the `Open es` link in the middle.)
@@ -491,8 +517,9 @@ To review that the message has been correctly published to Event Streams, use th
 1. Click on the `Messages` tab, to see all messages.
 1. Click on a message, and you will see a screen similar to the following:
 	  ![](./images/cipdemo/es-show-message.jpg)
+1. Note that as you run more tests and publish more messages to Event Streams, you can click `Next offset` to show further messages.
 
-At this point, you have shown the message generated by New Orders has been successfully published to an Event Streams topic. Other applications or flows could be written to retrieve that message and take further actions.
+At this point, you have shown the message generated by New Orders has been successfully published to an Event Streams topic. Other applications or flows could be written to subscribe to that message and take further actions.
 
 You have shown that Event Streams can be used as a mechanism for transmitting message information asynchronously in a publish-subscribe paradigm, to enable loose coupling between applications.
 
@@ -507,7 +534,7 @@ Create APIs for each of the inventory, order and AcmeMart APIs.
 
 >**Note** the Swagger for the two ACE flows can be imported as APIs using the `From Existing Open API Service` option in API Connect.  The AcmeMart swagger can be downloaded from the main developer page and then imported, but use the `New Open API` option instead.
 
-1.  Open up your API Manager Window inside the developer machine - `https://mgmt.10.0.0.1.nip.io/manager`. The login should happen automatically as it will use your ICP credentials for login.
+1.  Open up your API Manager Window inside the developer machine - `https://mgmt.mycluster.icp.nip.io/manager`. The login should happen automatically as it will use your ICP credentials for login.
 2.  Click on the `Manage Catalogs`
 3.  Click on `Sandbox`
 4.  Click on `Settings` from left menu
