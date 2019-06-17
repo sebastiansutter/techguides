@@ -438,7 +438,7 @@ Deployment of a BAR file includes the creation of the Integration Server in whic
     - Under the heading `MQSC file for Queue Manager:`, enter **DEFINE QLOCAL(NEWORDER.MQ)**. This will create the specified MQ queue, using all defaults.
  - For the `Certificate alias name`, specify **escert**. This is used by the Integration Server when it connects to Event Streams. You defined the value **escert** earlier, when you created the Secret.
 		 ![](./images/cipdemo/ace_hc_5.png)
-		 ![](./images/cipdemo/ace_hc_6.png)
+		 ![](./images/cipdemo/ace_hc_6b.png)
 		 ![](./images/cipdemo/ace_hc_7.png)
 		 ![](./images/cipdemo/ace_hc_8.png)
 		 ![](./images/cipdemo/ace_hc_9.png)
@@ -448,7 +448,7 @@ Deployment of a BAR file includes the creation of the Integration Server in whic
 
 4. You should now return to the ACE Dashboard and confirm that the Integration Server has been correctly deployed. You should wait a few seconds to a minute, for the deployment to succeed fully. Use the `Refresh` button.
 
-Now test each flow, using cURL,  before moving on.
+Now test each flow, using cURL, before moving on.
 
 1. Use the following value as input for the inventory API `key` query parameter : `AJ1-05.jpg`
 8. Once you have confirmed the functionality for both `order` and `inventory` message flows, export the swagger for each from the ACE Management Portal.  Save it to the file system on the developer machine, you will be using this in the next section
