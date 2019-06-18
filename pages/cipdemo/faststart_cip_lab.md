@@ -378,7 +378,7 @@ The remote Queue Manager has already been created and deployed, in its own Helm 
   - Point a browser session at the ICP Main Portal: `https://mycluster.icp:8443`, open `Workloads` -> `Helm releases`, find the Helm Release called `mq` and on the right `Launch` -> `console-https`.
   - Point a browser session at the ICP4I Platform Navigator: `https://mycluster.icp/integration`, and under `Messaging` select `mq`.
   - Point a browser session directly at the MQ Console: `https://mycluster.icp/integration/instance/mq`
-3. Click the Queue Manager name: `mq` to highlight it. (This is the name of the Queue Manager already created in this pod). Select `Properties`.
+3. Click the Queue Manager name `mq` to highlight it. (This is the name of the Queue Manager already created in this pod). Select `Properties`.
 
   ![](./images/cipdemo/ace-mq-properties.jpg)
 
@@ -392,8 +392,20 @@ You will now add a new queue and a new channel.
 
 5. At the top right, click `Add Widget`, then select your Queue Manager `mq` and select the `Queues` widget.
   -  In your new Queues widget, click on `Create (+)` to create a new queue called **NEWORDER.MQ**, of type  `local`.
-1. At the top right, click `Add Widget` again, then select your Queue Manager `mq` and select the `Channels` widget.
-  -  In your new Channels widget, click on `Create (+)` to create a new channel called **ACE.TO.mq**, of type `Server-connection`.
+	1. At the top right, click `Add Widget` again, then select your Queue Manager `mq` and select the `Channels` widget.
+	  -  In your new Channels widget, click on `Create (+)` to create a new channel called **ACE.TO.mq**, of type `Server-connection`.
+1. At the top right, click `Add Widget` again, then select your Queue Manager `mq` and select the `Channel Authenticaiton Records` widget.
+  -  In your new Channel Authentication Records widget, click on `Create (+)`.
+  -  Specify `Rule Type` = **Block**, and `Identity` = **Final assigned user ID** - click `Next`.
+  - Specify `Channel profile` = **ACE.TO.mq** (case-sensitive) and `User list` = **nobody** - click `Next`.
+  - Leave the `Description` and `Custom` fields blank - click `Create`.
+  - What you have just created will block user **nobody** from this channel, thus allowing all other users to use this channel. For this lab session it makes for an easy connection; in a Production environment more strict security should be applied.
+1. At the top right, click `Add Widget` again, then select your Queue Manager `mq` and select the `Authentication Information` widget.
+  -  In your new  Authentication Information widget, click on the cogwheel to configure the widget, and select `System objects` -> `Show`.
+	![](./images/cipdemo/ace-authinfo-cogwheel.jpg)
+  - Click the system-provided Authinfo called `SYSTEM.DEFAULT.AUTHINFO.IDPWOS` and then click `Properties`.
+  - On the `User ID + password` tab, for `Client connections` specify **Optional**.
+  - Don't forget to `Save` and then `Close`.
 1. Your MQ Console should now show your new widgets and your new artefacts, thus:
 
   ![](./images/cipdemo/ace-mq-console-details.jpg)
@@ -418,8 +430,7 @@ You will now manually run some MQSC commands, to complete the configuration of t
 	- Within the bash shell, create **aceuser** as part of the **mqm** group:
  	- `sudo useradd -m aceuser`
  	- `sudo usermod -a -G mqm aceuser`
-	- Execute `runmqsc mq` to open the interactive MQ Command line environment.
- 	- Type `SET CHLAUTH(ACE.TO.mq) TYPE(BLOCKUSER) ACTION(REPLACE) USERLIST('nobody') ` - this will block user **nobody** from this channel, and allow all other users to use this channel. For this lab session it makes for an easy connection; in a Production environment more strict security should be applied.
+	- Execute `runmqsc mq` to open the interactive MQ Command line environment. Then, on that MQ command line, run the following:
  	- Type `ALTER AUTHINFO(SYSTEM.DEFAULT.AUTHINFO.IDPWOS) AUTHTYPE(IDPWOS) CHCKCLNT(OPTIONAL)` - this uses the local operating system to authenticate the user ID, but also makes checking of the client optional. For this lab session it makes for an easy connection; in a Production environment more strict security should be applied.
  	- Type `ALTER QMGR CHLAUTH(DISABLED)`
  	- Type `REFRESH SECURITY`
