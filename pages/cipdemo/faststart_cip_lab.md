@@ -96,13 +96,12 @@ Lab Requirements
 
 ## ACE Integration Assets
 
-1. The integration assets can  be found in this repository: `https://github.com/ibm-cloudintegration/techguides`.  You can find the specific files you need in the `/techguides/pages/cipdemo` directory.
-2. Below is a description of each of the files that you need to import/clone into your environment.
+1. The integration assets have already been populated into this lab for you. (You can also find them in this repository: `https://github.com/ibm-cloudintegration/techguides/pages/cipdemo`.
+2. Below is a description of each of the files that are relevant to the ACE portion of this lab.
 
 | File                           | Description                                                                                      |
 |--------------------------------|--------------------------------------------------------------------------------------------------|
-| ACEflows.zip             | ACE Project Interchange export of integration flows |
-| storeinventoryproject.generated.bar | generated bar file for the Inventory API - you will be deploying this as is into the environment|
+| ACEflows.zip             | ACE Project Interchange export of integration flows - allowing you to restore the code for the supplied ACE flows and APIs, in case anything goes wrong ! |
 | order.json             | a sample order file |
 | generateSecret.sh     | a script file that generates an ICP Secret, for use when deploying BAR files (Helm Charts) into ICP|
 | serverconf.yaml     | skeleton file, used by generateSecret.sh|
@@ -192,7 +191,7 @@ You will need to download the AcmeMart microservices and deploy the containers o
 	![](./images/cipdemo/pingtest.gif)
 
 
-## Prepare Event Streams Details
+## Prepare for Event Streams
 
 In this section you will prepare for the integration of Event Streams and ACE.
 
@@ -203,7 +202,7 @@ Start by working with Event Streams, to create a topic and to define and capture
  - (If you see an error screen similar to that shown below, then simply select the `Open es` link in the middle.)
 		![](./images/cipdemo/open_es_error.jpeg)
  - Provide or accept the credentials (Username **admin** Password **admin**) , then `Log In`.
-1. Select the `Topics` tab.
+1. Now you are in the main Event Streams dashboard. Select the `Topics` tab.
 1. Select `Create Topic`, to start creating a new topic:
  - You will be taken through 4 screens where you specify basic Topic configuration. Note the` Advanced` option : this would present all the parameters on one long screen. You can explore the Advanced options if you like, but for this lab we assume you will just specify the basic configuration parameters.
   - For the `Topic name`, we recommend **NewOrder**. This is the topic to which, in this lab, a message will be published by ACE, each time a new order is created. If any application wants to subscribe to this message then they must be told what this value is.
@@ -213,7 +212,7 @@ Start by working with Event Streams, to create a topic and to define and capture
   - Select `Create Topic` at the end. You will be taken back to the Topics screen.
 
 Now you will create and extract Event Streams connection information, for use later on.
-1. Select `Connect to this cluster`, to pull in the window that allows you to create and copy configuration information.
+4. Select `Connect to this cluster`, to pull in the window that allows you to create and copy configuration information.
 1. Make a note of the value of the `bootstrap server`. (Store it in a temporary file, or just write it down.) Make sure you note it correctly, because you must specify this exactly in the ACE configuration later.
 1. Use the correct button to download the `PEM Certificate`. Store it in `/home/student/Downloads`.
 		![](./images/cipdemo/bootstrap-server-and-certificate.png)
@@ -330,9 +329,10 @@ You will now add a new queue, a new channel, and an authentication record.
 	![](./images/cipdemo/ace-authinfo-cogwheel.jpg)
   - Click the system-provided Authinfo called `SYSTEM.DEFAULT.AUTHINFO.IDPWOS` and then click `Properties`.
   - On the `User ID + password` tab, for both `Local connections` and for  `Client connections` specify **None**.
+	![](./images/cipdemo/ace-idpwos.jpg)
   - Don't forget to `Save` and then `Close`.
   - Those **None** settings mean that the authentication of the client is not checked. For this lab session it makes for an easy connection; in a Production environment more strict security should be applied.
-1. Back on the Local Queue Managers widget, click the ellipsis and then click `Refresh Security...` and then select `Connection authentication`. This will make sure that the security changes you have just configured will now take effect.
+1. Back on the Local Queue Managers widget, make sure the Queue Manager `mq` is selected, then click the ellipsis, click `Refresh Security...` and then select `Connection authentication`. This will make sure that the security changes you have just configured will now take effect.
 
   ![](./images/cipdemo/ace-refresh-security.jpg)
 
@@ -484,6 +484,7 @@ In a DevOps environment, you would expect to configure and deploy the Helm Chart
  - Tick the `Local default Queue Manager` option. This specifies that this deployment will include a local queue manager.
  - For the `Secret name` specify **orders-secret** as prepared earlier. This Secret adds sensitive configuration information (such as API key and a certificate) to this Integration Server, so that it can communicate with Event Streams.
  - For the `Image pull secret` specify **sa-ace**. This Secret was created when the Cloud Pack for Integration was installed, and it contains the credentials for ICP to access its private docker repository.
+ - Untick `Enable persistence`. This is because provisioning volumes for persistence in this particular lab environment is sometimes troublesome. For a lab environment, persistence is not required for the MQ Queue Manager. In a Production environment, you would probably enable persistence.
  - For the `NodePort`, we recommend **orders.10.0.0.1.nip.io**. We recommend that the first part (**orders** in this case) is identical to the `Integration Server name`, because there is a 1 to 1 relationship here.
  - For the `Queue manager name`, specify **acemqserver**. This defines the name that ICP will give to the associated local queue manager (which matches what we specified in the `MQOutput` node earlier).
  - For the `Certificate alias name`, specify **escert**. This is used by the Integration Server when it connects to Event Streams. You defined the value **escert** earlier, when you created the Secret.
@@ -492,13 +493,14 @@ In a DevOps environment, you would expect to configure and deploy the Helm Chart
  ![](./images/cipdemo/ace_hc_5.png)
  ![](./images/cipdemo/ace_hc_6b.png)
  ![](./images/cipdemo/ace_hc_8.png)
+ ![](./images/cipdemo/ace-disable-persistence.jpg)
  ![](./images/cipdemo/ace_hc_9.png)
  ![](./images/cipdemo/ace_hc_10.png)
 
   - Leave the remaining settings as defaults and then click `Install` at the bottom.
   - Your Helm Chart will now install.
 
->>> Tip: when you see the on the "Installation started" screen, click on the little cross top right to cancel (see screenshot below). This will mean that your Helm Chart, with all the configuration you have just typed in, remains in the browser. In turn, this means that, if something goes wrong during installation, you can a) easily check what parameters you typed and b) easily try the installation again.
+> **Tip:** when you see the on the "Installation started" screen, click on the little cross top right to cancel (see screenshot below). This will mean that your Helm Chart, with all the configuration you have just typed in, remains in the browser. In turn, this means that, if something goes wrong during installation, you can a) easily check what parameters you typed and b) easily try the installation again.
 
  ![](./images/cipdemo/ace-installation-started.jpg)
 
@@ -511,14 +513,14 @@ Now you will test each API, using cURL, before moving on.
 1. Once deployed, your ACE Management UI should display both the `inventory` and `order` servers, as shown:
  ![](./images/cipdemo/appconnect.gif)
 1. First, test the `inventory` API.
-  - Back in the ACE Management UI, click down to the `inventory` API and write down or copy to the clipboard the unique value for `REST API Base URL` in your environment (eg **inventory.10.0.0.1.nip.io:3xxxx**).:
+  - In the ACE Management UI, click down to the `inventory` API and write down or copy to the clipboard the unique value for `REST API Base URL` in your environment (eg **inventory.10.0.0.1.nip.io:3xxxx**).:
  ![](./images/cipdemo/appconn_inventory_api.gif)
-  - Back in the Terminal session, test the `inventory` flow, by using cURL to GET the information fromthe Base URL appended by the `/retrieve` operation, thus:
+  - In the Terminal session, test the `inventory` flow, by using cURL to GET the information from the Base URL appended by the `/retrieve` operation, thus:
  ```
  curl -k -X GET http://inventory.10.0.0.1.nip.io:3xxxx/orders/v1/retrieve
  ```
 1. Now, test the `orders` API.
-  - In the ACE Management UI, click into the `orders` server, and then into the `orders` API. You will see something that resembles the following. Write down or copy to the clipboard the unique value for `REST API Base URL` in your environment (eg **orders.10.0.0.1.nip.io:3xxxx**).
+  - Back in the ACE Management UI, click into the `orders` server, and then into the `orders` API. You will see something that resembles the following. Write down or copy to the clipboard the unique value for `REST API Base URL` in your environment (eg **orders.10.0.0.1.nip.io:3xxxx**).
   ![](./images/cipdemo/appconn_order_api.gif)
   - Back in the Terminal session, navigate to _/home/student_ and test the `orders` flow, by using cURL to POST the contents of the `order.json` file, to the Base URL appended by the `/create` operation, thus:
  ```
@@ -571,14 +573,14 @@ You have shown that Event Streams can be used as a mechanism for transmitting me
 
 ## Create API Facades
 
-**Note** at the time of the writing of this lab, there is an issue with API Connect that must be resolved before continuing, but fortunately is easily fixed.
+**Note** at the time of writing this lab, there is an issue with API Connect that must be resolved before continuing, but fortunately is easily fixed.
 
-1. Open the main Admin console for APIC by opening a new browser tab on the Developer machine to `https://mgmt.10.0.0.5.nip.io/admin`
+1. Open the main Admin console for APIC by opening a new browser tab on the Developer machine to `https://mgmt.10.0.0.1.nip.io/admin`
 2. login with the credentials of `admin`/`7Ir0n-hide`
 
 Create APIs for each of the inventory, order and AcmeMart APIs.
 
->**Note** the Swagger for the two ACE flows can be imported as APIs using the `From Existing Open API Service` option in API Connect.  The AcmeMart swagger can be downloaded from the main developer page and then imported, but use the `New Open API` option instead.
+>**Note:** the Swagger for the two ACE flows can be imported as APIs using the `From Existing Open API Service` option in API Connect.  The AcmeMart swagger can be downloaded from the main developer page and then imported, but use the `New Open API` option instead.
 
 1.  Open up your API Manager Window inside the developer machine - `https://mgmt.mycluster.icp.nip.io/manager`. The login should happen automatically as it will use your ICP credentials for login.
 2.  Click on the `Manage Catalogs`
@@ -659,7 +661,7 @@ Example Output:
 
 ```
 curl -k -X POST \
-  https://apigw.10.0.0.5.nip.io/admin-admin/sandbox/orders/v1/create \
+  https://apigw.10.0.0.1.nip.io/admin-admin/sandbox/orders/v1/create \
   -H 'cache-control: no-cache' \
   -H 'content-type: application/json' \
   -H 'x-ibm-client-id: 5fa14472d2aa8f1ff5389ad20c1eed03' \
