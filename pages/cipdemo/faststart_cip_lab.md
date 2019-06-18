@@ -334,19 +334,18 @@ Here is what the **orders** subflow will eventually look like. Detailed instruct
   - For `Connection` select `Local queue manager`, because this is connection to the local Queue Manager (running inside the same pod that is also running ACE).
   - For `Destination queue manager` name specify **acemqserver** (case sensitive). This is the name of the local Queue Manager, which will be defined when this flow and its Integration Server and Queue manager are deployed . Note: in this instance we are hard-coding this Queue Manager name; typically it will be parameterised (using an MQ Policy).
 
- ![](./images/cipdemo/ace_mqoutput 1.png)
- ![](./images/cipdemo/ace_mqoutput 2.jpg)
+ ![](./images/cipdemo/ace_mqoutput.jpg)
 
 2. Select the second `MQOutput1` node. Configure its properties thus:
 	 - For `Queue Name` specify **NEWORDER.MQ**. This is the queue onto which the message will be put. Note: in this instance we are hard-coding this queue name; typically it will be parameterised (for ACE specialists: this parameterisation uses _LocalEnvironment.Destination.MQ.DestinationData.queueName_).
-	 - For `Connection` specify the following MQ client connection properties (because this is connection to a remote Queue Manager, running on a separate pod in the cluster):
-      - `Destination queue manager name`: **mq** (case-sensitive) - because this is the name of the remote Queue Manager
-      - `Queue Manager host name`: **10.0.0.1** - because this is the access IP address for the relevant pod
-      - `Channel name`: **ACE.TO.ES** - this must match the channel name already created
-      - `Listener`: **31200** - this must match the IP address (Hugh>>> needs checking using Helm Repositories --> mq console-https
+	 - In the `MQ Connection` tab, specify the following properties (because this is connection to a remote Queue Manager, running on a separate pod in the cluster):
+      - `Connection`: **MQ client connection properties**
+      - `Destination queue manager name`: **mq** (case-sensitive) - this is the name of the remote Queue Manager
+      - `Queue manager host name`: **10.0.0.1** - this is the access IP address for the relevant pod
+      - `Listener port number`: **3xxxx** - this must match the IP address (Hugh>>> needs checking using Helm Repositories --> mq console-https
+      - `Channel name`: **ACE.TO.mq** (case-sensitive)- this must match the channel name already created
 
-	 ![](./images/cipdemo/ace_mqoutput 1.png)
-	 ![](./images/cipdemo/ace_mqoutput 2.jpg)
+	 ![](./images/cipdemo/ace_mqoutput1.jpg)
 
 1. Select the `KafkaProducer` node. Configure its properties thus:
  - Enter the `Topic name`, matching what you defined within the Event Streams configuration earlier - we recommended **NewOrder**. Note: in this instance you are hard-coding this topic name; typically it will be parameterised (for ACE specialists: the parameterisation uses _LocalEnvironment.Destination.Kafka.Output.topicName_).
