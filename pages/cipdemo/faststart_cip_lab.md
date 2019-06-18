@@ -101,7 +101,7 @@ Lab Requirements
 
 | File                           | Description                                                                                      |
 |--------------------------------|--------------------------------------------------------------------------------------------------|
-| faststartflows.zip             | ACE Project Interchange export of integration flows - will not need to be imported|
+| ACEflows.zip             | ACE Project Interchange export of integration flows |
 | storeinventoryproject.generated.bar | generated bar file for the Inventory API - you will be deploying this as is into the environment|
 | orderproject.generated.bar     | original bar file for order API. Disregard this, you will be generating a new bar file to deploy|
 | generateSecret.sh     | a script file that generates an ICP Secret, for use when deploying BAR files (Helm Charts) into ICP|
@@ -236,10 +236,11 @@ https://kubernetes.io/docs/concepts/configuration/secret/ )
 
 Before configuring the information you need, you need to clone some files from the Git repository. Do this as follows:
 1. On the developer Machine, open a Terminal session.  Note that you will be signed in as _student_, and be in directory _/home/student/_.
-1. Execute `mkdir generateScript` to create that directory, and `cd generateScript` to jump down to it.
+1. Execute `mkdir generateScript` to create that directory, `chmod 666 generateScript` to set its permissions, and `cd generateScript` to jump down to it.
 1. Execute `git clone https://github.com/ibm-cloudintegration/techguides/pages/cipdemo` to clone the files into this directory. You are specifically interested in these files:
 | File                           | Description                                                                                      |
 |--------------------------------|--------------------------------------------------------------------------------------------------|
+| ACEflows.zip             | ACE Project Interchange export of integration flows |
 | storeinventoryproject.generated.bar | BAR file for the Inventory API - you will be deploying this as is into the environment|
 | generateSecret.sh     | a script file that generates an ICP Secret used when deploying BAR files (Helm Charts) into ICP|
 | serverconf.yaml     | skeleton file, used by generateSecret.sh|
@@ -247,7 +248,9 @@ Before configuring the information you need, you need to clone some files from t
 | truststorePassword.txt     | parameter file, used by generateSecret.sh|
 >>> Hugh: That `git clone` command needs checking
 
-1. Use the Files icon, or the `mv` command, to move the **storeinventoryproject.generated.bar** file from _/home/student/generateScript_ to _/home/student_.
+1. Execute `chmod 666 *` to set the correct permissions on all files.
+1. Execute `chmod 777 generateSecret.sh` to make sure that this script is executable by everyone.
+1. Use the Files icon, or the `mv` command, to move the **storeinventoryproject.generated.bar** file and the **ACEflows.zip** file from _/home/student/generateScript_ to _/home/student_.
 
 Now you will use the information specific to your environment.
 
@@ -293,19 +296,26 @@ The REST APIs within ACE, that form part of the overall solution, are mostly alr
 1. Start the Ace Toolkit by executing `./ace-v11.0.0.3/ace toolkit`.
 Note that the ACE Toolkit may start as a tiny window on the screen. Use the cursor to grab the corner of this screen and expand it.
  ![](./images/cipdemo/ace-tiny-toolkit-start.jpg)
-1. You will see, in the Application Development window on the lefthand side, three REST APIs and their artefacts:
+1. Your Application Development window will be empty. (No ACE APIs/flows exist yet.)
+1. Import the partially-written ACE flows thus:
+  - Right-click in the Application Development window.
+  - Select `Import` -> `General` -> `Project Interchange`.
+  - Browse to _/home/student_, select **ACEflows.zip** and import it.
+1. You will now see, in the Application Development window on the lefthand side, three REST APIs and their artefacts:
  - **Customer**, which this lab does not use
  - **orders**, which you are about to change and then deploy
- - **storeinventory**, which you will not change and which is already deployed (as **inventory**)
+ - **storeinventory**, which you will not change and will simply deploy (as **inventory**)
 	 ![](./images/cipdemo/appl_dev_window.png)
-1. Drill down `orders` -> `Resources` -> `Subflows` and open `New_Order.subflow`. This subflow forms the body of the work that ACE will do when a new order is created and the orders API is called.
 
-You will now modify this subflow, by adding three operations (nodes) following  the App Connect REST Request operation. The first node will strip the HTTP Headers, the second will put to an MQ queue, and the third  will publish the message to a topic in EventStreams.
+The `orders` subflow forms the body of the work that ACE will do when a new order is created and the orders API is called.
 
-Here is what the flow will look like. Detailed instructions follow.
+You will now modify this subflow, by adding three operations (nodes) following the App Connect REST Request operation. The first node will strip the HTTP Headers, the second will put to an MQ queue, and the third will publish the message to a topic in EventStreams.
+
+Here is what the **orders** subflow will eventually look like. Detailed instructions follow.
 
  ![](./images/cipdemo/orders_subflow_canvas.jpeg)
 
+1. Drill down `orders` -> `Resources` -> `Subflows` and open `New_Order.subflow`.
 1. From the ACE palette, drag and drop an `HTTPHeader` node, an `MQOutput` node and a `KafkaProducer` node. Position them and connect them as shown in the screenshot above.
 1. Select the `Http Header` node. Configure its properties thus:
  - On the `HTTPInput` tab, select **Delete HTTP Header**. This is because before we do any further work with this message, we must remove this header.
@@ -330,8 +340,9 @@ Here is what the flow will look like. Detailed instructions follow.
    ![](./images/cipdemo/ace_kafka_producer.png)
 
 8. `Save` your flow.
-9. Create a BAR (Broker Archive) file in a project called **Barfiles**.
- - Call it **orders**.
+9. Create a BAR (Broker Archive) file in a project called **Barfiles**, thus:
+  - Right-click in the Application Development window and select `New` -> `Bar file`.
+  - Call it **orders**.
   - In the `Prepare` tab, ensure that the REST API called **orders**  is selected.
   - Select `Build and Save`.
 
@@ -433,7 +444,7 @@ Deployment of a BAR file includes the creation of the Integration Server in whic
  - Leave the remaining settings as defaults and then click `Install` at the bottom.
  - Your Helm Chart will now install. You can view the progress of the install via `Helm Releases` (as prompted on the screen) or via _kubectl_ on a command line.
 
-3. You should now return to the ACE Dashboard and confirm that the Integration Server has been correctly deployed. You should wait a few seconds to a minute, for the deployment to succeed fully. Use the `Refresh` button.
+3. Return to the ACE Dashboard and confirm that the Integration Server has been correctly deployed. You should wait a few seconds to a minute, for the deployment to succeed fully. Use the `Refresh` button.
 
 3. Next, deploy the new `orders` flow, which you have changed. The process to deploy this is the same as `Inventory`, with some extra configuration.
  - From the ACE Dashboard, select `Create` to start the process.
