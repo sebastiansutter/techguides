@@ -365,50 +365,64 @@ Here is what the **orders** subflow will eventually look like. Detailed instruct
 
 The BAR file containing the changed `orders` API is now ready for deployment. It is called **orders.bar**, and resides in the ACE workspace, which is _/home/student/IBM/workspace/BARfiles_.
 
-## Connecting ACE to a remote MQ on ICP
+## Configuring remote MQ to permit ACE connection
 
-1. Open MQ Console on `mq` Helm Repositories
-2. Click `mq-console-https 31694/TCP`
-3. Click Queue Manager name: `mq`. This is the name of the Queue Manager already created in this pod.
-4. Click  Properties
-5. Find `Communication Properties` `CHLAUTH` option and Select `DISABLE` and `Save` & `Close`
+The `orders` API provided by ACE will put one message onto a queue on a local Queue Manager, and also the same message onto a queue on a remote Queue Manager. This is to illustrate the configuration differences between those two.
 
-  ![](./images/cipdemo/ace3-1.png)
+In this section, you will perform the necessary configuration on the remote Queue Manager, to permit ACE to conenct to it.
 
-6. Click Add Widget
-	- Select Queues to add on MQ Console
-	- Click on sign (+) to Create a local Queue: `NEWORDER.ES`
-7. Add a new Widget
-	- Select `Channel` to add on MQ Console
-	- Create a channel using `Server Connection` on channels window: `ACE.TO.ES`
+### Work with MQ artefacts
 
-  ![](./images/cipdemo/ace3-3.png)
+The remote Queue Manager has already been created and deployed, in its own Helm Chart. You will now use the MQ Console to perform some configuration.
+1. Open the MQ Console for the Queue Manager in one of these  ways:
+  - Point a browser session at the ICP Main Portal: `https://mycluster.icp:8443`, open `Workloads` -> `Helm releases`, find the Helm Release called `mq` and on the right `Launch` -> `console-https`.
+  - Point a browser session at the ICP4I Platform Navigator: `https://mycluster.icp/integration`, and under `Messaging` select `mq`.
+  - Point a browser session directly at the MQ Console: `https://mycluster.icp/integration/instance/mq`
+3. Click the Queue Manager name: `mq` to highlight it. (This is the name of the Queue Manager already created in this pod). Select `Properties`.
 
-  ![](./images/cipdemo/ace3-4.png)
+  ![](./images/cipdemo/ace-mq-properties.jpg)
 
-## Work with MQ authorization
+5. On the `Communication` tab, find the `CHLAUTH Records` property and make it `Disabled`.
 
-1. Open a terminal window on Developer machine.
+  ![](./images/cipdemo/ace-chlauth-disabled.jpg)
+
+1. Don't forget to `Save` and then `Close`.
+
+You will now add a new queue and a new channel.
+
+5. At the top right, click `Add Widget`, then select your Queue Manager `mq` and select the `Queues` widget.
+  -  In your new Queues widget, click on `Create (+)` to create a new queue called **NEWORDER.MQ**, of type  `local`.
+1. At the top right, click `Add Widget` again, then select your Queue Manager `mq` and select the `Channels` widget.
+  -  In your new Channels widget, click on `Create (+)` to create a new channel called **ACE.TO.mq**, of type `Server-connection`.
+1. Your MQ Console should now show your new widgets and your new artefacts, thus:
+
+  ![](./images/cipdemo/ace-mq-console-details.jpg)
+
+### Work with MQ authorization
+
+You will now manually run some MQSC commands, to complete the configuration of this Queue Manager.
+
+1. On the developer Machine, open a Terminal session.  Note that you will be signed in as _student_, and be in directory _/home/student/_.
 1. Sign into the relevant ICP namespace:
  - In the Terminal session, execute `sudo cloudctl login`.
  - Provide the password for student: **Passw0rd!**.
  - Ensure that the API Endpoint **https://mycluster.icp:8443** is specified. If a different one is specified, execute `sudo cloudctl logout` and try again.
  - Provide the CIP userid: **admin** with  password **admin**
- - Set the namespace context to **acemq**. (You must choose this namespace, because the kubectl work you are about to do is for this namespace.)
+ - Set the namespace context to **mq**. (You must choose this namespace, because the kubectl work you are about to do is for this namespace.)
 1. Start a bash shell to the mq pod:
  - Execute `kubectl get pods`
- - Find mq pod
- - Execute `kubectl exec -it mq-ibm-mq-0 -- /bin/bash`. You will be root user on mq server on ICP .
+ - Find the name of the mq pod - it will probably be **mq-ibm-mq-0**.
+ - Execute `kubectl exec -it <pod-name> -- /bin/bash`, to open a bash shell to the pod.
 
 2. Configure security, to allow ACE to put a message on the Queue Manager called **mq** (a remote Queue Manager) .
 	- Within the bash shell, create **aceuser** as part of the **mqm** group:
  	- `sudo useradd -m aceuser`
  	- `sudo usermod -a -G mqm aceuser`
-	- Execute `runmqsc mq` to open the interactive MQ Commandline environment.
- 	- Type `SET CHLAUTH(ACE.TO.ES) TYPE(BLOCKUSER) ACTION(REPLACE) USERLIST('nobody') `
- 	- Type `ALTER AUTHINFO(SYSTEM.DEFAULT.AUTHINFO.IDPWOS) AUTHTYPE(IDPWOS) CHCKCLNT(OPTIONAL)`
+	- Execute `runmqsc mq` to open the interactive MQ Command line environment.
+ 	- Type `SET CHLAUTH(ACE.TO.mq) TYPE(BLOCKUSER) ACTION(REPLACE) USERLIST('nobody') ` - this will block user **nobody** from this channel, and allow all other users to use this channel. For this lab session it makes for an easy connection; in a Production environment more strict security should be applied.
+ 	- Type `ALTER AUTHINFO(SYSTEM.DEFAULT.AUTHINFO.IDPWOS) AUTHTYPE(IDPWOS) CHCKCLNT(OPTIONAL)` - this uses the local operating system to authenticate the user ID, but also makes checking of the client optional. For this lab session it makes for an easy connection; in a Production environment more strict security should be applied.
  	- Type `ALTER QMGR CHLAUTH(DISABLED)`
- 	- Type `Refresh Security`
+ 	- Type `REFRESH SECURITY`
  	- Type `end` to exit from runmqsc.
 
 	- Execute `exit` to terminate the bash shell.
