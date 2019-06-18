@@ -317,6 +317,9 @@ You will now add a new queue, a new channel, and an authentication record.
   - You have just created a queue, onto which messages can be put.
 1. At the top right, click `Add Widget` again, then select your Queue Manager `mq` and select the `Channels` widget.
   -  In your new Channels widget, click on `Create (+)` to create a new channel called **ACE.TO.mq**, of type `Server-connection`.
+  - Having created it, click `ACE.TO.mq` to select it, and then click `Properties`.
+  - On the MCA tab, for `MCA User ID` specify **mqm**.
+	![](./images/cipdemo/ace-specify-MCA.jpg)
   - You have just created a channel, which will be used by the MQ Client built into ACE Integration Server, when its flows want to connect to this Queue Manager.
 1. At the top right, click `Add Widget` again, then select your Queue Manager `mq` and select the `Channel Authentication Records` widget.
   -  In your new Channel Authentication Records widget, click on `Create (+)`.
@@ -360,11 +363,9 @@ You have now identified that the queue manager `mq` is listening on port **1414*
 You have now finished preparing the remote Queue Manager `mq`, to allow the MQ Client within ACE to connect to it.
 
 
-## Make changes within ACE and deploy them
+## Modify the `orders` API within ACE
 
-The REST APIs within ACE, that form part of the overall solution, are mostly already written for you. You will now make changes to one of those REST APIs (to let it connect to Event Streams).
-
-## Modify the orders API within ACE
+The REST APIs within ACE, that form part of the overall solution, are mostly already written for you. You will now make changes to one of those REST APIs (namely the `orders` API, to make it put messages on MQ queues and publish a message to an Event Streams topic).
 
 1. On the Developer Machine, go back to the Terminal session and navigate to directory _/home/student_.
 1. Start the Ace Toolkit by executing `sudo ./ace-v11.0.0.3/ace toolkit`.
@@ -376,18 +377,15 @@ Note that the ACE Toolkit may start as a tiny window on the screen. Use the curs
 
  ![](./images/cipdemo/ace-tiny-toolkit-start.jpg)
 
-1. Your Application Development window will be empty. (No ACE APIs/flows exist yet.)
-1. Import the partially-written ACE flows thus:
-  - Right-click in the Application Development window.
-  - Select `Import` -> `General` -> `Project Interchange`.
-  - Browse to _/home/student_, select **ACEflows.zip** and import it.
-1. You will now see, in the Application Development window on the lefthand side, three REST APIs and their artefacts:
+4. You should see, in the Application Development window on the lefthand side, three REST APIs and their artefacts:
  - **Customer**, which this lab does not use
  - **orders**, which you are about to change and then deploy
  - **storeinventory**, which you will not change and is already deployed (as **inventory**)
 	 ![](./images/cipdemo/appl_dev_window.png)
 
 The `orders` subflow forms the body of the work that ACE will do when a new order is created and the orders API is called.
+
+### Modify the `orders` subflow
 
 You will now modify this subflow, by adding four operations (nodes) following the App Connect REST Request operation (node).
 1. The first node will strip the HTTP Headers. This is because before you do any further work with this message in this subflow, you must remove this header.
@@ -504,7 +502,31 @@ In a DevOps environment, you would expect to configure and deploy the Helm Chart
 
  ![](./images/cipdemo/ace-installation-started.jpg)
 
-3. Return to the ACE Dashboard and confirm that the `orders` Integration Server has been correctly deployed. You should wait a few seconds to a handful of minutes, for the deployment to succeed fully. Use the `Refresh` button.
+4. Return to the ACE Dashboard and confirm that the `orders` Integration Server has been correctly deployed. You should wait a few seconds to a handful of minutes, for the deployment to succeed fully. Use the `Refresh` button.
+
+### Some help for ACE, Event Streams and MQ Problem Determination
+If the deployment does not seem to succeed, use kubectl to perform problem determination, as follows:
+
+1. Sign into the relevant ICP namespace:
+ - In the Terminal session, execute `sudo cloudctl login`.
+ - Provide the password for student: **Passw0rd!**
+ - Ensure that the API Endpoint **https://mycluster.icp:8443** is specified. If a different one is specified, execute `sudo cloudctl logout` and try again.
+ - Provide the CIP userid: **admin** with  password **admin**
+ - Set the namespace context to **ace** or **mq** or **eventstreams**, depending on which namespace you want to work with most.
+1. Execute `kubectl get pods` for this namespace, or `kubectl -n ace get pods` or `kubectl -n mq get pods` or `kubectl -n eventstreams get pods` for each specified namespace.
+1. Execute `kubectl describe pod <pod-name>` for each pod that you want to examine. Some possible values for `<pod-name>` are:
+  - `orders-ib-92e8-0` for the ace+mq pod (to troubleshoot the **orders** Integration Server and/or the **acemqserver** Queue Manager)
+  - `mq-ibm-mq-0` for the standalone mq pod (to troubleshoot the **mq** Queue Manager)
+
+In addition, you can use the UI for troubleshooting:
+1. In a browser session, navigate to the ICP Portal: https://mycluster.icp:8443.
+1. Using the hamburger menu, navigate to `Workloads` -> `Helm Releases`.
+1. Use the `Search releases` box to filter to the Helm Release you want to analyse. (For example **order**, **mq**, **ace**, **es**). Click on the name of the one you want to work with.
+1. Inside that Helm Release, find a pod or other artefact that looks promising and click `View Logs`.
+
+
+
+
 
 
 ### Test the deployed ACE APIs
