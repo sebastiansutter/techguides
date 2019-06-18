@@ -388,13 +388,15 @@ The remote Queue Manager has already been created and deployed, in its own Helm 
 
 1. Don't forget to `Save` and then `Close`.
 
-You will now add a new queue and a new channel.
+You will now add a new queue, a new channel, and an authentication record.
 
 5. At the top right, click `Add Widget`, then select your Queue Manager `mq` and select the `Queues` widget.
   -  In your new Queues widget, click on `Create (+)` to create a new queue called **NEWORDER.MQ**, of type  `local`.
-	1. At the top right, click `Add Widget` again, then select your Queue Manager `mq` and select the `Channels` widget.
-	  -  In your new Channels widget, click on `Create (+)` to create a new channel called **ACE.TO.mq**, of type `Server-connection`.
-1. At the top right, click `Add Widget` again, then select your Queue Manager `mq` and select the `Channel Authenticaiton Records` widget.
+  - You have just created a queue, onto which messages can be put.
+1. At the top right, click `Add Widget` again, then select your Queue Manager `mq` and select the `Channels` widget.
+  -  In your new Channels widget, click on `Create (+)` to create a new channel called **ACE.TO.mq**, of type `Server-connection`.
+  - You have just created a channel, which will be used by the MQ Client built into ACE Integration Server, when its flows want to connect to this Queue Manager.
+1. At the top right, click `Add Widget` again, then select your Queue Manager `mq` and select the `Channel Authentication Records` widget.
   -  In your new Channel Authentication Records widget, click on `Create (+)`.
   -  Specify `Rule Type` = **Block**, and `Identity` = **Final assigned user ID** - click `Next`.
   - Specify `Channel profile` = **ACE.TO.mq** (case-sensitive) and `User list` = **nobody** - click `Next`.
@@ -406,7 +408,12 @@ You will now add a new queue and a new channel.
   - Click the system-provided Authinfo called `SYSTEM.DEFAULT.AUTHINFO.IDPWOS` and then click `Properties`.
   - On the `User ID + password` tab, for `Client connections` specify **Optional**.
   - Don't forget to `Save` and then `Close`.
-1. Your MQ Console should now show your new widgets and your new artefacts, thus:
+  - That `Client connections` = **Optional** setting makes checking of the client optional. For this lab session it makes for an easy connection; in a Production environment more strict security should be applied.
+1. Back on the Local Queue Managers widget, click the ellipsis and then click `Refresh Security...` followed by `Close`. This will make sure that the security changes you have just configured will now take effect.
+
+  ![](./images/cipdemo/ace-refresh-security.jpg)
+
+1. Your MQ Console should show your new widgets and your new artefacts, thus:
 
   ![](./images/cipdemo/ace-mq-console-details.jpg)
 
@@ -431,8 +438,7 @@ You will now manually run some MQSC commands, to complete the configuration of t
  	- `sudo useradd -m aceuser`
  	- `sudo usermod -a -G mqm aceuser`
 	- Execute `runmqsc mq` to open the interactive MQ Command line environment. Then, on that MQ command line, run the following:
- 	- Type `ALTER AUTHINFO(SYSTEM.DEFAULT.AUTHINFO.IDPWOS) AUTHTYPE(IDPWOS) CHCKCLNT(OPTIONAL)` - this uses the local operating system to authenticate the user ID, but also makes checking of the client optional. For this lab session it makes for an easy connection; in a Production environment more strict security should be applied.
- 	- Type `ALTER QMGR CHLAUTH(DISABLED)`
+
  	- Type `REFRESH SECURITY`
  	- Type `end` to exit from runmqsc.
 
