@@ -96,7 +96,7 @@ Lab Requirements
 
 ## ACE Integration Assets
 
-1. The integration assets have already been populated into this lab for you. (You can also find them in this repository: `https://github.com/ibm-cloudintegration/techguides/pages/cipdemo`.
+1. The ACE integration assets have already been populated into this lab for you. (You can also find them in this repository: `https://github.com/ibm-cloudintegration/techguides/pages/cipdemo`.)
 2. Below is a description of each of the files that are relevant to the ACE portion of this lab.
 
 | File                           | Description                                                                                      |
@@ -105,7 +105,7 @@ Lab Requirements
 | order.json             | a sample order file |
 | generateSecret.sh     | a script file that generates an ICP Secret, for use when deploying BAR files (Helm Charts) into ICP|
 | serverconf.yaml     | skeleton file, used by generateSecret.sh|
-| setdbparms.txt     | parameter file, used by generateSecret.sh|
+| setdbparms.txt     | parameter file, used by generateSecret.sh, which you will edit|
 | truststorePassword.txt     | parameter file, used by generateSecret.sh|
 
 
@@ -195,6 +195,8 @@ You will need to download the AcmeMart microservices and deploy the containers o
 
 In this section you will prepare for the integration of Event Streams and ACE.
 
+### Define and capture Event Streams Configuration Information
+
 Start by working with Event Streams, to create a topic and to define and capture connection information:
 1. Navigate to the Event Streams dashboard:
  - Open a browser session to the Cloud Integration Platform home: `https://mycluster.icp/integration/`
@@ -202,6 +204,7 @@ Start by working with Event Streams, to create a topic and to define and capture
  - (If you see an error screen similar to that shown below, then simply select the `Open es` link in the middle.)
 		![](./images/cipdemo/open_es_error.jpeg)
  - Provide or accept the credentials (Username **admin** Password **admin**) , then `Log In`.
+
 1. Now you are in the main Event Streams dashboard. Select the `Topics` tab.
 1. Select `Create Topic`, to start creating a new topic:
  - You will be taken through 4 screens where you specify basic Topic configuration. Note the` Advanced` option : this would present all the parameters on one long screen. You can explore the Advanced options if you like, but for this lab we assume you will just specify the basic configuration parameters.
@@ -213,11 +216,12 @@ Start by working with Event Streams, to create a topic and to define and capture
 
 Now you will create and extract Event Streams connection information, for use later on.
 4. Select `Connect to this cluster`, to pull in the window that allows you to create and copy configuration information.
+
 1. Make a note of the value of the `bootstrap server`. (Store it in a temporary file, or just write it down.) Make sure you note it correctly, because you must specify this exactly in the ACE configuration later.
 1. Use the correct button to download the `PEM Certificate`. Store it in `/home/student/Downloads`.
 		![](./images/cipdemo/bootstrap-server-and-certificate.png)
 1. Use the section on the right to create an API key:
- - First `Name your application`. This is used, within Event Streams, to report connections and activity - but it is not used further in this lab session. You could specify **ACE-Connection**, or **ordersFlow**, for example.
+ - First `Name your application`. This is used, within Event Streams, to report connections and activity, but it is not used further in this lab session. You could specify **ACE-Connection**, or **ordersFlow**, for example.
  - Specify `Produce, consume and create topics`. Although in this lab session we ask you only to produce messages, specifying this allows you to extend the lab and do more later, if you want. In a Production system you could use this to restrict access.
  - Select the slider, to specify `All topics`. Although in this lab session we ask you to use only the topic you created above,  specifying `All topics` allows you to extend the lab and do more later, if you want. In a Production system you could use this to restrict access.
  - Ensure that the slider specifying `All` consumer groups is enabled. In a Production system you could use this to restrict access.
@@ -226,33 +230,12 @@ Now you will create and extract Event Streams connection information, for use la
 
 &nbsp;
 
-You will now use the connection information to prepare the ACE Integration Server for deployment.
+### Generate a Secret object
 
-Firstly, you will generate a "Secret" object. This is a Kubernetes construct that lets you store and manage sensitive information, such as passwords and certificates. In this lab, a Secret is used to store connectivity information for connecting securely from an ACE Helm Release (aka Integration Server) to your instance of Event Streams.
+Now you will generate a "Secret" object. This is a Kubernetes construct that lets you store and manage sensitive information, such as passwords and certificates. In this lab, a Secret is used to store connectivity information for connecting securely from an ACE Helm Release (aka Integration Server) to your instance of Event Streams.
 
 (More information on Secrets can be seen here:
 https://kubernetes.io/docs/concepts/configuration/secret/ )
-
-Before configuring the information you need, you need to clone some files from the Git repository. Do this as follows:
-1. On the developer Machine, open a Terminal session.  Note that you will be signed in as _student_, and be in directory _/home/student/_.
-1. Execute `mkdir generateScript` to create that directory, `chmod 666 generateScript` to set its permissions, and `cd generateScript` to jump down to it.
-1. Execute `git clone https://github.com/ibm-cloudintegration/techguides/pages/cipdemo` to clone the files into this directory. You are specifically interested in these files:
-| File                           | Description                                                                                      |
-|--------------------------------|--------------------------------------------------------------------------------------------------|
-| ACEflows.zip             | ACE Project Interchange export of integration flows |
-| storeinventoryproject.generated.bar | BAR file for the Inventory API - you will be deploying this as is into the environment|
-| order.json             | a sample order file |
-| generateSecret.sh     | a script file that generates an ICP Secret used when deploying BAR files (Helm Charts) into ICP|
-| serverconf.yaml     | skeleton file, used by generateSecret.sh|
-| setdbparms.txt     | parameter file, used by generateSecret.sh|
-| truststorePassword.txt     | parameter file, used by generateSecret.sh|
->>> Hugh: That `git clone` command needs checking
-
-1. Execute `chmod 666 *` to set the correct permissions on all files.
-1. Execute `chmod 777 generateSecret.sh` to make sure that this script is executable by everyone.
-1. Use the Files icon, or the `mv` command, to move the **storeinventoryproject.generated.bar** file, the **order.json** file and the **ACEflows.zip** file from _/home/student/generateScript_ to _/home/student_.
-
-Now you will use the information specific to your environment.
 
 1. Prepare the PEM file you downloaded earlier.
  - On the Developer Machine, open a "Files" session.
@@ -260,16 +243,17 @@ Now you will use the information specific to your environment.
  - Rename this PEM certificate file in _/home/student/generateScript_ to the following: **truststore-escert.crt** (yes, this means that it will no longer be a PEM file). Note: that this name structure must be of the form **truststore-ALIASNAME.crt**, where ALIASNAME will be generated as the alias for the certificate. Note down your specific  ALIASNAME (**escert**), because you will need to specify this later when deploying a BAR file.
 1. Go back to _/home/student/Downloads_, open the downloaded JSON file **es-api-key.json** in your favourite editor and copy the API key to the clipboard. Note: copy only the API Key, not the quotes around it.
 ![](./images/cipdemo/ace-copy-api-key.jpg)
-1. Edit the configuration files:
- - On the Developer Machine, go back to the Terminal session. You should be in directory _/home/student/generateScript_. You have already put into this directory the _generateSecret.sh_ tool that will generate the secret, and some of the text files that form the input into that tool. This directory now also has your renamed PEM file (**truststore-ALIASNAME.crt**) in it, which also forms input into the tool.
- - Use either `gedit setdbparms.txt` or `vi setdbparms.txt` to edit the _setdbparms.txt_ file.
+
+1. On the Developer Machine, open a Terminal session.  Note that you will be signed in as _student_, and be in directory _/home/student/_.
+1. Change to working directory  _/home/student/generateScript_. This directory contains a tool called  _generateSecret.sh_, which will generate the Secret you need. It also contains some files that form input into that tool. This directory now also has your renamed PEM file (**truststore-ALIASNAME.crt**) in it, which also forms input into the tool.
+1. Use either `gedit setdbparms.txt` or `vi setdbparms.txt` to edit the **_setdbparms.txt_** file.
     - Replace the characters `<over-write with API Key>` with the API key that you copied to the clipboard a moment ago. Note that this must be done accurately, otherwise the connection from ACE to Event Streams will not work. The content of the file should look like this:
  ```
  kafka::KAFKA token TYu9y5iTqBxKeCDuko-BBCnaMpDn2zIZYJp7uYUzGFWh
  IntSvr::truststorePass thisispwdfortruststore password
  ```
-    - The first line means "when ACE uses its Kafka client to connect, use this API key as the password". (**token** is an unused id.)
-    - The second line means "when ACE refers to the identity _IntSvr::truststorePass_, it will use the password **password**. (**thisispwdfortruststore** is an unused id.) (Note that in the set of configuration files, **truststorePassword.txt** has already been defined, containing the matching value **password**.)
+    - The first line means "when ACE uses its Kafka client to connect, use this API key as the password". (**token** is the userID for that password, but it is not used.)
+    - The second line means "when ACE refers to the identity _IntSvr::truststorePass_, it will use the password **password**. (**thisispwdfortruststore** is the userID for that password, but it is not used.) Note that in the set of configuration files, **truststorePassword.txt** has already been defined, containing the matching value **password**.
     - `Save` your changes and exit the editor.
 1. Sign into the CIP namespace and run the tool to generate the Secret.
  - In the Terminal session, execute `sudo cloudctl login`.
@@ -318,9 +302,9 @@ You will now add a new queue, a new channel, and an authentication record.
 1. At the top right, click `Add Widget` again, then select your Queue Manager `mq` and select the `Channels` widget.
   -  In your new Channels widget, click on `Create (+)` to create a new channel called **ACE.TO.mq**, of type `Server-connection`.
   - Having created it, click `ACE.TO.mq` to select it, and then click `Properties`.
-  - On the MCA tab, for `MCA User ID` specify **mqm**.
+  - On the MCA tab, for `MCA User ID` specify **mqm**. This forces this userID to be used when a connection is attempted. For this lab session it makes for an easy connection; in a Production environment more strict security should be applied.
 	![](./images/cipdemo/ace-specify-MCA.jpg)
-  - You have just created a channel, which will be used by the MQ Client built into ACE Integration Server, when its flows want to connect to this Queue Manager.
+  - You have just created a channel, which will be used by the MQ Client built into ACE Integration Server when its flows want to connect to this Queue Manager.
 1. At the top right, click `Add Widget` again, then select your Queue Manager `mq` and select the `Channel Authentication Records` widget.
   -  In your new Channel Authentication Records widget, click on `Create (+)`.
   -  Specify `Rule Type` = **Block**, and `Identity` = **Final assigned user ID** - click `Next`.
@@ -348,7 +332,6 @@ Finally, you will check which port the MQ Listener is listening on, thus:
   -  In your new Listeners widget, click on the cogwheel to configure the widget, and select `System objects` -> `Show`.
 	![](./images/cipdemo/ace-authinfo-cogwheel.jpg)
   - You should see the system-provided Listener called `SYSTEM.LISTENER.TCP.1`. Make a mental note of the port for this listener (almost certainly it will be the MQ default of **1414**).
-
 	  ![](./images/cipdemo/ace-showing-listener.jpg)
 1. In a browser session, navigate to the ICP Portal: https://mycluster.icp:8443.
   - Using the hamburger menu, navigate to `Configuration` -> `Helm releases`.
@@ -365,7 +348,7 @@ You have now finished preparing the remote Queue Manager `mq`, to allow the MQ C
 
 ## Modify the `orders` API within ACE
 
-The REST APIs within ACE, that form part of the overall solution, are mostly already written for you. You will now make changes to one of those REST APIs (namely the `orders` API, to make it put messages on MQ queues and publish a message to an Event Streams topic).
+The REST APIs within ACE, that form part of the overall solution, are mostly already written for you. You will now make changes to one of those REST APIs (namely the `orders` API) to make it put messages on MQ queues and publish a message to an Event Streams topic).
 
 1. On the Developer Machine, go back to the Terminal session and navigate to directory _/home/student_.
 1. Start the Ace Toolkit by executing `sudo ./ace-v11.0.0.3/ace toolkit`.
@@ -383,9 +366,9 @@ Note that the ACE Toolkit may start as a tiny window on the screen. Use the curs
  - **storeinventory**, which you will not change and is already deployed (as **inventory**)
 	 ![](./images/cipdemo/appl_dev_window.png)
 
-The `orders` subflow forms the body of the work that ACE will do when a new order is created and the orders API is called.
-
 ### Modify the `orders` subflow
+
+The `orders` subflow forms the body of the work that ACE will do when a new order is created and the orders API is called.
 
 You will now modify this subflow, by adding four operations (nodes) following the App Connect REST Request operation (node).
 1. The first node will strip the HTTP Headers. This is because before you do any further work with this message in this subflow, you must remove this header.
@@ -409,13 +392,13 @@ Here is what the **orders** subflow will eventually look like. Detailed instruct
 1. Select the first `MQOutput` node. Configure its properties thus:
   - For `Queue Name` specify **NEWORDER.MQ**. This is the queue onto which the message will be put. Note: in this instance we are hard-coding this queue name; typically it will be parameterised (for ACE specialists: this parameterisation uses _LocalEnvironment.Destination.MQ.DestinationData.queueName_).
   - For `Connection` select `Local queue manager`, because this is connection to the local Queue Manager (running inside the same pod that is also running ACE).
-  - For `Destination queue manager` name specify **acemqserver** (case sensitive). This is the name of the local Queue Manager, which will be defined when this flow and its Integration Server and Queue manager are deployed . Note: in this instance we are hard-coding this Queue Manager name; typically it will be parameterised (using an MQ Policy).
+  - For `Destination queue manager` name specify **acemqserver** (case sensitive). This is the name of the local Queue Manager, which will be defined when this flow and its Integration Server and Queue manager are deployed . Note: in this lab we are hard-coding this Queue Manager name; typically it will be parameterised (using an MQ Policy).
 
  ![](./images/cipdemo/ace_mqoutput.jpg)
 
 2. Select the second `MQOutput1` node. Configure its properties thus:
 	 - For `Queue Name` specify **NEWORDER.MQ**. This is the queue onto which the message will be put. Note: in this instance we are hard-coding this queue name; typically it will be parameterised (for ACE specialists: this parameterisation uses _LocalEnvironment.Destination.MQ.DestinationData.queueName_).
-	 - In the `MQ Connection` tab, specify the following properties (because this is connection to a remote Queue Manager, running on a separate pod in the cluster):
+	 - In the `MQ Connection` tab, specify the following MQ Client connection properties. This is a connection to a remote Queue Manager, running on a separate pod in the cluster. Note: in this lab we are hard-coding these connection details; typically it will be parameterised (using an MQ Policy).
       - `Connection`: **MQ client connection properties**
       - `Destination queue manager name`: **mq** (case-sensitive) - this is the name of the remote Queue Manager
       - `Queue manager host name`: **10.0.0.1** - this is the access IP address for the relevant pod
@@ -426,6 +409,7 @@ Here is what the **orders** subflow will eventually look like. Detailed instruct
 
 1. Select the `KafkaProducer` node. Configure its properties thus:
  - Enter the `Topic name`, matching what you defined within the Event Streams configuration earlier - we recommended **NewOrder**. Note: in this instance you are hard-coding this topic name; typically it will be parameterised (for ACE specialists: the parameterisation uses _LocalEnvironment.Destination.Kafka.Output.topicName_).
+
  - For the `Bootstrap servers`, specify the value you noted in the Event Streams section earlier. It looks like **10.0.0.1:30633**.
  - For Acks specify **All**. This defines the number of acknowledgements to request from the Event Streams server before the publication request is sent. **0** is equivalent to similar to 'fire and forget'; **1** waits for a single acknowledgement; **All** waits for acknowledgements from all replicas of the topic (providing the strongest available guarantee that the message was received).
  - Change the `Timeout` to **5** secs (so that if it fails, you will only have to wait 5 seconds before you see the failure)
@@ -441,7 +425,7 @@ Here is what the **orders** subflow will eventually look like. Detailed instruct
   - In the `Prepare` tab, ensure that the REST API called **orders**  is selected.
   - Select `Build and Save`.
 
-The BAR file containing the changed `orders` API is now ready for deployment. It is called **orders.bar**, and resides in the ACE workspace, which is _/home/student/IBM/workspace/BARfiles_.
+The BAR file containing the changed `orders` API is now ready for deployment. It is called **orders.bar**, and resides in the ACE workspace (which is _/home/student/IBM/workspace/BARfiles_).
 
 
 ## Deploy the `orders` BAR File
@@ -450,7 +434,7 @@ In this section you will deploy the `orders` BAR file (the BAR File you changed 
 
 Deployment of a BAR file includes the creation of the Integration Server in which it will run, and you do this by configuring and deploying a Helm Chart. This Helm Chart includes all the details of the Integration Server, as well as the BAR file itself.
 
-In a DevOps environment, you would expect to configure and deploy the Helm Chart programmatically. In a Development environment, such as this, the typical way to deploy a BAR File (and create the Integration Server) is to start from the ACE Dashboard.
+In a DevOps environment, you would expect to configure and deploy the Helm Chart programmatically. In a Development environment, such as this lab, the typical way to deploy a BAR File (and create the Integration Server) is to start from the ACE Dashboard.
 
 >_**Note:**_ When deploying, you will create a unique hostname for each BAR file; this is referred to as the `NodePort IP` setting when configuring the Helm Release. For example: **orders.10.0.0.1.nip.io** and **inventory.10.0.0.1.nip.io**. The **10.0.0.1.nip.io** portion specifies that an on-demand service (**nip.io**) is used to route to **10.0.0.1** (the IP address of the ICP proxy node). The whole value of `NodePort` must be unique; it points to the HTTP listener for the specific Integration Server.
 
@@ -476,14 +460,14 @@ In a DevOps environment, you would expect to configure and deploy the Helm Chart
     - Select `Configure Release` to continue.
  - ACE now selects the correct Helm Chart from the Catalog, and opens the ICP configuration pages. You can scroll through the information if you want. At the bottom of the window, select `Configure` to continue.
  - For the `Helm Chart name`, we recommend **orders**. This name will be used in many of the ICP artefacts, so a meaningful name is good. This name will also be used as the default for some of the later properties (for example the name of the Integration Server).
- - For the `namespace`, select **ace**, which you made a mental note of earlier.
+ - For the `namespace`, select **ace**, because that was proposed by ACE earlier.
  - Ignore the `NodePort` under `Quick start` and select `Advanced` instead. (You will complete the `NodePort` shortly.)
  - Into the `Content Server URL` field, paste the contents of the `Content URL` from the clipboard. This vital piece links the BAR file to this Helm Chart.
  - Tick the `Local default Queue Manager` option. This specifies that this deployment will include a local queue manager.
  - For the `Secret name` specify **orders-secret** as prepared earlier. This Secret adds sensitive configuration information (such as API key and a certificate) to this Integration Server, so that it can communicate with Event Streams.
  - For the `Image pull secret` specify **sa-ace**. This Secret was created when the Cloud Pack for Integration was installed, and it contains the credentials for ICP to access its private docker repository.
  - Untick `Enable persistence`. This is because provisioning volumes for persistence in this particular lab environment is sometimes troublesome. For a lab environment, persistence is not required for the MQ Queue Manager. In a Production environment, you would probably enable persistence.
- - For the `NodePort`, we recommend **orders.10.0.0.1.nip.io**. We recommend that the first part (**orders** in this case) is identical to the `Integration Server name`, because there is a 1 to 1 relationship here.
+ - For the `NodePort`, we recommend **orders.10.0.0.1.nip.io**. We recommend that the first part of the name (**orders** in this case) is identical to the `Integration Server name`, because there is a 1 to 1 relationship here.
  - For the `Queue manager name`, specify **acemqserver**. This defines the name that ICP will give to the associated local queue manager (which matches what we specified in the `MQOutput` node earlier).
  - For the `Certificate alias name`, specify **escert**. This is used by the Integration Server when it connects to Event Streams. You defined the value **escert** earlier, when you created the Secret.
  - Note that you could also specify the `Integration Server name`. However, we recommend that you leave this blank, so that the Helm Chart name (**orders** in this case) is used.
