@@ -103,7 +103,7 @@ Lab Requirements
 |--------------------------------|--------------------------------------------------------------------------------------------------|
 | ACEflows.zip             | ACE Project Interchange export of integration flows |
 | storeinventoryproject.generated.bar | generated bar file for the Inventory API - you will be deploying this as is into the environment|
-| orderproject.generated.bar     | original bar file for order API. Disregard this, you will be generating a new bar file to deploy|
+| order.json             | a sample order file |
 | generateSecret.sh     | a script file that generates an ICP Secret, for use when deploying BAR files (Helm Charts) into ICP|
 | serverconf.yaml     | skeleton file, used by generateSecret.sh|
 | setdbparms.txt     | parameter file, used by generateSecret.sh|
@@ -242,6 +242,7 @@ Before configuring the information you need, you need to clone some files from t
 |--------------------------------|--------------------------------------------------------------------------------------------------|
 | ACEflows.zip             | ACE Project Interchange export of integration flows |
 | storeinventoryproject.generated.bar | BAR file for the Inventory API - you will be deploying this as is into the environment|
+| order.json             | a sample order file |
 | generateSecret.sh     | a script file that generates an ICP Secret used when deploying BAR files (Helm Charts) into ICP|
 | serverconf.yaml     | skeleton file, used by generateSecret.sh|
 | setdbparms.txt     | parameter file, used by generateSecret.sh|
@@ -250,7 +251,7 @@ Before configuring the information you need, you need to clone some files from t
 
 1. Execute `chmod 666 *` to set the correct permissions on all files.
 1. Execute `chmod 777 generateSecret.sh` to make sure that this script is executable by everyone.
-1. Use the Files icon, or the `mv` command, to move the **storeinventoryproject.generated.bar** file and the **ACEflows.zip** file from _/home/student/generateScript_ to _/home/student_.
+1. Use the Files icon, or the `mv` command, to move the **storeinventoryproject.generated.bar** file, the **order.json** file and the **ACEflows.zip** file from _/home/student/generateScript_ to _/home/student_.
 
 Now you will use the information specific to your environment.
 
@@ -349,7 +350,6 @@ Here is what the **orders** subflow will eventually look like. Detailed instruct
 The BAR file containing the changed `orders` API is now ready for deployment. It is called **orders.bar**, and resides in the ACE workspace, which is _/home/student/IBM/workspace/BARfiles_.
 
 ## Connecting ACE to a remote MQ on ICP
->> Comment from Hugh: I think we do not need to do this section. It was in the original lab because connection to ES was going to be via MQ. But in our lab, connection to ES doesn't use MQ. So no need to define this connection to a remote QMgr.
 
 1. Open MQ Console on `mq` Helm Repositories
 2. Click `mq-console-https 31694/TCP`
@@ -371,7 +371,6 @@ The BAR file containing the changed `orders` API is now ready for deployment. It
   ![](./images/cipdemo/ace3-4.png)
 
 ## Work with MQ authorization
->> Comment from Hugh: I think we do not need to do this section. It was in the original lab because connection to ES was going to be via MQ. But in our lab, connection to ES doesn't use MQ. So no need to define this security/authorisation for the remote QMgr.
 
 1. Open a terminal window on Developer machine.
 1. Sign into the relevant ICP namespace:
@@ -478,7 +477,7 @@ Now you will test each API, using cURL, before moving on.
 1. First test the `orders` API.
   - In the ACE Management UI, click into the `orders` server, and then into the `orders` API. You will see something that resembles the following. Write down or copy to the clipboard the unique value for `REST API Base URL` in your environment (eg **orders.10.0.0.5.nip.io:3xxxx**).
  ![](./images/cipdemo/appconn_order_api.gif)
-   - Back in the Terminal session, navigate to _/home/student_ and test the `orders` flow, by using cURL to POST the contents of the `order.json` file, thus:
+   - Back in the Terminal session, navigate to _/home/student_ and test the `orders` flow, by using cURL to POST the contents of the `order.json` file, to the Base URL appended by the `/create` operation, thus:
 ```
 curl -k -X POST http://orders.10.0.0.5.nip.io:3xxxx/orders/v1/create -d @order.json
 ```
@@ -486,15 +485,15 @@ curl -k -X POST http://orders.10.0.0.5.nip.io:3xxxx/orders/v1/create -d @order.j
 1. Now test the `inventory` API.
   - Back in the ACE Management UI, click down to the `inventory` API and write down or copy to the clipboard the unique value for `REST API Base URL` in your environment (eg **inventory.10.0.0.5.nip.io:3xxxx**).:
  ![](./images/cipdemo/appconn_inventory_api.gif)
-  - Back in the Terminal session, test the `inventory` flow, by using cURL to GET the information, thus:
+  - Back in the Terminal session, test the `inventory` flow, by using cURL to GET the information fromthe Base URL appended by the `/retrieve` operation, thus:
  ```
  curl -k -X GET http://inventory.10.0.0.5.nip.io:3xxxx/orders/v1/retrieve
  ```
 
 Once you have confirmed the functionality for both `order` and `inventory` message flows, export the swagger for each from the ACE Management Portal into _/home/student_. You will be using these in the next section.
 
-### Review MQ Portion
-To check that your use of cURL has caused the `orders` flow to correctly put messages onto the relevant MQ queue, perform the following inside a Terminal Window on Developer Machine (signed in as _student_),
+### Review MQ Portion - ACE with MQ - acemqserver
+To check that your use of cURL has caused the `orders` flow to correctly put messages onto the relevant MQ queue, perform the following inside a Terminal Window on the Developer Machine (signed in as _student_),
 
 **Note:** when you deployed the `orders` BAR file, you specified that ACE create a Queue Manager called **acemqserver** in the same pod as the Integration Server. For this queue manager there is no MQ Console available, so we recommend you use command line tools to check messages, thus:
 1. Sign into the relevant ICP namespace:
@@ -600,7 +599,7 @@ This part will show the following:
 + How to consume an API from a sample test application.
 
 1. Launch the Developer Portal from your bookmarks if you have the link saved, otherwise you  can obtain the Developer Portal URL from the API Manager. Go to your Catalog (eg. `Sandbox`), from the `Settings` menu select `Portal` to show the configuration. Copy the URL.
-2. Open a new brower tab and paste the URL to launch the Developer Portal
+2. Open a new browser tab and paste the URL to launch the Developer Portal
 
 ![](./images/cipdemo/portal.png)
 
