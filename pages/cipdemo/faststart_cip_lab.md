@@ -310,28 +310,45 @@ Note that the ACE Toolkit may start as a tiny window on the screen. Use the curs
 
 The `orders` subflow forms the body of the work that ACE will do when a new order is created and the orders API is called.
 
-You will now modify this subflow, by adding three operations (nodes) following the App Connect REST Request operation. The first node will strip the HTTP Headers, the second will put to an MQ queue, and the third will publish the message to a topic in EventStreams.
+You will now modify this subflow, by adding four operations (nodes) following the App Connect REST Request operation (node).
+1. The first node will strip the HTTP Headers. This is because before you do any further work with this message in this subflow, you must remove this header.
+1. The second new node will put a message to an MQ queue on a local Queue Manager (inside the same pod as the ACE Integration Server).
+1. The third new node will put a message to an MQ queue on a remote Queue Manager (inside a separate pod).
+1. The fourth new node will publish a message to a topic in EventStreams.
+
+Note: this lab session uses both a local Queue Manager and a remote Queue Manager, to illustrate the differences between the two. In a real Production environment, good design practice recommends always using a remote Queue manager, to provide maximum componentisation of the infrastructure.
 
 Here is what the **orders** subflow will eventually look like. Detailed instructions follow.
 
- ![](./images/cipdemo/orders_subflow_canvas.jpeg)
+ ![](./images/cipdemo/ace-orders-subflow-canvas.jpg)
 
 1. Drill down `orders` -> `Resources` -> `Subflows` and open `New_Order.subflow`.
-1. From the ACE palette, drag and drop an `HTTPHeader` node, an `MQOutput` node and a `KafkaProducer` node. Position them and connect them as shown in the screenshot above.
+1. From the ACE palette, drag and drop an `HTTPHeader` node, two `MQOutput` nodes and a `KafkaProducer` node. Position them and connect them as shown in the screenshot above.
 1. Select the `Http Header` node. Configure its properties thus:
- - On the `HTTPInput` tab, select **Delete HTTP Header**. This is because before we do any further work with this message, we must remove this header.
+ - On the `HTTPInput` tab, select **Delete HTTP Header**.
 
  ![](./images/cipdemo/ace_delete_HTTP_header.png)
 
+1. Select the first `MQOutput` node. Configure its properties thus:
+  - For `Queue Name` specify **NEWORDER.MQ**. This is the queue onto which the message will be put. Note: in this instance we are hard-coding this queue name; typically it will be parameterised (for ACE specialists: this parameterisation uses _LocalEnvironment.Destination.MQ.DestinationData.queueName_).
+  - For `Connection` select `Local queue manager`. This is because this node will put the message on the local Queue Manager (running inside the same pod that is also running ACE), so the flow will connect to this Queue Manager using local bindings.
+  - For `Destination queue manager` name specify **acemqserver** (case sensitive). This is the name of the local Queue Manager, which will be defined when this flow and its Integration Server and Queue manager are deployed . Note: in this instance we are hard-coding this Queue Manager name; typically it will be parameterised (using an MQ Policy).
 
-5. Select the `MQOutput` node. Configure its properties thus:
- - For `Queue Name` specify **NEWORDER.MQ**. This is the queue onto which the message will be put. Note: in this instance we are hard-coding this queue name; typically it will be parameterised (for ACE specialists: this parameterisation uses _LocalEnvironment.Destination.MQ.DestinationData.queueName_).
- - For `Connection` select `Local queue manager`. This is because the container running ACE will also include a Queue Manager, to which we will connect locally.
- - For `Destination queue manager` name specify **acemqserver** (case sensitive). This is the name of the local Queue Manager. Note: in this instance we are hard-coding this Queue Manager name; typically it will be parameterised (using an MQ Policy).
+  ![](./images/cipdemo/ace_mqoutput 1.png)
+  ![](./images/cipdemo/ace_mqoutput 2.jpg)
 
- ![](./images/cipdemo/ace_mqoutput 1.png)
- ![](./images/cipdemo/ace_mqoutput 2.jpg)
-2. Select the `KafkaProducer` node. Configure its properties thus:
+2. Select the second `MQOutput` node. Configure its properties thus:
+	 - For `Queue Name` specify **NEWORDER.MQ**. This is the queue onto which the message will be put. Note: in this instance we are hard-coding this queue name; typically it will be parameterised (for ACE specialists: this parameterisation uses _LocalEnvironment.Destination.MQ.DestinationData.queueName_).
+	 - For `Connection` specify the following MQ client connection properties:
+      - `Destination queue manager name`: **mq** (case-sensitive) - because this is the name of the remote Queue Manager
+      - `Queue Manager host name`: 10.0.0.1 - because this is the access IP address for the relevant pod
+      - `Channel name`: ACE.TO.ES - this must match the channel name already created
+      - `Listener`: 31200 - this must match the IP address (Hugh>>> needs checking using Helm Repositories --> mq console-https
+
+	 ![](./images/cipdemo/ace_mqoutput 1.png)
+	 ![](./images/cipdemo/ace_mqoutput 2.jpg)
+
+1. Select the `KafkaProducer` node. Configure its properties thus:
  - Enter the `Topic name`, matching what you defined within the Event Streams configuration earlier - we recommended **NewOrder**. Note: in this instance you are hard-coding this topic name; typically it will be parameterised (for ACE specialists: the parameterisation uses _LocalEnvironment.Destination.Kafka.Output.topicName_).
  - For Acks specify **All**. This defines the number of acknowledgements to request from the Event Streams server before the publication request is sent. **0** is equivalent to similar to 'fire and forget'; **1** waits for a single acknowledgement; **All** waits for acknowledgements from all replicas of the topic (providing the strongest available guarantee that the message was received).
  - Change the Timeout to 5 secs (so that if it fails, you will only have to wait 5 seconds before you see the failure)
@@ -353,7 +370,7 @@ The BAR file containing the changed `orders` API is now ready for deployment. It
 
 1. Open MQ Console on `mq` Helm Repositories
 2. Click `mq-console-https 31694/TCP`
-3. Click Queue Manager name: `QMGR.DEV`
+3. Click Queue Manager name: `mq`. This is the name of the Queue Manager already created in this pod.
 4. Click  Properties
 5. Find `Communication Properties` `CHLAUTH` option and Select `DISABLE` and `Save` & `Close`
 
@@ -384,11 +401,11 @@ The BAR file containing the changed `orders` API is now ready for deployment. It
  - Find mq pod
  - Execute `kubectl exec -it mq-ibm-mq-0 -- /bin/bash`. You will be root user on mq server on ICP .
 
-2. Configure security in order to allow ACE send a message to QMGR.DEV (remote MQ) .
+2. Configure security, to allow ACE to put a message on the Queue Manager called **mq** (a remote Queue Manager) .
 	- Within the bash shell, create **aceuser** as part of the **mqm** group:
  	- `sudo useradd -m aceuser`
  	- `sudo usermod -a -G mqm aceuser`
-	- Execute `runmqsc QMGR.DEV` to open the interactive MQ Commandline environment.
+	- Execute `runmqsc mq` to open the interactive MQ Commandline environment.
  	- Type `SET CHLAUTH(ACE.TO.ES) TYPE(BLOCKUSER) ACTION(REPLACE) USERLIST('nobody') `
  	- Type `ALTER AUTHINFO(SYSTEM.DEFAULT.AUTHINFO.IDPWOS) AUTHTYPE(IDPWOS) CHCKCLNT(OPTIONAL)`
  	- Type `ALTER QMGR CHLAUTH(DISABLED)`
