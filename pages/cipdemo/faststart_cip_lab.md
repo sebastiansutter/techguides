@@ -286,6 +286,63 @@ Now you will use the information specific to your environment.
 
 You have now finished preparing Event Streams, and you have created the artefacts needed by ACE ready to connect to Event Streams.
 
+## Configuring remote MQ to permit ACE connection
+
+The `orders` API provided by ACE will put one message onto a queue on a local Queue Manager (called **acemqserver**), and also the same message onto a queue on a remote Queue Manager (called **mq**). This lab session uses those two Queue Managers, to   illustrate the configuration differences between a remote and a local Queue Manager.
+
+You do not need to perform any extra configuration on the local Queue Manager **acemqserver**. The `orders` API will be able to connect to it.
+
+In this section, you will perform the necessary configuration on the remote Queue Manager **mq**, to permit ACE to connect to it.
+
+### Work with MQ artefacts
+
+The remote Queue Manager called **mq** has already been created and deployed, in its own Helm Chart. You will now use the MQ Console to perform some configuration.
+1. Open the MQ Console for the Queue Manager in one of these  ways:
+  - Point a browser session at the ICP Main Portal: `https://mycluster.icp:8443`, open `Workloads` -> `Helm releases`, find the Helm Release called `mq` and on the right `Launch` -> `console-https`.
+  - Point a browser session at the ICP4I Platform Navigator: `https://mycluster.icp/integration`, and under `Messaging` select `mq`.
+  - Point a browser session directly at the MQ Console: `https://mycluster.icp/integration/instance/mq`
+3. Click the Queue Manager name `mq` to highlight it. (This is the name of the Queue Manager already created in this pod). Select `Properties`.
+
+  ![](./images/cipdemo/ace-mq-properties.jpg)
+
+5. On the `Communication` tab, find the `CHLAUTH Records` property and make it `Disabled`.
+
+  ![](./images/cipdemo/ace-chlauth-disabled.jpg)
+
+1. Don't forget to `Save` and then `Close`.
+
+You will now add a new queue, a new channel, and an authentication record.
+
+5. At the top right, click `Add Widget`, then select your Queue Manager `mq` and select the `Queues` widget.
+  -  In your new Queues widget, click on `Create (+)` to create a new queue called **NEWORDER.MQ**, of type  `local`.
+  - You have just created a queue, onto which messages can be put.
+1. At the top right, click `Add Widget` again, then select your Queue Manager `mq` and select the `Channels` widget.
+  -  In your new Channels widget, click on `Create (+)` to create a new channel called **ACE.TO.mq**, of type `Server-connection`.
+  - You have just created a channel, which will be used by the MQ Client built into ACE Integration Server, when its flows want to connect to this Queue Manager.
+1. At the top right, click `Add Widget` again, then select your Queue Manager `mq` and select the `Channel Authentication Records` widget.
+  -  In your new Channel Authentication Records widget, click on `Create (+)`.
+  -  Specify `Rule Type` = **Block**, and `Identity` = **Final assigned user ID** - click `Next`.
+  - Specify `Channel profile` = **ACE.TO.mq** (case-sensitive) and `User list` = **nobody** - click `Next`.
+  - Leave the `Description` and `Custom` fields blank - click `Create`.
+  - What you have just created will block user **nobody** from this channel, thus allowing all other users to use this channel. For this lab session it makes for an easy connection; in a Production environment more strict security should be applied.
+1. At the top right, click `Add Widget` again, then select your Queue Manager `mq` and select the `Authentication Information` widget.
+  -  In your new  Authentication Information widget, click on the cogwheel to configure the widget, and select `System objects` -> `Show`.
+	![](./images/cipdemo/ace-authinfo-cogwheel.jpg)
+  - Click the system-provided Authinfo called `SYSTEM.DEFAULT.AUTHINFO.IDPWOS` and then click `Properties`.
+  - On the `User ID + password` tab, for both `Local connections` and for  `Client connections` specify **None**.
+  - Don't forget to `Save` and then `Close`.
+  - Those **None** settings mean that the authentication of the client is not checked. For this lab session it makes for an easy connection; in a Production environment more strict security should be applied.
+1. Back on the Local Queue Managers widget, click the ellipsis and then click `Refresh Security...` and then select `Connection authentication`. This will make sure that the security changes you have just configured will now take effect.
+
+  ![](./images/cipdemo/ace-refresh-security.jpg)
+
+1. Your MQ Console should show your new widgets and your new artefacts, thus:
+
+  ![](./images/cipdemo/ace-mq-console-details.jpg)
+
+You have now finished preparing the remote Queue Manager `mq`, to allow the MQ Client within ACE to connect to it.
+
+
 
 ## Make changes within ACE and deploy them
 
@@ -371,91 +428,14 @@ Here is what the **orders** subflow will eventually look like. Detailed instruct
 
 The BAR file containing the changed `orders` API is now ready for deployment. It is called **orders.bar**, and resides in the ACE workspace, which is _/home/student/IBM/workspace/BARfiles_.
 
-## Configuring remote MQ to permit ACE connection
 
-The `orders` API provided by ACE will put one message onto a queue on a local Queue Manager, and also the same message onto a queue on a remote Queue Manager. This is to illustrate the configuration differences between those two.
+## Deploy the `orders` BAR File
 
-In this section, you will perform the necessary configuration on the remote Queue Manager, to permit ACE to conenct to it.
+In this section you will deploy the `orders` BAR file (the BAR File you changed earlier) to the CIP environment.
 
-### Work with MQ artefacts
+Deployment of a BAR file includes the creation of the Integration Server in which it will run, and you do this by configuring and deploying a Helm Chart. This Helm Chart includes all the details of the Integration Server, as well as the BAR file itself.
 
-The remote Queue Manager has already been created and deployed, in its own Helm Chart. You will now use the MQ Console to perform some configuration.
-1. Open the MQ Console for the Queue Manager in one of these  ways:
-  - Point a browser session at the ICP Main Portal: `https://mycluster.icp:8443`, open `Workloads` -> `Helm releases`, find the Helm Release called `mq` and on the right `Launch` -> `console-https`.
-  - Point a browser session at the ICP4I Platform Navigator: `https://mycluster.icp/integration`, and under `Messaging` select `mq`.
-  - Point a browser session directly at the MQ Console: `https://mycluster.icp/integration/instance/mq`
-3. Click the Queue Manager name `mq` to highlight it. (This is the name of the Queue Manager already created in this pod). Select `Properties`.
-
-  ![](./images/cipdemo/ace-mq-properties.jpg)
-
-5. On the `Communication` tab, find the `CHLAUTH Records` property and make it `Disabled`.
-
-  ![](./images/cipdemo/ace-chlauth-disabled.jpg)
-
-1. Don't forget to `Save` and then `Close`.
-
-You will now add a new queue, a new channel, and an authentication record.
-
-5. At the top right, click `Add Widget`, then select your Queue Manager `mq` and select the `Queues` widget.
-  -  In your new Queues widget, click on `Create (+)` to create a new queue called **NEWORDER.MQ**, of type  `local`.
-  - You have just created a queue, onto which messages can be put.
-1. At the top right, click `Add Widget` again, then select your Queue Manager `mq` and select the `Channels` widget.
-  -  In your new Channels widget, click on `Create (+)` to create a new channel called **ACE.TO.mq**, of type `Server-connection`.
-  - You have just created a channel, which will be used by the MQ Client built into ACE Integration Server, when its flows want to connect to this Queue Manager.
-1. At the top right, click `Add Widget` again, then select your Queue Manager `mq` and select the `Channel Authentication Records` widget.
-  -  In your new Channel Authentication Records widget, click on `Create (+)`.
-  -  Specify `Rule Type` = **Block**, and `Identity` = **Final assigned user ID** - click `Next`.
-  - Specify `Channel profile` = **ACE.TO.mq** (case-sensitive) and `User list` = **nobody** - click `Next`.
-  - Leave the `Description` and `Custom` fields blank - click `Create`.
-  - What you have just created will block user **nobody** from this channel, thus allowing all other users to use this channel. For this lab session it makes for an easy connection; in a Production environment more strict security should be applied.
-1. At the top right, click `Add Widget` again, then select your Queue Manager `mq` and select the `Authentication Information` widget.
-  -  In your new  Authentication Information widget, click on the cogwheel to configure the widget, and select `System objects` -> `Show`.
-	![](./images/cipdemo/ace-authinfo-cogwheel.jpg)
-  - Click the system-provided Authinfo called `SYSTEM.DEFAULT.AUTHINFO.IDPWOS` and then click `Properties`.
-  - On the `User ID + password` tab, for both `Local connections` and for  `Client connections` specify **None**,
-  - Don't forget to `Save` and then `Close`.
-  - Those **None** settings mean the authentication of the client is not checked. For this lab session it makes for an easy connection; in a Production environment more strict security should be applied.
-1. Back on the Local Queue Managers widget, click the ellipsis and then click `Refresh Security...` and then select `Connection authentication`. This will make sure that the security changes you have just configured will now take effect.
-
-  ![](./images/cipdemo/ace-refresh-security.jpg)
-
-1. Your MQ Console should show your new widgets and your new artefacts, thus:
-
-  ![](./images/cipdemo/ace-mq-console-details.jpg)
-
-### Work with MQ authorization
-
-You will now manually run some MQSC commands, to complete the configuration of this Queue Manager.
-
-1. On the developer Machine, open a Terminal session.  Note that you will be signed in as _student_, and be in directory _/home/student/_.
-1. Sign into the relevant ICP namespace:
- - In the Terminal session, execute `sudo cloudctl login`.
- - Provide the password for student: **Passw0rd!**.
- - Ensure that the API Endpoint **https://mycluster.icp:8443** is specified. If a different one is specified, execute `sudo cloudctl logout` and try again.
- - Provide the CIP userid: **admin** with  password **admin**
- - Set the namespace context to **mq**. (You must choose this namespace, because the kubectl work you are about to do is for this namespace.)
-1. Start a bash shell to the mq pod:
- - Execute `kubectl get pods`
- - Find the name of the mq pod - it will probably be **mq-ibm-mq-0**.
- - Execute `kubectl exec -it <pod-name> -- /bin/bash`, to open a bash shell to the pod.
-
-2. Configure security, to allow ACE to put a message on the Queue Manager called **mq** (a remote Queue Manager) .
-	- Within the bash shell, create **aceuser** as part of the **mqm** group:
- 	- `sudo useradd -m aceuser`
- 	- `sudo usermod -a -G mqm aceuser`
-	- Execute `runmqsc mq` to open the interactive MQ Command line environment. Then, on that MQ command line, run the following:
-
- 	- Type `REFRESH SECURITY`
- 	- Type `end` to exit from runmqsc.
-
-	- Execute `exit` to terminate the bash shell.
-
-
-## Deploy the bar files
-
-In this section you will deploy the BAR Files to the CIP environment. You will deploy each one separately, and each will create an Integration Server in the ACE environment.
-
-Deployment of a BAR file includes the creation of the Integration Server in which it will run, and is achieved by creating a Helm Chart. This Helm Chart includes all the details of the Integration Server, as well as the BAR file itself. In a DevOps environment, this is deployed programmatically. In a Development environment, such as this, the typical way to deploy a BAR File (and create the Integration Server) is from the ACE Dashboard.
+In a DevOps environment, you would expect to configure and deploy the Helm Chart programmatically. In a Development environment, such as this, the typical way to deploy a BAR File (and create the Integration Server) is to start from the ACE Dashboard.
 
 >_**Note:**_ When deploying, you will create a unique hostname for each BAR file; this is referred to as the `NodePort IP` setting when configuring the Helm Release. For example: **orders.10.0.0.5.nip.io** and **inventory.10.0.0.5.nip.io**. The **10.0.0.5.nip.io** portion specifies that an on-demand service (**nip.io**) is used to route to **10.0.0.5** (the IP address of the ICP proxy node). The whole value of `NodePort` must be unique; it points to the HTTP listener for the specific Integration Server.
 
@@ -468,79 +448,65 @@ Deployment of a BAR file includes the creation of the Integration Server in whic
 
 2. On the ACE Dashboard, make sure you are on the Servers tab.
 
-3. First, deploy the `inventory` flow - which you have not changed.
+3. Follow these steps carefully, to deploy the `orders` flow that you have just changed.
  - From the ACE Dashboard, select `Create` to start the process.
 
- - Browse to _/home/student_,  select the BAR file `inventoryproject.generated.bar` and continue.
- - You will be presented by the `Content URL`, and the `namespace` **ace**.  The `Content URL` defines the location, in ICP terms, of where the BAR file is.
+ - Browse to _/home/student/IBM/workspace/BARfiles_, select the BAR file `orders.bar`, and `Ccontinue`.
+ - You will be presented by the Add Server window, showing the `Content URL`, and the `namespace` **ace**.  The `Content URL` defines the location, in ICP terms, of where the BAR file is.
 
-	  ![](./images/cipdemo/ace_deploy_1.png)
+	  ![](./images/cipdemo/ace-add-server.jpg)
 
     - Use the button to copy the contents of the `Content URL` to the clipboard, because you will need it shortly.
-    - The namespace is being proposed by ACE; you should make a mental note of it.
-    - Select `Configure` to continue.
+    - The namespace **ace** is being proposed by ACE; you should make a mental note of it.
+    - Select `Configure Release` to continue.
  - ACE now selects the correct Helm Chart from the Catalog, and opens the ICP configuration pages. You can scroll through the information if you want. At the bottom of the window, select `Configure` to continue.
- - For the `Helm Chart name`, we recommend **inventory**. This name will be used in many of the ICP artefacts, so a meaningful name is good. This name will also be used as the default for some of the later properties (for example the name of the Integration Server).
+ - For the `Helm Chart name`, we recommend **orders**. This name will be used in many of the ICP artefacts, so a meaningful name is good. This name will also be used as the default for some of the later properties (for example the name of the Integration Server).
  - For the `namespace`, select **ace**, which you made a mental note of earlier.
  - Ignore the `NodePort` under `Quick start` and select `Advanced` instead. (You will complete the `NodePort` shortly.)
  - Into the `Content Server URL` field, paste the contents of the `Content URL` from the clipboard. This vital piece links the BAR file to this Helm Chart.
- - For the `Image pull secret` specify **sa-ace**. This Secret was created when the Cloud Pack for Integration was installed, and it contains the credentials for ICP to access its private docker repository.
- - For the `NodePort`, we recommend **inventory.10.0.0.5.nip.io**. We recommend that the first part (**inventory** in this case) is identical to the `Integration Server name`, because there is a 1 to 1 relationship here.
- - Lower down, you could also specify the `Integration Server name`. However, we recommend that you leave this blank, so that the Helm Chart name (**inventory** in this case) is used.
-
- ![](./images/cipdemo/ace_hc_1.png)
- ![](./images/cipdemo/ace_hc_2.png)
- ![](./images/cipdemo/ace_hc_3.png)
- ![](./images/cipdemo/ace_hc_4.png)
-
- - Leave the remaining settings as defaults and then click `Install` at the bottom.
- - Your Helm Chart will now install. You can view the progress of the install via `Helm Releases` (as prompted on the screen) or via _kubectl_ on a command line.
-
-3. Return to the ACE Dashboard and confirm that the Integration Server has been correctly deployed. You should wait a few seconds to a minute, for the deployment to succeed fully. Use the `Refresh` button.
-
-3. Next, deploy the new `orders` flow, which you have changed. The process to deploy this is the same as `Inventory`, with some extra configuration.
- - From the ACE Dashboard, select `Create` to start the process.
- - Browse to _/home/student/IBM/workspace/BARfiles_, and select the BAR file `orders.bar`,
- - Remember to copy the contents of the `Content URL`.
- - For this `Helm Chart name`, we recommend **orders**.
- - As before, ignore the `NodePort` and select `Advanced`.
- - As before, paste into the `Content Server URL` field.
- - This time, make sure you tick the `Local default Queue Manager` button. This is because this deployment will use a local queue manager.
+ - Tick the `Local default Queue Manager` button. This is because this deployment will include a local queue manager.
  - For the `Secret name` specify **orders-secret** as prepared earlier. This Secret adds sensitive configuration information (such as API key and a certificate) to this Integration Server, so that it can communicate with Event Streams.
- - As before, the `Image pull secret` is  **sa-ace**.
- - For the `NodePort`, we recommend **orders.10.0.0.5.nip.io**.
+ - For the `Image pull secret` specify **sa-ace**. This Secret was created when the Cloud Pack for Integration was installed, and it contains the credentials for ICP to access its private docker repository.
+ - For the `NodePort`, we recommend **orders.10.0.0.5.nip.io**. We recommend that the first part (**orders** in this case) is identical to the `Integration Server name`, because there is a 1 to 1 relationship here.
  - For the `Queue manager name`, specify **acemqserver**. This defines the name that ICP will give to the associated local queue manager (which matches what we specified in the `MQOutput` node earlier).
  - For the `Certificate alias name`, specify **escert**. This is used by the Integration Server when it connects to Event Streams. You defined the value **escert** earlier, when you created the Secret.
-		 ![](./images/cipdemo/ace_hc_5.png)
-		 ![](./images/cipdemo/ace_hc_6b.png)
-		 ![](./images/cipdemo/ace_hc_8.png)
-		 ![](./images/cipdemo/ace_hc_9.png)
-		 ![](./images/cipdemo/ace_hc_10.png)
+ - Lower down, you could also specify the `Integration Server name`. However, we recommend that you leave this blank, so that the Helm Chart name (**orders** in this case) is used.
 
- - Leave the remaining settings as defaults and then click `Install` at the bottom.
+ ![](./images/cipdemo/ace_hc_5.png)
+ ![](./images/cipdemo/ace_hc_6b.png)
+ ![](./images/cipdemo/ace_hc_8.png)
+ ![](./images/cipdemo/ace_hc_9.png)
+ ![](./images/cipdemo/ace_hc_10.png)
 
-4. You should now return to the ACE Dashboard and confirm that the Integration Server has been correctly deployed. You should wait a few seconds to a minute, for the deployment to succeed fully. Use the `Refresh` button.
+  - Leave the remaining settings as defaults and then click `Install` at the bottom.
+  - Your Helm Chart will now install.
+
+>>> Tip: on the "Installation in progress" screen, click `Cancel`. This will mean that your Helm Chart, with all the configuration you have just typed in, remains in the browser. In turn, this means that, if something goes wrong during installation, you can a) easily check what parameters you typed and b) easily try the installation again.
+
+
+3. Return to the ACE Dashboard and confirm that the `orders` Integration Server has been correctly deployed. You should wait a few seconds to a minute, for the deployment to succeed fully. Use the `Refresh` button.
+
 
 ### Test the deployed ACE APIs
 Now you will test each API, using cURL, before moving on.
 
 1. Once deployed, your ACE Management UI should display both the `inventory` and `order` servers, as shown:
  ![](./images/cipdemo/appconnect.gif)
-1. First test the `orders` API.
-  - In the ACE Management UI, click into the `orders` server, and then into the `orders` API. You will see something that resembles the following. Write down or copy to the clipboard the unique value for `REST API Base URL` in your environment (eg **orders.10.0.0.5.nip.io:3xxxx**).
- ![](./images/cipdemo/appconn_order_api.gif)
-   - Back in the Terminal session, navigate to _/home/student_ and test the `orders` flow, by using cURL to POST the contents of the `order.json` file, to the Base URL appended by the `/create` operation, thus:
-```
-curl -k -X POST http://orders.10.0.0.5.nip.io:3xxxx/orders/v1/create -d @order.json
-```
-
-1. Now test the `inventory` API.
+1. First, test the `inventory` API.
   - Back in the ACE Management UI, click down to the `inventory` API and write down or copy to the clipboard the unique value for `REST API Base URL` in your environment (eg **inventory.10.0.0.5.nip.io:3xxxx**).:
  ![](./images/cipdemo/appconn_inventory_api.gif)
   - Back in the Terminal session, test the `inventory` flow, by using cURL to GET the information fromthe Base URL appended by the `/retrieve` operation, thus:
  ```
  curl -k -X GET http://inventory.10.0.0.5.nip.io:3xxxx/orders/v1/retrieve
  ```
+1. Now, test the `orders` API.
+  - In the ACE Management UI, click into the `orders` server, and then into the `orders` API. You will see something that resembles the following. Write down or copy to the clipboard the unique value for `REST API Base URL` in your environment (eg **orders.10.0.0.5.nip.io:3xxxx**).
+  ![](./images/cipdemo/appconn_order_api.gif)
+  - Back in the Terminal session, navigate to _/home/student_ and test the `orders` flow, by using cURL to POST the contents of the `order.json` file, to the Base URL appended by the `/create` operation, thus:
+ ```
+ curl -k -X POST http://orders.10.0.0.5.nip.io:3xxxx/orders/v1/create -d @order.json
+ ```
+
 
 Once you have confirmed the functionality for both `order` and `inventory` message flows, export the swagger for each from the ACE Management Portal into _/home/student_. You will be using these in the next section.
 
