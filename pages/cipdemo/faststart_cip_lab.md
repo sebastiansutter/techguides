@@ -294,9 +294,15 @@ The REST APIs within ACE, that form part of the overall solution, are mostly alr
 ## Modify the orders API within ACE
 
 1. On the Developer Machine, go back to the Terminal session and navigate to directory _/home/student_.
-1. Start the Ace Toolkit by executing `./ace-v11.0.0.3/ace toolkit`.
+1. Start the Ace Toolkit by executing `sudo ./ace-v11.0.0.3/ace toolkit`.
+1. Make sure that you specify the correct workspace _/home/student/IBM/workspace_ as shown:
+
+ ![](./images/cipdemo/ace-select-workspace.jpg)
+
 Note that the ACE Toolkit may start as a tiny window on the screen. Use the cursor to grab the corner of this screen and expand it.
+
  ![](./images/cipdemo/ace-tiny-toolkit-start.jpg)
+
 1. Your Application Development window will be empty. (No ACE APIs/flows exist yet.)
 1. Import the partially-written ACE flows thus:
   - Right-click in the Application Development window.
@@ -406,10 +412,10 @@ You will now add a new queue, a new channel, and an authentication record.
   -  In your new  Authentication Information widget, click on the cogwheel to configure the widget, and select `System objects` -> `Show`.
 	![](./images/cipdemo/ace-authinfo-cogwheel.jpg)
   - Click the system-provided Authinfo called `SYSTEM.DEFAULT.AUTHINFO.IDPWOS` and then click `Properties`.
-  - On the `User ID + password` tab, for `Client connections` specify **Optional**.
+  - On the `User ID + password` tab, for both `Local connections` and for  `Client connections` specify **None**,
   - Don't forget to `Save` and then `Close`.
-  - That `Client connections` = **Optional** setting makes checking of the client optional. For this lab session it makes for an easy connection; in a Production environment more strict security should be applied.
-1. Back on the Local Queue Managers widget, click the ellipsis and then click `Refresh Security...` followed by `Close`. This will make sure that the security changes you have just configured will now take effect.
+  - Those **None** settings mean the authentication of the client is not checked. For this lab session it makes for an easy connection; in a Production environment more strict security should be applied.
+1. Back on the Local Queue Managers widget, click the ellipsis and then click `Refresh Security...` and then select `Connection authentication`. This will make sure that the security changes you have just configured will now take effect.
 
   ![](./images/cipdemo/ace-refresh-security.jpg)
 
@@ -507,7 +513,6 @@ Deployment of a BAR file includes the creation of the Integration Server in whic
  - For the `Certificate alias name`, specify **escert**. This is used by the Integration Server when it connects to Event Streams. You defined the value **escert** earlier, when you created the Secret.
 		 ![](./images/cipdemo/ace_hc_5.png)
 		 ![](./images/cipdemo/ace_hc_6b.png)
-		 ![](./images/cipdemo/ace_hc_7.png)
 		 ![](./images/cipdemo/ace_hc_8.png)
 		 ![](./images/cipdemo/ace_hc_9.png)
 		 ![](./images/cipdemo/ace_hc_10.png)
