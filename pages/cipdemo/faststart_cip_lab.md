@@ -337,7 +337,7 @@ Here is what the **orders** subflow will eventually look like. Detailed instruct
  ![](./images/cipdemo/ace_mqoutput 1.png)
  ![](./images/cipdemo/ace_mqoutput 2.jpg)
 
-2. Select the second `MQOutput` node. Configure its properties thus:
+2. Select the second `MQOutput1` node. Configure its properties thus:
 	 - For `Queue Name` specify **NEWORDER.MQ**. This is the queue onto which the message will be put. Note: in this instance we are hard-coding this queue name; typically it will be parameterised (for ACE specialists: this parameterisation uses _LocalEnvironment.Destination.MQ.DestinationData.queueName_).
 	 - For `Connection` specify the following MQ client connection properties (because this is connection to a remote Queue Manager, running on a separate pod in the cluster):
       - `Destination queue manager name`: **mq** (case-sensitive) - because this is the name of the remote Queue Manager
