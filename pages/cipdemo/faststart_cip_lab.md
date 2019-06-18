@@ -337,11 +337,27 @@ You will now add a new queue, a new channel, and an authentication record.
   ![](./images/cipdemo/ace-refresh-security.jpg)
 
 1. Your MQ Console should show your new widgets and your new artefacts, thus:
-
   ![](./images/cipdemo/ace-mq-console-details.jpg)
 
-You have now finished preparing the remote Queue Manager `mq`, to allow the MQ Client within ACE to connect to it.
+Finally, you will check which port the MQ Listener is listening on, thus:
 
+11. At the top right, click `Add Widget` again, then select your Queue Manager `mq` and select the `Listeners` widget.
+  -  In your new Listeners widget, click on the cogwheel to configure the widget, and select `System objects` -> `Show`.
+	![](./images/cipdemo/ace-authinfo-cogwheel.jpg)
+  - You should see the system-provided Listener called `SYSTEM.LISTENER.TCP.1`. Make a mental note of the port for this listener (almost certainly it will be the MQ default of **1414**).
+
+	  ![](./images/cipdemo/ace-showing-listener.jpg)
+1. In a browser session, navigate to the ICP Portal: https://mycluster.icp:8443.
+  - Using the hamburger menu, navigate to `Configuration` -> `Helm releases`.
+  - Click the `mq` release to open it.
+  - Towards the bottom, you should see the Service called `mq-ibm-mq`, and under `PORT(S)` you should see the port mentally noted earlier (probably **1414**).
+  - Write down the associated mapped port number, which will be **3xxxx**, as shown below:
+
+  ![](./images/cipdemo/ace-determine-mq-listener-port.jpg)
+
+You have now identified that the queue manager `mq` is listening on port **1414** within its pod, and that this is mapped to the external port **3xxxx**. The latter number (**3xxxx**) is the one that you will need to specify when connecting to this Queue Manager.
+
+You have now finished preparing the remote Queue Manager `mq`, to allow the MQ Client within ACE to connect to it.
 
 
 ## Make changes within ACE and deploy them
@@ -379,7 +395,7 @@ You will now modify this subflow, by adding four operations (nodes) following th
 1. The third new node will put a message to an MQ queue on a remote Queue Manager (inside a separate pod).
 1. The fourth new node will publish a message to a topic in EventStreams.
 
-Note: this lab session uses both a local Queue Manager and a remote Queue Manager, to illustrate the differences between the two. In a real Production environment, good design practice recommends always using a remote Queue manager, to provide maximum componentisation of the infrastructure.
+Note: this lab session uses both a local Queue Manager and a remote Queue Manager, to illustrate the differences between the two. In a real Production environment, good design practice recommends always using a remote Queue Manager, to provide maximum componentisation of the infrastructure.
 
 Here is what the **orders** subflow will eventually look like. Detailed instructions follow.
 
@@ -388,9 +404,9 @@ Here is what the **orders** subflow will eventually look like. Detailed instruct
 1. Drill down `orders` -> `Resources` -> `Subflows` and open `New_Order.subflow`.
 1. From the ACE palette, drag and drop an `HTTPHeader` node, two `MQOutput` nodes and a `KafkaProducer` node. Position them and connect them as shown in the screenshot above.
 1. Select the `Http Header` node. Configure its properties thus:
- - On the `HTTPInput` tab, select **Delete HTTP Header**.
+ - On the `HTTPResponse` tab, select **Delete HTTP Header**.
 
- ![](./images/cipdemo/ace_delete_HTTP_header.png)
+ ![](./images/cipdemo/ace-delete-httpheader.jpg)
 
 1. Select the first `MQOutput` node. Configure its properties thus:
   - For `Queue Name` specify **NEWORDER.MQ**. This is the queue onto which the message will be put. Note: in this instance we are hard-coding this queue name; typically it will be parameterised (for ACE specialists: this parameterisation uses _LocalEnvironment.Destination.MQ.DestinationData.queueName_).
@@ -405,17 +421,18 @@ Here is what the **orders** subflow will eventually look like. Detailed instruct
       - `Connection`: **MQ client connection properties**
       - `Destination queue manager name`: **mq** (case-sensitive) - this is the name of the remote Queue Manager
       - `Queue manager host name`: **10.0.0.1** - this is the access IP address for the relevant pod
-      - `Listener port number`: **3xxxx** - this must match the IP address (Hugh>>> needs checking using Helm Repositories --> mq console-https
-      - `Channel name`: **ACE.TO.mq** (case-sensitive)- this must match the channel name already created
+      - `Listener port number`: **3xxxx** - this must match the mapped port number that you determined earlier by looking at the Helm Release
+      - `Channel name`: **ACE.TO.mq** (case-sensitive)- this must match the channel name that you created earlier by using the MQ Console
 
 	 ![](./images/cipdemo/ace_mqoutput1.jpg)
 
 1. Select the `KafkaProducer` node. Configure its properties thus:
  - Enter the `Topic name`, matching what you defined within the Event Streams configuration earlier - we recommended **NewOrder**. Note: in this instance you are hard-coding this topic name; typically it will be parameterised (for ACE specialists: the parameterisation uses _LocalEnvironment.Destination.Kafka.Output.topicName_).
+ - For the `Bootstrap servers`, specify the value you noted in the Event Streams section earlier. It looks like **10.0.0.1:30633**.
  - For Acks specify **All**. This defines the number of acknowledgements to request from the Event Streams server before the publication request is sent. **0** is equivalent to similar to 'fire and forget'; **1** waits for a single acknowledgement; **All** waits for acknowledgements from all replicas of the topic (providing the strongest available guarantee that the message was received).
- - Change the Timeout to 5 secs (so that if it fails, you will only have to wait 5 seconds before you see the failure)
- - For Security Protocol specify **SASL_SSL**. This is because Event Streams requires this.
- - For SSL protocol specify **TLSv1.2**. This is because Event Streams requires this.
+ - Change the `Timeout` to **5** secs (so that if it fails, you will only have to wait 5 seconds before you see the failure)
+ - For `Security Protocol` specify **SASL_SSL**. This is because Event Streams requires this.
+ - For `SSL protocol` specify **TLSv1.2**. This is because Event Streams requires this.
 
    ![](./images/cipdemo/ace_kafka_producer.png)
 
@@ -437,11 +454,11 @@ Deployment of a BAR file includes the creation of the Integration Server in whic
 
 In a DevOps environment, you would expect to configure and deploy the Helm Chart programmatically. In a Development environment, such as this, the typical way to deploy a BAR File (and create the Integration Server) is to start from the ACE Dashboard.
 
->_**Note:**_ When deploying, you will create a unique hostname for each BAR file; this is referred to as the `NodePort IP` setting when configuring the Helm Release. For example: **orders.10.0.0.5.nip.io** and **inventory.10.0.0.5.nip.io**. The **10.0.0.5.nip.io** portion specifies that an on-demand service (**nip.io**) is used to route to **10.0.0.5** (the IP address of the ICP proxy node). The whole value of `NodePort` must be unique; it points to the HTTP listener for the specific Integration Server.
+>_**Note:**_ When deploying, you will create a unique hostname for each BAR file; this is referred to as the `NodePort IP` setting when configuring the Helm Release. For example: **orders.10.0.0.1.nip.io** and **inventory.10.0.0.1.nip.io**. The **10.0.0.1.nip.io** portion specifies that an on-demand service (**nip.io**) is used to route to **10.0.0.1** (the IP address of the ICP proxy node). The whole value of `NodePort` must be unique; it points to the HTTP listener for the specific Integration Server.
 
 1. Use one of the following methods to get to the ACE Dashboard.
  - Either go directly by opening a browser session to **https://mycluster.icp/ace-ace1**
- - Or start with the Platform Navigator: **https://10.0.0.5/icip1-navigator1**, and select `ace1`. Note: if this appears to fail as shown in the following screenshot, simply select `Open ace1` on the failure screen and it should work.
+ - Or start with the Platform Navigator: **https://mycluster.icp/integration/**, and select `ace1`. Note: if this appears to fail as shown in the following screenshot, simply select `Open ace1` on the failure screen and it should work.
 
 	  ![](./images/cipdemo/open_ace_error.jpeg)
 
@@ -467,7 +484,7 @@ In a DevOps environment, you would expect to configure and deploy the Helm Chart
  - Tick the `Local default Queue Manager` button. This is because this deployment will include a local queue manager.
  - For the `Secret name` specify **orders-secret** as prepared earlier. This Secret adds sensitive configuration information (such as API key and a certificate) to this Integration Server, so that it can communicate with Event Streams.
  - For the `Image pull secret` specify **sa-ace**. This Secret was created when the Cloud Pack for Integration was installed, and it contains the credentials for ICP to access its private docker repository.
- - For the `NodePort`, we recommend **orders.10.0.0.5.nip.io**. We recommend that the first part (**orders** in this case) is identical to the `Integration Server name`, because there is a 1 to 1 relationship here.
+ - For the `NodePort`, we recommend **orders.10.0.0.1.nip.io**. We recommend that the first part (**orders** in this case) is identical to the `Integration Server name`, because there is a 1 to 1 relationship here.
  - For the `Queue manager name`, specify **acemqserver**. This defines the name that ICP will give to the associated local queue manager (which matches what we specified in the `MQOutput` node earlier).
  - For the `Certificate alias name`, specify **escert**. This is used by the Integration Server when it connects to Event Streams. You defined the value **escert** earlier, when you created the Secret.
  - Lower down, you could also specify the `Integration Server name`. However, we recommend that you leave this blank, so that the Helm Chart name (**orders** in this case) is used.
@@ -493,18 +510,18 @@ Now you will test each API, using cURL, before moving on.
 1. Once deployed, your ACE Management UI should display both the `inventory` and `order` servers, as shown:
  ![](./images/cipdemo/appconnect.gif)
 1. First, test the `inventory` API.
-  - Back in the ACE Management UI, click down to the `inventory` API and write down or copy to the clipboard the unique value for `REST API Base URL` in your environment (eg **inventory.10.0.0.5.nip.io:3xxxx**).:
+  - Back in the ACE Management UI, click down to the `inventory` API and write down or copy to the clipboard the unique value for `REST API Base URL` in your environment (eg **inventory.10.0.0.1.nip.io:3xxxx**).:
  ![](./images/cipdemo/appconn_inventory_api.gif)
   - Back in the Terminal session, test the `inventory` flow, by using cURL to GET the information fromthe Base URL appended by the `/retrieve` operation, thus:
  ```
- curl -k -X GET http://inventory.10.0.0.5.nip.io:3xxxx/orders/v1/retrieve
+ curl -k -X GET http://inventory.10.0.0.1.nip.io:3xxxx/orders/v1/retrieve
  ```
 1. Now, test the `orders` API.
-  - In the ACE Management UI, click into the `orders` server, and then into the `orders` API. You will see something that resembles the following. Write down or copy to the clipboard the unique value for `REST API Base URL` in your environment (eg **orders.10.0.0.5.nip.io:3xxxx**).
+  - In the ACE Management UI, click into the `orders` server, and then into the `orders` API. You will see something that resembles the following. Write down or copy to the clipboard the unique value for `REST API Base URL` in your environment (eg **orders.10.0.0.1.nip.io:3xxxx**).
   ![](./images/cipdemo/appconn_order_api.gif)
   - Back in the Terminal session, navigate to _/home/student_ and test the `orders` flow, by using cURL to POST the contents of the `order.json` file, to the Base URL appended by the `/create` operation, thus:
  ```
- curl -k -X POST http://orders.10.0.0.5.nip.io:3xxxx/orders/v1/create -d @order.json
+ curl -k -X POST http://orders.10.0.0.1.nip.io:3xxxx/orders/v1/create -d @order.json
  ```
 
 
