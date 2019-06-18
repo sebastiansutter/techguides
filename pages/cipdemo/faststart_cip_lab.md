@@ -384,7 +384,7 @@ Note that the ACE Toolkit may start as a tiny window on the screen. Use the curs
 1. You will now see, in the Application Development window on the lefthand side, three REST APIs and their artefacts:
  - **Customer**, which this lab does not use
  - **orders**, which you are about to change and then deploy
- - **storeinventory**, which you will not change and will simply deploy (as **inventory**)
+ - **storeinventory**, which you will not change and is already deployed (as **inventory**)
 	 ![](./images/cipdemo/appl_dev_window.png)
 
 The `orders` subflow forms the body of the work that ACE will do when a new order is created and the orders API is called.
@@ -481,13 +481,13 @@ In a DevOps environment, you would expect to configure and deploy the Helm Chart
  - For the `namespace`, select **ace**, which you made a mental note of earlier.
  - Ignore the `NodePort` under `Quick start` and select `Advanced` instead. (You will complete the `NodePort` shortly.)
  - Into the `Content Server URL` field, paste the contents of the `Content URL` from the clipboard. This vital piece links the BAR file to this Helm Chart.
- - Tick the `Local default Queue Manager` button. This is because this deployment will include a local queue manager.
+ - Tick the `Local default Queue Manager` option. This specifies that this deployment will include a local queue manager.
  - For the `Secret name` specify **orders-secret** as prepared earlier. This Secret adds sensitive configuration information (such as API key and a certificate) to this Integration Server, so that it can communicate with Event Streams.
  - For the `Image pull secret` specify **sa-ace**. This Secret was created when the Cloud Pack for Integration was installed, and it contains the credentials for ICP to access its private docker repository.
  - For the `NodePort`, we recommend **orders.10.0.0.1.nip.io**. We recommend that the first part (**orders** in this case) is identical to the `Integration Server name`, because there is a 1 to 1 relationship here.
  - For the `Queue manager name`, specify **acemqserver**. This defines the name that ICP will give to the associated local queue manager (which matches what we specified in the `MQOutput` node earlier).
  - For the `Certificate alias name`, specify **escert**. This is used by the Integration Server when it connects to Event Streams. You defined the value **escert** earlier, when you created the Secret.
- - Lower down, you could also specify the `Integration Server name`. However, we recommend that you leave this blank, so that the Helm Chart name (**orders** in this case) is used.
+ - Note that you could also specify the `Integration Server name`. However, we recommend that you leave this blank, so that the Helm Chart name (**orders** in this case) is used.
 
  ![](./images/cipdemo/ace_hc_5.png)
  ![](./images/cipdemo/ace_hc_6b.png)
@@ -498,10 +498,11 @@ In a DevOps environment, you would expect to configure and deploy the Helm Chart
   - Leave the remaining settings as defaults and then click `Install` at the bottom.
   - Your Helm Chart will now install.
 
->>> Tip: on the "Installation in progress" screen, click `Cancel`. This will mean that your Helm Chart, with all the configuration you have just typed in, remains in the browser. In turn, this means that, if something goes wrong during installation, you can a) easily check what parameters you typed and b) easily try the installation again.
+>>> Tip: when you see the on the "Installation started" screen, click on the little cross top right to cancel (see screenshot below). This will mean that your Helm Chart, with all the configuration you have just typed in, remains in the browser. In turn, this means that, if something goes wrong during installation, you can a) easily check what parameters you typed and b) easily try the installation again.
 
+ ![](./images/cipdemo/ace-installation-started.jpg)
 
-3. Return to the ACE Dashboard and confirm that the `orders` Integration Server has been correctly deployed. You should wait a few seconds to a minute, for the deployment to succeed fully. Use the `Refresh` button.
+3. Return to the ACE Dashboard and confirm that the `orders` Integration Server has been correctly deployed. You should wait a few seconds to a handful of minutes, for the deployment to succeed fully. Use the `Refresh` button.
 
 
 ### Test the deployed ACE APIs
