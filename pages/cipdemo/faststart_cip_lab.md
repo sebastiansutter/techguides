@@ -102,7 +102,7 @@ Lab Requirements
 | File                           | Description                                                                                      |
 |--------------------------------|--------------------------------------------------------------------------------------------------|
 | ACEflows.zip             | ACE Project Interchange export of integration flows - allowing you to restore the code for the supplied ACE flows and APIs, in case anything goes wrong ! |
-| order.json             | a sample order file |
+| orders.json             | a sample order file |
 | generateSecret.sh     | a script file that generates an ICP Secret, for use when deploying BAR files (Helm Charts) into ICP|
 | serverconf.yaml     | skeleton file, used by generateSecret.sh|
 | setdbparms.txt     | parameter file, used by generateSecret.sh, which you will edit|
