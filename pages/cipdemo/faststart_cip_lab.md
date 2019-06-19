@@ -459,6 +459,7 @@ In a DevOps environment, you would expect to configure and deploy the Helm Chart
     - Use the button to copy the contents of the `Content URL` to the clipboard, because you will need it shortly.
     - The namespace **ace** is being proposed by ACE; you should make a mental note of it.
     - Select `Configure Release` to continue.
+
   - ACE now selects the correct Helm Chart from the Catalog, and opens the ICP configuration pages. You can scroll through the information if you want. At the bottom of the window, select `Configure` to continue.
   - For the `Helm Chart name`, we recommend **orders**. This name will be used in many of the ICP artefacts, so a meaningful name is good. This name will also be used as the default for some of the later properties (for example the name of the Integration Server).
   - For the `namespace`, select **ace**, because that was proposed by ACE earlier.
