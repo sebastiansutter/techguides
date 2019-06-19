@@ -451,7 +451,6 @@ In a DevOps environment, you would expect to configure and deploy the Helm Chart
 
 3. Follow these steps carefully, to deploy the `orders` flow that you have just changed.
   - From the ACE Dashboard, select `Create` to start the process.
-
   - Browse to _/home/student/IBM/workspace/BARfiles_, select the BAR file `orders.bar`, and `Ccontinue`.
   - You will be presented by the Add Server window, showing the `Content URL`, and the `namespace` **ace**.  The `Content URL` defines the location, in ICP terms, of where the BAR file is.
 
