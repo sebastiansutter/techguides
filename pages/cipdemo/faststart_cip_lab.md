@@ -530,24 +530,37 @@ In addition, you can use the UI for troubleshooting:
 ### Test the deployed ACE APIs
 Now you will test each API, using cURL, before moving on.
 
+Note that in this section, you will be tested the APIs as exposed by ACE - the **inventory** one that was already deployed and the **orders** one that you have just modified and deployed. (Don't let the use of the word "API" confuse you - you are not yet touching the API Connect component of ICP4I.)
+
 1. Once deployed, your ACE Management UI should display both the `inventory` and `order` servers, as shown:
  ![](./images/cipdemo/appconnect.gif)
 1. First, test the `inventory` API.
   - In the ACE Management UI, click down to the `inventory` API and write down or copy to the clipboard the unique value for `REST API Base URL` in your environment (eg **inventory.10.0.0.1.nip.io:3xxxx**).:
  ![](./images/cipdemo/appconn_inventory_api.gif)
-  - In the Terminal session, test the `inventory` flow, by using cURL to GET the information from the Base URL appended by the `/retrieve` operation, thus:
+  - In the Terminal session, test the `inventory` flow, by using cURL to GET the information from the Base URL appended by the `/retrieve` operation, and specifying **46DA2599-CB6F-4FCC-A75F-D0E491AB6769.jpg** as the **key**, thus:
  ```
- curl -k -X GET http://inventory.10.0.0.1.nip.io:3xxxx/orders/v1/retrieve
+curl -k http://inventory.10.0.0.1.nip.io:32041/storeinventory/v1/retrieve?key=46DA2599-CB6F-4FCC-A75F-D0E491AB6769.jpg
  ```
+(Apologies for the very long key.)
+  - You should see a very long response mainly in Latin (!) that starts thus:
+```
+{"Inventory":[{"color":"ash grey color","location":"In Store","pictureFile":"AJ1-01","productDescription":"Lorem ipsum dolor ...
+```
+and ends thus:
+```
+... finibus tortor.","productID":"AJ1-10","productName":"Red, White & Metallic Blue","qtyOnHand":"1100","rating":"1","type":"AirJordan1","typeDescription":"Air Jordan 1 (So Crispy)","unitPrice":"110.99"}]}
+```
 1. Now, test the `orders` API.
   - Back in the ACE Management UI, click into the `orders` server, and then into the `orders` API. You will see something that resembles the following. Write down or copy to the clipboard the unique value for `REST API Base URL` in your environment (eg **orders.10.0.0.1.nip.io:3xxxx**).
   ![](./images/cipdemo/appconn_order_api.gif)
-  - Back in the Terminal session, navigate to _/home/student_ and test the `orders` flow, by using cURL to POST the contents of the `order.json` file, to the Base URL appended by the `/create` operation, thus:
+  - Back in the Terminal session, navigate to _/home/student_ and test the `orders` flow, by using cURL to POST the contents of the `orders.json` file, to the Base URL appended by the `/create` operation, thus:
  ```
- curl -k -X POST http://orders.10.0.0.1.nip.io:3xxxx/orders/v1/create -d @order.json
+ curl -k -X POST http://orders.10.0.0.1.nip.io:3xxxx/orders/v1/create -d @orders.json
  ```
-
-
+  - You should see a short response that looks like this. (Note: the flow will also have put messages onto MQ queues and published a message to an Event Streams topic; you will check those in a moment.)
+```
+{"accountid":"A-10000","orderid":"1632603"}
+```
 Once you have confirmed the functionality for both `order` and `inventory` message flows, export the swagger for each from the ACE Management Portal into _/home/student_. You will be using these in the next section.
 
 ### Review MQ Portion - standalone MQ (Queue Manager **mq**)
