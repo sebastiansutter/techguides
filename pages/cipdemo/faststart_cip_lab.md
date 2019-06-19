@@ -334,7 +334,7 @@ Finally, you will check which port the MQ Listener is listening on, thus:
   - You should see the system-provided Listener called `SYSTEM.LISTENER.TCP.1`. Make a mental note of the port for this listener (almost certainly it will be the MQ default of **1414**).
 	  ![](./images/cipdemo/ace-showing-listener.jpg)
 1. In a browser session, navigate to the ICP Portal: https://mycluster.icp:8443.
-  - Using the hamburger menu, navigate to `Configuration` -> `Helm releases`.
+  - Using the hamburger menu, navigate to `Workloads` -> `Helm releases`.
   - Click the `mq` release to open it.
   - Towards the bottom, you should see the Service called `mq-ibm-mq`, and under `PORT(S)` you should see the port mentally noted earlier (probably **1414**).
   - Write down the associated mapped port number, which will be **3xxxx**, as shown below:
