@@ -24,6 +24,8 @@ topnav_dropdowns:
 ##          external_url: http://idratherbewriting.com/category-jekyll/
     - title: Tech Guides
       folderitems:
+        - title: IBM Cloud Pack for Integration Bootcamp
+          url: /cip-demo-lab.htm
         - title: App Connect (Studio) Demo for Salesforce
           url: /sfdemo_start.html
         - title: App Connect (Designer) Labs for Dreamforce 2017
