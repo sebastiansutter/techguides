@@ -245,7 +245,7 @@ https://kubernetes.io/docs/concepts/configuration/secret/ )
 ![](./images/cipdemo/ace-copy-api-key.jpg)
 
 1. On the Developer Machine, open a Terminal session.  Note that you will be signed in as _student_, and be in directory _/home/student/_.
-1. Change to working directory  _/home/student/generateScript_. This directory contains a tool called  _generateSecret.sh_, which will generate the Secret you need. It also contains some files that form input into that tool. This directory now also has your renamed PEM file (**truststore-ALIASNAME.crt**) in it, which also forms input into the tool.
+1. Change to working directory  _/home/student/generateScript_. This directory contains a tool called  _generateSecret.sh_, which will generate the Secret you need. It also contains some files that form input into that tool. This directory now also has your renamed PEM file (**truststore-escert.crt**) in it, which also forms input into the tool.
 1. Use either `gedit setdbparms.txt` or `vi setdbparms.txt` to edit the **_setdbparms.txt_** file.
     - Replace the characters `<over-write with API Key>` with the API key that you copied to the clipboard a moment ago. Note that this must be done accurately, otherwise the connection from ACE to Event Streams will not work. The content of the file should look like this:
  ```
@@ -253,7 +253,7 @@ https://kubernetes.io/docs/concepts/configuration/secret/ )
  IntSvr::truststorePass thisispwdfortruststore password
  ```
     - The first line means "when ACE uses its Kafka client to connect, use this API key as the password". (**token** is the userID for that password, but it is not used.)
-    - The second line means "when ACE refers to the identity _IntSvr::truststorePass_, it will use the password **password**. (**thisispwdfortruststore** is the userID for that password, but it is not used.) Note that in the set of configuration files, **truststorePassword.txt** has already been defined, containing the matching value **password**.
+    - The second line means "when ACE refers to the identity _IntSvr::truststorePass_, it will use the password **password**. (**thisispwdfortruststore** is the userID for that password, but it is not used.) Note that in the set of configuration files already in directory _/home/student/generateSecret_, **truststorePassword.txt** has already been created, containing the matching value **password**.
     - `Save` your changes and exit the editor.
 1. Sign into the CIP namespace and run the tool to generate the Secret.
  - In the Terminal session, execute `sudo cloudctl login`.
@@ -273,24 +273,24 @@ You have now finished preparing Event Streams, and you have created the artefact
 
 The `orders` API provided by ACE will put one message onto a queue on a local Queue Manager (called **acemqserver**), and also the same message onto a queue on a remote Queue Manager (called **mq**). This lab session uses those two Queue Managers, to   illustrate the configuration differences between a remote and a local Queue Manager.
 
-You do not need to perform any extra configuration on the local Queue Manager **acemqserver**. The `orders` API will be able to connect to it.
+You do not need to perform any extra configuration on the local Queue Manager **acemqserver**. Because it is in the same pod as the Integration Server, it is a local QMgr and the `orders` API will connect to it using "server bindings" ("server bindings" need no extra configuration on the QMgr.)
 
 In this section, you will perform the necessary configuration on the remote Queue Manager **mq**, to permit ACE to connect to it.
 
 ### Work with MQ artefacts
 
 The remote Queue Manager called **mq** has already been created and deployed, in its own Helm Chart. You will now use the MQ Console to perform some configuration.
-1. Open the MQ Console for the Queue Manager in one of these  ways:
+1. Open the MQ Console for the Queue Manager in one of these ways:
+  - (Recommended) Point a browser session at the ICP4I Platform Navigator: `https://mycluster.icp/integration`, and under `Messaging` select `mq`.
   - Point a browser session at the ICP Main Portal: `https://mycluster.icp:8443`, open `Workloads` -> `Helm releases`, find the Helm Release called `mq` and on the right `Launch` -> `console-https`.
-  - Point a browser session at the ICP4I Platform Navigator: `https://mycluster.icp/integration`, and under `Messaging` select `mq`.
   - Point a browser session directly at the MQ Console: `https://mycluster.icp/integration/instance/mq`
 3. Click the Queue Manager name `mq` to highlight it. (This is the name of the Queue Manager already created in this pod). Select `Properties`.
 
-  ![](./images/cipdemo/ace-mq-properties.jpg)
+   ![](./images/cipdemo/ace-mq-properties.jpg)
 
 5. On the `Communication` tab, find the `CHLAUTH Records` property and make it `Disabled`.
 
-  ![](./images/cipdemo/ace-chlauth-disabled.jpg)
+   ![](./images/cipdemo/ace-chlauth-disabled.jpg)
 
 1. Don't forget to `Save` and then `Close`.
 
