@@ -480,12 +480,25 @@ In a DevOps environment, you would expect to configure and deploy the Helm Chart
  ![](./images/cipdemo/ace_hc_10.png)
 
   - Leave the remaining settings as defaults and then click `Install` at the bottom.
-  - Your Helm Chart will now install.
+  - You should now see the "Installation started" window, and your Helm Chart will now start to install.
 
-> **Tip:** when you see the on the "Installation started" screen, click on the little cross top right to cancel (see screenshot below). This will mean that your Helm Chart, with all the configuration you have just typed in, remains in the browser. In turn, this means that, if something goes wrong during installation, you can a) easily check what parameters you typed and b) easily try the installation again.
+> **Tip:** when you see the "Installation started" window, click on the little cross top right to cancel (see screenshot below). This will mean that your Helm Chart, with all the configuration you have just typed in, remains in the browser. In turn, this means that, if something goes wrong during installation, you can a) easily check what parameters you typed and b) easily try the installation again.
 
  ![](./images/cipdemo/ace-installation-started.jpg)
 
+4. Note: if you don't see the "Installation started" window, and the deployment seems not to have started, then scroll to the top of the screen and you may see an error message. If the error message is `t.text is not a function` (as shown below) then take the following steps to remove and re-create some pods, and try re-installing again.
+
+ ![](./images/cipdemo/ace-ttext-error.png)
+
+  - In a Terminal session, execute `sudo cloudctl login`.
+	 - Provide the password for student: **Passw0rd!**
+	 - Ensure that the API Endpoint **https://mycluster.icp:8443** is specified. If a different one is specified, execute `sudo cloudctl logout` and try again.
+	 - Provide the CIP userid: **admin** with  password **admin**
+	 - Set the namespace context to **kube-system**.
+  - Execute `kubectl get pods | grep helm-api` to find all the offending pods.
+  - For each of the pods that starts with **helm-api**, execute `kubectl delete pod <pod-name>`
+
+	NB You could also use the ICP Console to do the same, if you feel more comfortable taking that route.
 4. Return to the ACE Dashboard and confirm that the `orders` Integration Server has been correctly deployed. You should wait a few seconds to a handful of minutes, for the deployment to succeed fully. Use the `Refresh` button.
 
 ### Some help for ACE, Event Streams and MQ Problem Determination
