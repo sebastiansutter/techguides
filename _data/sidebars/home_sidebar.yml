@@ -9,7 +9,7 @@ entries:
     output: web
     folderitems:
     - title: IBM Cloud Pack for Integration Bootcamp
-      url: https://sebastiansutter.github.io/techguides/cip-demo-lab.html
+      url: /cip-demo-lab.html
       output: web
     - title: App Connect (Studio) Demo for Salesforce
       url: /sfdemo_start.html
