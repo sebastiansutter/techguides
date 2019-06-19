@@ -294,9 +294,9 @@ The remote Queue Manager called **mq** has already been created and deployed, in
 
 1. Don't forget to `Save` and then `Close`.
 
-You will now add a new queue, a new channel, and an authentication record.
+You will now add a new queue, a new channel, and an authentication record. You will now also change a system object (just for this lab).
 
-5. At the top right, click `Add Widget`, then select your Queue Manager `mq` and select the `Queues` widget.
+1. At the top right, click `Add Widget`, then select your Queue Manager `mq` and select the `Queues` widget.
   -  In your new Queues widget, click on `Create (+)` to create a new queue called **NEWORDER.MQ**, of type  `local`.
   - You have just created a queue, onto which messages can be put.
 1. At the top right, click `Add Widget` again, then select your Queue Manager `mq` and select the `Channels` widget.
@@ -321,10 +321,10 @@ You will now add a new queue, a new channel, and an authentication record.
   - Those **None** settings mean that the authentication of the client is not checked. For this lab session it makes for an easy connection; in a Production environment more strict security should be applied.
 1. Back on the Local Queue Managers widget, make sure the Queue Manager `mq` is selected, then click the ellipsis, click `Refresh Security...` and then select `Connection authentication`. This will make sure that the security changes you have just configured will now take effect.
 
-  ![](./images/cipdemo/ace-refresh-security.jpg)
+   ![](./images/cipdemo/ace-refresh-security.jpg)
 
 1. Your MQ Console should show your new widgets and your new artefacts, thus:
-  ![](./images/cipdemo/ace-mq-console-details.jpg)
+   ![](./images/cipdemo/ace-mq-console-details.jpg)
 
 Finally, you will check which port the MQ Listener is listening on, thus:
 
@@ -354,11 +354,11 @@ The REST APIs within ACE, that form part of the overall solution, are mostly alr
 1. Start the Ace Toolkit by executing `sudo ./ace-v11.0.0.3/ace toolkit`.
 1. Make sure that you specify the correct workspace _/home/student/IBM/workspace_ as shown:
 
- ![](./images/cipdemo/ace-select-workspace.jpg)
+  ![](./images/cipdemo/ace-select-workspace.jpg)
 
  Note that the ACE Toolkit may start as a tiny window on the screen. Use the cursor to grab the corner of this screen and expand it.
 
- ![](./images/cipdemo/ace-tiny-toolkit-start.jpg)
+  ![](./images/cipdemo/ace-tiny-toolkit-start.jpg)
 
 1. You should see, in the Application Development window on the lefthand side, three REST APIs and their artefacts:
  - **Customer**, which this lab does not use
@@ -410,8 +410,8 @@ These are the detailed instructions for modifying the ACE subflow.
    ![](./images/cipdemo/ace-mqoutput1.jpg)
 
 1. Select the `KafkaProducer` node. Configure its properties thus:
- - Enter the `Topic name`, matching what you defined within the Event Streams configuration earlier - we recommended **NewOrder**. Note: in this instance you are hard-coding this topic name; typically it will be parameterised (for ACE specialists: the parameterisation uses _LocalEnvironment.Destination.Kafka.Output.topicName_).
 
+  - Enter the `Topic name`, matching what you defined within the Event Streams configuration earlier - we recommended **NewOrder**. Note: in this instance you are hard-coding this topic name; typically it will be parameterised (for ACE specialists: the parameterisation uses _LocalEnvironment.Destination.Kafka.Output.topicName_).
   - For the `Bootstrap servers`, specify the value you noted in the Event Streams section earlier. It looks like **10.0.0.1:30633**.
   - For Acks specify **All**. This defines the number of acknowledgements to request from the Event Streams server before the publication request is sent. **0** is equivalent to similar to 'fire and forget'; **1** waits for a single acknowledgement; **All** waits for acknowledgements from all replicas of the topic (providing the strongest available guarantee that the message was received).
   - Change the `Timeout` to **5** secs (so that if it fails, you will only have to wait 5 seconds before you see the failure)
@@ -427,7 +427,7 @@ These are the detailed instructions for modifying the ACE subflow.
   - In the `Prepare` tab, ensure that the REST API called **orders**  is selected.
   - Select `Build and Save`.
 
-The BAR file containing the changed `orders` API is now ready for deployment. It is called **orders.bar**, and resides in the ACE workspace (which is _/home/student/IBM/workspace/BARfiles_).
+The BAR file containing the changed `orders` API is now ready for deployment. You called it **orders.bar**, and it resides in the ACE workspace (which is _/home/student/IBM/workspace/BARfiles_).
 
 
 ## Deploy the `orders` BAR File
