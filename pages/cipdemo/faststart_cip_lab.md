@@ -484,13 +484,13 @@ In a DevOps environment, you would expect to configure and deploy the Helm Chart
   - Leave the remaining settings as defaults and then click `Install` at the bottom.
   - You should now see the "Installation started" window, and your Helm Chart will now start to install.
 
-> **Tip:** when you see the "Installation started" window, click on the little cross at the  top right to cancel only that window (see screenshot below). This will mean that your Helm Chart, with all the configuration you have just typed in, will remain in the browser. In turn, this means that, if something goes wrong during installation, you can a) easily check what parameters you typed and b) easily try the installation again.
+ > **Tip:** when you see the "Installation started" window, click on the little cross at the  top right to cancel only that window (see screenshot below). This will mean that your Helm Chart, with all the configuration you have just typed in, will remain in the browser. In turn, this means that, if something goes wrong during installation, you can a) easily check what parameters you typed and b) easily try the installation again.
 
-   ![](./images/cipdemo/ace-installation-started.jpg)
+    ![](./images/cipdemo/ace-installation-started.jpg)
 
 4. Note: if you don't see the "Installation started" window, and the deployment seems not to have started, then scroll to the top of the screen and you may see an error message.
 
- ![](./images/cipdemo/ace-ttext-error.png)
+    ![](./images/cipdemo/ace-ttext-error.png)
 
  If the error message is `t.text is not a function` (as shown above) then take the following steps to remove and re-create some pods, and try re-installing again.
   - In a Terminal session, execute `sudo cloudctl login`.
@@ -502,7 +502,6 @@ In a DevOps environment, you would expect to configure and deploy the Helm Chart
   - For each of the pods that starts with **helm-api**, execute `kubectl delete pod <pod-name>`
 
 	NB You could also use the ICP Console to do the same, if you feel more comfortable taking that route.
-
 
 5. Return to the ACE Dashboard and confirm that the `orders` Integration Server has been correctly deployed. You should wait a few seconds to a handful of minutes, for the deployment to succeed fully. Use the `Refresh` button.
 
