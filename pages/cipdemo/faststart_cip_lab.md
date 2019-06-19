@@ -499,6 +499,7 @@ In a DevOps environment, you would expect to configure and deploy the Helm Chart
   - For each of the pods that starts with **helm-api**, execute `kubectl delete pod <pod-name>`
 
 	NB You could also use the ICP Console to do the same, if you feel more comfortable taking that route.
+
 4. Return to the ACE Dashboard and confirm that the `orders` Integration Server has been correctly deployed. You should wait a few seconds to a handful of minutes, for the deployment to succeed fully. Use the `Refresh` button.
 
 ### Some help for ACE, Event Streams and MQ Problem Determination
