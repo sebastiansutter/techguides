@@ -356,11 +356,11 @@ The REST APIs within ACE, that form part of the overall solution, are mostly alr
 
  ![](./images/cipdemo/ace-select-workspace.jpg)
 
-Note that the ACE Toolkit may start as a tiny window on the screen. Use the cursor to grab the corner of this screen and expand it.
+ Note that the ACE Toolkit may start as a tiny window on the screen. Use the cursor to grab the corner of this screen and expand it.
 
  ![](./images/cipdemo/ace-tiny-toolkit-start.jpg)
 
-4. You should see, in the Application Development window on the lefthand side, three REST APIs and their artefacts:
+1. You should see, in the Application Development window on the lefthand side, three REST APIs and their artefacts:
  - **Customer**, which this lab does not use
  - **orders**, which you are about to change and then deploy
  - **storeinventory**, which you will not change and is already deployed (as **inventory**)
@@ -382,19 +382,21 @@ Here is what the **orders** subflow will eventually look like. Detailed instruct
 
  ![](./images/cipdemo/ace-orders-subflow-canvas.jpg)
 
+These are the detailed instructions for modifying the ACE subflow.
+
 1. Drill down `orders` -> `Resources` -> `Subflows` and open `New_Order.subflow`.
 1. From the ACE palette, drag and drop an `HTTPHeader` node, two `MQOutput` nodes and a `KafkaProducer` node. Position them and connect them as shown in the screenshot above.
 1. Select the `Http Header` node. Configure its properties thus:
  - On the `HTTPResponse` tab, select **Delete HTTP Header**.
 
- ![](./images/cipdemo/ace-delete-httpheader.jpg)
+   ![](./images/cipdemo/ace-delete-httpheader.jpg)
 
 1. Select the first `MQOutput` node. Configure its properties thus:
   - For `Queue Name` specify **NEWORDER.MQ**. This is the queue onto which the message will be put. Note: in this instance we are hard-coding this queue name; typically it will be parameterised (for ACE specialists: this parameterisation uses _LocalEnvironment.Destination.MQ.DestinationData.queueName_).
   - For `Connection` select `Local queue manager`, because this is connection to the local Queue Manager (running inside the same pod that is also running ACE).
   - For `Destination queue manager` name specify **acemqserver** (case sensitive). This is the name of the local Queue Manager, which will be defined when this flow and its Integration Server and Queue manager are deployed . Note: in this lab we are hard-coding this Queue Manager name; typically it will be parameterised (using an MQ Policy).
 
- ![](./images/cipdemo/ace-mqoutput.jpg)
+   ![](./images/cipdemo/ace-mqoutput.jpg)
 
 2. Select the second `MQOutput1` node. Configure its properties thus:
 	 - For `Queue Name` specify **NEWORDER.MQ**. This is the queue onto which the message will be put. Note: in this instance we are hard-coding this queue name; typically it will be parameterised (for ACE specialists: this parameterisation uses _LocalEnvironment.Destination.MQ.DestinationData.queueName_).
@@ -405,16 +407,16 @@ Here is what the **orders** subflow will eventually look like. Detailed instruct
       - `Listener port number`: **3xxxx** - this must match the mapped port number that you determined earlier by looking at the Helm Release
       - `Channel name`: **ACE.TO.mq** (case-sensitive)- this must match the channel name that you created earlier by using the MQ Console
 
-	 ![](./images/cipdemo/ace-mqoutput1.jpg)
+   ![](./images/cipdemo/ace-mqoutput1.jpg)
 
 1. Select the `KafkaProducer` node. Configure its properties thus:
  - Enter the `Topic name`, matching what you defined within the Event Streams configuration earlier - we recommended **NewOrder**. Note: in this instance you are hard-coding this topic name; typically it will be parameterised (for ACE specialists: the parameterisation uses _LocalEnvironment.Destination.Kafka.Output.topicName_).
 
- - For the `Bootstrap servers`, specify the value you noted in the Event Streams section earlier. It looks like **10.0.0.1:30633**.
- - For Acks specify **All**. This defines the number of acknowledgements to request from the Event Streams server before the publication request is sent. **0** is equivalent to similar to 'fire and forget'; **1** waits for a single acknowledgement; **All** waits for acknowledgements from all replicas of the topic (providing the strongest available guarantee that the message was received).
- - Change the `Timeout` to **5** secs (so that if it fails, you will only have to wait 5 seconds before you see the failure)
- - For `Security Protocol` specify **SASL_SSL**. This is because Event Streams requires this.
- - For `SSL protocol` specify **TLSv1.2**. This is because Event Streams requires this.
+  - For the `Bootstrap servers`, specify the value you noted in the Event Streams section earlier. It looks like **10.0.0.1:30633**.
+  - For Acks specify **All**. This defines the number of acknowledgements to request from the Event Streams server before the publication request is sent. **0** is equivalent to similar to 'fire and forget'; **1** waits for a single acknowledgement; **All** waits for acknowledgements from all replicas of the topic (providing the strongest available guarantee that the message was received).
+  - Change the `Timeout` to **5** secs (so that if it fails, you will only have to wait 5 seconds before you see the failure)
+  - For `Security Protocol` specify **SASL_SSL**. This is because Event Streams requires this.
+  - For `SSL protocol` specify **TLSv1.2**. This is because Event Streams requires this.
 
    ![](./images/cipdemo/ace_kafka_producer.png)
 
@@ -448,48 +450,49 @@ In a DevOps environment, you would expect to configure and deploy the Helm Chart
 2. On the ACE Dashboard, make sure you are on the Servers tab.
 
 3. Follow these steps carefully, to deploy the `orders` flow that you have just changed.
- - From the ACE Dashboard, select `Create` to start the process.
+  - From the ACE Dashboard, select `Create` to start the process.
 
- - Browse to _/home/student/IBM/workspace/BARfiles_, select the BAR file `orders.bar`, and `Ccontinue`.
- - You will be presented by the Add Server window, showing the `Content URL`, and the `namespace` **ace**.  The `Content URL` defines the location, in ICP terms, of where the BAR file is.
+  - Browse to _/home/student/IBM/workspace/BARfiles_, select the BAR file `orders.bar`, and `Ccontinue`.
+  - You will be presented by the Add Server window, showing the `Content URL`, and the `namespace` **ace**.  The `Content URL` defines the location, in ICP terms, of where the BAR file is.
 
 	  ![](./images/cipdemo/ace-add-server.jpg)
 
     - Use the button to copy the contents of the `Content URL` to the clipboard, because you will need it shortly.
     - The namespace **ace** is being proposed by ACE; you should make a mental note of it.
     - Select `Configure Release` to continue.
- - ACE now selects the correct Helm Chart from the Catalog, and opens the ICP configuration pages. You can scroll through the information if you want. At the bottom of the window, select `Configure` to continue.
- - For the `Helm Chart name`, we recommend **orders**. This name will be used in many of the ICP artefacts, so a meaningful name is good. This name will also be used as the default for some of the later properties (for example the name of the Integration Server).
- - For the `namespace`, select **ace**, because that was proposed by ACE earlier.
- - Ignore the `NodePort` under `Quick start` and select `Advanced` instead. (You will complete the `NodePort` shortly.)
- - Into the `Content Server URL` field, paste the contents of the `Content URL` from the clipboard. This vital piece links the BAR file to this Helm Chart.
- - Tick the `Local default Queue Manager` option. This specifies that this deployment will include a local queue manager.
- - For the `Secret name` specify **orders-secret** as prepared earlier. This Secret adds sensitive configuration information (such as API key and a certificate) to this Integration Server, so that it can communicate with Event Streams.
- - For the `Image pull secret` specify **sa-ace**. This Secret was created when the Cloud Pack for Integration was installed, and it contains the credentials for ICP to access its private docker repository.
- - Untick `Enable persistence`. This is because provisioning volumes for persistence in this particular lab environment is sometimes troublesome. For a lab environment, persistence is not required for the MQ Queue Manager. In a Production environment, you would probably enable persistence.
- - For the `NodePort`, we recommend **orders.10.0.0.1.nip.io**. We recommend that the first part of the name (**orders** in this case) is identical to the `Integration Server name`, because there is a 1 to 1 relationship here.
- - For the `Queue manager name`, specify **acemqserver**. This defines the name that ICP will give to the associated local queue manager (which matches what we specified in the `MQOutput` node earlier).
- - For the `Certificate alias name`, specify **escert**. This is used by the Integration Server when it connects to Event Streams. You defined the value **escert** earlier, when you created the Secret.
- - Note that you could also specify the `Integration Server name`. However, we recommend that you leave this blank, so that the Helm Chart name (**orders** in this case) is used.
+  - ACE now selects the correct Helm Chart from the Catalog, and opens the ICP configuration pages. You can scroll through the information if you want. At the bottom of the window, select `Configure` to continue.
+  - For the `Helm Chart name`, we recommend **orders**. This name will be used in many of the ICP artefacts, so a meaningful name is good. This name will also be used as the default for some of the later properties (for example the name of the Integration Server).
+  - For the `namespace`, select **ace**, because that was proposed by ACE earlier.
+  - Ignore the `NodePort` under `Quick start` and select `Advanced` instead. (You will complete the `NodePort` shortly.)
+  - Into the `Content Server URL` field, paste the contents of the `Content URL` from the clipboard. This vital piece links the BAR file to this Helm Chart.
+  - Tick the `Local default Queue Manager` option. This specifies that this deployment will include a local queue manager.
+  - For the `Secret name` specify **orders-secret** as prepared earlier. This Secret adds sensitive configuration information (such as API key and a certificate) to this Integration Server, so that it can communicate with Event Streams.
+  - For the `Image pull secret` specify **sa-ace**. This Secret was created when the Cloud Pack for Integration was installed, and it contains the credentials for ICP to access its private docker repository.
+  - Untick `Enable persistence`. This is because provisioning volumes for persistence in this particular lab environment is sometimes troublesome. For a lab environment, persistence is not required for the MQ Queue Manager. In a Production environment, you would probably enable persistence.
+  - For the `NodePort`, we recommend **orders.10.0.0.1.nip.io**. We recommend that the first part of the name (**orders** in this case) is identical to the `Integration Server name`, because there is a 1 to 1 relationship here.
+  - For the `Queue manager name`, specify **acemqserver**. This defines the name that ICP will give to the associated local queue manager (which matches what we specified in the `MQOutput` node earlier).
+  - For the `Certificate alias name`, specify **escert**. This is used by the Integration Server when it connects to Event Streams. You defined the value **escert** earlier, when you created the Secret.
+  - Note that you could also specify the `Integration Server name`. However, we recommend that you leave this blank, so that the Helm Chart name (**orders** in this case) is used.
 
- ![](./images/cipdemo/ace_hc_5.png)
- ![](./images/cipdemo/ace_hc_6b.png)
- ![](./images/cipdemo/ace_hc_8.png)
- ![](./images/cipdemo/ace-disable-persistence.jpg)
- ![](./images/cipdemo/ace_hc_9.png)
- ![](./images/cipdemo/ace_hc_10.png)
+   ![](./images/cipdemo/ace_hc_5.png)
+   ![](./images/cipdemo/ace_hc_6b.png )
+   ![](./images/cipdemo/ace_hc_8.png)
+   ![](./images/cipdemo/ace-disable-persistence.jpg)
+   ![](./images/cipdemo/ace_hc_9.png)
+   ![](./images/cipdemo/ace_hc_10.png)
 
   - Leave the remaining settings as defaults and then click `Install` at the bottom.
   - You should now see the "Installation started" window, and your Helm Chart will now start to install.
 
-> **Tip:** when you see the "Installation started" window, click on the little cross top right to cancel (see screenshot below). This will mean that your Helm Chart, with all the configuration you have just typed in, remains in the browser. In turn, this means that, if something goes wrong during installation, you can a) easily check what parameters you typed and b) easily try the installation again.
+> **Tip:** when you see the "Installation started" window, click on the little cross at the  top right to cancel only that window (see screenshot below). This will mean that your Helm Chart, with all the configuration you have just typed in, will remain in the browser. In turn, this means that, if something goes wrong during installation, you can a) easily check what parameters you typed and b) easily try the installation again.
 
- ![](./images/cipdemo/ace-installation-started.jpg)
+   ![](./images/cipdemo/ace-installation-started.jpg)
 
-4. Note: if you don't see the "Installation started" window, and the deployment seems not to have started, then scroll to the top of the screen and you may see an error message. If the error message is `t.text is not a function` (as shown below) then take the following steps to remove and re-create some pods, and try re-installing again.
+4. Note: if you don't see the "Installation started" window, and the deployment seems not to have started, then scroll to the top of the screen and you may see an error message.
 
  ![](./images/cipdemo/ace-ttext-error.png)
 
+ If the error message is `t.text is not a function` (as shown above) then take the following steps to remove and re-create some pods, and try re-installing again.
   - In a Terminal session, execute `sudo cloudctl login`.
 	 - Provide the password for student: **Passw0rd!**
 	 - Ensure that the API Endpoint **https://mycluster.icp:8443** is specified. If a different one is specified, execute `sudo cloudctl logout` and try again.
@@ -500,7 +503,8 @@ In a DevOps environment, you would expect to configure and deploy the Helm Chart
 
 	NB You could also use the ICP Console to do the same, if you feel more comfortable taking that route.
 
-4. Return to the ACE Dashboard and confirm that the `orders` Integration Server has been correctly deployed. You should wait a few seconds to a handful of minutes, for the deployment to succeed fully. Use the `Refresh` button.
+
+5. Return to the ACE Dashboard and confirm that the `orders` Integration Server has been correctly deployed. You should wait a few seconds to a handful of minutes, for the deployment to succeed fully. Use the `Refresh` button.
 
 ### Some help for ACE, Event Streams and MQ Problem Determination
 If the deployment does not seem to succeed, use kubectl to perform problem determination, as follows:
@@ -530,7 +534,7 @@ In addition, you can use the UI for troubleshooting:
 ### Test the deployed ACE APIs
 Now you will test each API, using cURL, before moving on.
 
-Note that in this section, you will be tested the APIs as exposed by ACE - the **inventory** one that was already deployed and the **orders** one that you have just modified and deployed. (Don't let the use of the word "API" confuse you - you are not yet touching the API Connect component of ICP4I.)
+Note that in this section, you will be testing the APIs as exposed by ACE - the **inventory** one that was already deployed and the **orders** one that you have just modified and deployed. (Don't let the use of the word "API" confuse you - you are not yet touching the API Connect component of ICP4I.)
 
 1. Once deployed, your ACE Management UI should display both the `inventory` and `order` servers, as shown:
  ![](./images/cipdemo/appconnect.gif)
