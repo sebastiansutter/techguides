@@ -474,12 +474,12 @@ In a DevOps environment, you would expect to configure and deploy the Helm Chart
   - For the `Certificate alias name`, specify **escert**. This is used by the Integration Server when it connects to Event Streams. You defined the value **escert** earlier, when you created the Secret.
   - Note that you could also specify the `Integration Server name`. However, we recommend that you leave this blank, so that the Helm Chart name (**orders** in this case) is used.
 
-   ![](./images/cipdemo/ace_hc_5.png)
-   ![](./images/cipdemo/ace_hc_6b.png )
-   ![](./images/cipdemo/ace_hc_8.png)
-   ![](./images/cipdemo/ace-disable-persistence.jpg)
-   ![](./images/cipdemo/ace_hc_9.png)
-   ![](./images/cipdemo/ace_hc_10.png)
+    ![](./images/cipdemo/ace_hc_5.png)
+    ![](./images/cipdemo/ace_hc_6b.png )
+    ![](./images/cipdemo/ace_hc_8.png)
+    ![](./images/cipdemo/ace-disable-persistence.jpg)
+    ![](./images/cipdemo/ace_hc_9.png)
+    ![](./images/cipdemo/ace_hc_10.png)
 
   - Leave the remaining settings as defaults and then click `Install` at the bottom.
   - You should now see the "Installation started" window, and your Helm Chart will now start to install.
