@@ -25,7 +25,7 @@ topnav_dropdowns:
     - title: Tech Guides
       folderitems:
         - title: IBM Cloud Pack for Integration Bootcamp
-          url: /cip-demo-lab.htm
+          url: /cip-demo-lab.html
         - title: App Connect (Studio) Demo for Salesforce
           url: /sfdemo_start.html
         - title: App Connect (Designer) Labs for Dreamforce 2017
