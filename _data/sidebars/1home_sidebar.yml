@@ -8,6 +8,9 @@ entries:
     url: /index.html
     output: web
     folderitems:
+    - title: IBM Cloud Pack for Integration Bootcamp
+      url: /cip-demo-lab.html
+      output: web
     - title: App Connect (Studio) Demo for Salesforce
       url: /sfdemo_start.html
       output: web
