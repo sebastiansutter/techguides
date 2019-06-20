@@ -352,7 +352,9 @@ The REST APIs within ACE, that form part of the overall solution, are mostly alr
 
 1. On the Developer Machine, go back to the Terminal session and navigate to directory _/home/student_.
 1. Start the Ace Toolkit by executing `sudo ./ace-v11.0.0.3/ace toolkit`. Note that the ACE Toolkit may start as a tiny window on the screen. Use the cursor to grab the corner of this screen and expand it.
+
 	![](./images/cipdemo/ace-tiny-toolkit-start.jpg)
+
 1. Make sure that you specify the correct workspace _/home/student/IBM/workspace_ as shown:
 
     ![](./images/cipdemo/ace-select-workspace.jpg)
