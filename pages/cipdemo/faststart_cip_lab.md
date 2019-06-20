@@ -475,12 +475,12 @@ In a DevOps environment, you would expect to configure and deploy the Helm Chart
 	- For the `Certificate alias name`, specify **escert**. This is used by the Integration Server when it connects to Event Streams. You defined the value **escert** earlier, when you created the Secret.
 	- Note that you could also specify the `Integration Server name`. However, we recommend that you leave this blank, so that the Helm Chart name (**orders** in this case) is used.
 
-    ![](./images/cipdemo/ace_hc_5.png)
-    ![](./images/cipdemo/ace_hc_6b.png )
-    ![](./images/cipdemo/ace_hc_8.png)
-    ![](./images/cipdemo/ace-disable-persistence.jpg)
-    ![](./images/cipdemo/ace_hc_9.png)
-    ![](./images/cipdemo/ace_hc_10.png)
+	![](./images/cipdemo/ace_hc_5.png)
+	![](./images/cipdemo/ace_hc_6b.png )
+	![](./images/cipdemo/ace_hc_8.png)
+	![](./images/cipdemo/ace-disable-persistence.jpg)
+	![](./images/cipdemo/ace_hc_9.png)
+	![](./images/cipdemo/ace_hc_10.png)
 
 	- Leave the remaining settings as defaults and then click `Install` at the bottom.
 	- You should now see the "Installation started" window, and your Helm Chart will now start to install.
@@ -488,13 +488,13 @@ In a DevOps environment, you would expect to configure and deploy the Helm Chart
     > **Tip:** when you see the "Installation started" window, click on the little cross at the  top right to cancel only that window (see screenshot below). This will mean that your Helm Chart, with all the configuration you have just typed in, will remain in the browser. In turn, this means that, if something goes wrong during installation, you can a) easily check what parameters you typed and b) easily try the installation again.
 
 
-    ![](./images/cipdemo/ace-installation-started.jpg)
+		![](./images/cipdemo/ace-installation-started.jpg)
 
 4. Note: if you don't see the "Installation started" window, and the deployment seems not to have started, then scroll to the top of the screen and you may see an error message.
 
 	![](./images/cipdemo/ace-ttext-error.png)
 
-	If the error message is `t.text is not a function` (as shown above) then take the following steps to remove and re-create some pods, and try re-installing again.
+	If the error message is `t.text is not a function` (as shown above) then take the following steps to remove and re-create some pods, and try re-installing again. NB You could also use the ICP Console to do all of the above, if you feel more comfortable taking that route.
 	- In a Terminal session, execute `sudo cloudctl login`.
 	- Provide the password for student: **Passw0rd!**
 	- Ensure that the API Endpoint **https://mycluster.icp:8443** is specified. If a different one is specified, execute `sudo cloudctl logout` and try again.
@@ -503,7 +503,6 @@ In a DevOps environment, you would expect to configure and deploy the Helm Chart
 	- Execute `kubectl get pods | grep helm-api` to find all the offending pods.
 	- For each of the pods that starts with **helm-api**, execute `kubectl delete pod <pod-name>`
 
-	NB You could also use the ICP Console to do all of the above, if you feel more comfortable taking that route.
 
 5. Return to the ACE Dashboard and confirm that the `orders` Integration Server has been correctly deployed. You should wait a few seconds to a handful of minutes, for the deployment to succeed fully. Use the `Refresh` button.
 
