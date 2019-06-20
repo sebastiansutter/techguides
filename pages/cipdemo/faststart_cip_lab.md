@@ -431,7 +431,7 @@ The BAR file containing the changed `orders` API is now ready for deployment. Yo
 
 ## Deploy the `orders` BAR File
 
-In this section you will deploy the `orders` BAR file (the BAR File you changed earlier) to the CIP environment.
+In this section you will deploy the `orders` BAR file (the BAR File you changed immediately above) to the CIP environment.
 
 Deployment of a BAR file includes the creation of the Integration Server in which it will run, and you do this by configuring and deploying a Helm Chart. This Helm Chart includes all the details of the Integration Server, as well as the BAR file itself.
 
