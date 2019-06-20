@@ -493,7 +493,7 @@ In a DevOps environment, you would expect to configure and deploy the Helm Chart
 
 	![](./images/cipdemo/ace-ttext-error.png)
 
-	If the error message is `t.text is not a function` (as shown above) then take the following steps to remove and re-create some pods, and try re-installing again. NB You could also use the ICP Console to do all of the above, if you feel more comfortable taking that route.
+	If the error message is `t.text is not a function` (as shown above) then take the following steps to remove the `helm-api` pods. NB You could also use the ICP Console to do all of the above, if you feel more comfortable taking that route.
 	- In a Terminal session, execute `sudo cloudctl login`.
 	- Provide the password for student: **Passw0rd!**
 	- Ensure that the API Endpoint **https://mycluster.icp:8443** is specified. If a different one is specified, execute `sudo cloudctl logout` and try again.
@@ -501,6 +501,8 @@ In a DevOps environment, you would expect to configure and deploy the Helm Chart
 	- Set the namespace context to **kube-system**.
 	- Execute `kubectl get pods | grep helm-api` to find all the offending pods.
 	- For each of the pods that starts with **helm-api**, execute `kubectl delete pod <pod-name>`
+	- Wait for a minute or so, to allow ICP to recreate a fresh `helm-api` pod.
+	- Then try re-deploying again.
 
 
 5. Return to the ACE Dashboard and confirm that the `orders` Integration Server has been correctly deployed. You should wait a few seconds to a handful of minutes, for the deployment to succeed fully. Use the `Refresh` button.
