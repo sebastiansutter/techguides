@@ -17,7 +17,13 @@ The goal of these lab sessions is to provide you some hands-on experience with t
 
 This lab guide will lay out the scenario for you, along with the requirements of what you are to complete.  It will then provide generally a step-by-step walkthrough of what to complete (although in some places it will not be quite as formulaic).
 
-You are not expected to be an expert in any of the Integration portfolio, but some knowledge of each of the components used in this lab will help. They are IBM App Connect Enterprise (ACE, including using the ACE Toolkit), IBM API Connect, and messaging (both IBM MQ and IBM Event Streams).  It will also help to have some knowledge of `kubectl` and `docker` commands, and  some background with IBM Cloud Private or Kubernetes.
+You are not expected to be an expert in any of the Integration portfolio, but some knowledge of each of the components used in this lab will help. They are
+- IBM App Connect Enterprise (ACE, including using the ACE Toolkit)
+- IBM API Connect
+- IBM MQ
+- IBM Event Streams).
+
+It will also help to have some knowledge of `kubectl` and `docker` commands, and  some background with IBM Cloud Private or Kubernetes.
 
 
 ### Lab Overview
@@ -46,7 +52,7 @@ The base charts have already been deployed and configured.  This includes specif
 * The ICP Main Portal running on `https://mycluster.icp:8443`
 * The ICP4I Platform Navigator running on: `https://mycluster.icp/integration`
 
-You will normally access all of the individual components' portals from the ICP4I Platform Navigator, but if you need to access the URLs directly, we list them here for you:
+You will normally access all of the individual components' portals from the ICP4I Platform Navigator, but if you want to access the URLs directly, we list them here for you:
 
 * IBM MQ Portal on `https://mycluster.icp:31681/ibmmq/console/`
 * IBM Event Streams on `https://mycluster.icp/integration/instance/es`
@@ -86,13 +92,13 @@ Password-less SSH has also been enabled between the Master Node and the other no
 
 ## Start-Up Instructions
 
-1. If it is not done already, power up your Skytap environment.  It could take about 5 minutes for all nodes to start up.  The Master Node typically takes the longest to start, so if you can see, from the Skytap UI, the login prompt on the Master Node, then you are good to go.
+1. If it is not done already, power up your Skytap environment.  It could take about 5 minutes for all nodes to start up.  The Master Node typically takes the longest to start, so if you can see, from the Skytap UI, the login prompt on the Master Node, then you can start to use the environment.
 
 7. Use the Skytap UI (or SSH) to start a session on the Master Node. You will be signed on as `student`.
 1. Change to using root by executing `su - root`.
 1. In the home directory of root there is a script called `icpStopStart.sh`.  Run this script by executing `./icpStopStart.sh start`. Note that it takes around 30 minutes for the ICP Services to come up completely.
 
- > From Hugh: do we need to get them to sign on to Master Node and run `./icpStopStart` ??? If not, then we should replace the above two steps with the following one.
+  > From Hugh: do we need to get them to sign on to Master Node and run `./icpStopStart` ??? If not, then we should replace the above three  steps with the following one.
 
 1. The ICP infrastructure and all of the ICP4I components  are configured to start when the environment starts. It typically takes around 30 minutes for all the components to be ready.
 8. You can tell if the ICP infrastructure is ready by going to the ICM Main Portal thus:
@@ -104,13 +110,10 @@ Password-less SSH has also been enabled between the Master Node and the other no
  - Provide the ICP4I userID **admin** and password **admin**
  - When prompted, choose any namespace.
  - If all the above works, then the ICP infrastructure is ready.
-
 8. The best place to do your Kubernetes CLI work is from the Master Node. As shown above, before you can execute any of the `kubectl` commands you will need to execute `sudo cloudctl login` - this signs you in to the ICP infrastructure.
-9. Now you will access the ICP4I Platform Navigator. This is the UI that allows you to  create and manage instances of all of the components that make up ICP4I (in this lab: ACE, MQ, Event Streams and API Connect).
-
- On the Developer Image, start a Firefox browser, and navigate to the ICP4I Platform Navigator at `https://mycluster.icp/integration`.  To authenticate, use the ICP4I userID `admin` and password `admin`.
-
-11. The Platform Navigator is designed for you to easily keep track of your integration components and artefacts.  Here you can see all of the various API Connect, Event Streams, MQ, Aspera and ACE instances you have running.  You can also use the Platform Navigator to add new instances.
+Now you will access the ICP4I Platform Navigator. This is the UI that allows you to  create and manage instances of all of the components that make up ICP4I (in this lab: ACE, MQ, Event Streams and API Connect).
+1. On the Developer Image, start a Firefox browser, and navigate to the ICP4I Platform Navigator at `https://mycluster.icp/integration`.  To authenticate, use the ICP4I userID `admin` and password `admin`.
+1. The Platform Navigator is designed for you to easily keep track of your integration components and artefacts.  Here you can see all of the various API Connect, Event Streams, MQ, Aspera and ACE instances you have running.  You can also use the Platform Navigator to add new instances.
 
 
 ### Key Concepts - Troubleshooting / Recovery
@@ -369,7 +372,7 @@ Finally, you will check which port the MQ Listener is listening on, thus:
   - Towards the bottom, you should see the Service called `mq-ibm-mq`, and under `PORT(S)` you should see the port mentally noted earlier (probably **1414**).
   - Write down the associated mapped port number, which will be **3xxxx**, as shown below:
 
-  ![](./images/cipdemo/ace-determine-mq-listener-port.jpg)
+    ![](./images/cipdemo/ace-determine-mq-listener-port.jpg)
 
 You have now identified that the queue manager `mq` is listening on port **1414** within its pod, and that this is mapped to the external port **3xxxx**. The latter number (**3xxxx**) is the one that you will need to specify when connecting to this Queue Manager.
 
