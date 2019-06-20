@@ -8,75 +8,92 @@ summary: Deeper dive into the Cloud Integration Platform
 applies_to: [developer,administrator,consumer]
 ---
 
-# Explore the Cloud Integration Platform
-===============
+# Exploring the IBM Cloud Pak for Integration
+----------------
 
 ## Overview
 
-The goal of this exercise is to provide you some hands on with the platform and build your skills with the platform with the superior goal of creating a demo environment everyone is able to build and use on their own.
+The goal of these lab sessions is to provide you some hands-on experience with the IBM Cloud Private platform and the IBM Cloud Pak for Integration.
 
-This lab guide will lay out the scenario for you, along with the requirements of what you are to complete.  This guide is a bit different than other labs, such that it will (for the most part) not be a step by step walkthrough of what to complete, rather will give you a list of requirements to complete, and it is up to you and your team to deliver on those.
+This lab guide will lay out the scenario for you, along with the requirements of what you are to complete.  In some places it will provide a step-by-step walkthrough of what to complete, and in some places it will instead give you a list of requirements to complete, and it is up to you to deliver on those requirements.
 
 This lab will be a team effort.  It is highly suggested that you form your teams of folks who can cover the entire I&D Portfolio - especially: App Connect Enterprise (using Toolkit), API Connect, Messaging (MQ and ES).  Its helpful also to have someone who knows `kubectl` and `docker` commands and has some background with ICP or Kubernetes.
 
 
-Lab Overview
+### Lab Overview
 -------------------------------------------
 
-You will be building a demo environment that supports the "AcmeMart" demo scenario.  There are several components that make up this demo, but the key areas in scope for this lab are as follows:
+You will be building a demo environment that supports the "AcmeMart" demo scenario.  There are several components that make up this demo, and the key areas in scope for this lab are as follows:
 
-*  Two App Connect Enterprise flows that interact with IBM Cloud based APIs
-*  AcmeMart Node.js based APIs
-*  On-premises based MQ and ES based assets
-*  API Facades for RESTful assets to be created in API Connect
+*  AcmeMart, an application based on Node.js, comprising several microservices
+*  Asynchronous and publish/subscribe messaging, provided by MQ and Event Streams
+*  Two REST APIs that interact with IBM Cloud-based APIs, provided by integration flows within App Connect Enterprise (ACE)
+*  API Facades for the ACE APIs, provided by API Connect
 
-All assets created are to be implemented on the given CIP environment provided for you.  All pre-requisites and utilities should be on the environments provided.  If there are other utilities and tools you would like to use to support you during this exercise, you may do so at your own risk.
+All the already-created assets, as well as assets that you will create, will be implemented on the IBM Cloud Private environment provided for you.  All pre-requisites and utilities should already be installed on the environments provided.  If there are other utilities and tools you would like to use to support you during this exercise, you may do so at your own risk.
+
+The environment in which you are working is completely standalone, so your work is not visible to other students. Equally, any errors or misconfigurations on the part of other students cannot affect your environment.
 
 
-Lab Environment Overview
+### Lab Environment Overview
 -------------------------------------------
-You have been provided a pre-installed environment of the Cloud Integration Platform with the base charts for CIP already deployed and configured.  This includes specifically:
 
-* ICP Main Portal running on `https://mycluster.icp:8443`
-* CIP Platform Navigator running on: `https://mycluster.icp/integration`
+You have been provided with a pre-installed environment of IBM Cloud Private with the IBM Cloud Pak for Integration (previously called the Cloud Integration Platform). Henceforth these names are shortened thus:
 
-You should be able to access all portals from the Platform Navigator, but if you need to access the URL directly, they are provided below:
+* IBM Cloud Private = ICP
+* IBM Cloud Pak for Integration = ICP4I
 
-* App Connect Enterprise Manager Portal running on `https://mycluster.icp/integration/instance/ace1`
-* API Connect API Manager Portal on `https://mgmt.mycluster.icp.nip.io/manager`
+The base charts have already been deployed and configured.  This includes specifically:
+
+* The ICP Main Portal running on `https://mycluster.icp:8443`
+* The ICP4I Platform Navigator running on: `https://mycluster.icp/integration`
+
+You should be able to access all of the individual components' portals from the Platform Navigator, but if you need to access the URLs directly, they are provided below:
+
 * MQ Portal on `https://mycluster.icp:31681/ibmmq/console/`
-* Event Streams on `https://mycluster.icp/integration/instance/es`
+* IBM Event Streams on `https://mycluster.icp/integration/instance/es`
+* IBM App Connect Enterprise Portal running on `https://mycluster.icp/integration/instance/ace1`
+* IBM API Connect API Manager Portal on `https://mgmt.mycluster.icp.nip.io/manager`
 
-2. The environment you are using consists of 6 different nodes.  5 of which are ICP Nodes and one is a developer image that you will be using to access the ICP User Interfaces.  You can access this VM directly using the Skytap interface to use the X-Windows based components. All of the base CIP Charts are already installed and configured.
-
-3. **VERY IMPORTANT** It is very important you do not suspend your lab environment.  We have seen cases when the environment goes into suspend mode, the Rook-Ceph shared storage gets corrupted.  Also it is a good practice that you shut down ICP before powering down your enviroment.  A script has been included to handle that for you that will be explained in the coming sections.  When you power down your environment, you can safely use the `power off` option as the shared storage can interfere with the normal graceful shutdown method.  So far using power off hasn't caused any problems that we are aware of.  If you find that your API Connect environments are not coming up properly, it suggested that you execute the `./icpStopStart.sh stop` script (you may need to execute it more than once).  When it stops, go ahead and execute the `./icpStopStart.sh start`.  As indicated previously, this may take ~30 minutes or so to come up.
-
-3. You are also able to SSH into your environment.  You can find out the exact address to SSH to in your Skytap Environment window under `networking` and `published services`.  The Published Services set up for you will be for the SSH Port (22) under the `CIP Master` node.  The published service will look something like `services-uscentral.skytap.com:10000`.  Your environment will have a different port on it.  You can then SSH to to the machine from your local machine.
-
-4. Additionally, you can access the machine direct via the Skytap UI.  This is functional, but can be cumbersome to work with as its not easy to copy and paste into and out of Skytap, especially for the non X-Windows based environments.
-
-5. Password-less SSH has also been enabled between the Master node and the other nodes in the environment.  **note** a table with the environment configuration is provided below.  Credentials for each machine are `root`/`Passw0rd!`.
+The environment you are using consists of 6 different nodes,  5 of which are ICP Nodes and one is a Developer Image that you will use to perform nearly all of your work. A table with the environment configuration is provided below.  Credentials for each machine are `root`/`Passw0rd!`.
 
 | VM        | Hostname  | IP Address | # of CPU | RAM    | Disk Space (LOCAL) | Additional Notes |
 |-----------|-----------|------------|----------|--------|--------------------|------------------|
 | Master    | master    | 10.0.0.1   | 24       | 39 GB  | 425 GB             | hostname mycluster.icp|
-| Worker 2  | worker-2  | 10.0.0.3   | 12        | 47 GB  | 600 GB             |       |
-| Worker 3  | worker-3  | 10.0.0.4   | 12        | 47 GB  | 600 GB            		  | 		           |
-| Worker 4  | worker-4  | 10.0.0.5   | 12        | 47 GB  | 600 GB             		  | 		            |
-| Worker 5  | worker-5  | 10.0.0.6   | 12        | 47 GB  | 500 GB                            |                  |
-| Developer | developer | 10.0.0.9   |          |        |                                  |                  |
+| Worker 2  | worker-2  | 10.0.0.3   | 12        | 47 GB  | 600 GB             |You should not need to sign on to this|
+| Worker 3  | worker-3  | 10.0.0.4   | 12        | 47 GB  | 600 GB            		  |You should not need to sign on to this|
+| Worker 4  | worker-4  | 10.0.0.5   | 12        | 47 GB  | 600 GB             		  |You should not need to sign on to this|
+| Worker 5  | worker-5  | 10.0.0.6   | 12        | 47 GB  | 500 GB                            |You should not need to sign on to this|
+| Developer | developer | 10.0.0.9   |          |        |                                  |You will do almost all your work using this one|
 
 
-6. If it is not done already, power up your Environment.  It could take about 5 minutes for all nodes to start up.  The master node takes the longest to come up, so if you can see the login prompt from the Skytap UI on the master node, then you are good to go.
 
-7. SSH into the Master Node or use the Skytap UI.  In the home directory of root (`/root`) there is a script called `icpStopStart.sh`.  Run this script by executing `./icpStopStart.sh start` Note that it takes around 30 minutes for the ICP Services to come up completely.
+**VERY IMPORTANT** It is very important you do not suspend your lab environment.  When the environment goes into suspend mode, it is likely that the Rook-Ceph shared storage gets corrupted.
+
+it is a good practice to shut down ICP before powering down your environment.  A script has been included to handle that; its use will be explained in later sections.
+- When you power down your environment, you can safely use the `Power off` option, because the shared storage can interfere with the normal graceful shutdown method.  So far, we are not aware of `Power off` causing any problems.
+- If you find that your components (eg ACE or MQ or ES or API Connect) are not starting properly, we suggest that you execute the `./icpStopStart.sh stop` script as detailed later (you may need to execute it more than once).  When this script finishes, execute `./icpStopStart.sh start`.  Note that it can take around 30 minutes for ICP and all the ICP4I components to start completely.
+
+You can access the Master Node and the Developer Image directly via the Skytap UI.  This is functional, but can be cumbersome to work with because it is not intuitive to copy and paste into and out of Skytap, especially for the non X-Windows based environments.
+
+As well as using the sessions provided by Skytap, you could also SSH into the Master Node and the Developer Image.  You can find out the addresses for SSH in your Skytap Environment window under `Networking` and `Published services`.  The Published Services set up for you will be for the SSH Port (22) under the `CIP Master` node.  The published service will look something like `services-uscentral.skytap.com:10000`.  (Your environment will probably have a different port.)  You can then SSH to the relevant image.
+
+
+Password-less SSH has also been enabled between the Master Node and the other nodes in the environment.
+
+## Start-Up Instructions
+
+1. If it is not done already, power up your Skytap environment.  It could take about 5 minutes for all nodes to start up.  The Master Node typically takes the longest to start, so if you can see, from the Skytap UI, the login prompt on the Master Node, then you are good to go.
+
+7. Use the Skytap UI (or SSH) to start a session on the Master Node.
+1. In the home directory of root there is a script called `icpStopStart.sh`.  Run this script by executing `./icpStopStart.sh start`. Note that it takes around 30 minutes for the ICP Services to come up completely.
 
 8. You can tell if the start of ICP is complete by checking using one of these two methods:
-	- Click on the Developer Machine, and it will take you directly to the Developer Machine running X-Windows.  Should you need to Authenticate, you can use the credentials of `student`/`Passw0rd!`. Bring up the Firefox browser.  Navigate to the main ICP UI by going to `https://mycluster.icp:8443`.  The credentials again are `admin/admin`.  If you can log in and see the main ICP Dashboard, you are good to go.
+	- Click on the Developer Image, and it will take you directly to the Developer Image running X-Windows.  Should you need to Authenticate, you can use the credentials of `student`/`Passw0rd!`. Bring up the Firefox browser.  Navigate to the main ICP UI by going to `https://mycluster.icp:8443`.  The credentials again are `admin/admin`.  If you can log in and see the main ICP Dashboard, you are good to go.
 	- Alternatively, you can SSH to the Master node.  Execute a `cloudctl login` from the command line.  If all there services are up, it will prompt you for credentials (use `admin`/`admin`) and setup your kubernetes environment.
 8. The best place to do your Kubernetes CLI work is from the Master node.  Again, Before you can execute any of the `kubectl` commands you will need to execute a `cloudctl login`.
 9. Next step is to find The Platform Navigator UI can be use to create and manage instances of all of the components that make up the Cloud Integration Platform.
-10. You can access the Platform Navigator using the browser on the developer machine.  The URL for the navigator was set up in this environment as: `https://mycluster.icp/integration`.  You might be asked to authenticate into ICP again, but once you do that you should now see the Platform Navigator page.
+10. You can access the Platform Navigator using the browser on the Developer Image.  The URL for the navigator was set up in this environment as: `https://mycluster.icp/integration`.  You might be asked to authenticate into ICP again, but once you do that you should now see the Platform Navigator page.
 11. The Platform Navigator is designed for you to easily keep track of your integration toolset.  Here you can see all of the various APIC, Event Streams, MQ and ACE instances you have running.  You can also add new instances using the Platform Navigator.
 
 
@@ -240,13 +257,13 @@ Now you will generate a "Secret" object. This is a Kubernetes construct that let
 https://kubernetes.io/docs/concepts/configuration/secret/ )
 
 1. Prepare the PEM file you downloaded earlier.
- - On the Developer Machine, open a "Files" session.
+ - On the Developer Image, open a "Files" session.
  - Move the PEM certificate file that you downloaded from Event Streams earlier (probably called **es-cert.pem**) from _/home/student/Downloads_ to _/home/student/generateSecret_.
  - Rename this PEM certificate file in _/home/student/generateSecret_ to the following: **truststore-escert.crt** (yes, this means that it will no longer be a PEM file). Note: that this name structure must be of the form **truststore-ALIASNAME.crt**, where ALIASNAME will be generated as the alias for the certificate. Note down your specific  ALIASNAME (**escert**), because you will need to specify this later when deploying a BAR file.
 1. Go back to _/home/student/Downloads_, open the downloaded JSON file **es-api-key.json** in your favourite editor and copy the API key to the clipboard. Note: copy only the API Key, not the quotes around it.
 ![](./images/cipdemo/ace-copy-api-key.jpg)
 
-1. On the Developer Machine, open a Terminal session.  Note that you will be signed in as _student_, and be in directory _/home/student/_.
+1. On the Developer Image, open a Terminal session.  Note that you will be signed in as _student_, and be in directory _/home/student/_.
 1. Change to working directory  _/home/student/generateSecret_. This directory contains a tool called  _generateSecret.sh_, which will generate the Secret you need. It also contains some files that form input into that tool. This directory now also has your renamed PEM file (**truststore-escert.crt**) in it, which also forms input into the tool.
 1. Use either `gedit setdbparms.txt` or `vi setdbparms.txt` to edit the **_setdbparms.txt_** file.
     - Replace the characters `<over-write with API Key>` with the API key that you copied to the clipboard a moment ago. Note that this must be done accurately, otherwise the connection from ACE to Event Streams will not work. The content of the file should look like this:
@@ -352,7 +369,7 @@ You have now finished preparing the remote Queue Manager `mq`, to allow the MQ C
 
 The REST APIs within ACE, that form part of the overall solution, are mostly already written for you. You will now make changes to one of those REST APIs (namely the `orders` API) to make it put messages on MQ queues and publish a message to an Event Streams topic).
 
-1. On the Developer Machine, go back to the Terminal session and navigate to directory _/home/student_.
+1. On the Developer Image, go back to the Terminal session and navigate to directory _/home/student_.
 1. Start the Ace Toolkit by executing `sudo ./ace-v11.0.0.3/ace toolkit`. Note that the ACE Toolkit may start as a tiny window on the screen. Use the cursor to grab the corner of this screen and expand it.
 
 	![](./images/cipdemo/ace-tiny-toolkit-start.jpg)
@@ -589,7 +606,7 @@ You have shown that MQ can be used as a mechanism for transmitting message infor
 Note also that the availability of the MQ Console makes examining messages on queues in this remote Queue Manager fairly easy.
 
 ### Review MQ Portion - ACE with MQ (Queue Manager **acemqserver**)
-To check that your use of cURL has caused the `orders` flow to correctly put messages onto the relevant MQ queue on the local Queue Manager (in the same pod as ACE), perform the following inside a Terminal Window on the Developer Machine (signed in as _student_),
+To check that your use of cURL has caused the `orders` flow to correctly put messages onto the relevant MQ queue on the local Queue Manager (in the same pod as ACE), perform the following inside a Terminal Window on the Developer Image (signed in as _student_),
 
 **Note:** that the local Queue Manager (called) **acemqserver**) is in the same pod as the Integration Server, and was created using a Helm Chart "ACE with MQ". Local queue managers created this way are intended for system use only (for internal ACE functions).
 
@@ -634,14 +651,14 @@ You have shown that Event Streams can be used as a mechanism for transmitting me
 
 **Note** at the time of writing this lab, there is an issue with API Connect that must be resolved before continuing, but fortunately is easily fixed.
 
-1. Open the main Admin console for APIC by opening a new browser tab on the Developer machine to `https://mgmt.10.0.0.1.nip.io/admin`
+1. Open the main Admin console for APIC by opening a new browser tab on the Developer Image to `https://mgmt.10.0.0.1.nip.io/admin`
 2. login with the credentials of `admin`/`7Ir0n-hide`
 
 Create APIs for each of the inventory, order and AcmeMart APIs.
 
 >**Note:** the Swagger for the two ACE flows can be imported as APIs using the `From Existing Open API Service` option in API Connect.  The AcmeMart swagger can be downloaded from the main developer page and then imported, but use the `New Open API` option instead.
 
-1.  Open up your API Manager Window inside the developer machine - `https://mgmt.mycluster.icp.nip.io/manager`. The login should happen automatically as it will use your ICP credentials for login.
+1.  Open up your API Manager Window inside the Developer Image - `https://mgmt.mycluster.icp.nip.io/manager`. The login should happen automatically as it will use your ICP credentials for login.
 2.  Click on the `Manage Catalogs`
 3.  Click on `Sandbox`
 4.  Click on `Settings` from left menu
