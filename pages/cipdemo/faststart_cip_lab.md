@@ -106,7 +106,9 @@ Lab Requirements
 | generateSecret.sh     | a script file that generates an ICP Secret, for use when deploying BAR files (Helm Charts) into ICP|
 | serverconf.yaml     | skeleton file, used by generateSecret.sh|
 | setdbparms.txt     | parameter file, used by generateSecret.sh, which you will edit|
-| truststorePassword.txt     | parameter file, used by generateSecret.sh|
+| truststorePassword.txt     | parameter file, used by generateSecret.sh - it holds the password for the truststore that you will generate |
+| mqsc.txt     | parameter file, used by generateSecret.sh - it holds the MQSC command CREATE QLOCAL(NEWORDER.MQ)|
+
 
 
 
