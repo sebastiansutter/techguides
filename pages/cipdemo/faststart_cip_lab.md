@@ -239,13 +239,13 @@ https://kubernetes.io/docs/concepts/configuration/secret/ )
 
 1. Prepare the PEM file you downloaded earlier.
  - On the Developer Machine, open a "Files" session.
- - Move the PEM certificate file that you downloaded from Event Streams earlier (probably called **es-cert.pem**) from _/home/student/Downloads_ to _/home/student/generateScript_.
- - Rename this PEM certificate file in _/home/student/generateScript_ to the following: **truststore-escert.crt** (yes, this means that it will no longer be a PEM file). Note: that this name structure must be of the form **truststore-ALIASNAME.crt**, where ALIASNAME will be generated as the alias for the certificate. Note down your specific  ALIASNAME (**escert**), because you will need to specify this later when deploying a BAR file.
+ - Move the PEM certificate file that you downloaded from Event Streams earlier (probably called **es-cert.pem**) from _/home/student/Downloads_ to _/home/student/generateSecret_.
+ - Rename this PEM certificate file in _/home/student/generateSecret_ to the following: **truststore-escert.crt** (yes, this means that it will no longer be a PEM file). Note: that this name structure must be of the form **truststore-ALIASNAME.crt**, where ALIASNAME will be generated as the alias for the certificate. Note down your specific  ALIASNAME (**escert**), because you will need to specify this later when deploying a BAR file.
 1. Go back to _/home/student/Downloads_, open the downloaded JSON file **es-api-key.json** in your favourite editor and copy the API key to the clipboard. Note: copy only the API Key, not the quotes around it.
 ![](./images/cipdemo/ace-copy-api-key.jpg)
 
 1. On the Developer Machine, open a Terminal session.  Note that you will be signed in as _student_, and be in directory _/home/student/_.
-1. Change to working directory  _/home/student/generateScript_. This directory contains a tool called  _generateSecret.sh_, which will generate the Secret you need. It also contains some files that form input into that tool. This directory now also has your renamed PEM file (**truststore-escert.crt**) in it, which also forms input into the tool.
+1. Change to working directory  _/home/student/generateSecret_. This directory contains a tool called  _generateSecret.sh_, which will generate the Secret you need. It also contains some files that form input into that tool. This directory now also has your renamed PEM file (**truststore-escert.crt**) in it, which also forms input into the tool.
 1. Use either `gedit setdbparms.txt` or `vi setdbparms.txt` to edit the **_setdbparms.txt_** file.
     - Replace the characters `<over-write with API Key>` with the API key that you copied to the clipboard a moment ago. Note that this must be done accurately, otherwise the connection from ACE to Event Streams will not work. The content of the file should look like this:
  ```
