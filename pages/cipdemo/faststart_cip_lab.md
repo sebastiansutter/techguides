@@ -451,29 +451,29 @@ In a DevOps environment, you would expect to configure and deploy the Helm Chart
 2. On the ACE Dashboard, make sure you are on the Servers tab.
 
 3. Follow these steps carefully, to deploy the `orders` flow that you have just changed.
-  - From the ACE Dashboard, select `Create` to start the process.
-  - Browse to _/home/student/IBM/workspace/BARfiles_, select the BAR file `orders.bar`, and `Ccontinue`.
-  - You will be presented by the Add Server window, showing the `Content URL`, and the `namespace` **ace**.  The `Content URL` defines the location, in ICP terms, of where the BAR file is.
+	- From the ACE Dashboard, select `Create` to start the process.
+	- Browse to _/home/student/IBM/workspace/BARfiles_, select the BAR file `orders.bar`, and `Ccontinue`.
+	- You will be presented by the Add Server window, showing the `Content URL`, and the `namespace` **ace**.  The `Content URL` defines the location, in ICP terms, of where the BAR file is.
 
-	  ![](./images/cipdemo/ace-add-server.jpg)
+		![](./images/cipdemo/ace-add-server.jpg)
 
-    - Use the button to copy the contents of the `Content URL` to the clipboard, because you will need it shortly.
-    - The namespace **ace** is being proposed by ACE; you should make a mental note of it.
-    - Select `Configure Release` to continue.
+		- Use the button to copy the contents of the `Content URL` to the clipboard, because you will need it shortly.
+		- The namespace **ace** is being proposed by ACE; you should make a mental note of it.
+		- Select `Configure Release` to continue.
 
-  - ACE now selects the correct Helm Chart from the Catalog, and opens the ICP configuration pages. You can scroll through the information if you want. At the bottom of the window, select `Configure` to continue.
-  - For the `Helm Chart name`, we recommend **orders**. This name will be used in many of the ICP artefacts, so a meaningful name is good. This name will also be used as the default for some of the later properties (for example the name of the Integration Server).
-  - For the `namespace`, select **ace**, because that was proposed by ACE earlier.
-  - Ignore the `NodePort` under `Quick start` and select `Advanced` instead. (You will complete the `NodePort` shortly.)
-  - Into the `Content Server URL` field, paste the contents of the `Content URL` from the clipboard. This vital piece links the BAR file to this Helm Chart.
-  - Tick the `Local default Queue Manager` option. This specifies that this deployment will include a local queue manager.
-  - For the `Secret name` specify **orders-secret** as prepared earlier. This Secret adds sensitive configuration information (such as API key and a certificate) to this Integration Server, so that it can communicate with Event Streams.
-  - For the `Image pull secret` specify **sa-ace**. This Secret was created when the Cloud Pack for Integration was installed, and it contains the credentials for ICP to access its private docker repository.
-  - Untick `Enable persistence`. This is because provisioning volumes for persistence in this particular lab environment is sometimes troublesome. For a lab environment, persistence is not required for the MQ Queue Manager. In a Production environment, you would probably enable persistence.
-  - For the `NodePort`, we recommend **orders.10.0.0.1.nip.io**. We recommend that the first part of the name (**orders** in this case) is identical to the `Integration Server name`, because there is a 1 to 1 relationship here.
-  - For the `Queue manager name`, specify **acemqserver**. This defines the name that ICP will give to the associated local queue manager (which matches what we specified in the `MQOutput` node earlier).
-  - For the `Certificate alias name`, specify **escert**. This is used by the Integration Server when it connects to Event Streams. You defined the value **escert** earlier, when you created the Secret.
-  - Note that you could also specify the `Integration Server name`. However, we recommend that you leave this blank, so that the Helm Chart name (**orders** in this case) is used.
+	- ACE now selects the correct Helm Chart from the Catalog, and opens the ICP configuration pages. You can scroll through the information if you want. At the bottom of the window, select `Configure` to continue.
+	- For the `Helm Chart name`, we recommend **orders**. This name will be used in many of the ICP artefacts, so a meaningful name is good. This name will also be used as the default for some of the later properties (for example the name of the Integration Server).
+	- For the `namespace`, select **ace**, because that was proposed by ACE earlier.
+	- Ignore the `NodePort` under `Quick start` and select `Advanced` instead. (You will complete the `NodePort` shortly.)
+	- Into the `Content Server URL` field, paste the contents of the `Content URL` from the clipboard. This vital piece links the BAR file to this Helm Chart.
+	- Tick the `Local default Queue Manager` option. This specifies that this deployment will include a local queue manager.
+	- For the `Secret name` specify **orders-secret** as prepared earlier. This Secret adds sensitive configuration information (such as API key and a certificate) to this Integration Server, so that it can communicate with Event Streams.
+	- For the `Image pull secret` specify **sa-ace**. This Secret was created when the Cloud Pack for Integration was installed, and it contains the credentials for ICP to access its private docker repository.
+	- Untick `Enable persistence`. This is because provisioning volumes for persistence in this particular lab environment is sometimes troublesome. For a lab environment, persistence is not required for the MQ Queue Manager. In a Production environment, you would probably enable persistence.
+	- For the `NodePort`, we recommend **orders.10.0.0.1.nip.io**. We recommend that the first part of the name (**orders** in this case) is identical to the `Integration Server name`, because there is a 1 to 1 relationship here.
+	- For the `Queue manager name`, specify **acemqserver**. This defines the name that ICP will give to the associated local queue manager (which matches what we specified in the `MQOutput` node earlier).
+	- For the `Certificate alias name`, specify **escert**. This is used by the Integration Server when it connects to Event Streams. You defined the value **escert** earlier, when you created the Secret.
+	- Note that you could also specify the `Integration Server name`. However, we recommend that you leave this blank, so that the Helm Chart name (**orders** in this case) is used.
 
     ![](./images/cipdemo/ace_hc_5.png)
     ![](./images/cipdemo/ace_hc_6b.png )
@@ -482,8 +482,8 @@ In a DevOps environment, you would expect to configure and deploy the Helm Chart
     ![](./images/cipdemo/ace_hc_9.png)
     ![](./images/cipdemo/ace_hc_10.png)
 
-  - Leave the remaining settings as defaults and then click `Install` at the bottom.
-  - You should now see the "Installation started" window, and your Helm Chart will now start to install.
+	- Leave the remaining settings as defaults and then click `Install` at the bottom.
+	- You should now see the "Installation started" window, and your Helm Chart will now start to install.
 
     > **Tip:** when you see the "Installation started" window, click on the little cross at the  top right to cancel only that window (see screenshot below). This will mean that your Helm Chart, with all the configuration you have just typed in, will remain in the browser. In turn, this means that, if something goes wrong during installation, you can a) easily check what parameters you typed and b) easily try the installation again.
 
