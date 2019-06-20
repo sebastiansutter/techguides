@@ -487,7 +487,7 @@ In a DevOps environment, you would expect to configure and deploy the Helm Chart
 
 	![](./images/cipdemo/ace-installation-started.jpg)
 
-	> **Tip:** when you see the "Installation started" window, click on the little cross at the  top right to cancel only that window (see screenshot below). This will mean that your Helm Chart, with all the configuration you have just typed in, will remain in the browser. In turn, this means that, if something goes wrong during installation, you can a) easily check what parameters you typed and b) easily try the installation again.
+	> **Tip:** when you see the "Installation started" window, click on the little cross at the  top right to cancel only that window (see screenshot above). This will mean that your Helm Chart, with all the configuration you have just typed in, will remain in the browser. In turn, this means that, if something goes wrong during installation, you can a) easily check what parameters you typed and b) easily try the installation again.
 
 4. Note: if you don't see the "Installation started" window, and the deployment seems not to have started, then scroll to the top of the screen and you may see an error message.
 
