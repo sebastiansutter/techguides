@@ -410,14 +410,14 @@ These are the detailed instructions for modifying the ACE subflow.
 
 1. Select the `KafkaProducer` node. Configure its properties thus:
 
-  - Enter the `Topic name`, matching what you defined within the Event Streams configuration earlier - we recommended **NewOrder**. Note: in this instance you are hard-coding this topic name; typically it will be parameterised (for ACE specialists: the parameterisation uses _LocalEnvironment.Destination.Kafka.Output.topicName_).
-  - For the `Bootstrap servers`, specify the value you noted in the Event Streams section earlier. It looks like **10.0.0.1:30633**.
-  - For Acks specify **All**. This defines the number of acknowledgements to request from the Event Streams server before the publication request is sent. **0** is equivalent to similar to 'fire and forget'; **1** waits for a single acknowledgement; **All** waits for acknowledgements from all replicas of the topic (providing the strongest available guarantee that the message was received).
-  - Change the `Timeout` to **5** secs (so that if it fails, you will only have to wait 5 seconds before you see the failure)
-  - For `Security Protocol` specify **SASL_SSL**. This is because Event Streams requires this.
-  - For `SSL protocol` specify **TLSv1.2**. This is because Event Streams requires this.
+   - Enter the `Topic name`, matching what you defined within the Event Streams configuration earlier - we recommended **NewOrder**. Note: in this instance you are hard-coding this topic name; typically it will be parameterised (for ACE specialists: the parameterisation uses _LocalEnvironment.Destination.Kafka.Output.topicName_).
+   - For the `Bootstrap servers`, specify the value you noted in the Event Streams section earlier. It looks like **10.0.0.1:30633**.
+   - For Acks specify **All**. This defines the number of acknowledgements to request from the Event Streams server before the publication request is sent. **0** is equivalent to similar to 'fire and forget'; **1** waits for a single acknowledgement; **All** waits for acknowledgements from all replicas of the topic (providing the strongest available guarantee that the message was received).
+   - Change the `Timeout` to **5** secs (so that if it fails, you will only have to wait 5 seconds before you see the failure)
+   - For `Security Protocol` specify **SASL_SSL**. This is because Event Streams requires this.
+   - For `SSL protocol` specify **TLSv1.2**. This is because Event Streams requires this.
 
-   ![](./images/cipdemo/ace_kafka_producer.png)
+    ![](./images/cipdemo/ace_kafka_producer.png)
 
 8. `Save` your flow.
 9. Create a BAR (Broker Archive) file in a project called **Barfiles**, thus:
