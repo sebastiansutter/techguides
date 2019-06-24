@@ -673,6 +673,7 @@ Create APIs for each of the inventory, order and AcmeMart APIs.
 4.  Click on `Settings` from left menu
 5.  Click on `Gateway Services`
 6.  Ensure there is a gateway service assosiated with the Catalog
+![](./images/cipdemo/gatewayservices.jpg)
 7.  Click `Back`. From the API Manager homescreen, use the menu on the left to navigate to `Develop`.
 8.  On the APIs and Products screen click `Add` -> `Api`
 9.  Select the `From Existing OpenAPI Service` radio button option. Click `Next`.
@@ -695,6 +696,10 @@ Where `yourapp ip` and `your port` is the port that ICP has put your Utility App
 Test your APIs in the test tool inside of API Connect.
 
 ![](./images/cipdemo/test_api.gif)
+
+If you see a CORS error, click on the link provided by the test tool and accept the certificate manually, as shown below:
+
+![](./images/cipdemo/cors.jpg)
 
 For the `AcmeMartUtilityAPI`, the quickest way to do this is open up the Assembly view of the AcmeMart and select the `/Utilities/Ping` API.  It requires no arguments.
 
@@ -722,6 +727,8 @@ This part will show the following:
 + How to consume an API from a sample test application.
 
 1. Launch the Developer Portal from your bookmarks if you have the link saved, otherwise you  can obtain the Developer Portal URL from the API Manager. Go to your Catalog (eg. `Sandbox`), from the `Settings` menu select `Portal` to show the configuration. Copy the URL.
+![](./images/cipdemo/portalurl.jpg)
+
 2. Open a new browser tab and paste the URL to launch the Developer Portal (admin credentials for the Developer Portal are `admin/Passw0rd!`, developer credentials are `developer/Password!`)
 
 ![](./images/cipdemo/portal.png)
@@ -736,6 +743,9 @@ This part will show the following:
 
 1. Click the logistics AcmeMartUtilityAPI 1.0.0 link on the product page
 2. Check Inventory - Supply it the name of the image uploaded. Click the GET method of the API path on the left-hand navigation menu
+3. Ensure you're the app from the previous section to inkove the API:
+
+![](./images/cipdemo/portaltest.jpg)
 
 Example Output:
 ```
