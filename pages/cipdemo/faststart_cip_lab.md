@@ -729,7 +729,7 @@ This part will show the following:
 3. Click the `API Products` link
 4. Log in with the Developer account for your portal. Remember that this account is different from the credentials you use to log in to API Management
 5. Click the `API Products` link after logging in
-6. Select the API product you published in the prrevious part and click `Subscribe`
+6. Select the API product you published in the previous part and click `Subscribe`
 7. As the result, the application is now subscribed to the product and its credentials are registered to use the Product APIs.
 
 >In this section, you will use the Developer Portal to test the entire flow you created. This is useful for application developers to try the APIs before their application is fully developed or to simply see the expected response based on inputs they provide the API.
