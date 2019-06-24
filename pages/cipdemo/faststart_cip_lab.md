@@ -722,7 +722,7 @@ This part will show the following:
 + How to consume an API from a sample test application.
 
 1. Launch the Developer Portal from your bookmarks if you have the link saved, otherwise you  can obtain the Developer Portal URL from the API Manager. Go to your Catalog (eg. `Sandbox`), from the `Settings` menu select `Portal` to show the configuration. Copy the URL.
-2. Open a new browser tab and paste the URL to launch the Developer Portal (admin credentials for the Developer Portal are `admin/Passw0rd!`)
+2. Open a new browser tab and paste the URL to launch the Developer Portal (admin credentials for the Developer Portal are `admin/Passw0rd!`, developer credentials are `developer/Password!`)
 
 ![](./images/cipdemo/portal.png)
 
