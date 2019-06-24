@@ -663,22 +663,17 @@ You have shown that Event Streams can be used as a mechanism for transmitting me
 
 ## Create API Facades
 
-**Note** at the time of writing this lab, there is an issue with API Connect that must be resolved before continuing, but fortunately is easily fixed.
-
-1. Open the main Admin console for APIC by opening a new browser tab on the Developer Image to `https://mgmt.10.0.0.1.nip.io/admin`
-2. login with the credentials of `admin`/`7Ir0n-hide`
-
 Create APIs for each of the inventory, order and AcmeMart APIs.
 
->**Note:** the Swagger for the two ACE flows can be imported as APIs using the `From Existing Open API Service` option in API Connect.  The AcmeMart swagger can be downloaded from the main developer page and then imported, but use the `New Open API` option instead.
+>**Note:** the Swagger for the two ACE flows can be imported as APIs using the `From Existing Open API Service` option in API Connect.  The AcmeMart swagger can be downloaded from the main developer page and then imported.
 
-1.  Open up your API Manager Window inside the Developer Image - `https://mgmt.mycluster.icp.nip.io/manager`. The login should happen automatically as it will use your ICP credentials for login.
+1.  Open up your API Manager Window inside the Developer Image - `https://mgmt.10.0.0.1.nip.io/manager`. The login should happen automatically as it will use your ICP credentials for login.
 2.  Click on the `Manage Catalogs`
 3.  Click on `Sandbox`
 4.  Click on `Settings` from left menu
 5.  Click on `Gateway Services`
-6.  Click `Edit` and choose the `Gateway` service you configured previously and click on `Save`.
-7.  From the API Manager homescreen, use the menu on the left to navigate to `Develop`.
+6.  Ensure there is a gateway service assosiated with the Catalog
+7.  Click `Back`. From the API Manager homescreen, use the menu on the left to navigate to `Develop`.
 8.  On the APIs and Products screen click `Add` -> `Api`
 9.  Select the `From Existing OpenAPI Service` radio button option. Click `Next`.
 10.  Click the `browse` button to navigate to the `Tutorial_swagger.json` file on your file system you had saved previously.
