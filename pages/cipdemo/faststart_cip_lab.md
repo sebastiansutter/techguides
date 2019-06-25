@@ -664,7 +664,7 @@ You have shown that Event Streams can be used as a mechanism for transmitting me
 ## Create API Facades
 
 
->**Note:** We recommend you use Google Chrome to access the API Connect WebUIs during the lab
+>**Note:** We recommend you to use Google Chrome to access the API Connect WebUIs during the lab
 
 Create APIs for each of the inventory, order and AcmeMart APIs.
 
@@ -721,9 +721,22 @@ Testing the `Inventory` API can be done in the Assembly view by using the follow
 The orders flow can't be (easily) tested inside of the Assembly test view as it requires a json payload.  We will test this using the flow below.
 
 
-15. Create an API Product
-16. Add your APIs to the Product
-17. Publish the product
+15. Create an API Product. Go to `Develop`, `Add`, `Product`, `New Product`:
+
+![](./images/cipdemo/createproduct.jpg)
+
+16. Add your APIs to the Product, then click `Next`:
+
+![](./images/cipdemo/addapis.jpg)
+
+17. The `Default` plan is automatically added, click `Next`
+
+18. Publish the product
+
+>**Note:** You can control the product visibility and subscribability at this step
+
+![](./images/cipdemo/publishproduct.jpg)
+
 
 ## Test the entire flow
 
@@ -737,7 +750,7 @@ This part will show the following:
 1. Launch the Developer Portal from your bookmarks if you have the link saved, otherwise you  can obtain the Developer Portal URL from the API Manager. Go to your Catalog (eg. `Sandbox`), from the `Settings` menu select `Portal` to show the configuration. Copy the URL.
 ![](./images/cipdemo/portalurl.jpg)
 
-2. Open a new browser tab and paste the URL to launch the Developer Portal (admin credentials for the Developer Portal are `admin/Passw0rd!`, developer credentials are `developer/Password!`)
+2. Open a new browser tab and paste the URL to launch the Developer Portal (admin credentials for the Developer Portal are `admin/Passw0rd!`, developer credentials are `developer/Password!`). We will be using the `developer` account in the next steps
 
 ![](./images/cipdemo/portal.png)
 
@@ -745,52 +758,30 @@ This part will show the following:
 4. Log in with the Developer account for your portal. Remember that this account is different from the credentials you use to log in to API Management
 5. Click the `API Products` link after logging in
 6. Select the API product you published in the previous part and click `Subscribe`
-7. As the result, the application is now subscribed to the product and its credentials are registered to use the Product APIs.
+7. The App called `Mobile App` was already created for you. However feel free to create a new App if you want
+8. As the result, the application is now subscribed to the product and its credentials are registered to use the Product APIs.
+
+![](./images/cipdemo/appsubscription.jpg)
 
 >In this section, you will use the Developer Portal to test the entire flow you created. This is useful for application developers to try the APIs before their application is fully developed or to simply see the expected response based on inputs they provide the API.
 
+Go back to the `API Product` page, click on the product you published in the previous section
 1. Click the logistics AcmeMartUtilityAPI 1.0.0 link on the product page
-2. Check Inventory - Supply it the name of the image uploaded. Click the GET method of the API path on the left-hand navigation menu
-3. Ensure you're the app from the previous section to inkove the API:
 
+![](./images/cipdemo/selectapi.jpg)
+
+2. Click the GET /Sneakers/identity method of the API path on the left-hand navigation menu
+
+3. Open `Environment Vesion Info` file located at the desktop and copy the Sample Data for Inventory API key from it
+4. Ensure you're using the app the app from the previous section to inkove the API:
+5. Paste the key to the `key` field:
 ![](./images/cipdemo/portaltest.jpg)
 
 Example Output:
-```
-{"Inventory":[{"color":"ultramarine color","location":"In Store","pictureFile":"AJ1-05","productDescription":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean egestas nec mauris non cursus. Donec non justo lacinia, imperdiet nibh quis, laoreet ante. Sed quis luctus ligula. Donec urna libero, malesuada eu nibh vitae, facilisis pharetra quam. Donec ullamcorper porttitor bibendum. Nulla nec arcu nec metus auctor efficitur. Ut at magna condimentum, semper augue id, finibus tortor.\\n\\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean egestas nec mauris non cursus. Donec non justo lacinia, imperdiet nibh quis, laoreet ante. Sed quis luctus ligula. Donec urna libero, malesuada eu nibh vitae, facilisis pharetra quam. Donec ullamcorper porttitor bibendum. Nulla nec arcu nec metus auctor efficitur. Ut at magna condimentum, semper augue id, finibus tortor.\\n\\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean egestas nec mauris non cursus. Donec non justo lacinia, imperdiet nibh quis, laoreet ante. Sed quis luctus ligula. Donec urna libero, malesuada eu nibh vitae, facilisis pharetra quam. Donec ullamcorper porttitor bibendum. Nulla nec arcu nec metus auctor efficitur. Ut at magna condimentum, semper augue id, finibus tortor.\\n\\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean egestas nec mauris non cursus. Donec non justo lacinia, imperdiet nibh quis, laoreet ante. Sed quis luctus ligula. Donec urna libero, malesuada eu nibh vitae, facilisis pharetra quam. Donec ullamcorper porttitor bibendum. Nulla nec arcu nec metus auctor efficitur. Ut at magna condimentum, semper augue id, finibus tortor.\\n\\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean egestas nec mauris non cursus. Donec non justo lacinia, imperdiet nibh quis, laoreet ante. Sed quis luctus ligula. Donec urna libero, malesuada eu nibh vitae, facilisis pharetra quam. Donec ullamcorper porttitor bibendum. Nulla nec arcu nec metus auctor efficitur. Ut at magna condimentum, semper augue id, finibus tortor.","productID":"AJ1-05","productName":"Blue & White","qtyOnHand":"1050","rating":"2","type":"AirJordan1","typeDescription":"Air Jordan 1 (Extra Crispy)","unitPrice":"105.99"}]}
-```
 
-4. Order a product - Use the product ID selected from the check inventory call
+![](./images/cipdemo/testoutput.jpg)
 
-```
-curl -k -X POST \
-  https://apigw.10.0.0.1.nip.io/admin-admin/sandbox/orders/v1/create \
-  -H 'cache-control: no-cache' \
-  -H 'content-type: application/json' \
-  -H 'x-ibm-client-id: 5fa14472d2aa8f1ff5389ad20c1eed03' \
-  -H 'x-ibm-client-secret: ca0986b82a21e3af67bc19ef72b7bf99' \
-  -d '    {
-    "accountid": "A-10000",
-     "order": {
-       "orderDate": "2018-11-28 17:05:39 +0000",
-       "contractId": "00000100",
-       "orderDetails": [
-        {
-           "lineItemNumber": 1,
-           "productId": "AJ1-05",
-           "quantity": "20"
-         }
-       ]
-     }
-    }
-'
-```
-
-Example Output:
-```
-{"accountid":"A-10000","orderid":"6981359"}
-```
-
+6. Feel free to test other APIs and API methods using the Portal 
 
 
 
