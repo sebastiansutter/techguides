@@ -695,7 +695,6 @@ Where `yourapp ip` and `your port` is the port that ICP has put your Utility App
 
 14.  Click the `Assemble` tab to bring up the Assembly editor.
 
-
 Test your APIs in the test tool inside of API Connect.
 
 ![](./images/cipdemo/test_api.gif)
@@ -704,7 +703,7 @@ If you see a CORS error, click on the link provided by the test tool and accept 
 
 ![](./images/cipdemo/cors.jpg)
 
-For the `AcmeMartUtilityAPI`, the quickest way to do this is open up the Assembly view of the AcmeMart and select the `/Utilities/Ping` API.  It requires no arguments.
+For the `AcmeMartUtilityAPI`, the quickest way to do this is open up the Assembly view of the AcmeMart and select the `/Utilities/Ping` API. It requires no arguments.
 
 Before:
 
@@ -719,6 +718,8 @@ Testing the `Inventory` API can be done in the Assembly view by using the follow
 ![](./images/cipdemo/store_inventory_assembly_test.gif)
 
 The orders flow can't be (easily) tested inside of the Assembly test view as it requires a json payload.  We will test this using the flow below.
+
+Explore the assembly view and the policy palette on the left.
 
 
 15. Create an API Product. Go to `Develop`, `Add`, `Product`, `New Product`:
