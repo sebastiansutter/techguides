@@ -663,9 +663,12 @@ You have shown that Event Streams can be used as a mechanism for transmitting me
 
 ## Create API Facades
 
+
+>**Note:** We recommend you use Google Chrome to access the API Connect WebUIs during the lab
+
 Create APIs for each of the inventory, order and AcmeMart APIs.
 
->**Note:** the Swagger for the two ACE flows can be imported as APIs using the `From Existing Open API Service` option in API Connect.  The AcmeMart swagger can be downloaded from the main developer page and then imported.
+>**Note:** the Swagger for the two ACE flows can be imported as APIs using the `From Existing Open API Service` option in API Connect. The AcmeMart swagger can be downloaded from the main developer page and then imported.
 
 1.  Open up your API Manager Window inside the Developer Image - `https://mgmt.10.0.0.1.nip.io/manager`. The login should happen automatically as it will use your ICP credentials for login.
 2.  Click on the `Manage Catalogs`
@@ -677,7 +680,7 @@ Create APIs for each of the inventory, order and AcmeMart APIs.
 7.  Click `Back`. From the API Manager homescreen, use the menu on the left to navigate to `Develop`.
 8.  On the APIs and Products screen click `Add` -> `Api`
 9.  Select the `From Existing OpenAPI Service` radio button option. Click `Next`.
-10.  Click the `browse` button to navigate to the `Tutorial_swagger.json` file on your file system you had saved previously.
+10.  Click the `browse` button to navigate to the `AcmeMart` swagger file on your file system you had saved previously.
 11.  Click `Next`
 12.  Review the settings then click `Next` twice (do not activate the API yet).
 13.  Review the summary to ensure the API was created properly, and then click the `Edit API` button.
@@ -716,6 +719,11 @@ Testing the `Inventory` API can be done in the Assembly view by using the follow
 ![](./images/cipdemo/store_inventory_assembly_test.gif)
 
 The orders flow can't be (easily) tested inside of the Assembly test view as it requires a json payload.  We will test this using the flow below.
+
+
+15. Create an API Product
+16. Add your APIs to the Product
+17. Publish the product
 
 ## Test the entire flow
 
