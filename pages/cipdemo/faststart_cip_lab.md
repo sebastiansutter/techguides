@@ -781,7 +781,7 @@ Example Output:
 
 ![](./images/cipdemo/testoutput.jpg)
 
-6. Feel free to test other APIs and API methods using the Portal 
+Feel free to test other APIs and API methods using the Portal 
 
 
 
