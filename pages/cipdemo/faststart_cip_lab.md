@@ -238,7 +238,7 @@ In this section you will prepare for the integration of Event Streams and ACE.
 ### Define and capture Event Streams Configuration Information
 
 Start by working with Event Streams, to create a topic and to define and capture connection information:
-1. Navigate to the Event Streams dashboard:
+1. On the Developer Machine, navigate to the Event Streams dashboard thus:
  - Open a browser session to the ICP4I Platform Navigator: `https://mycluster.icp/integration/`
  - Under `Messaging`, select the `es` link, to open the Event Streams Dashboard.
  - (If you see an error screen similar to that shown below, then simply select the `Open es` link in the middle.)
@@ -260,7 +260,7 @@ Now you will create and extract Event Streams connection information, for use la
 1. Use the correct button to download the `PEM Certificate`. Store it in `/home/student/Downloads`.
 		![](./images/cipdemo/bootstrap-server-and-certificate.png)
 1. Use the section on the right to create an API key:
- - First `Name your application`. This is used, within Event Streams, to report connections and activity, but it is not used further in this lab session. You could specify **ACE-Connection**, or **ordersFlow**, or anything else that identifies the connection for you.
+ - First `Name your application`. We recommend you specify **ordersFlow** here. This is used, within Event Streams, to report connections and activity, but it is not used further in this lab session.  You could specify ACE-Connection, or ACEorders, or anything else that identifies the connection for you.
  - Specify `Produce, consume and create topics`. Although in this lab session we ask you only to produce messages, specifying this allows you to extend the lab and do more later, if you want. In a Production system you could use this to restrict access.
  - Select the slider, to specify `All topics`. Although in this lab session we ask you to use only the topic you created above,  specifying `All topics` allows you to extend the lab and do more later, if you want. In a Production system you could use this to restrict access.
  - Ensure that the slider specifying `All` consumer groups is enabled. In a Production system you could use this to restrict access.
@@ -293,7 +293,7 @@ https://kubernetes.io/docs/concepts/configuration/secret/ )
     - The first line means "when ACE uses its Kafka client to connect, use this API key as the password". (**token** is the userID for that password, but it is not used.)
     - The second line means "when ACE refers to the identity _IntSvr::truststorePass_, it will use the password **password**. (**thisispwdfortruststore** is the userID for that password, but it is not used.) Note that in the set of configuration files already in directory _/home/student/generateSecret_, **truststorePassword.txt** has already been created, containing the matching value **password**.
     - `Save` your changes and exit the editor.
-1. Sign into the ICP4I namespace and run the tool to generate the Secret.
+1. Take the following steps to sign into the ICP4I namespace and run the tool to generate the Secret:
  - In the Terminal session, execute `sudo cloudctl login`.
  - Provide the password for student: **Passw0rd!**.
  - Ensure that the API Endpoint **https://mycluster.icp:8443** is specified. If a different one is specified, execute `sudo cloudctl logout` and try again.
@@ -384,7 +384,7 @@ You have now finished preparing the remote Queue Manager `mq`, to allow the MQ C
 The REST APIs within ACE, that form part of the overall solution, are mostly already written for you. You will now make changes to one of those REST APIs (namely the `orders` API) to make it put messages on MQ queues and publish a message to an Event Streams topic).
 
 1. On the Developer Image, go back to the Terminal session and navigate to directory _/home/student_.
-1. Start the Ace Toolkit by executing `sudo ./ace-v11.0.0.3/ace toolkit`. Note that the ACE Toolkit may start as a tiny window on the screen. Use the cursor to grab the corner of this screen and expand it.
+1. Start the Ace Toolkit by executing `sudo ./ace-11.0.0.3/ace toolkit`. Note that the ACE Toolkit may start as a tiny window on the screen. Use the cursor to grab the corner of this screen and expand it.
 
 	![](./images/cipdemo/ace-tiny-toolkit-start.jpg)
 
@@ -481,9 +481,9 @@ In a DevOps environment, you would expect to configure and deploy the Helm Chart
 
 2. On the ACE Dashboard, make sure you are on the Servers tab.
 
-3. Follow these steps carefully, to deploy the `orders` flow that you have just changed.
-	- From the ACE Dashboard, select `Create` to start the process.
-	- Browse to _/home/student/IBM/workspace/BARfiles_, select the BAR file `orders.bar`, and `Ccontinue`.
+3. Follow these steps **_very carefully_**, to deploy the `orders` flow that you have just changed.
+	- From the ACE Dashboard, in the `Servers` tab or in the `Integration` tab, select `Add server+` to start the process.
+	- Browse to _/home/student/IBM/workspace/BARfiles_, select the BAR file `orders.bar`, and `Continue`.
 	- You will be presented by the Add Server window, showing the `Content URL`, and the `namespace` **ace**.  The `Content URL` defines the location, in ICP terms, of where the BAR file is.
 
 		![](./images/cipdemo/ace-add-server.jpg)
@@ -548,6 +548,7 @@ If the deployment does not seem to succeed, use kubectl to perform problem deter
  - Provide the ICP4I userID: **admin** with  password **admin**
  - Set the namespace context to **ace** or **mq** or **eventstreams**, depending on which namespace you want to work with most.
 1. Execute `kubectl get pods` for this namespace, or `kubectl -n ace get pods` or `kubectl -n mq get pods` or `kubectl -n eventstreams get pods` for each specified namespace.
+1. Execute `kubectl logs <pod-name>` or `kubectl logs <pod-name> -n <namespace>` to see the logs for a pod.
 1. Execute `kubectl describe pod <pod-name>` for each pod that you want to examine. Some possible values for `<pod-name>` are:
   - `orders-ib-92e8-0` for the ace+mq pod (to troubleshoot the **orders** Integration Server and/or the **acemqserver** Queue Manager)
   - `mq-ibm-mq-0` for the standalone mq pod (to troubleshoot the **mq** Queue Manager)
