@@ -283,7 +283,7 @@ https://kubernetes.io/docs/concepts/configuration/secret/ )
 	![](./images/cipdemo/ace-copy-api-key.jpg)
 
 1. On the Developer Image, open a Terminal session.  Note that you will be signed in as _student_, and be in directory _/home/student/_.
-1. Change to working directory  _/home/student/generateSecret_. This directory contains a tool called  _generateSecret.sh_, which will generate the Secret you need. It also contains some files that form input into that tool. This directory now also has your renamed PEM file (**truststore-escert.crt**) in it, which also forms input into the tool.
+1. Change to working directory  _/home/student/generateSecret_. This directory contains a tool called  _generatesecret.sh_, which will generate the Secret you need. It also contains some files that form input into that tool. This directory now also has your renamed PEM file (**truststore-escert.crt**) in it, which also forms input into the tool.
 1. Use either `gedit setdbparms.txt` or `vi setdbparms.txt` to edit the **_setdbparms.txt_** file.
     - Replace the characters `<over-write with API Key>` with the API key that you copied to the clipboard a moment ago. Note that this must be done accurately, otherwise the connection from ACE to Event Streams will not work. The content of the file should look like this:
  ```
@@ -782,7 +782,7 @@ Example Output:
 
 ![](./images/cipdemo/testoutput.jpg)
 
-Feel free to test other APIs and API methods using the Portal 
+Feel free to test other APIs and API methods using the Portal
 
 
 
