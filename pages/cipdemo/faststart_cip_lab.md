@@ -843,5 +843,7 @@ Feel free to test other APIs and API methods using the Portal
 ### Conclusion
 You have put together the main building blocks for the combined ICP4I Demonstration.  The only things left are to plug in the mobile app to make these api calls, and make a minor change to the microservices to use the on-premises based event streams versus the cloud. Good luck with the IBM Cloud Pak for Integration!
 
+Please take the enablement survey here: http://ibm.biz/survey1
+
 
 **End of Lab**
