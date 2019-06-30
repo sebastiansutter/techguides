@@ -78,7 +78,7 @@ A table with the Skytap environment configuration is provided below.  Credential
 
 it is a good practice to shut down ICP before powering down your environment.  A script has been included to do this - it is `./icpStopStart` and you should run it from the Master Node when signed on as **root**.
 - Having run `./icpStopStart stop`, you can  power down the Skytap environment safely using the `Power off` option. The shared storage can interfere with the normal "graceful shutdown" method.  We are not aware of `Power off` causing any problems.
-- If you find that your components (eg ACE or MQ or ES or API Connect) are not starting properly, and you have 30 minutes to spare, you can execute `./icpStopStart.sh stop` from the Master Node when signed on as `root`.  When this script finishes, execute `./icpStopStart.sh start`.  Note that it can take around 30 minutes for ICP and all the ICP4I components to start completely.
+- If you find that your components (eg ACE or MQ or ES or API Connect) are not starting properly, and you have 30+ minutes to spare, you can execute `./icpStopStart.sh stop` from the Master Node when signed on as `root`.  When this script finishes, execute `./icpStopStart.sh start`.  Note that it can take around 30 minutes for ICP and all the ICP4I components to start completely.
 
 You can access the Master Node and the Developer Image directly via the sessions provided from the Skytap UI.  This is functional, but it is not intuitive to copy and paste into and out of Skytap, especially for the non X-Windows based environments.
 
@@ -93,14 +93,7 @@ Password-less SSH has also been enabled between the Master Node and the other no
 ## Start-Up Instructions
 
 1. If it is not done already, power up your Skytap environment.  It could take about 5 minutes for all nodes to start up.  The Master Node typically takes the longest to start, so if you can see, from the Skytap UI, the login prompt on the Master Node, then you can start to use the environment.
-
-7. Use the Skytap UI (or SSH) to start a session on the Master Node. You will be signed on as `student`.
-1. Change to using root by executing `su - root`.
-1. In the home directory of root there is a script called `icpStopStart.sh`.  Run this script by executing `./icpStopStart.sh start`. Note that it takes around 30 minutes for the ICP Services to come up completely.
-
-  > From Hugh: do we need to get them to sign on to Master Node and run `./icpStopStart` ??? If not, then we should replace the above three  steps with the following one.
-
-1. The ICP infrastructure and all of the ICP4I components  are configured to start when the environment starts. It typically takes around 30 minutes for all the components to be ready.
+1. The ICP infrastructure and all of the ICP4I components are configured to start when the environment starts. It typically takes around 30 minutes for all the components to be ready.
 8. You can tell if the ICP infrastructure is ready by going to the ICM Main Portal thus:
 	- On the Developer Image, start a Firefox browser, and navigate to the  ICP Main Portal at `https://mycluster.icp:8443`.  If you can log in using the credentials `admin/admin` and see the ICP Dashboard, then the ICP infrastructure is ready.
 1. You can also tell if the ICP infrastructure is ready by trying to log into it from a command line, thus:
@@ -111,6 +104,7 @@ Password-less SSH has also been enabled between the Master Node and the other no
  - When prompted, choose any namespace.
  - If all the above works, then the ICP infrastructure is ready.
 8. The best place to do your Kubernetes CLI work is from the Master Node. As shown above, before you can execute any of the `kubectl` commands you will need to execute `sudo cloudctl login` - this signs you in to the ICP infrastructure.
+
 Now you will access the ICP4I Platform Navigator. This is the UI that allows you to  create and manage instances of all of the components that make up ICP4I (in this lab: ACE, MQ, Event Streams and API Connect).
 1. On the Developer Image, start a Firefox browser, and navigate to the ICP4I Platform Navigator at `https://mycluster.icp/integration`.  To authenticate, use the ICP4I userID `admin` and password `admin`.
 1. The Platform Navigator is designed for you to easily keep track of your integration components and artefacts.  Here you can see all of the various API Connect, Event Streams, MQ, Aspera and ACE instances you have running.  You can also use the Platform Navigator to add new instances.
