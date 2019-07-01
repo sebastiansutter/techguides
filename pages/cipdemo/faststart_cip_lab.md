@@ -680,7 +680,7 @@ Create APIs for each of the inventory, order and AcmeMart APIs.
 12.  Review the settings then click `Next` twice (do not activate the API yet).
 13.  Review the summary to ensure the API was created properly, and then click the `Edit API` button.
 
-**For the AcmeMartUtilityAPI** you will need to modify your invoke URL to look like the following:
+**For the AcmeMartUtilityAPI** ensure your invoke URL to looks like the following:
 
 `http://(yourapp ip):(your port)$(request.path)$(request.search)`
 
