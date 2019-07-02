@@ -659,11 +659,12 @@ You have shown that Event Streams can be used as a mechanism for transmitting me
 ## Create API Facades
 
 
->**Note:** We recommend you to use Google Chrome to access the API Connect WebUIs during the lab
+
+**Note:** We recommend you to use Google Chrome to access the API Connect WebUIs during the lab
 
 Create APIs for each of the inventory, order and AcmeMart APIs.
 
->**Note:** the Swagger for the two ACE flows can be imported as APIs using the `From Existing Open API Service` option in API Connect. The AcmeMart swagger can be downloaded from the main developer page and then imported.
+**Note:** the Swagger for the two ACE flows can be imported as APIs using the `From Existing Open API Service` option in API Connect. The AcmeMart swagger can be downloaded from the main developer page and then imported.
 
 1.  Open up your API Manager Window inside the Developer Image - `https://mgmt.10.0.0.1.nip.io/manager`. The login should happen automatically as it will use your ICP credentials for login.
 2.  Click on the `Manage Catalogs`
@@ -673,12 +674,22 @@ Create APIs for each of the inventory, order and AcmeMart APIs.
 6.  Ensure there is a gateway service assosiated with the Catalog
 ![](./images/cipdemo/gatewayservices.jpg)
 7.  Click `Back`. From the API Manager homescreen, use the menu on the left to navigate to `Develop`.
-8.  On the APIs and Products screen click `Add` -> `Api`
-9.  Select the `From Existing OpenAPI Service` radio button option. Click `Next`.
-10.  Click the `browse` button to navigate to the `AcmeMart` swagger file on your file system you had saved previously.
-11.  Click `Next`
-12.  Review the settings then click `Next` twice (do not activate the API yet).
-13.  Review the summary to ensure the API was created properly, and then click the `Edit API` button.
+8.  On the APIs and Products screen browse over the `AcmeMartUtility` API
+9.  Click on the icon on the right, then click `Save as a new version`
+
+![](./images/cipdemo/newversion.jpg)
+
+10. Type in version `1.0.1`
+
+![](./images/cipdemo/version101.jpg)
+
+11.  Select the new version of the API and click on it
+12.  Review the API configuration using the `Design` tab
+13.  Then click on the `Source` tab
+
+![](./images/cipdemo/apidefinition.jpg)
+
+14.  Review the API definition to ensure the API was created properly, and then click the `Assemble` button on the top.
 
 **For the AcmeMartUtilityAPI** ensure your invoke URL to looks like the following:
 
@@ -688,7 +699,11 @@ Where `yourapp ip` and `your port` is the port that ICP has put your Utility App
 
 ![](./images/cipdemo/invoke.gif)
 
-14.  Click the `Assemble` tab to bring up the Assembly editor.
+14.  Click the `Play` button on the top to get to the built in test tool
+
+15. Activate your API by clicking on the `Activate API` button
+
+![](./images/cipdemo/activateapi.jpg)
 
 Test your APIs in the test tool inside of API Connect.
 
@@ -707,6 +722,11 @@ Before:
 After:
 
 ![](./images/cipdemo/test_acmemart_api2.gif)
+
+
+16. You may want to click on `Repeat` to invoke the API multiple times from the test tool
+
+![](./images/cipdemo/repeat.jpg)
 
 Testing the `Inventory` API can be done in the Assembly view by using the following value as input for `key`: `AJ1-05.jpg`
 
@@ -782,56 +802,8 @@ Feel free to test other APIs and API methods using the Portal
 
 
 
-## Analyze API consumption
-
-### Launch the API Manager and navigate to Analytics
-
-1.  Sign on to the API Manager UI of IBM API Connect
-
-2.  Click on the tile entitled `Manage Catalogs`.
-
-3.  Click on the tile representing the catalog you have published the REST facades to (eg. `Sandbox`)
-
-4.  From the catalog configuration screen, hover over the icons on the left, and click on the `Analytics` tab.
-
-![](./images/cipdemo/analytics_tab.jpeg)
-
-### Explore the Analytics
-
-1. After clicking the `Analytics` tab, you are presented with a list of dashboards.
-
-    Those tagged with `Admin` are pre-defined by IBM. You can clone (copy) a dashboard and then edit it - instructions for doing this are provided later below. You can add your own dashboards from scratch, and you can import dashboards that have been exported from another API Manager.
-
-2. Click on the `API Default` dashboard.
-
-3. This default dashboard gives some general information about Errors, Status Codes, Response Times and number of API Calls.
-
-    Take a while to explore this dashboard and its visualisations. Note, and experiment with, the following:
-    1. Use your browser's zoom capability to zoom in or out, until the screen size is comfortable for you.
-    2. At the top right of the screen, click the time range (the default is `Last 15 minutes`) to examine the Time Range options. (Notice that when you are choosing the Time Range, you can also set the autorefresh time by clicking `Auto-refresh`.)
-    3. Note that when you click on an area of some of the visualisations, this adds a filter to the list of filters along the top of the screen. Try this with the `Status Codes (Detailed)` graph. To remove a filter, hover over it and click the dustbin icon. Once you have one or more filters defined, note that you can toggle the `Actions` option on the right-hand side, to enable and disable filters.
-    4. Note the Search box at the top, which - as it says - uses "lucerne query syntax". Try searching for _status_code:200_, and _status_code:300_. (Make sure you hit `Enter` after changing the search term.)
-    5. Take time to hover over various areas of the visualisations, and click through, to investigate other options.
 
 
-4. When you have finished exploring the `API Default` dashboard, click `Clone` at the top to make a copy of this dashboard. Give the cloned dashboard your own unique name (eg "My Clone of API Default") and confirm it.
-5. Notice now that the dashboard name along the top has changed, and you also have an `Edit` button along the top. Click this `Edit` button.
-6. You are now able to edit the look and feel of the dashboard as a whole - these changes should then be saved for you under its new name.
-
-    Explore the following options:
-    1. Use the `Add` button to add a visualisation or a Saved Search.
-    2.  Use the four-arrows icon to move a visualisation.
-    3.  Use the cross icon to remove a visualisation.
-    4.  Drag the bottom-right corner of a visualisation to resize it.
-    5.  Explore other options.
-
-7. Once you have finished editing your dashboard, click `Save` to save it, and confirm.
-8.  Click `Dashboard` in the dashboard breadcrumb trail at the top, to go back to the list of dashboards.
-
-
-9.  Notice that your dashboard is now in the list. It has been tagged with `Catalog`, to distinguish it from the admin-provided ones.
-
-10.  Explore the other dashboards to see what visualisations they include.
 
 
 ### Conclusion
