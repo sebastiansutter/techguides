@@ -309,9 +309,11 @@ You do not need to perform any extra configuration on the local Queue Manager **
 
 In this section, you will perform the necessary configuration on the remote Queue Manager **mq**, to permit ACE to connect to it.
 
-### Create and Configure MQ artefacts
+### Create and Configure MQ artefacts post-deployment (not recommended)
 
-The remote Queue Manager called **mq** has already been created and deployed, in its own Helm Chart. You will now use the MQ Console to perform some configuration.
+The remote Queue Manager called **mq** has already been created and deployed, in its own Helm Chart.
+
+You could now use the MQ Console to perform some configuration. However, those will not be "baked in" to the initial Halm Chart, and so if Kubernetes restarts relevant pods, your changes will be lost.
 1. Open the MQ Console for the Queue Manager in one of these ways:
   - (Recommended) Point a browser session at the ICP4I Platform Navigator: `https://mycluster.icp/integration`, and under `Messaging` select `mq`.
   - Point a browser session at the ICP Main Portal: `https://mycluster.icp:8443`, open `Workloads` -> `Helm releases`, find the Helm Release called `mq` and on the right `Launch` -> `console-https`.
@@ -353,13 +355,13 @@ You will now add a new queue and a new channel. You will also change the MQ auth
    ![](./images/cipdemo/ace-mq-console-details.jpg)
 
 ## Steps to make MQSC changes robust
-Adding MQ configuration (MQSC commands) into a pod
+Adding MQ configuration (MQSC commands) into a pod, to create artefacts at deployment time, is the recommended method.
 1. Generate a completely new Secret (as you did for Event Streams).
  - On Developer Machine, duplicate the directory **…/generateSecret** to **…/generateSecretformq**
  - Inside the new directory, delete the following:
     - **serverconf.yaml**
     - **setdbparms.txt**
-    - t**ruststorePassword.txt**
+ - Leave the **truststorePassword.txt** file, to enable the `generatesecret.sh` command to work.
  - Inside the new directory, edit the **mqsi.txt** file, to remove all existing MQSC commands and write new MQSC commands to achieve the following (use your own sklls and the MQ Knowledge Center !!!):
     - Alter the Queue Manager properties, to specify that CHLAUTH is **disabled**
     - Define a new local queue called **NEWORDER.MQ**
