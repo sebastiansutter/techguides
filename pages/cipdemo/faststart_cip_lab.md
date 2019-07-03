@@ -309,11 +309,51 @@ You do not need to perform any extra configuration on the local Queue Manager **
 
 In this section, you will perform the necessary configuration on the remote Queue Manager **mq**, to permit ACE to connect to it.
 
+## Configure MQ Helm Chart to include MQ Artefacts
+Kubernetes and ICP standards recommend that you define and alter MQ artefacts (queues, channels and so on) as part of the Helm Chart. This means that these changes will be placed inside the Queue Manager **at deployment time**, instead of **after deployment**. The main reason is that if and when Kubernetes restarts pods, it will restore those changes.
+
+You define (and alter) artefacts using MQSC commands stored inside a Secret. The following instructions describe how to do this.
+1. Generate a new Secret for MQ (as you did earlier for Event Streams).
+ - On the Developer Machine, duplicate the directory **…/generateSecret** to **…/generateSecret-for-mq**
+ - Inside the new directory, delete the following:
+    - **serverconf.yaml**
+    - **setdbparms.txt**
+ - Leave the **truststorePassword.txt** file, to enable the `generatesecret.sh` command to work. For this lab, it does not matter what this contains because you do not use it, but the `generatesecret.sh` command needs it to exist.
+ - Inside the new directory, edit the **mqsc.txt** file. Remove all existing MQSC commands and write new MQSC commands to achieve the following (use your own skills and the MQ Knowledge Center):
+    - Alter the Queue Manager properties, to specify that CHLAUTH is **disabled**
+    - Define a new local queue called **NEWORDER.MQ**
+    - Define a new Server-Connection channel called **ACE.TO.mq**. For MCAUserID, specify **mqm**.
+    - Alter the system-provided Authentication Information **SYSTEM.DEFAULT.AUTHINFO.IDPWOS**, to specify Check Client Connections = **NONE** and Check Local Connections = **NONE**
+    - **REFRESH SECURITY** for everything
+ - Log on to the cloud using `sudo cloudctl login`. Make sure you specify namespace `mq`.
+ - Inside the new directory, run the **generatesecret.sh** command, to generate a new secret called **mq-secret**.
+
+1. Check that the secret has been created, using the UI.
+  - In a browser session, navigate to the ICP Portal: https://mycluster.icp:8443.
+  - Using the hamburger menu, navigate to `Configuration` -> `Secrets`.
+  - Confirm that Secret **mq-secret** has been created, and click it to open and check that it is in namespace **mq**.
+
+1. Use the ICP Portal to remove the existing **mq** Helm Release, and go to the ICP4I Platform Navigator to ensure that the **mq** instance has been deleted.
+
+1. From the ICP4I Platform Navigator, add a new Message Queue instance:
+ ![](./images/cipdemo/ace-add-new-instance.jpg)
+     - Call it **mq**.
+     - Specify namespace **mq**
+     - Specify the `Secret name` as above (**mq-secret**).
+     - Make sure that `Enable Persistence` is **unchecked**.
+     - Leave the Queue Manager name blank (it will default to the Helm Release name)
+     - Leave all other parameters to default
+
+4. After this new instance has been deployed, use the Web Console to check its configuration (use the instructions provided above).
+
+
 ### Create and Configure MQ artefacts post-deployment (not recommended)
 
 The remote Queue Manager called **mq** has already been created and deployed, in its own Helm Chart.
 
-You could now use the MQ Console to perform some configuration. However, those will not be "baked in" to the initial Halm Chart, and so if Kubernetes restarts relevant pods, your changes will be lost.
+You could now use the MQ Console to perform some configuration. However, those will not be stored in the initial Helm Chart, and so if Kubernetes restarts relevant pods, your changes will be lost.
+
+The following instructions describe how to use the MQ Console to view and change Queue Manager properties and artefacts.
 1. Open the MQ Console for the Queue Manager in one of these ways:
   - (Recommended) Point a browser session at the ICP4I Platform Navigator: `https://mycluster.icp/integration`, and under `Messaging` select `mq`.
   - Point a browser session at the ICP Main Portal: `https://mycluster.icp:8443`, open `Workloads` -> `Helm releases`, find the Helm Release called `mq` and on the right `Launch` -> `console-https`.
@@ -353,41 +393,6 @@ You will now add a new queue and a new channel. You will also change the MQ auth
 
 1. Your MQ Console should show your new widgets and your new artefacts, thus:
    ![](./images/cipdemo/ace-mq-console-details.jpg)
-
-## Steps to make MQSC changes robust
-Following "cattle not pets" paradigm, you should create artefacts inside the Queue Manager at deployment time, using MQSC commands stored inside a Secret.
-1. Generate a  new Secret for MQ (as you did earlier for Event Streams).
- - On the Developer Machine, duplicate the directory **…/generateSecret** to **…/generateSecretformq**
- - Inside the new directory, delete the following:
-    - **serverconf.yaml**
-    - **setdbparms.txt**
- - Leave the **truststorePassword.txt** file, to enable the `generatesecret.sh` command to work. For this lab, it does not matter what this contains because you do not use it.
- - Inside the new directory, edit the **mqsc.txt** file, to remove all existing MQSC commands and write new MQSC commands to achieve the following (use your own skills and the MQ Knowledge Center):
-    - Alter the Queue Manager properties, to specify that CHLAUTH is **disabled**
-    - Define a new local queue called **NEWORDER.MQ**
-    - Define a new Server-Connection channel called **ACE.TO.mq**. For MCAUserID, specify **mqm**.
-    - Alter the system-provided Authentication Information **SYSTEM.DEFAULT.AUTHINFO.IDPWOS**, to specify Check Client Connections = **NONE** and Check Local Connections = **NONE**
-    - **Refresh security** for everything
- - Log on to the cloud using `sudo cloudctl login`. Make sure you specify namespace `mq`.
- - Inside the new directory, run the **generatesecret.sh** command, to generate a new secret called **mq-secret**.
-
-1. Check that the secret has been created, using the UI.
-  - In a browser session, navigate to the ICP Portal: https://mycluster.icp:8443.
-  - Using the hamburger menu, navigate to `Configuration` -> `Secrets`.
-  - Confirm that Secret **mq-secret** has been created, and click it to open and check that it is in namespace **mq**.
-
-
- 2. Use the ICP Portal to remove the existing **mq** Helm Release, and go to the ICP4I Platform Navigator to ensure that the **mq** instance has been deleted.
-
- 1. From the ICP4I Platform Navigator, add a new Message Queue instance;
-     - Call it **mq**.
-     - Specify namespace **mq**
-     - Specify the `Secret name` as above (**mq-secret**).
-     - Make sure that `Enable Persistence` is **unchecked**.
-     - Leave the Queue Manager name blank (it will default to the Helm Release name)
-     - Leave all other parameters to default
-
-4. After this new instance has been deployed, use the Web Console to check its configuration (use the instructions provided above).
 
 ### Confirm MQ IP Port
 Finally, you will check which port the MQ Listener is listening on, thus:
