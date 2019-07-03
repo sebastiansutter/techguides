@@ -355,21 +355,21 @@ You will now add a new queue and a new channel. You will also change the MQ auth
    ![](./images/cipdemo/ace-mq-console-details.jpg)
 
 ## Steps to make MQSC changes robust
-Following "cattle not pets" paradigm, you should create artefacts inside the Queue Manager at deployment time, using MQSC command stored inside a Secret.
+Following "cattle not pets" paradigm, you should create artefacts inside the Queue Manager at deployment time, using MQSC commands stored inside a Secret.
 1. Generate a  new Secret for MQ (as you did earlier for Event Streams).
  - On the Developer Machine, duplicate the directory **…/generateSecret** to **…/generateSecretformq**
  - Inside the new directory, delete the following:
     - **serverconf.yaml**
     - **setdbparms.txt**
  - Leave the **truststorePassword.txt** file, to enable the `generatesecret.sh` command to work. For this lab, it does not matter what this contains because you do not use it.
- - Inside the new directory, edit the **mqsi.txt** file, to remove all existing MQSC commands and write new MQSC commands to achieve the following (use your own skills and the MQ Knowledge Center !!!):
+ - Inside the new directory, edit the **mqsc.txt** file, to remove all existing MQSC commands and write new MQSC commands to achieve the following (use your own skills and the MQ Knowledge Center !!!):
     - Alter the Queue Manager properties, to specify that CHLAUTH is **disabled**
     - Define a new local queue called **NEWORDER.MQ**
     - Define a new Server-Connection channel called **ACE.TO.mq**. For MCAUserID, specify **mqm**.
     - Alter the system-provided Authentication Information **SYSTEM.DEFAULT.AUTHINFO.IDPWOS**, to specify Check Client Connections = **NONE** and Check Local Connections = **NONE**
     - **Refresh security** for everything
  - Log on to the cloud using `cloudctl login`
- - Inside the new directory, run the **generatescript.sh** command, to generate a new secret called **mq-secret**.
+ - Inside the new directory, run the **generatesecret.sh** command, to generate a new secret called **mq-secret**.
 
 
  2. Use the ICP Portal to remove the existing **mq** Helm Release, and go to the ICP4I Platform Navigator to ensure that the **mq** instance has been deleted.
