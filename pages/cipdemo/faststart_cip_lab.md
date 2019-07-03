@@ -368,8 +368,13 @@ Following "cattle not pets" paradigm, you should create artefacts inside the Que
     - Define a new Server-Connection channel called **ACE.TO.mq**. For MCAUserID, specify **mqm**.
     - Alter the system-provided Authentication Information **SYSTEM.DEFAULT.AUTHINFO.IDPWOS**, to specify Check Client Connections = **NONE** and Check Local Connections = **NONE**
     - **Refresh security** for everything
- - Log on to the cloud using `cloudctl login`
+ - Log on to the cloud using `sudo cloudctl login`. Make sure you specify namespace `mq`.
  - Inside the new directory, run the **generatesecret.sh** command, to generate a new secret called **mq-secret**.
+
+1. Check that the secret has been created, using the UI.
+  - In a browser session, navigate to the ICP Portal: https://mycluster.icp:8443.
+  - Using the hamburger menu, navigate to `Configuration` -> `Secrets`.
+  - Confirm that Secret **mq-secret** has been created, and click it to open and check that it is in namespace **mq**.
 
 
  2. Use the ICP Portal to remove the existing **mq** Helm Release, and go to the ICP4I Platform Navigator to ensure that the **mq** instance has been deleted.
@@ -377,8 +382,8 @@ Following "cattle not pets" paradigm, you should create artefacts inside the Que
  1. From the ICP4I Platform Navigator, add a new Message Queue instance;
      - Call it **mq**.
      - Specify namespace **mq**
-     - Specify the Secret name as above (**mq-secret**).
-     - Make sure that "Persistent Storage" is **unchecked**.
+     - Specify the `Secret name` as above (**mq-secret**).
+     - Make sure that `Enable Persistence` is **unchecked**.
      - Leave the Queue Manager name blank (it will default to the Helm Release name)
      - Leave all other parameters to default
 
