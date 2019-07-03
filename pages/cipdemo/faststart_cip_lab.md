@@ -344,7 +344,26 @@ You define (and alter) artefacts using MQSC commands stored inside a Secret. The
      - Leave the Queue Manager name blank (it will default to the Helm Release name)
      - Leave all other parameters to default
 
-4. After this new instance has been deployed, use the Web Console to check its configuration (use the instructions provided above).
+After this new instance has been deployed, use the Web Console to check its configuration, as follows.
+
+1. Open the MQ Console for the Queue Manager in one of these ways:
+  - (Recommended) Point a browser session at the ICP4I Platform Navigator: `https://mycluster.icp/integration`, and under `Messaging` select `mq`.
+  - Point a browser session at the ICP Main Portal: `https://mycluster.icp:8443`, open `Workloads` -> `Helm releases`, find the Helm Release called `mq` and on the right `Launch` -> `console-https`.
+  - Point a browser session directly at the MQ Console: `https://mycluster.icp/integration/instance/mq`
+3. Click the Queue Manager name `mq` to highlight it. (This is the name of the Queue Manager already created in this pod). Select `Properties`.
+
+   ![](./images/cipdemo/ace-mq-properties.jpg)
+
+5. On the `Communication` tab, find the `CHLAUTH Records` property and make sure that it is set to `Disabled`.
+
+   ![](./images/cipdemo/ace-chlauth-disabled.jpg)
+
+1. At the top right, click `Add Widget`, then select your Queue Manager `mq` and select the `Queues` widget.
+ - In your new Queues widget, you should see your  queue called **NEWORDER.MQ**, of type  `local`.
+1. At the top right, click `Add Widget` again, then select your Queue Manager `mq` and select the `Channels` widget.
+ - In your new Channels widget, you should see your channel called **ACE.TO.mq**.
+ - Click `ACE.TO.mq` to select it, and then click `Properties`, and verify that the properties match what you specified earlier.
+
 
 
 ### Create and Configure MQ artefacts post-deployment (not recommended)
@@ -397,7 +416,7 @@ You will now add a new queue and a new channel. You will also change the MQ auth
 ### Confirm MQ IP Port
 Finally, you will check which port the MQ Listener is listening on, thus:
 
-1. At the top right, click `Add Widget` again, then select your Queue Manager `mq` and select the `Listeners` widget.
+1. Within the MQ Console, add a new `Listeners` widget.
   -  In your new Listeners widget, click on the cogwheel to configure the widget, and select `System objects` -> `Show`.
 	![](./images/cipdemo/ace-authinfo-cogwheel.jpg)
   - You should see the system-provided Listener called `SYSTEM.LISTENER.TCP.1`. Make a mental note of the port for this listener (almost certainly it will be the MQ default of **1414**).
