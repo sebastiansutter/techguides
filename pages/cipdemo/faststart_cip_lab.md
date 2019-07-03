@@ -362,7 +362,7 @@ Following "cattle not pets" paradigm, you should create artefacts inside the Que
     - **serverconf.yaml**
     - **setdbparms.txt**
  - Leave the **truststorePassword.txt** file, to enable the `generatesecret.sh` command to work. For this lab, it does not matter what this contains because you do not use it.
- - Inside the new directory, edit the **mqsc.txt** file, to remove all existing MQSC commands and write new MQSC commands to achieve the following (use your own skills and the MQ Knowledge Center !!!):
+ - Inside the new directory, edit the **mqsc.txt** file, to remove all existing MQSC commands and write new MQSC commands to achieve the following (use your own skills and the MQ Knowledge Center):
     - Alter the Queue Manager properties, to specify that CHLAUTH is **disabled**
     - Define a new local queue called **NEWORDER.MQ**
     - Define a new Server-Connection channel called **ACE.TO.mq**. For MCAUserID, specify **mqm**.
