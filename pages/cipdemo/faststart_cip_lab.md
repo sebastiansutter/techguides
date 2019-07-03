@@ -361,7 +361,7 @@ Following "cattle not pets" paradigm, you should create artefacts inside the Que
  - Inside the new directory, delete the following:
     - **serverconf.yaml**
     - **setdbparms.txt**
- - Leave the **truststorePassword.txt** file, to enable the `generatesecret.sh` command to work.
+ - Leave the **truststorePassword.txt** file, to enable the `generatesecret.sh` command to work. For this lab, it does not matter what this contains because you do not use it.
  - Inside the new directory, edit the **mqsi.txt** file, to remove all existing MQSC commands and write new MQSC commands to achieve the following (use your own skills and the MQ Knowledge Center !!!):
     - Alter the Queue Manager properties, to specify that CHLAUTH is **disabled**
     - Define a new local queue called **NEWORDER.MQ**
@@ -382,7 +382,7 @@ Following "cattle not pets" paradigm, you should create artefacts inside the Que
      - Leave the Queue Manager name blank (it will default to the Helm Release name)
      - Leave all other parameters to default
 
-4. After this new instance has been deployed, use the Web Console to check its configuration (use the instructions earlier).
+4. After this new instance has been deployed, use the Web Console to check its configuration (use the instructions provided above).
 
 ### Confirm MQ IP Port
 Finally, you will check which port the MQ Listener is listening on, thus:
