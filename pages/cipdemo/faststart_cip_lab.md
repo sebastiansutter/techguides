@@ -352,6 +352,35 @@ You will now add a new queue and a new channel. You will also change the MQ auth
 1. Your MQ Console should show your new widgets and your new artefacts, thus:
    ![](./images/cipdemo/ace-mq-console-details.jpg)
 
+## Steps to make MQSC changes robust
+Adding MQ configuration (MQSC commands) into a pod
+1. Generate a completely new Secret (as you did for Event Streams).
+ - On Developer Machine, duplicate the directory **…/generateSecret** to **…/generateSecretformq**
+ - Inside the new directory, delete the following:
+    - **serverconf.yaml**
+    - **setdbparms.txt**
+    - t**ruststorePassword.txt**
+ - Inside the new directory, edit the **mqsi.txt** file, to remove all existing MQSC commands and write new MQSC commands to achieve the following (use your own sklls and the MQ Knowledge Center !!!):
+    - Alter the Queue Manager properties, to specify that CHLAUTH is **disabled**
+    - Define a new local queue called **NEWORDER.MQ**
+    - Define a new Server-Connection channel called **ACE.TO.mq**. For MCAUserID, specify **mqm**.
+    - Alter the system-provided Authentication Information **SYSTEM.DEFAULT.AUTHINFO.IDPWOS**, to specify Check Client Connections = **NONE** and Check Local Connections = **NONE**
+    - **Refresh security** for everything
+ - Log on to the cloud using `cloudctl login`
+ - Inside the new directory, run the **generatescript.sh** command, to generate a new secret called **mq-secret**.
+
+
+ 2. Use the ICP Portal to remove the existing **mq** Helm Release, and go to the ICP4I Platform Navigator to ensure that the **mq** instance has been deleted.
+
+ 1. From the ICP4I Platform Navigator, add a new Message Queue instance;
+     - Call it **mq**.
+     - Specify namespace **mq**
+     - Specify the Secret name as above (**mq-secret**).
+     - Leave the Queue Manager name blank (it will default to the Helm Release name)
+     - Leave all other parameters to default
+
+1. After it has been dpeloyed,
+
 ### Confirm MQ IP Port
 Finally, you will check which port the MQ Listener is listening on, thus:
 
