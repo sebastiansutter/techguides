@@ -376,10 +376,11 @@ Adding MQ configuration (MQSC commands) into a pod
      - Call it **mq**.
      - Specify namespace **mq**
      - Specify the Secret name as above (**mq-secret**).
+     - Make sure that "Persistent Storage" is **unchecked**.
      - Leave the Queue Manager name blank (it will default to the Helm Release name)
      - Leave all other parameters to default
 
-1. After it has been dpeloyed,
+4. After this new instance has been deployed, use the Web Console to check its configuration (use the instructions earlier).
 
 ### Confirm MQ IP Port
 Finally, you will check which port the MQ Listener is listening on, thus:
