@@ -313,20 +313,19 @@ In this section, you will perform the necessary configuration on the remote Queu
 Kubernetes and ICP standards recommend that you define and alter MQ artefacts (queues, channels and so on) as part of the Helm Chart. This means that these changes will be placed inside the Queue Manager **at deployment time**, instead of **after deployment**. The main reason is that if and when Kubernetes restarts pods, it will restore those changes.
 
 You define (and alter) artefacts using MQSC commands stored inside a Secret. The following instructions describe how to do this.
-1. Generate a new Secret for MQ (as you did earlier for Event Streams).
- - On the Developer Machine, duplicate the directory **…/generateSecret** to **…/generateSecret-for-mq**
- - Inside the new directory, delete the following:
-    - **serverconf.yaml**
-    - **setdbparms.txt**
- - Leave the **truststorePassword.txt** file, to enable the `generatesecret.sh` command to work. For this lab, it does not matter what this contains because you do not use it, but the `generatesecret.sh` command needs it to exist.
- - Inside the new directory, edit the **mqsc.txt** file. Remove all existing MQSC commands and write new MQSC commands to achieve the following (use your own skills and the MQ Knowledge Center):
-    - Alter the Queue Manager properties, to specify that CHLAUTH is **disabled**
-    - Define a new local queue called **NEWORDER.MQ**
-    - Define a new Server-Connection channel called **ACE.TO.mq**. For MCAUserID, specify **mqm**.
-    - Alter the system-provided Authentication Information **SYSTEM.DEFAULT.AUTHINFO.IDPWOS**, to specify Check Client Connections = **NONE** and Check Local Connections = **NONE**
-    - **REFRESH SECURITY** for everything
- - Log on to the cloud using `sudo cloudctl login`. Make sure you specify namespace `mq`.
- - Inside the new directory, run the **generatesecret.sh** command, to generate a new secret called **mq-secret**.
+1. On the Developer Machine, duplicate the directory **…/generateSecret** to **…/generateSecret-for-mq**.
+1. Inside the new directory, delete the following:
+ - **serverconf.yaml**
+ - **setdbparms.txt**
+1. Leave the **truststorePassword.txt** file, to enable the `generatesecret.sh` command to work. For this lab, it does not matter what this contains because you do not use it, but the `generatesecret.sh` command needs it to exist.
+1. Inside the new directory, edit the **mqsc.txt** file. Remove all existing MQSC commands and write new MQSC commands to achieve the following (use your own skills and the MQ Knowledge Center):
+ - Alter the Queue Manager properties, to specify that CHLAUTH is **disabled**
+ - Define a new local queue called **NEWORDER.MQ**
+ - Define a new Server-Connection channel called **ACE.TO.mq**. For MCAUserID, specify **mqm**.
+ - Alter the system-provided Authentication Information **SYSTEM.DEFAULT.AUTHINFO.IDPWOS**, to specify Check Client Connections = **NONE** and Check Local Connections = **NONE**
+ - **REFRESH SECURITY** for everything
+1. Log on to the cloud using `sudo cloudctl login`. Make sure you specify namespace `mq`.
+1. Inside the new directory, run the **generatesecret.sh** command, to generate a new secret called **mq-secret**.
 
 1. Check that the secret has been created, using the UI.
   - In a browser session, navigate to the ICP Portal: https://mycluster.icp:8443.
